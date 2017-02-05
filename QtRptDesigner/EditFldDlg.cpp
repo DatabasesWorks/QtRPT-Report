@@ -27,7 +27,9 @@ limitations under the License.
 #include <QFileDialog>
 #include <QMessageBox>
 
-EditFldDlg::EditFldDlg(QWidget *parent) :  QDialog(parent), ui(new Ui::EditFldDlg) {
+EditFldDlg::EditFldDlg(QWidget *parent)
+: QDialog(parent), ui(new Ui::EditFldDlg)
+{
     ui->setupUi(this);
 
     QObject::connect(ui->btnLoadImage, SIGNAL(clicked()), this, SLOT(loadImage()));
@@ -47,16 +49,19 @@ EditFldDlg::EditFldDlg(QWidget *parent) :  QDialog(parent), ui(new Ui::EditFldDl
     QObject::connect(ui->chkGraphs, SIGNAL(toggled(bool)), this, SLOT(autoFillData(bool)));
 }
 
-void EditFldDlg::chooseColor() {
+void EditFldDlg::chooseColor()
+{
     QColor color;
     if (sender() == ui->btnColorF)
         color = colorFromString(ui->lblColorF->styleSheet());
     if (sender() == ui->btnColorB)
         color = colorFromString(ui->lblColorB->styleSheet());
+
     auto dlg = new QColorDialog(color, this);
     if (dlg->exec() == QDialog::Accepted)
         color = dlg->selectedColor();
-    else return;
+    else
+        return;
 
     QString strColor = colorToString(color);
     if (sender() == ui->btnColorB)
@@ -91,7 +96,7 @@ void EditFldDlg::conditionalToggled(bool value) {
 }
 
 void EditFldDlg::decodeHighLightingString() {
-    for(auto str : m_cond_higlighting.split(";")) {
+    for (auto str : m_cond_higlighting.split(";")) {
         if (str.contains("bold")) ui->chkBold->setChecked(true);
         if (str.contains("italic")) ui->chkItalic->setChecked(true);
         if (str.contains("underline")) ui->chkUnderline->setChecked(true);
@@ -151,8 +156,10 @@ void EditFldDlg::backGroundToggled(bool value) {
         encodeHighLightingString();
 }
 
-void EditFldDlg::openProperty() {
-    FldPropertyDlg *dlg = new FldPropertyDlg(this);
+void EditFldDlg::openProperty()
+{
+    auto dlg = new FldPropertyDlg(this);
+
     if (sender() == ui->btnAddVariable) {
         QString str = dlg->showThis(0,0,"");
         ui->textEdit->insertPlainText(str);

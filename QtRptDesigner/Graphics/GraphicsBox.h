@@ -124,7 +124,6 @@ private:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void adjustSize(int x, int y);
 
-    QPen _outterborderPen; ///< the pen is used to paint the red/black border
     QPointF _location;
     QPointF _dragStart;
     qreal   _width;

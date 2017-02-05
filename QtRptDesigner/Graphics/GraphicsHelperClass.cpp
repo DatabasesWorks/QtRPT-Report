@@ -28,7 +28,9 @@ limitations under the License.
 #include "UndoRedoCommands.h"
 #include "mainwindow.h"
 
-GraphicsHelperClass::GraphicsHelperClass(QObject *parent) : QObject(parent) {
+GraphicsHelperClass::GraphicsHelperClass(QObject *parent)
+: QObject(parent)
+{
     m_menu = new QMenu();
     m_printing = "1";
     borderWidth = 1;
@@ -40,6 +42,7 @@ GraphicsHelperClass::GraphicsHelperClass(QObject *parent) : QObject(parent) {
     m_borderBottomColor = Qt::black;
     m_borderStyle = Qt::SolidLine;
     m_borderColor = Qt::black;
+    m_outterborderColor = Qt::black;
 }
 
 void GraphicsHelperClass::setObjectName(const QString &name) {
@@ -50,69 +53,47 @@ void GraphicsHelperClass::setObjectName(const QString &name) {
 
 QColor GraphicsHelperClass::getColorValue(Command param) {
     switch(param) {
-        case FontColor: {
+        case FontColor:
             return m_fontColor;
-            break;
-        }
-        case BackgroundColor: {
+        case BackgroundColor:
             return m_backgroundColor;
-            break;
-        }
-        case BorderColor: {
+        case BorderColor:
             return m_borderColor;
-            break;
-        }
-        case FrameTop: {
+        case FrameTop:
             return m_borderTopColor;
-            break;
-        }
-        case FrameBottom: {
+        case FrameBottom:
             return m_borderBottomColor;
-            break;
-        }
-        case FrameLeft: {
+        case FrameLeft:
             return m_borderLeftColor;
-            break;
-        }
-        case FrameRight: {
+        case FrameRight:
             return m_borderRightColor;
-            break;
-        }
-
         default: return QColor();
     }
 }
 
 void GraphicsHelperClass::setColorValue(Command param, QColor value) {
     switch(param) {
-        case FontColor: {
+        case FontColor:
             m_fontColor = value;
             break;
-        }
-        case BackgroundColor: {
+        case BackgroundColor:
             m_backgroundColor = value;
             break;
-        }
-        case BorderColor:  {
+        case BorderColor:
             m_borderColor = value;
             break;
-        }
-        case FrameTop: {
+        case FrameTop:
             m_borderTopColor = value;
             break;
-        }
-        case FrameBottom: {
+        case FrameBottom:
             m_borderBottomColor = value;
             break;
-        }
-        case FrameLeft: {
+        case FrameLeft:
             m_borderLeftColor = value;
             break;
-        }
-        case FrameRight: {
+        case FrameRight:
             m_borderRightColor = value;
             break;
-        }
         default: return;
     }
 }
@@ -131,7 +112,8 @@ bool GraphicsHelperClass::borderIsCheck(Command command) {
 
     if (color.red() != 255 && color.green() != 255 & color.blue() != 255)
         return true;
-    else return false;
+    else
+        return false;
 }
 
 void GraphicsHelperClass::setBorder(Command command, QVariant values, bool yesFrame) {
@@ -238,41 +220,38 @@ void GraphicsHelperClass::edit() {
     if (graphicsItem->type() == ItemType::GBox) {
         GraphicsHelperList selContList;
         selContList.append(this);
+
         //before changing params gets params
         BArrayList oldList = ParamCommand::getBArrayFromContList(selContList);
 
-        EditFldDlg *dlg = new EditFldDlg(getMW());
+        auto mw = &MainWindow::instance();
+
+        auto dlg = new EditFldDlg(mw);
         switch(m_type) {
             case Text:
             case TextImage:
-            case DatabaseImage: {
+            case DatabaseImage:
                 dlg->showText(graphicsItem);
                 break;
-            }
-            case TextRich: {
+            case TextRich:
                 dlg->showTextRich(graphicsItem);
                 break;
-            }
-            case Image: {
+            case Image:
                 dlg->showImage(graphicsItem);
                 break;
-            }
-            case Diagram: {
+            case Diagram:
                 dlg->showDiagram(graphicsItem);
                 break;
-            }
-            case Barcode: {
+            case Barcode:
                 dlg->showBarcode(graphicsItem);
                 break;
-            }
-            case CrossTab: {
+            case CrossTab:
                 dlg->showCrosstab(graphicsItem);
                 break;
-            }
             default: return;
         }
         if (dlg->result() == QDialog::Accepted) {
-            getMW()->setReportChanged();
+            mw->setReportChanged();
 
             //gets new params
             BArrayList newList = ParamCommand::getBArrayFromContList(selContList);
@@ -340,7 +319,8 @@ bool GraphicsHelperClass::helperIsSelected() {
     return false;
 }
 
-void GraphicsHelperClass::helperSelect(bool value) {
+void GraphicsHelperClass::helperSelect(bool value)
+{
     if (graphicsItem->type() == ItemType::GBox || graphicsItem->type() == ItemType::GBand) {
         auto box = static_cast<GraphicsBox*>(graphicsItem);
         box->setSelected(value);
@@ -365,22 +345,19 @@ void GraphicsHelperClass::destroyCorners() {
 }
 
 QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj) {
-    for(int i=0; i<obj.metaObject()->propertyCount(); ++i) {
-        if(obj.metaObject()->property(i).isStored(&obj)) {
+    for (int i=0; i<obj.metaObject()->propertyCount(); ++i)
+        if (obj.metaObject()->property(i).isStored(&obj))
             stream << obj.metaObject()->property(i).read(&obj);
-        }
-    }
-    QList<QByteArray> list = obj.dynamicPropertyNames();
-    for (int i=0; i<list.size(); i++) {
-        stream << obj.property(list.at(i));
-    }
-    GraphicsBox *item = static_cast<GraphicsBox*>(obj.graphicsItem);
+
+    for (auto& byteArray : obj.dynamicPropertyNames())
+        stream << obj.property(byteArray);
+
+    auto item = qgraphicsitem_cast<GraphicsBox*>(obj.graphicsItem);
 
     if (item->type() == ItemType::GBox ) {
         stream << item->getText();
         stream << item->getFont();
     }
-
     if (obj.m_type == Diagram) {
         item->getChart()->setProperties();
         stream << *item->getChart();
@@ -395,20 +372,21 @@ QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj) {
 
 QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj) {
     QVariant var;
-    for(int i=0; i<obj.metaObject()->propertyCount(); ++i) {
-        if(obj.metaObject()->property(i).isStored(&obj)) {
+    for (int i=0; i<obj.metaObject()->propertyCount(); ++i) {
+        if (obj.metaObject()->property(i).isStored(&obj)) {
             stream >> var;
             if (!var.isNull())
                 obj.metaObject()->property(i).write(&obj, var);
         }
     }
     //obj.setProperties();
-    QList<QByteArray> list = obj.dynamicPropertyNames();
-    for (int i=0; i<list.size(); i++) {
+
+    for (auto& byteArray : obj.dynamicPropertyNames()) {
         stream >> var;
-        obj.setProperty(list.at(i),QVariant(var));
+        obj.setProperty(byteArray, QVariant(var));
     }
-    GraphicsBox *item = static_cast<GraphicsBox*>(obj.graphicsItem);
+
+    auto item = qgraphicsitem_cast<GraphicsBox*>(obj.graphicsItem);
 
     if (item->type() == ItemType::GBox ) {
         QString text;
@@ -418,7 +396,6 @@ QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj) {
         stream >> font;
         item->setFont(font);
     }
-
     if (obj.m_type == Diagram) {
         Chart *chart = item->getChart();
         chart = new Chart(0);

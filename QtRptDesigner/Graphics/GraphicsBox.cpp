@@ -31,9 +31,7 @@ limitations under the License.
 #include <QAbstractTextDocumentLayout>
 #include <QBuffer>
 
-GraphicsBox::GraphicsBox():
-        _outterborderPen()
-{
+GraphicsBox::GraphicsBox() {
     _location = QPointF(0,0);
     _dragStart = QPointF(0,0);
     _width = 200;
@@ -56,8 +54,6 @@ GraphicsBox::GraphicsBox():
 
     m_autoHeight = false;
     m_borderIsVisible = true;
-    m_outterborderColor = Qt::black;
-    m_backgroundColor = Qt::white;
     m_highlighting = "";
     m_formatString = "";
     m_text = tr("New Label");
@@ -65,6 +61,8 @@ GraphicsBox::GraphicsBox():
     m_barcode = nullptr;
     m_crossTab = nullptr;
     m_chart = nullptr;
+    m_outterborderPen.setWidth(1);
+    m_outterborderPen.setColor(m_outterborderColor);
 
     if (QApplication::layoutDirection() == Qt::RightToLeft) {
         m_textDirection = true;
@@ -74,8 +72,7 @@ GraphicsBox::GraphicsBox():
         m_alignment = Qt::AlignLeft | Qt::AlignVCenter;
     }
 
-    _outterborderPen.setWidth(1);
-    _outterborderPen.setColor(m_outterborderColor);
+
 
     this->graphicsItem = this;
     this->adjustSize(0,0);
@@ -402,16 +399,16 @@ QRectF GraphicsBox::boundingRect() const {
 void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
     QBrush brush2(m_backgroundColor,Qt::SolidPattern);
 
-    _outterborderPen.setCapStyle(Qt::RoundCap);
-    _outterborderPen.setStyle(borderStyle());
-    _outterborderPen.setWidth(getBorderWidth());
+    m_outterborderPen.setCapStyle(Qt::RoundCap);
+    m_outterborderPen.setStyle(borderStyle());
+    m_outterborderPen.setWidth(getBorderWidth());
 
     if (m_borderIsVisible)
-        _outterborderPen.setColor( m_borderColor );
+        m_outterborderPen.setColor( m_borderColor );
     else
-        _outterborderPen.setColor(QColor(0,0,0,0));
+        m_outterborderPen.setColor(QColor(0,0,0,0));
 
-    painter->setPen(_outterborderPen);
+    painter->setPen(m_outterborderPen);
 
     QRectF rcT (QPointF(2,0), QPointF(getWidth(), getHeight()));
 
@@ -450,8 +447,8 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
                 if (borderIsCheck(FrameBottom))
                     painter->drawLine(0,getHeight(), getWidth()-1, getHeight()); //bottom
 
-                _outterborderPen.setColor( m_fontColor );
-                painter->setPen(_outterborderPen);
+                m_outterborderPen.setColor( m_fontColor );
+                painter->setPen(m_outterborderPen);
 
                 painter->setFont(m_font);
                 painter->drawText(rcT,m_alignment,m_text);

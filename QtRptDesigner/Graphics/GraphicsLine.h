@@ -66,8 +66,6 @@ private:
     void setCornerPositions();
     void createCustomPath(QPointF mouseLocation, CornerGrabber*);
 
-
-    QPen    _pen; ///< the pen is used to paint the red/black border
     QPointF _location;
     QPointF _dragStart;
 

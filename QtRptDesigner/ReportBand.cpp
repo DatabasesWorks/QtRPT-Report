@@ -26,7 +26,8 @@ limitations under the License.
 #include <QObject>
 #include "mainwindow.h"
 
-ReportBand::ReportBand(BandType type) {
+ReportBand::ReportBand(BandType type)
+{
     setFlag(QGraphicsItem::ItemIsMovable,false);
     m_menu = new QMenu;
     bandType = type;
@@ -86,10 +87,12 @@ ReportBand::ReportBand(BandType type) {
     }   
 }
 
-void ReportBand::setMenu(QMenu *menu_) {
+void ReportBand::setMenu(QMenu* menu_)
+{
     QIcon icon;
-    auto actBandDel = new QAction(tr("Delete"),this);
     icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/delete.png")), QIcon::Normal, QIcon::On);
+
+    auto actBandDel = new QAction(tr("Delete"),this);
     actBandDel->setObjectName("actBandDel");
     actBandDel->setIcon(icon);
     QObject::connect(actBandDel, SIGNAL(triggered()), this, SIGNAL(itemRemoving()));
@@ -99,38 +102,47 @@ void ReportBand::setMenu(QMenu *menu_) {
     m_menu->addAction(actBandDel);
 }
 
-void ReportBand::setHeight(qreal value) {
+void ReportBand::setHeight(qreal value)
+{
     GraphicsBox::setHeight(titleHeight + value);
 }
 
-QString ReportBand::getGroupingField() {
+QString ReportBand::getGroupingField()
+{
     return m_groupingField;
 }
 
-void ReportBand::setGroupingField(QString value) {
+void ReportBand::setGroupingField(QString value)
+{
     m_groupingField = value;
 }
 
-int ReportBand::getStartNewNumertaion() {
+int ReportBand::getStartNewNumertaion()
+{
     return m_startNewNumeration;
 }
 
-void ReportBand::setStartNewNumeration(bool value) {
+void ReportBand::setStartNewNumeration(bool value)
+{
     m_startNewNumeration = value;
 }
 
-bool ReportBand::getShowInGroup() {
+bool ReportBand::getShowInGroup()
+{
     return m_showInGroup;
 }
 
-void ReportBand::setShowInGroup(bool value) {
+void ReportBand::setShowInGroup(bool value)
+{
     m_showInGroup = value;
 }
 
-bool ReportBand::getStartNewPage() {
+bool ReportBand::getStartNewPage()
+{
     return m_startNewPage;
 }
 
-void ReportBand::setStartNewPage(bool value) {
+void ReportBand::setStartNewPage(bool value)
+{
     m_startNewPage = value;
 }

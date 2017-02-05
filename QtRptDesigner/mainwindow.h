@@ -81,6 +81,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    static MainWindow& instance()
+    {
+        static MainWindow me;
+        return me;
+    }
+
     void setReportChanged();
 
 protected:
@@ -181,7 +187,5 @@ private slots:
     void sceneClick();
     void generateName(QGraphicsItem *mItem);
 };
-
-MainWindow *getMW();
 
 #endif // MAINWINDOW_H

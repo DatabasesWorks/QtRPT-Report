@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef PROPERTYCLASS_H
-#define PROPERTYCLASS_H
+#pragma once
 
 #include <QObject>
 #include <QMenu>
@@ -84,6 +83,7 @@ protected:
     QMenu* m_menu;
     QtRptName::FieldType m_type;
     QString setPenStyle(Qt::PenStyle style);
+    QPen m_outterborderPen; ///< the pen is used to paint the red/black border
 
     void destroyCorners();
 
@@ -108,5 +108,3 @@ public slots:
     void moveBack();
 
 };
-
-#endif // PROPERTYCLASS_H

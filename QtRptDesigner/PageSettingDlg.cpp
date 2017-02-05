@@ -28,8 +28,11 @@ limitations under the License.
 #include "ui_PageSettingDlg.h"
 #include "CommonClasses.h"
 
-PageSettingDlg::PageSettingDlg(QWidget *parent) : QDialog(parent), ui(new Ui::PageSettingDlg) {
+PageSettingDlg::PageSettingDlg(QWidget *parent)
+: QDialog(parent), ui(new Ui::PageSettingDlg)
+{
     ui->setupUi(this);
+
     QObject::connect(ui->rLandscape, SIGNAL(clicked()), this, SLOT(changeOrientation()));
     QObject::connect(ui->rPortrait, SIGNAL(clicked()), this, SLOT(changeOrientation()));
     QObject::connect(ui->cbPageSize, SIGNAL(currentIndexChanged(int)), this, SLOT(pageSizeChanged(int)));
@@ -38,14 +41,16 @@ PageSettingDlg::PageSettingDlg(QWidget *parent) : QDialog(parent), ui(new Ui::Pa
     ui->spnBorderWidth->setValue(1);
     ui->lblBorderColor->setStyleSheet("QLabel {background-color: black}");
     
-    for (int i=1; i < 7; i++) {
+    for (int i=1; i < 7; i++)
+    {
         QIcon icon;
         icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/fs%1.png").arg(i)), QIcon::Normal, QIcon::On);
         ui->cmbBorderStyle->addItem(icon,"", i);
     }
 }
 
-void PageSettingDlg::showThis(PageSetting pageSetting) {
+void PageSettingDlg::showThis(PageSetting pageSetting)
+{
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
     settings.beginGroup("language");
@@ -81,8 +86,10 @@ void PageSettingDlg::showThis(PageSetting pageSetting) {
     ui->edtWidth->setText(QString::number(pageSetting.pageWidth/koef, 'f', 2));
     ui->edtHeight->setText(QString::number(pageSetting.pageHeight/koef, 'f', 2));
 
-    if (pageSetting.pageOrientation == 0) ui->rPortrait->setChecked(true);
-    if (pageSetting.pageOrientation == 1) ui->rLandscape->setChecked(true);
+    if (pageSetting.pageOrientation == 0)
+        ui->rPortrait->setChecked(true);
+    if (pageSetting.pageOrientation == 1)
+        ui->rLandscape->setChecked(true);
     if (ui->rLandscape->isChecked())
         ui->lblOrientation->setPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/landscape.png")));
     if (ui->rPortrait->isChecked())
@@ -100,12 +107,12 @@ void PageSettingDlg::showThis(PageSetting pageSetting) {
     if (pageSetting.borderStyle == "dot-dot-dash") ui->cmbBorderStyle->setCurrentIndex(4);
     if (pageSetting.borderStyle == "double") ui->cmbBorderStyle->setCurrentIndex(5);
 
-    if (exec() == QDialog::Accepted) {
+    if (exec() == QDialog::Accepted)
         saveSettings();
-    }
 }
 
-void PageSettingDlg::pageSizeChanged(int index) {
+void PageSettingDlg::pageSizeChanged(int index)
+{
     switch(index) {
         case 0: //A3
             ui->edtWidth->setText(QString::number(w_A3/koef,'f',2));
@@ -126,7 +133,8 @@ void PageSettingDlg::pageSizeChanged(int index) {
     }
 }
 
-void PageSettingDlg::changeOrientation() {
+void PageSettingDlg::changeOrientation()
+{
     QString str = ui->edtHeight->text();
     ui->edtHeight->setText(ui->edtWidth->text());
     ui->edtWidth->setText(str);
@@ -136,7 +144,8 @@ void PageSettingDlg::changeOrientation() {
         ui->lblOrientation->setPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/portrait.png")));
 }
 
-void PageSettingDlg::saveSettings() {
+void PageSettingDlg::saveSettings()
+{
     pageSetting.marginsLeft   = QString::number(ui->edtLeft->text().toFloat()*koef,'f',0).toFloat();
     pageSetting.marginsRight  = QString::number(ui->edtRight->text().toFloat()*koef,'f',0).toFloat();
     pageSetting.marginsTop    = QString::number(ui->edtTop->text().toFloat()*koef,'f',0).toFloat();
@@ -146,6 +155,7 @@ void PageSettingDlg::saveSettings() {
     pageSetting.border        = ui->chkDrawBorder->isChecked();
     pageSetting.borderWidth   = ui->spnBorderWidth->value();
     pageSetting.borderColor   = strColor;
+
     if (ui->rLandscape->isChecked())
         pageSetting.pageOrientation = 1;
     if (ui->rPortrait->isChecked())
@@ -174,18 +184,21 @@ void PageSettingDlg::saveSettings() {
     }
 }
 
-void PageSettingDlg::selectColor() {
+void PageSettingDlg::selectColor()
+{
     QColor color;
     auto dlg = new QColorDialog(color, this);
     if (dlg->exec() == QDialog::Accepted)
         color = dlg->selectedColor();
-    else return;
+    else
+        return;
 
     strColor = colorToString(color);
     pageSetting.borderColor = strColor;
     ui->lblBorderColor->setStyleSheet("QLabel {background-color: "+strColor+"}");
 }
 
-PageSettingDlg::~PageSettingDlg() {
+PageSettingDlg::~PageSettingDlg()
+{
     delete ui;
 }

@@ -32,8 +32,6 @@ class ReportBand : public GraphicsBox
 {
     
 public:
-    BandType bandType;
-    int titleHeight;
     explicit ReportBand(BandType type = ReportTitle);
     int type() const Q_DECL_OVERRIDE { return ItemType::GBand; }
     void setMenu(QMenu *menu_);
@@ -47,6 +45,8 @@ public:
     void setShowInGroup(bool value);
     bool getStartNewPage();
     void setStartNewPage(bool value);
+    BandType bandType;
+    int titleHeight;
 
 private:
     bool m_infocus;

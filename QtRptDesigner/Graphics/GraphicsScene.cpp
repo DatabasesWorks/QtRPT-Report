@@ -48,13 +48,13 @@ GraphicsScene::GraphicsScene(QObject *parent) : QGraphicsScene(parent) {
 //    m_backgroundItem->setPixmap(pixmap);
 //}
 
-void GraphicsScene::addItem(QGraphicsItem * item) {
+void GraphicsScene::addItem(QGraphicsItem* item) {
     if (item->type() == ItemType::GLine) {
-        GraphicsLine *line = static_cast<GraphicsLine*>(item);
+        auto line = static_cast<GraphicsLine*>(item);
         QObject::connect(line, SIGNAL(itemRemoving()), this, SLOT(itemRemoving()));
     }
     if (item->type() == ItemType::GBox || item->type() == ItemType::GBand) {
-        GraphicsBox *box = static_cast<GraphicsBox*>(item);
+        auto box = static_cast<GraphicsBox*>(item);
         QObject::connect(box, SIGNAL(itemRemoving()), this, SLOT(itemRemoving()));
     }
     QGraphicsScene::addItem(item);
@@ -189,7 +189,6 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
                         if (line != nullptr)
                             line->setLength(line->getLength()-1);
                     }
-                    getMW()->setReportChanged();
                 }
                 if(event->key() == Qt::Key_Up) {
                     if (QApplication::keyboardModifiers() == Qt::ControlModifier && item->type() != ItemType::GBand) {
@@ -202,7 +201,6 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
                         if (box != nullptr)
                             box->setHeight(box->getHeight()-1);
                     }
-                    getMW()->setReportChanged();
                 }
                 if(event->key() == Qt::Key_Right && item->type() != ItemType::GBand) {
                     if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
@@ -217,7 +215,6 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
                         if (line != nullptr)
                             line->setLength(line->getLength()+1);
                     }
-                    getMW()->setReportChanged();
                 }
                 if(event->key() == Qt::Key_Down) {
                     if (QApplication::keyboardModifiers() == Qt::ControlModifier && item->type() != ItemType::GBand) {
@@ -230,8 +227,10 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
                         if (box != nullptr)
                             box->setHeight(box->getHeight()+1);
                     }
-                    getMW()->setReportChanged();
                 }
+
+                auto mw = &MainWindow::instance();
+                mw->setReportChanged();
             }
         }
         if(event->key() == Qt::Key_Left || event->key() == Qt::Key_Up || event->key() == Qt::Key_Right || event->key() == Qt::Key_Down)

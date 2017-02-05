@@ -9,7 +9,6 @@
 #include "math.h"
 
 GraphicsLine::GraphicsLine(): QGraphicsPolygonItem(),
-        _pen(),
         _location(0,0),
         _dragStart(0,0),
         _XcornerGrabBuffer(20),
@@ -20,9 +19,6 @@ GraphicsLine::GraphicsLine(): QGraphicsPolygonItem(),
 {
     setDrawingState(true);
 
-    m_outterborderColor = Qt::black;
-    m_borderColor = Qt::black;
-
     m_corners.resize(2);
     for (auto& corner : m_corners)
         corner = nullptr;
@@ -30,8 +26,8 @@ GraphicsLine::GraphicsLine(): QGraphicsPolygonItem(),
     setFlag(QGraphicsItem::ItemIsSelectable,true);
     setFlag(ItemSendsGeometryChanges,true);
 
-    _pen.setWidth(2);
-    _pen.setColor(m_outterborderColor);
+    m_outterborderPen.setWidth(2);
+    m_outterborderPen.setColor(m_outterborderColor);
 
     this->setAcceptHoverEvents(true);
 
@@ -251,18 +247,18 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
     Q_UNUSED(w);
 
     if (getDrawingState()) {
-        _pen.setStyle(borderStyle());
-        _pen.setColor(m_borderColor);
-        _pen.setWidth(getBorderWidth());
-        painter->setPen(_pen);
+        m_outterborderPen.setStyle(borderStyle());
+        m_outterborderPen.setColor(m_borderColor);
+        m_outterborderPen.setWidth(getBorderWidth());
+        painter->setPen(m_outterborderPen);
 
         QBrush brush2(m_borderColor,Qt::SolidPattern);
 
         QPainterPath path;
         path.moveTo(m_pointList.at(0));
 
-        for (int p=0; p<m_pointList.size(); p++)
-            path.lineTo(m_pointList.at(p));
+        for (auto& point : m_pointList)
+            path.lineTo(point);
 
         painter->drawPath(path);
 

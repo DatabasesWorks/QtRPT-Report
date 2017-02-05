@@ -125,7 +125,7 @@ typedef QList<QPair<QByteArray, GraphicsHelperClass*> > BArrayList;
 class ParamCommand : public QUndoCommand
 {
 public:
-    ParamCommand(QList<PairCont> list, GraphicsScene *scene, QUndoCommand *parent = 0);
+    ParamCommand(QList<PairCont>& list, GraphicsScene *scene, QUndoCommand *parent = 0);
     ~ParamCommand();
 
     void undo() Q_DECL_OVERRIDE;

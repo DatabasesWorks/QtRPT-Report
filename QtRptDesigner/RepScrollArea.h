@@ -33,29 +33,24 @@ namespace Ui {
     class RepScrollArea;
 }
 
-int compareBandType(ReportBand *p1, ReportBand *p2);
-
 class RepScrollArea : public QScrollArea
 {
     Q_OBJECT
     
 public:
-    explicit RepScrollArea(QWidget *parent = 0);
-    QWidget *repWidget;
+    explicit RepScrollArea(QTreeWidgetItem* rootItem, QWidget *parent = 0);
+    QWidget* repWidget;
     ~RepScrollArea();
     double setPaperSize(qreal scale);
-    bool isShowGrid;
-    ReportBand *m_addBand(BandType type, QMenu *bandMenu, int m_height=0);
-    void newFieldTreeItem(QGraphicsItem *item);
+    ReportBand* m_addBand(BandType type, QMenu* bandMenu, int m_height=0);
+    void newFieldTreeItem(QGraphicsItem* item);
     PageSetting pageSetting;
     void correctBandGeom(ReportBand *rep = 0);
     bool allowField();
     void clearReport();
-    QList<QGraphicsItem *> getReportItems();
-    QTreeWidgetItem *rootItem;
-    QIcon icon;
+
     qreal getScale();
-    GraphicsScene * scene;
+    GraphicsScene* scene;
     void setScale(const QString &scale);
     QList<ReportBand *> getReportBands();
 
@@ -66,9 +61,10 @@ private:
     Ui::RepScrollArea *ui;
     void paintHorRuler();
     void paintVerRuler();
-    QWidget *m_mainWindow;
-    double koef;
+    QWidget* m_mainWindow;
+    double m_koef;
     qreal m_scale;
+    QTreeWidgetItem* m_rootItem;
     void getKoef();
 
 public slots:
