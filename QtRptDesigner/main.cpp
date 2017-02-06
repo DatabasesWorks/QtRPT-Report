@@ -56,8 +56,9 @@ int main(int argc, char *argv[]) {
     }
 
 
-    MainWindow w;
-    w.show();
+    MainWindow::instance();
+    //MainWindow w;
+    //w.show();
 
     return a.exec();
 }
