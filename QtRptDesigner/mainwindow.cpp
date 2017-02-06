@@ -207,10 +207,15 @@ void EditorDelegate::commitAndCloseEditor() {
     emit closeEditor(editor);
 }
 
+
+MainWindow* MainWindow::mw;
+
 MainWindow::MainWindow(QWidget *parent)
 : QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);    
+    ui->setupUi(this);
+    MainWindow::mw = this;
+
     m_status1 = new QLabel("Left", this);
     m_status1->setText(QString("X: %1 Y: %2").arg(0).arg(0));
     m_status1->setFixedWidth(100);

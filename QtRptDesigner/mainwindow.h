@@ -81,10 +81,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    static MainWindow& instance()
-    {
-        static MainWindow me;
-        return me;
+    static MainWindow* instance() {
+        return mw;
     }
 
     void setReportChanged();
@@ -95,6 +93,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    static MainWindow* mw;
     QListWidget *listFrameStyle;
     QDomDocument *xmlDoc;
     QTreeWidgetItem *rootItem;

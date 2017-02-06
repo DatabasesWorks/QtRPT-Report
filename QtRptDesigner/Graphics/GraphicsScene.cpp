@@ -229,7 +229,7 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
                     }
                 }
 
-                auto mw = &MainWindow::instance();
+                auto mw = MainWindow::instance();
                 mw->setReportChanged();
             }
         }

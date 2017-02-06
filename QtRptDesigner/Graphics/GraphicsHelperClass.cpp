@@ -224,7 +224,7 @@ void GraphicsHelperClass::edit() {
         //before changing params gets params
         BArrayList oldList = ParamCommand::getBArrayFromContList(selContList);
 
-        auto mw = &MainWindow::instance();
+        auto mw = MainWindow::instance();
 
         auto dlg = new EditFldDlg(mw);
         switch(m_type) {
