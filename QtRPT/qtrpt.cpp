@@ -751,33 +751,45 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
         if (draw) {
             fieldObject->crossTab->buildMatrix();
             int bandTop_ = bandTop;
-            int tmpRowN = 0;
-            int prevRow = 0;
-            int page = 0;
+            int tmpRowN = 0;  //fact row number
+            int prevRow = 0;  //previous row number
+            int page = 0;     //page number
             int nmr = 0;
-            for (auto field : fieldObject->crossTab->fieldList) {
+
+            for (auto field : fieldObject->crossTab->fieldList)
+            {
                 int row = fieldObject->crossTab->fieldRow(field);
-                if (prevRow != row) {
+
+                qDebug() << prevRow << row << tmpRowN  ;
+
+                if (prevRow != row)
+                {
                     tmpRowN += 1;
                     prevRow = row;
                 }
 
                 int y = fieldObject->crossTab->rowHeight() * tmpRowN;
 
-                qDebug() << nmr << row << tmpRowN;
 
-                if (y > ph-mb-mt-fieldObject->parentBand->height) {
+
+                //qDebug() << y << bandTop_ << ph << mb << mt << fieldObject->parentBand->height << fieldObject->rect.y();
+
+                if (y > ph - mb - mt /*- fieldObject->parentBand->height +*/- fieldObject->rect.y() )  //создаем новую страницу
+                {
                     bandTop_ = 0;
                     tmpRowN = 0;
                     page += 1;
                     newPage(printer, bandTop_, draw);
                 }
 
-                if (page == 0) {
-                    field->rect.setTop(fieldObject->rect.y() + fieldObject->crossTab->rowHeight() * tmpRowN);
-                } else {
+                if (page == 0)
+                {
+                    field->rect.setTop(fieldObject->rect.y() + y );
+                }
+                else
+                {
                     if (fieldObject->parentBand->type == ReportTitle)
-                        field->rect.setTop(fieldObject->crossTab->rowHeight() * tmpRowN);
+                        field->rect.setTop( y );
                 }
 
                 field->rect.setHeight(fieldObject->crossTab->rowHeight());

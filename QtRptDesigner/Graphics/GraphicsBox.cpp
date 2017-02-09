@@ -72,8 +72,6 @@ GraphicsBox::GraphicsBox() {
         m_alignment = Qt::AlignLeft | Qt::AlignVCenter;
     }
 
-
-
     this->graphicsItem = this;
     this->adjustSize(0,0);
     this->setAcceptHoverEvents(true);
@@ -283,9 +281,9 @@ void GraphicsBox::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 void GraphicsBox::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
     if (this->type() == ItemType::GBand) return;
     QGraphicsItem::mouseMoveEvent(event); // move the item...
-    GraphicsScene *m_scene = qobject_cast<GraphicsScene *>(scene());
+    auto m_scene = qobject_cast<GraphicsScene *>(scene());
 
-    ReportBand *band = static_cast<ReportBand*>(this->parentItem());
+    auto band = static_cast<ReportBand*>(this->parentItem());
     if (band != nullptr) {
         bool toBound = false;
         if (x() <= 0) {

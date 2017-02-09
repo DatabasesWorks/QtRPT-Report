@@ -93,13 +93,12 @@ void RptCrossTabObject::buildMatrix() {
 
     \sa fieldCol
 */
-int RptCrossTabObject::fieldRow(RptFieldObject* field) {
+int RptCrossTabObject::fieldRow(RptFieldObject* field)
+{
     int index = fieldList.indexOf(field);
-    if (index != -1) {
-        unsigned row = unsigned(index / m_colCount);
-        //unsigned column = index - row * m_colCount;
-        index = row;
-    }
+    if (index != -1)
+        index = unsigned(index / m_colCount);
+
     return index;
 }
 
