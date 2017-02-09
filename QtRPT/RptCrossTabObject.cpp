@@ -23,7 +23,8 @@ limitations under the License.
 
 #include "RptCrossTabObject.h"
 
-RptCrossTabObject::RptCrossTabObject() {
+RptCrossTabObject::RptCrossTabObject()
+{
     name = "RptCrossTabObject_DEMO";
     rect.setX(0);
     rect.setY(0);
@@ -37,41 +38,52 @@ RptCrossTabObject::RptCrossTabObject() {
     qRegisterMetaType<RptCrossTabObject>( "RptCrossTabObject" );
 }
 
-int RptCrossTabObject::rowHeight() {
+int RptCrossTabObject::rowHeight()
+{
     return m_rowHeight;
 }
 
-void RptCrossTabObject::setRowHeight(int height) {
+void RptCrossTabObject::setRowHeight(int height)
+{
     m_rowHeight = height;
 }
 
-int RptCrossTabObject::colCount() const {
+int RptCrossTabObject::colCount() const
+{
     return m_colCount;
 }
 
-void RptCrossTabObject::setColCount(int value) {
+void RptCrossTabObject::setColCount(int value)
+{
     m_colCount = value;
 }
 
-int RptCrossTabObject::rowCount() const {
+int RptCrossTabObject::rowCount() const
+{
     return m_rowCount;
 }
 
-void RptCrossTabObject::setRowCount(int value) {
+void RptCrossTabObject::setRowCount(int value)
+{
     m_rowCount = value;
 }
 
-void RptCrossTabObject::buildMatrix() {
+void RptCrossTabObject::buildMatrix()
+{
     float fieldWidth = rect.width();
     float fieldheight = rect.height();
-    if (m_colCount == 0) return;
-    if (m_rowCount == 0) return;
+    if (m_colCount == 0)
+        return;
+    if (m_rowCount == 0)
+        return;
 
     fieldWidth = rect.width()/colCount();
     fieldheight = rowHeight();
 
-    for (int row=0; row < m_rowCount; row++) {
-        for (int col=0; col < m_colCount; col++) {
+    for (int row=0; row < m_rowCount; row++)
+    {
+        for (int col=0; col < m_colCount; col++)
+        {
             auto h1 = new RptFieldObject();
             h1->parentCrossTab = this;
             h1->name = QString("f%1%2").arg(col).arg(row);
@@ -124,26 +136,30 @@ int RptCrossTabObject::fieldCol(RptFieldObject* field) {
 
     \sa RptFieldObject
 */
-void RptCrossTabObject::addField(RptFieldObject *field) {
+void RptCrossTabObject::addField(RptFieldObject *field)
+{
     fieldList.append(field);
 }
 
 /*!
   Destroys the object, deleting all its child objects.
  */
-RptCrossTabObject::~RptCrossTabObject() {
-    for (int i=0; i<fieldList.size(); i++)
-        if (fieldList.at(i) != 0)
-            delete fieldList.at(i);
+RptCrossTabObject::~RptCrossTabObject()
+{
+    for (auto field : fieldList)
+        if (field != nullptr)
+            delete field;
     fieldList.clear();
 }
 
-QDebug operator<<(QDebug dbg, const RptCrossTabObject &obj) {
+QDebug operator<<(QDebug dbg, const RptCrossTabObject &obj)
+{
     dbg << obj.name << "\n";
     return dbg;
 }
 
-QDebug operator<<(QDebug dbg, const RptCrossTabObject *obj) {
+QDebug operator<<(QDebug dbg, const RptCrossTabObject *obj)
+{
     return dbg << *obj;
 }
 

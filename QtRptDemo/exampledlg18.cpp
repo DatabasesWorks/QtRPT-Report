@@ -55,7 +55,7 @@ void ExampleDlg18::print() {
 void ExampleDlg18::setField(RptFieldObject &fieldObject) {
     if (fieldObject.fieldType == FieldType::CrossTab) {
         fieldObject.crossTab->setColCount(3);
-        fieldObject.crossTab->setRowCount(50);
+        fieldObject.crossTab->setRowCount(150);
     }
     if (fieldObject.parentCrossTab != nullptr) {
         int row = fieldObject.parentCrossTab->fieldRow(&fieldObject);

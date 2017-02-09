@@ -28,6 +28,7 @@ limitations under the License.
 #include <QTime>
 #include <QFile>
 #include <QPrintPreviewDialog>
+#include <QFileDialog>
 #include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QPrinterInfo>
@@ -760,8 +761,6 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
             {
                 int row = fieldObject->crossTab->fieldRow(field);
 
-                qDebug() << prevRow << row << tmpRowN  ;
-
                 if (prevRow != row)
                 {
                     tmpRowN += 1;
@@ -770,16 +769,14 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
 
                 int y = fieldObject->crossTab->rowHeight() * tmpRowN;
 
-
-
-                //qDebug() << y << bandTop_ << ph << mb << mt << fieldObject->parentBand->height << fieldObject->rect.y();
-
-                if (y > ph - mb - mt /*- fieldObject->parentBand->height +*/- fieldObject->rect.y() )  //создаем новую страницу
+                if (y > ph - mb - mt - fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
                 {
                     bandTop_ = 0;
                     tmpRowN = 0;
                     page += 1;
                     newPage(printer, bandTop_, draw);
+
+                    y = fieldObject->crossTab->rowHeight() * tmpRowN;  //update Y value
                 }
 
                 if (page == 0)
@@ -1600,7 +1597,6 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName) {
 #endif
 }
 
-#include <QFileDialog>
 void QtRPT::exportTo() {
     if (sender()->objectName() == "actExpToPdf") {
         QString fileName = QFileDialog::getSaveFileName(qobject_cast<QWidget *>(this->parent()), tr("Save File"), "", tr("PDF Files (*.pdf)"));
