@@ -158,7 +158,7 @@ void EditFldDlg::backGroundToggled(bool value) {
 
 void EditFldDlg::openProperty()
 {
-    auto dlg = new FldPropertyDlg(this);
+    QScopedPointer<FldPropertyDlg> dlg(new FldPropertyDlg(this));
 
     if (sender() == ui->btnAddVariable) {
         QString str = dlg->showThis(0,0,"");
@@ -172,7 +172,6 @@ void EditFldDlg::openProperty()
          QString str = dlg->showThis(2, 0, m_cont->getFormatString());
          m_cont->setFormatString(str);
     }
-    delete dlg;
 }
 
 void EditFldDlg::textDirection() {

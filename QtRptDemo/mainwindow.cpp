@@ -143,6 +143,7 @@ void MainWindow::showReport() {
 
 void MainWindow::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
     Q_UNUSED(reportPage);
+
     if (ui->rBtn11->isChecked()) {
         if (paramName == "bar1") {
             QString tmp;

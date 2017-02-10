@@ -626,14 +626,14 @@ void MainWindow::checkUpdates() {
 void MainWindow::openDBGroupProperty() {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     auto band = static_cast<ReportBand *>(repPage->scene->selectedItems().at(0));
-    auto dlg = new FldPropertyDlg(this);
+
+    QScopedPointer<FldPropertyDlg> dlg(new FldPropertyDlg(this));
     if (band != nullptr && band->bandType == DataGroupHeader) {
         dlg->showThis(1,band,"");
         setParamTree(StartNewNumeration, band->getStartNewNumertaion());
         setParamTree(StartNewPage, band->getStartNewPage());
         setReportChanged();
     }
-    delete dlg;
 }
 
 void MainWindow::updateRecentFileActions() {
@@ -1113,7 +1113,7 @@ void MainWindow::chooseColor() {
     auto ed = qobject_cast<EditorDelegate*>(sender());
     if (selectedGItem() == nullptr) return;
     QColor color;
-    QColorDialog *dlg = new QColorDialog(color, this);
+    QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
     if (dlg->exec() == QDialog::Accepted) {
         color = dlg->selectedColor();
         ui->actSaveReport->setEnabled(true);
@@ -1126,8 +1126,6 @@ void MainWindow::chooseColor() {
         command = getCommand(sender());
 
     execButtonCommand(command,color);
-
-    delete dlg;
 }
 
 void MainWindow::changeTextFont() {
@@ -1279,8 +1277,8 @@ void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item) {
         item->type() != ItemType::GBox &&
         item->type() != ItemType::GBand
         ) return;
-    RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    GraphicsScene *scene = repPage->scene;
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
+    auto scene = repPage->scene;
     scene->blockSignals(true);
 
     GraphicsHelperClass *calling_helper = gItemToHelper(item);
@@ -1291,9 +1289,9 @@ void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item) {
                 if (m_item->type() == ItemType::GLine || m_item->type() == ItemType::GBox || m_item->type() == ItemType::GBand) {
                      GraphicsHelperClass *helper = gItemToHelper(m_item);
 
-                     if (!helper->getGroupName().isEmpty() && helper->getGroupName() == calling_helper->getGroupName()) {
+                     if (!helper->getGroupName().isEmpty() && helper->getGroupName() == calling_helper->getGroupName())
                         helper->helperSelect(true);
-                     }
+
                      //Un-select containters
                      if (!calling_helper->getGroupName().isEmpty() && helper->getGroupName() != calling_helper->getGroupName())
                          helper->helperSelect(false);
@@ -1477,7 +1475,7 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type) {
 
 //Show param of the container
 void MainWindow::showParamState() {
-    RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     if (repPage->scene->selectedItems().isEmpty()) return;
     ui->treeParams->clear();
 
@@ -1495,7 +1493,7 @@ void MainWindow::showParamState() {
     ui->actFontColor->setEnabled(false);
 
     if (repPage->scene->selectedItems().at(0)->type() == ItemType::GBand) {
-        ReportBand *rep = static_cast<ReportBand *>(repPage->scene->selectedItems().at(0));
+        auto rep = static_cast<ReportBand *>(repPage->scene->selectedItems().at(0));
         ui->actBackgroundColor->setEnabled(false);
         ui->actAlignBottom->setChecked(false);
         ui->actAlignCenter->setChecked(false);
@@ -1760,10 +1758,9 @@ GraphicsHelperList MainWindow::getSelectedHelperItems() {
     GraphicsHelperList list;
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     for (auto item : repPage->scene->items()) {
-        if (item->type() == ItemType::GBox || item->type() == ItemType::GBand || item->type() == ItemType::GLine) {
+        if (item->type() == ItemType::GBox || item->type() == ItemType::GBand || item->type() == ItemType::GLine)
             if (gItemToHelper(item)->helperIsSelected())
                 list.append(gItemToHelper(item));
-        }
     }
     return list;
 }
@@ -2375,7 +2372,7 @@ void MainWindow::selTree(QTreeWidgetItem *tItem, int) {
 }
 
 void MainWindow::enableAdding() {
-    RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     ui->actAddField->setEnabled(repPage->allowField());
     ui->actAddRichText->setEnabled(repPage->allowField());
     ui->actAddPicture->setEnabled(repPage->allowField());

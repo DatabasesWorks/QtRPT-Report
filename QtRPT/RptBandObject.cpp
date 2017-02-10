@@ -144,11 +144,12 @@ void RptBandObject::setProperty(QtRPT *qtrpt, QDomElement docElem) {
         type = DataGroupHeader;
     if (docElem.attribute("type") == "DataGroupFooter")
         type = DataGroupFooter;
-    //---
+
     QDomNode n = docElem.firstChild();
-    while(!n.isNull()) {
+    while(!n.isNull())
+    {
         QDomElement e = n.toElement();
-        RptFieldObject *fieldObject = new RptFieldObject();
+        auto fieldObject = new RptFieldObject();
         fieldObject->parentBand = this;
         fieldObject->setProperty(qtrpt,e);
         fieldList.append(fieldObject);
@@ -163,7 +164,8 @@ void RptBandObject::setProperty(QtRPT *qtrpt, QDomElement docElem) {
 
     \sa RptFieldObject
 */
-void RptBandObject::addField(RptFieldObject *field) {
+void RptBandObject::addField(RptFieldObject *field)
+{
     field->parentBand = this;
 	field->m_qtrpt = this->m_qtrpt;
     fieldList.append(field);
@@ -172,13 +174,15 @@ void RptBandObject::addField(RptFieldObject *field) {
 /*!
   Destroys the object, deleting all its child objects.
  */
-RptBandObject::~RptBandObject() {
-    for (int i=0; i<fieldList.size(); i++)
-        delete fieldList.at(i);
+RptBandObject::~RptBandObject()
+{
+    if (!fieldList.isEmpty())
+        qDeleteAll(fieldList);
     fieldList.clear();
 }
 
-QDebug operator<<(QDebug dbg, const RptBandObject &obj) {
+QDebug operator<<(QDebug dbg, const RptBandObject &obj)
+{
     dbg << obj.name << obj.fieldList;
     return dbg;
 }
