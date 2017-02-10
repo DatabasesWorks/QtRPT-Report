@@ -42,8 +42,6 @@ RepScrollArea::RepScrollArea(QTreeWidgetItem* rootItem, QWidget *parent)
     QObject::connect(scene, SIGNAL(sceneClick()), m_mainWindow, SLOT(sceneClick()));
     QObject::connect(scene, SIGNAL(itemAdded(QGraphicsItem *)), m_mainWindow, SLOT(generateName(QGraphicsItem *)));
     QObject::connect(scene, SIGNAL(itemSelected(QGraphicsItem *)), m_mainWindow, SLOT(sceneItemSelectionChanged(QGraphicsItem *)));
-    QObject::connect(scene, SIGNAL(itemDeleting(QGraphicsItem *, QTreeWidgetItem *)),
-                     m_mainWindow, SLOT(delItemInTree(QGraphicsItem *, QTreeWidgetItem *)));
 
     QObject::connect(scene, SIGNAL(itemResized(QGraphicsItem *)), m_mainWindow, SLOT(itemResizing(QGraphicsItem *)));
     QObject::connect(scene, SIGNAL(mousePos(QPointF)), m_mainWindow, SLOT(mousePos(QPointF)));

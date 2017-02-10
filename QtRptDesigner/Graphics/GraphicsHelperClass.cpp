@@ -212,10 +212,6 @@ int GraphicsHelperClass::getBorderWidth() {
     return borderWidth;
 }
 
-GraphicsHelperClass::~GraphicsHelperClass() {
-    emit itemDeleting(this->itemInTree);
-}
-
 void GraphicsHelperClass::edit() {
     if (graphicsItem->type() == ItemType::GBox) {
         GraphicsHelperList selContList;
@@ -226,7 +222,8 @@ void GraphicsHelperClass::edit() {
 
         auto mw = MainWindow::instance();
 
-        auto dlg = new EditFldDlg(mw);
+        QScopedPointer<EditFldDlg> dlg(new EditFldDlg(mw));
+
         switch(m_type) {
             case Text:
             case TextImage:
@@ -260,8 +257,6 @@ void GraphicsHelperClass::edit() {
             auto scene = qobject_cast<GraphicsScene*>(graphicsItem->scene());
             scene->m_undoStack->push( new ParamCommand( lst, scene ) );
         }
-
-        delete dlg;
     }
 }
 

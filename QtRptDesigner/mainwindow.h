@@ -79,6 +79,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    friend class GraphicsScene;
+
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     static MainWindow* instance() {
@@ -156,7 +158,6 @@ private slots:
     void addField(FieldType type);
     void addDraw();
     void sceneItemSelectionChanged(QGraphicsItem *item);
-    void delItemInTree(QGraphicsItem *gItem, QTreeWidgetItem *);
     void selTree(QTreeWidgetItem *tItem, int);
     void itemChanged(QTreeWidgetItem *item, int column);
     void closeEditor();

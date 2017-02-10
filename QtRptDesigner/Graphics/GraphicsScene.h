@@ -100,7 +100,6 @@ signals:
     void sceneModeChanged(QGraphicsItem *item, GraphicsScene::Mode mode);
     void itemSelected(QGraphicsItem *item);
     void itemAdded(QGraphicsItem *item);
-    void itemDeleting(QGraphicsItem *item, QTreeWidgetItem *);
     void itemResized(QGraphicsItem *item);
     void sceneClick();
 };

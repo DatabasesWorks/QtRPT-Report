@@ -43,7 +43,6 @@ class GraphicsHelperClass : public QObject
     Q_PROPERTY(QString GrpName READ getGroupName WRITE setGroupName)
 public:
     explicit GraphicsHelperClass(QObject *parent = 0);
-    ~GraphicsHelperClass();
     void setObjectName(const QString &name);
     bool getDrawingState() {return m_drawingState;}
     void setDrawingState(bool value) {m_drawingState = value;}
@@ -99,7 +98,6 @@ private:
     QString m_groupName;
 
 signals:
-    void itemDeleting(QTreeWidgetItem *);
     void itemRemoving();
 
 public slots:

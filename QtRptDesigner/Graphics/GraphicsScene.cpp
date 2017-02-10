@@ -247,17 +247,58 @@ void GraphicsScene::itemRemoving() {
     update();
 }
 
-void GraphicsScene::removeItem(QGraphicsItem *item) {
+void GraphicsScene::removeItem(QGraphicsItem* item) {
     GraphicsHelperClass *helper = nullptr;
+
     if (item->type() == ItemType::GBand || item->type() == ItemType::GBox) {
         auto box = static_cast<GraphicsBox*>(item);
         helper = static_cast<GraphicsHelperClass*>(box);
-        emit itemDeleting(box, helper->itemInTree);
     }
     if (item->type() == ItemType::GLine) {
         auto line = static_cast<GraphicsLine*>(item);
         helper = static_cast<GraphicsHelperClass*>(line);
-        emit itemDeleting(line, helper->itemInTree);
+    }
+
+    if (helper->itemInTree != nullptr) {
+        auto mw = MainWindow::instance();
+        auto treeWidget = mw->findChild<QTreeWidget*>("treeWidget");
+        auto actSaveReport = mw->findChild<QAction*>("actSaveReport");
+
+        auto treeItem = helper->itemInTree;
+
+        auto itemAbove = treeWidget->itemAbove(treeItem);
+        if (itemAbove == nullptr)
+            return;
+
+        auto parent = treeItem->parent();
+        while (treeItem->childCount() > 0) {
+            QTreeWidgetItem *tmp = treeItem->takeChild(0);
+            tmp = nullptr;
+            delete tmp;
+        }
+        int index = parent->indexOfChild(treeItem);
+        delete parent->takeChild(index);
+
+        treeWidget->setCurrentItem(itemAbove);
+        actSaveReport->setEnabled(true);
+
+        //Корректируем расположение бэндов
+        auto reportBand = qgraphicsitem_cast<ReportBand *>(item);
+        if (reportBand == nullptr)
+            return;
+
+        auto repPage = qobject_cast<RepScrollArea *>(this->parent());
+        repPage->correctBandGeom(reportBand);
+
+        if (reportBand->bandType == ReportTitle) mw->actRepTitle->setEnabled(true);
+        if (reportBand->bandType == ReportSummary) mw->actReportSummary->setEnabled(true);
+        if (reportBand->bandType == PageHeader) mw->actPageHeader->setEnabled(true);
+        if (reportBand->bandType == PageFooter) mw->actPageFooter->setEnabled(true);
+        if (reportBand->bandType == MasterData) mw->actMasterData->setEnabled(true);
+        if (reportBand->bandType == MasterFooter) mw->actMasterFooter->setEnabled(true);
+        if (reportBand->bandType == MasterHeader) mw->actMasterHeader->setEnabled(true);
+        if (reportBand->bandType == DataGroupHeader) mw->actDataGroupingHeader->setEnabled(true);
+        if (reportBand->bandType == DataGroupFooter) mw->actDataGroupingFooter->setEnabled(true);
     }
 
     QGraphicsScene::removeItem(item);

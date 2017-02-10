@@ -25,7 +25,6 @@ limitations under the License.
 #include "FldPropertyDlg.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <memory>
 
 EditorDelegate::EditorDelegate(QObject *parent)
 : QItemDelegate(parent)
@@ -202,7 +201,7 @@ void EditorDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & op
 }
 
 void EditorDelegate::commitAndCloseEditor() {
-    QWidget *editor = qobject_cast<QWidget*>(sender());
+    auto editor = qobject_cast<QWidget*>(sender());
     emit commitData(editor);
     emit closeEditor(editor);
 }
@@ -748,9 +747,8 @@ void MainWindow::setFrameStyle(QListWidgetItem * item) {
 }
 
 void MainWindow::showAbout() {
-    auto dlg = new AboutDlg(this);
+    QScopedPointer<AboutDlg> dlg(new AboutDlg(this));
     dlg->exec();
-    delete dlg;
 }
 
 void MainWindow::reportPageChanged(int index) {
@@ -905,21 +903,20 @@ void MainWindow::clickOnTBtn() {
 }
 
 void MainWindow::showPageSetting() {
-    auto dialog = std::make_shared<PageSettingDlg>(this);
+    QScopedPointer<PageSettingDlg> dlg(new PageSettingDlg(this));
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget( ui->tabWidget->currentIndex() ));
 
-    dialog->showThis(repPage->pageSetting);
-    if (dialog->result() == QDialog::Accepted) {
-        repPage->pageSetting = dialog->pageSetting;
+    dlg->showThis(repPage->pageSetting);
+    if (dlg->result() == QDialog::Accepted) {
+        repPage->pageSetting = dlg->pageSetting;
         repPage->setPaperSize(0);
         ui->actSaveReport->setEnabled(true);
     }
 }
 
 void MainWindow::showSetting() {
-    auto dialog = new SettingDlg(this);
-    dialog->showThis();
-    delete dialog;
+    QScopedPointer<SettingDlg> dlg(new SettingDlg(this));
+    dlg->showThis();
 
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
@@ -946,39 +943,6 @@ QDomElement MainWindow::getDataSourceElement(QDomNode n) {
         n = n.nextSibling();
     }
     return dsElement;
-}
-
-void MainWindow::delItemInTree(QGraphicsItem *gItem, QTreeWidgetItem *item) {
-    if (item == nullptr) return;
-    QTreeWidgetItem *itemAbove = ui->treeWidget->itemAbove(item);
-    if (itemAbove == nullptr) return;
-    QTreeWidgetItem *parent = item->parent();
-    while (item->childCount() > 0) {
-        QTreeWidgetItem *tmp = item->takeChild(0);
-        tmp = nullptr;
-        delete tmp;
-    }
-    int index = parent->indexOfChild(item);
-    delete parent->takeChild(index);
-    ui->treeWidget->setCurrentItem(itemAbove);
-    ui->actSaveReport->setEnabled(true);
-
-    //Корректируем расположение бэндов
-    ReportBand *reportBand = static_cast<ReportBand *>(gItem);
-    if (reportBand == nullptr) return;
-
-    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    if (repPage != nullptr) repPage->correctBandGeom(reportBand);
-
-    if (reportBand->bandType == ReportTitle) actRepTitle->setEnabled(true);
-    if (reportBand->bandType == ReportSummary) actReportSummary->setEnabled(true);
-    if (reportBand->bandType == PageHeader) actPageHeader->setEnabled(true);
-    if (reportBand->bandType == PageFooter) actPageFooter->setEnabled(true);
-    if (reportBand->bandType == MasterData) actMasterData->setEnabled(true);
-    if (reportBand->bandType == MasterFooter) actMasterFooter->setEnabled(true);
-    if (reportBand->bandType == MasterHeader) actMasterHeader->setEnabled(true);
-    if (reportBand->bandType == DataGroupHeader) actDataGroupingHeader->setEnabled(true);
-    if (reportBand->bandType == DataGroupFooter) actDataGroupingFooter->setEnabled(true);
 }
 
 void MainWindow::closeProgram() {
