@@ -25,7 +25,9 @@ limitations under the License.
 #include "ui_FldPropertyDlg.h"
 #include "ReportBand.h"
 
-FldPropertyDlg::FldPropertyDlg(QWidget *parent) : QDialog(parent), ui(new Ui::FldPropertyDlg) {
+FldPropertyDlg::FldPropertyDlg(QWidget *parent)
+: QDialog(parent), ui(new Ui::FldPropertyDlg)
+{
     ui->setupUi(this);
 }
 

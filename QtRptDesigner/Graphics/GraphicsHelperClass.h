@@ -83,7 +83,10 @@ protected:
     QtRptName::FieldType m_type;
     QString setPenStyle(Qt::PenStyle style);
     QPen m_outterborderPen; ///< the pen is used to paint the red/black border
-
+    int m_XcornerGrabBuffer;
+    int m_YcornerGrabBuffer;
+    QPointF m_location;
+    QPointF m_dragStart;
     void destroyCorners();
 
 private:

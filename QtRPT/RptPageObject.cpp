@@ -104,7 +104,8 @@ limitations under the License.
  \fn RptPageObject::RptPageObject()
     Constructs a RptPageObject object.
 */
-RptPageObject::RptPageObject(QtRPT *qtrpt) {
+RptPageObject::RptPageObject(QtRPT *qtrpt)
+{
 	this->m_qtrpt = qtrpt;
     this->orientation=0;
     this->ph=1188;
@@ -119,7 +120,8 @@ RptPageObject::RptPageObject(QtRPT *qtrpt) {
     this->borderStyle = "solid";
 }
 
-void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem) {
+void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
+{
     ph = docElem.attribute("pageHeight").toInt();
     pw = docElem.attribute("pageWidth").toInt();
     ml = docElem.attribute("marginsLeft").toInt();
@@ -132,11 +134,13 @@ void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem) {
     borderWidth = docElem.attribute("borderWidth").toInt();
     borderColor = colorFromString(docElem.attribute("borderColor"));
     borderStyle = docElem.attribute("borderStyle");
-    //---
+
     QDomNode n = docElem.firstChild();
-    while(!n.isNull()) {
+    while(!n.isNull())
+    {
         QDomElement e = n.toElement();
-        if ((!e.isNull()) && (e.tagName() == "ReportBand")) {
+        if (!e.isNull() && e.tagName() == "ReportBand")
+        {
             RptBandObject *bandObject = new RptBandObject();
             bandObject->parentReportPage = this;
             bandObject->setProperty(qtrpt,e);
@@ -152,7 +156,8 @@ void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem) {
 
     \sa RptBandObject
 */
-void RptPageObject::addBand(RptBandObject *band) {
+void RptPageObject::addBand(RptBandObject *band)
+{
     band->parentReportPage = this;
 	band->m_qtrpt = this->m_qtrpt;
     bandList.append(band);
@@ -165,7 +170,8 @@ void RptPageObject::addBand(RptBandObject *band) {
 
     \sa RptBandObject
 */
-RptBandObject *RptPageObject::getBand(BandType type) {
+RptBandObject *RptPageObject::getBand(BandType type)
+{
     for (auto band : bandList)
         if (band->type == type)
             return band;
@@ -179,7 +185,8 @@ RptBandObject *RptPageObject::getBand(BandType type) {
 
     \sa RptFieldObject
 */
-RptFieldObject *RptPageObject::findFieldObjectByName(QString name) {
+RptFieldObject *RptPageObject::findFieldObjectByName(QString name)
+{
     for (auto band : bandList)
         for (auto field : band->fieldList)
             if (field->name == name)
@@ -190,13 +197,14 @@ RptFieldObject *RptPageObject::findFieldObjectByName(QString name) {
 /*!
   Destroys the object, deleting all its child objects.
  */
-RptPageObject::~RptPageObject() {
-    for (int i=0; i<bandList.size(); i++)
-        delete bandList.at(i);
+RptPageObject::~RptPageObject()
+{
+    qDeleteAll(bandList);
     bandList.clear();
 }
 
-QDebug operator<<(QDebug dbg, const RptPageObject &obj) {
+QDebug operator<<(QDebug dbg, const RptPageObject &obj)
+{
     dbg << "Report #" << obj.pageNo  << obj.bandList;
     return dbg;
 }

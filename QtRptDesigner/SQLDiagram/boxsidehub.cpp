@@ -22,7 +22,9 @@
 #include "line.h"
 #include "boxsidehub.h"
 
-BoxSideHub::BoxSideHub(DiagramObject *owner) : Hub(owner) {
+BoxSideHub::BoxSideHub(DiagramObject *owner)
+: Hub(owner)
+{
 }
 
 enum Side {

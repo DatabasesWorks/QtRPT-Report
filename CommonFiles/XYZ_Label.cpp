@@ -23,39 +23,50 @@ limitations under the License.
 
 #include "XYZ_Label.h"
 
-XYZLabel::XYZLabel(QWidget *parent) : QLabel(parent) {
+XYZLabel::XYZLabel(QWidget *parent)
+: QLabel(parent)
+{
     m_bHover = false;
     setCursor(Qt::PointingHandCursor);
 }
 
-XYZLabel::XYZLabel(const QString &Text, QWidget *parent) : QLabel(Text, parent) {
+XYZLabel::XYZLabel(const QString &Text, QWidget *parent)
+: QLabel(Text, parent)
+{
     m_bHover = false;
     setCursor(Qt::PointingHandCursor);
 }
 
-XYZLabel::~XYZLabel() {
+XYZLabel::~XYZLabel()
+{
 }
 
-void XYZLabel::setHoverText(bool bHover) {
+void XYZLabel::setHoverText(bool bHover)
+{
     m_bHover = bHover;
 }
 
-void XYZLabel::enterEvent(QEvent *) {
-    if( m_bHover ) {
+void XYZLabel::enterEvent(QEvent *)
+{
+    if( m_bHover )
+    {
         QFont font = this->font();
         font.setUnderline(m_bHover);
         setFont(font);
     }
 }
 
-void XYZLabel::leaveEvent(QEvent *) {
-    if( m_bHover ) {
+void XYZLabel::leaveEvent(QEvent *)
+{
+    if( m_bHover )
+    {
         QFont font = this->font();
         font.setUnderline(false);
         setFont(font);
     }
 }
 
-void XYZLabel::mouseReleaseEvent(QMouseEvent *) {
+void XYZLabel::mouseReleaseEvent(QMouseEvent *)
+{
     emit clicked();
 }

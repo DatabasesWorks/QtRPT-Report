@@ -24,14 +24,19 @@ limitations under the License.
 #include "XmlViewModel.h"
 #include <QDebug>
 
-XMLViewModel::XMLViewModel(QDomDocument *xmlDoc, QObject *parent) : QStandardItemModel(parent) {
+XMLViewModel::XMLViewModel(QDomDocument *xmlDoc, QObject *parent)
+: QStandardItemModel(parent)
+{
     QDomElement docElem = xmlDoc->documentElement();  //get root element
     insertChilds(docElem, this->invisibleRootItem());
 }
 
-void XMLViewModel::insertChilds(QDomNode node, QStandardItem *parent) {
-    if (node.hasAttributes()) {
-        for (int t=0; t<node.attributes().count(); t++) {
+void XMLViewModel::insertChilds(QDomNode node, QStandardItem *parent)
+{
+    if (node.hasAttributes())
+    {
+        for (int t=0; t<node.attributes().count(); t++)
+        {
             QString str = node.attributes().item(t).toAttr().name();
             str = str+" ("+node.attributes().item(t).toAttr().value()+")";
 
@@ -42,8 +47,10 @@ void XMLViewModel::insertChilds(QDomNode node, QStandardItem *parent) {
         }
     }
 
-    if (node.hasChildNodes()) {
-        for (int t=0; t<node.childNodes().count(); t++) {
+    if (node.hasChildNodes())
+    {
+        for (int t=0; t<node.childNodes().count(); t++)
+        {
             QString str = node.childNodes().at(t).toElement().tagName();
             QIcon icon(QPixmap(QString::fromUtf8(":/new/prefix1/images/xmlTag.png")));
 

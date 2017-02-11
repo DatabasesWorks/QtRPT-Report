@@ -300,7 +300,8 @@ limitations under the License.
  \fn RptFieldObject::RptFieldObject()
     Constructs a RptFieldObject object.
 */
-RptFieldObject::RptFieldObject() {
+RptFieldObject::RptFieldObject()
+{
     this->highlighting = "";
     this->backgroundColor = Qt::white;
     this->m_backgroundColor = Qt::white;
@@ -326,7 +327,8 @@ RptFieldObject::RptFieldObject() {
  \fn RptFieldObject::~RptFieldObject()
     Destructs a RptFieldObject object.
 */
-RptFieldObject::~RptFieldObject() {
+RptFieldObject::~RptFieldObject()
+{
     if (fieldType == CrossTab)
         delete crossTab;
 }
@@ -335,7 +337,8 @@ RptFieldObject::~RptFieldObject() {
  \fn void RptFieldObject::setDefaultFontColor(QColor value)
     Sets default font color with \a value.
 */
-void RptFieldObject::setDefaultFontColor(QColor value) {
+void RptFieldObject::setDefaultFontColor(QColor value)
+{
     fontColor = value;
     m_fontColor = value;
 }
@@ -344,12 +347,14 @@ void RptFieldObject::setDefaultFontColor(QColor value) {
  \fn void RptFieldObject::setDefaultBackgroundColor(QColor value)
     Sets default background color with \a value.
 */
-void RptFieldObject::setDefaultBackgroundColor(QColor value) {
+void RptFieldObject::setDefaultBackgroundColor(QColor value)
+{
     backgroundColor = value;
     m_backgroundColor = value;
 }
 
-void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e) {
+void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
+{
     m_qtrpt = qtrpt;
     highlighting = e.attribute("highlighting","");
     printing = e.attribute("printing","1");
@@ -410,10 +415,13 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e) {
     arrowStart = e.attribute("arrowStart","0").toInt();
     arrowEnd = e.attribute("arrowEnd","0").toInt();
 
-    if (fieldType == Diagram) {
-        if (autoFillData == 1) {
+    if (fieldType == Diagram)
+    {
+        if (autoFillData == 1)
+        {
             QDomNode g = e.firstChild();
-            while(!g.isNull()) {
+            while(!g.isNull())
+            {
                 QDomElement ge = g.toElement();
 
                 GraphParam param;
@@ -427,13 +435,15 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e) {
             }
         }
     }
-    if (fieldType == CrossTab) {
+    if (fieldType == CrossTab)
+    {
         crossTab = new RptCrossTabObject();
         crossTab->rect = this->rect;
         crossTab->parentField = this;
 
         QDomNode g = e.firstChild();
-        while(!g.isNull()) {
+        while(!g.isNull())
+        {
             QDomElement ge = g.toElement();
 //            if (!ge.isNull() && ge.tagName() == "row")
 //                crossTab->addRow(ge.attribute("caption"));
@@ -456,7 +466,8 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e) {
     }
 }
 
-void RptFieldObject::updateHighlightingParam() {
+void RptFieldObject::updateHighlightingParam()
+{
     QFont m_font(font);
     m_font.setBold(m_qtrpt->processHighligthing(this, FntBold).toInt());
     m_font.setItalic(m_qtrpt->processHighligthing(this, FntItalic).toInt());
@@ -468,11 +479,11 @@ void RptFieldObject::updateHighlightingParam() {
     fontColor = colorFromString(m_qtrpt->processHighligthing(this, FntColor).toString());
 }
 
-void RptFieldObject::updateDiagramValue() {
-    if (autoFillData == 1) {
-        for (int h=0; h<graphList.size(); h++)
-            graphList[h].valueReal = m_qtrpt->sectionField(this->parentBand, graphList.at(h).formula, false).toFloat();
-    }
+void RptFieldObject::updateDiagramValue()
+{
+    if (autoFillData == 1)
+        for (auto& graph : graphList)
+            graph.valueReal = m_qtrpt->sectionField(this->parentBand, graph.formula, false).toFloat();
 }
 
 /*!
@@ -481,7 +492,8 @@ void RptFieldObject::updateDiagramValue() {
 
     \sa rect
 */
-void RptFieldObject::setTop(int top) {
+void RptFieldObject::setTop(int top)
+{
     m_top = top;
 }
 
@@ -489,7 +501,8 @@ void RptFieldObject::setTop(int top) {
  \fn QString RptFieldObject::getHTMLStyle()
     Return HTML representation of the field.
 */
-QString RptFieldObject::getHTMLStyle() {
+QString RptFieldObject::getHTMLStyle()
+{
     QString style;
 
     QString alig;
@@ -498,10 +511,11 @@ QString RptFieldObject::getHTMLStyle() {
     if (this->aligment &Qt::AlignHCenter) alig = "center";
     if (this->aligment &Qt::AlignJustify) alig = "justify";
 
-    if (this->autoHeight == 1) {
+    if (this->autoHeight == 1)
         this->rect.setHeight(parentBand->realHeight);
-    }
-    if (fieldType == Text) {
+
+    if (fieldType == Text)
+    {
         style = "style='color:"+this->fontColor.name()+";"+
                 "background:"+this->backgroundColor.name()+";"+
                 "border-left: solid thin "+this->borderLeft.name()+";"+
@@ -520,19 +534,22 @@ QString RptFieldObject::getHTMLStyle() {
             style += "font-style: italic;";
         style += "'";
     }
-    if (fieldType == TextImage || fieldType == Image || fieldType == DatabaseImage) {
+
+    if (fieldType == TextImage || fieldType == Image || fieldType == DatabaseImage)
+    {
         double dblAspectRatio = 0;
         int nHeight = this->rect.height();
         int nWidth = this->rect.height();
 
-        if (this->rect.height()) {
+        if (this->rect.height())
             dblAspectRatio = (double)this->rect.width() / (double)this->rect.height();
-        }
 
-        if (dblAspectRatio) {
+        if (dblAspectRatio)
+        {
             nWidth = ((int)rint(nHeight * dblAspectRatio)) & -3;
 
-            if (nWidth > this->rect.width()) {
+            if (nWidth > this->rect.width())
+            {
                 nWidth = this->rect.width();
                 nHeight = ((int)rint(nWidth / dblAspectRatio)) & -3;
             }
@@ -554,11 +571,13 @@ QString RptFieldObject::getHTMLStyle() {
     return style;
 }
 
-QDebug operator<<(QDebug dbg, const RptFieldObject &obj) {
+QDebug operator<<(QDebug dbg, const RptFieldObject &obj)
+{
     dbg << obj.name;
     return dbg;
 }
 
-QDebug operator<<(QDebug dbg, const RptFieldObject *obj) {
+QDebug operator<<(QDebug dbg, const RptFieldObject *obj)
+{
     return dbg << (*obj).name;
 }

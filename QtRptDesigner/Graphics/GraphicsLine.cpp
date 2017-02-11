@@ -8,14 +8,9 @@
 #include "GraphicsScene.h"
 #include "math.h"
 
-GraphicsLine::GraphicsLine(): QGraphicsPolygonItem(),
-        _location(0,0),
-        _dragStart(0,0),
-        _XcornerGrabBuffer(20),
-        _YcornerGrabBuffer(20),
-        _graphicsItemBoundingBoxWidth( 200 +(2 * _XcornerGrabBuffer)),
-        _cornerGrabbed(false),
-        _selectRegion()
+GraphicsLine::GraphicsLine()
+: QGraphicsPolygonItem(),
+        m_cornerGrabbed(false)
 {
     setDrawingState(true);
 
@@ -34,26 +29,31 @@ GraphicsLine::GraphicsLine(): QGraphicsPolygonItem(),
     this->graphicsItem = this;
 }
 
-void GraphicsLine::initPolygon() {
-    _selectRegion.clear();
-    for (int p=0; p<m_pointList.size(); p++) {
-        QPointF p1  (m_pointList[p].x() - _XcornerGrabBuffer, m_pointList[p].y() - _YcornerGrabBuffer);
-        QPointF p2  (m_pointList[p].x() + _XcornerGrabBuffer, m_pointList[p].y() - _YcornerGrabBuffer);
+void GraphicsLine::initPolygon()
+{
+    QPolygonF selectRegion;
+    for (int p=0; p<m_pointList.size(); p++)
+    {
+        QPointF p1  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
+        QPointF p2  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
 
-        QPointF p3  (m_pointList[p].x() + _XcornerGrabBuffer, m_pointList[p].y() + _YcornerGrabBuffer);
-        QPointF p4  (m_pointList[p].x() - _XcornerGrabBuffer, m_pointList[p].y() + _YcornerGrabBuffer);
+        QPointF p3  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
+        QPointF p4  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
 
-        _selectRegion << p1 << p2 << p3 << p4 << p1 << p2;
+        selectRegion << p1 << p2 << p3 << p4 << p1 << p2;
     }
-    for (int p=m_pointList.size()-1; p>-1; p--) {
-        QPointF p3  (m_pointList[p].x() + _XcornerGrabBuffer, m_pointList[p].y() + _YcornerGrabBuffer);
-        QPointF p4  (m_pointList[p].x() - _XcornerGrabBuffer, m_pointList[p].y() + _YcornerGrabBuffer);
-        _selectRegion << p3 << p4;
-    }
-    QPointF p1  (m_pointList[0].x() - _XcornerGrabBuffer, m_pointList[0].y() - _YcornerGrabBuffer);
-    _selectRegion << p1;
 
-    this->setPolygon(_selectRegion);
+    for (int p=m_pointList.size()-1; p>-1; p--)
+    {
+        QPointF p3  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
+        QPointF p4  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
+        selectRegion << p3 << p4;
+    }
+
+    QPointF p1  (m_pointList[0].x() - m_XcornerGrabBuffer, m_pointList[0].y() - m_YcornerGrabBuffer);
+    selectRegion << p1;
+
+    this->setPolygon(selectRegion);
     this->update();
 }
 
@@ -63,19 +63,22 @@ void GraphicsLine::initPolygon() {
   * event.  A dynamic_cast is used to determine if the event type is one of the events
   * we are interrested in.
   */
-bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) {
+bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
+{
     //qDebug() << " QEvent == " + QString::number(event->type());
 
     CornerGrabber * corner = dynamic_cast<CornerGrabber *>(watched);
     if ( corner == NULL) return false; // not expected to get here
 
     QGraphicsSceneMouseEvent * mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
-    if ( mevent == NULL) {
+    if ( mevent == NULL)
+    {
         // this is not one of the mouse events we are interrested in
         return false;
     }
 
-    switch (event->type())  {
+    switch (event->type())
+    {
         // if the mouse went down, record the x,y coords of the press, record it inside the corner object
     case QEvent::GraphicsSceneMousePress: {
         corner->setMouseState(CornerGrabber::kMouseDown);
@@ -84,7 +87,7 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) 
         corner->mouseDownY = scenePosition.y();
         corner->mouseDownX= scenePosition.x();
 
-        _cornerGrabbed = true;
+        m_cornerGrabbed = true;
 
         //Посылаем сигнал в сцену для отслеживания Ундо при перемещении концов
         GraphicsScene *model = qobject_cast<GraphicsScene *>(scene());
@@ -94,7 +97,7 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) 
 	}
     case QEvent::GraphicsSceneMouseRelease: {
         corner->setMouseState(CornerGrabber::kMouseReleased);
-        _cornerGrabbed = false;
+        m_cornerGrabbed = false;
         break;
 	}
     case QEvent::GraphicsSceneMouseMove: {
@@ -118,105 +121,127 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) 
     return true;// true => do not send event to watched - we are finished with this event
 }
 
-void GraphicsLine::setPos(QPointF pos) {
-    _location = pos;
+void GraphicsLine::setPos(QPointF pos)
+{
+    m_location = pos;
     QGraphicsItem::setPos(pos);
 }
 
-void GraphicsLine::setPos(qreal x, qreal y) {
+void GraphicsLine::setPos(qreal x, qreal y)
+{
     setPos(QPoint(x,y));
 }
 
-void GraphicsLine::setEndPosition(QPointF endPoint) {
+void GraphicsLine::setEndPosition(QPointF endPoint)
+{
     m_pointList[m_pointList.size()-1] = endPoint;
     initPolygon();
     setCornerPositions();
-    //createCustomPath(mapToItem(_corners[1], endPoint), _corners[1]) ;
 }
 
-void GraphicsLine::createCustomPath(QPointF mouseLocation, CornerGrabber* corner) {
-    if (corner == 0) return;
+void GraphicsLine::createCustomPath(QPointF mouseLocation, CornerGrabber* corner)
+{
+    if (corner == nullptr)
+        return;
     QPointF scenePosition = corner->mapToScene(mouseLocation);
 
     // which corner needs to get moved?
     int idx = -1;
-    for (int p=0; p<m_pointList.size(); p++) {
-        if ( corner == m_corners[p]) {
+    for (int p=0; p<m_pointList.size(); p++)
+    {
+        if ( corner == m_corners[p])
+        {
             idx = p;
             m_pointList[p] = mapFromScene(scenePosition);
         }
     }
     initPolygon();
-    if (idx > -1) {
+    if (idx > -1)
+    {
         int cornerWidth = (m_corners[0]->boundingRect().width())/2;
         int cornerHeight = ( m_corners[0]->boundingRect().height())/2;
         m_corners[idx]->setPos(m_pointList[idx].x() - cornerWidth, m_pointList[idx].y() - cornerHeight );
     }
 }
 
-void GraphicsLine::hoverLeaveEvent ( QGraphicsSceneHoverEvent * ) {
+void GraphicsLine::hoverLeaveEvent ( QGraphicsSceneHoverEvent * )
+{
     this->scene()->update();
 }
 
-void GraphicsLine::hoverEnterEvent ( QGraphicsSceneHoverEvent * ) {
+void GraphicsLine::hoverEnterEvent ( QGraphicsSceneHoverEvent * )
+{
     this->scene()->update();
 }
 
 // for supporting moving the box across the scene
-void GraphicsLine::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) {
+void GraphicsLine::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+{
     event->setAccepted(true);
-    this->setPos(_location);
+    this->setPos(m_location);
     this->setSelected(true);
 }
 
 // for supporting moving the box across the scene
-void GraphicsLine::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
+void GraphicsLine::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+{
     event->setAccepted(true);
-    _dragStart = event->pos();
+    m_dragStart = event->pos();
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     this->setSelected(true);
 }
 
 // for supporting moving the box across the scene
-void GraphicsLine::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
+void GraphicsLine::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+{
     QPointF newPos = event->pos() ;
-    _location += (newPos - _dragStart);
-    this->setPos(_location);
+    m_location += (newPos - m_dragStart);
+    this->setPos(m_location);
 
     GraphicsScene *m_scene = qobject_cast<GraphicsScene *>(scene());
     m_scene->itemResizing(this);
     this->scene()->update();
 }
 
-void GraphicsLine::setSelected(bool selected_) {
+void GraphicsLine::setSelected(bool selected_)
+{
     QGraphicsItem::setSelected(selected_);
     if (itemInTree != nullptr)
         itemInTree->setSelected(selected_);
 
-    if (selected_) {
+    if (selected_)
+    {
         createCorners();
-        GraphicsScene *m_scene = qobject_cast<GraphicsScene *>(scene());
+        auto m_scene = qobject_cast<GraphicsScene *>(scene());
         emit m_scene->itemSelected(this);
         this->setZValue(3);
-    } else {
+    }
+    else
+    {
         destroyCorners();
         this->setZValue(2);
     }
+
     this->scene()->update();
 }
 
-bool GraphicsLine::isSelected() {
+bool GraphicsLine::isSelected()
+{
     if (itemInTree != nullptr)
+
         return itemInTree->isSelected();
     return false;
 }
 
 // create the corner grabbers
-void GraphicsLine::createCorners() {
+void GraphicsLine::createCorners()
+{
     m_outterborderColor = m_borderColor;
 
-    for (int p=0; p<m_pointList.size(); p++) {
-        if (m_corners[p] == nullptr) {
+    for (int p=0; p<m_pointList.size(); p++)
+    {
+        if (m_corners[p] == nullptr)
+        {
             m_corners[p] = new CornerGrabber(this,p);
             m_corners[p]->installSceneEventFilter(this);
         }
@@ -225,15 +250,16 @@ void GraphicsLine::createCorners() {
     setCornerPositions();
 }
 
-void GraphicsLine::setCornerPositions() {
-    if (m_corners[0] == nullptr || m_corners[1] == nullptr) return;
+void GraphicsLine::setCornerPositions()
+{
+    if (m_corners[0] == nullptr || m_corners[1] == nullptr)
+        return;
     int cornerWidth = (m_corners[0]->boundingRect().width())/2;
     int cornerHeight = ( m_corners[0]->boundingRect().height())/2;
 
-    for (int p=0; p<m_pointList.size(); p++) {
+    for (int p=0; p<m_pointList.size(); p++)
         if (m_corners[p] != nullptr)
             m_corners[p]->setPos(m_pointList[p].x() - cornerWidth, m_pointList[p].y() - cornerHeight );
-    }
 }
 
 #if 0
@@ -242,11 +268,13 @@ QRectF Transistion::boundingRect() const {
 }
 #endif
 
-void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, QWidget *w) {
+void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, QWidget *w)
+{
     Q_UNUSED(i);
     Q_UNUSED(w);
 
-    if (getDrawingState()) {
+    if (getDrawingState())
+    {
         m_outterborderPen.setStyle(borderStyle());
         m_outterborderPen.setColor(m_borderColor);
         m_outterborderPen.setWidth(getBorderWidth());
@@ -277,7 +305,8 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
 
         int arrowSize= 10;
 
-        if (m_arrowStart) {
+        if (m_arrowStart)
+        {
             QPointF sourceArrowP1 = m_pointList[0] + QPointF(sin(angle + Pi / 3) * arrowSize,
                                                           cos(angle + Pi / 3) * arrowSize);
             QPointF sourceArrowP2 = m_pointList[0] + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
@@ -292,7 +321,8 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
             path.addPolygon(polygon);
             painter->fillPath(path,brush2);
         }
-        if (m_arrowEnd) {
+        if (m_arrowEnd)
+        {
             QPointF destArrowP1 = m_pointList[1] + QPointF(sin(angle - Pi / 3) * arrowSize,
                                                       cos(angle - Pi / 3) * arrowSize);
             QPointF destArrowP2 = m_pointList[1] + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
@@ -311,17 +341,21 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
     }
 }
 
-void GraphicsLine::mouseMoveEvent(QGraphicsSceneDragDropEvent *event) {
+void GraphicsLine::mouseMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
     event->setAccepted(false);
 }
 
-void GraphicsLine::mousePressEvent(QGraphicsSceneDragDropEvent *event) {
+void GraphicsLine::mousePressEvent(QGraphicsSceneDragDropEvent *event)
+{
     event->setAccepted(false);
 }
 
-QVariant GraphicsLine::itemChange(GraphicsItemChange change, const QVariant &value) {
-    if (change == ItemPositionChange) {
-        GraphicsScene *model = qobject_cast<GraphicsScene *>(scene());
+QVariant GraphicsLine::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemPositionChange)
+    {
+        auto model = qobject_cast<GraphicsScene *>(scene());
         if (model)
             model->itemMoving(this);
     }
@@ -329,7 +363,8 @@ QVariant GraphicsLine::itemChange(GraphicsItemChange change, const QVariant &val
     return QGraphicsItem::itemChange(change, value);
 }
 
-GraphicsLine *GraphicsLine::clone() {
+GraphicsLine *GraphicsLine::clone()
+{
     QPoint newPos(this->x(),this->y());
     newPos.setY(newPos.y()+5);
     newPos.setX(newPos.x()+5);
@@ -345,7 +380,8 @@ GraphicsLine *GraphicsLine::clone() {
     return newLine;
 }
 
-void GraphicsLine::loadParamFromXML(QDomElement e) {
+void GraphicsLine::loadParamFromXML(QDomElement e)
+{
     GraphicsHelperClass::loadParamFromXML(e);
 
 	m_pointList.clear();
@@ -358,7 +394,8 @@ void GraphicsLine::loadParamFromXML(QDomElement e) {
 	initPolygon();
 }
 
-QDomElement GraphicsLine::saveParamToXML(QDomDocument *xmlDoc) {
+QDomElement GraphicsLine::saveParamToXML(QDomDocument *xmlDoc)
+{
     QDomElement elem = GraphicsHelperClass::saveParamToXML(xmlDoc);
 
     elem.setAttribute("lineStartX", (int)mapToParent(m_pointList[0]).x());
@@ -372,7 +409,8 @@ QDomElement GraphicsLine::saveParamToXML(QDomDocument *xmlDoc) {
     return elem;
 }
 
-void GraphicsLine::setArrow(QtRptName::Command command, QVariant value) {
+void GraphicsLine::setArrow(QtRptName::Command command, QVariant value)
+{
     if (command == QtRptName::ArrowStart)
         m_arrowStart = value.toBool();
     if (command == QtRptName::ArrowEnd)
@@ -380,7 +418,8 @@ void GraphicsLine::setArrow(QtRptName::Command command, QVariant value) {
     this->update();
 }
 
-bool GraphicsLine::getArrow(QtRptName::Command command) {
+bool GraphicsLine::getArrow(QtRptName::Command command)
+{
     bool result = false;
     if (command == QtRptName::ArrowStart)
         result = m_arrowStart;
@@ -389,19 +428,22 @@ bool GraphicsLine::getArrow(QtRptName::Command command) {
     return result;
 }
 
-qreal GraphicsLine::getLength() {
+qreal GraphicsLine::getLength()
+{
     QLineF line(m_pointList[0], m_pointList[1]);
     return line.length();
 }
 
-void GraphicsLine::setLength(qreal value) {
+void GraphicsLine::setLength(qreal value)
+{
     QLineF line(m_pointList[0], m_pointList[1]);
     line.setLength(value);
     m_pointList[0] = line.p1();
     setEndPosition(line.p2());
 }
 
-void GraphicsLine::setMenu(QMenu *menu_) {
+void GraphicsLine::setMenu(QMenu *menu_)
+{
     QIcon icon;
 
     auto actContDel = new QAction(tr("Delete"),this);

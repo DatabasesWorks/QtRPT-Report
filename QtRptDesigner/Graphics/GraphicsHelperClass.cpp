@@ -31,6 +31,11 @@ limitations under the License.
 GraphicsHelperClass::GraphicsHelperClass(QObject *parent)
 : QObject(parent)
 {
+    m_XcornerGrabBuffer = 20;
+    m_YcornerGrabBuffer = 20;
+    m_location = QPointF(0,0);
+    m_dragStart = QPointF(0,0);
+
     m_menu = new QMenu();
     m_printing = "1";
     borderWidth = 1;

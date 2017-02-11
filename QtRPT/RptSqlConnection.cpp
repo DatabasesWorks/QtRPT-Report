@@ -24,8 +24,7 @@ limitations under the License.
 #include "RptSqlConnection.h"
 
 RptSqlConnection::RptSqlConnection()
-    : m_bIsActive(false)
-    , m_dbPort(0)
+: m_bIsActive(false), m_dbPort(0)
 {
 }
 

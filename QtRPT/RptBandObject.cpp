@@ -115,7 +115,8 @@ limitations under the License.
  \fn RptBandObject::RptBandObject()
     Constructs a RptBandObject object.
 */
-void RptBandObject::setProperty(QtRPT *qtrpt, QDomElement docElem) {
+void RptBandObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
+{
     name = docElem.attribute("name");
     realHeight = docElem.attribute("height").toInt();
     height = docElem.attribute("height").toInt();

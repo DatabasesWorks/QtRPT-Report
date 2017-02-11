@@ -28,7 +28,9 @@ limitations under the License.
 #include <QSqlRecord>
 #include <QImage>
 
-RptSql::RptSql(QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QObject *parent) : QObject(parent) {
+RptSql::RptSql(QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QObject *parent)
+: QObject(parent)
+{
     /*#ifdef QT_DEBUG
       qDebug() << "Running a debug build";
     #else
@@ -44,27 +46,26 @@ RptSql::RptSql(QString dbType, QString dbName, QString dbHost, QString dbUser, Q
         db.setPort(dbPort);
 }
 
-bool RptSql::openQuery(QString sql, QString dbCoding, QString charsetCoding) {
+bool RptSql::openQuery(QString sql, QString dbCoding, QString charsetCoding)
+{
     db.open();
-    if (!db.isOpen()) {
-        qDebug() << "Failed open DB";
-        qDebug()<<db.lastError().text();
-    } else {
+    if (!db.isOpen())
+        qDebug() << "Failed open DB" << db.lastError().text();
+    else
         qDebug() << "open DB";
-    }
 
     query = new QSqlQuery(db);
-    if (!dbCoding.isEmpty()) {
+    if (!dbCoding.isEmpty())
         if (db.driverName().contains("MYSQL"))
             query->exec("set names '"+dbCoding+"'");
-    }
+
     if (!charsetCoding.isEmpty()) {
-        QTextCodec *codec;
-        codec = QTextCodec::codecForName( QString(charsetCoding).toLocal8Bit().constData() );
+        auto codec = QTextCodec::codecForName( QString(charsetCoding).toLocal8Bit().constData() );
         QTextCodec::setCodecForLocale(codec);
     }
 
-    if (!query->exec(sql)) {
+    if (!query->exec(sql))
+    {
         qDebug()<<query->lastError().text();
         return false;
     }
@@ -72,41 +73,56 @@ bool RptSql::openQuery(QString sql, QString dbCoding, QString charsetCoding) {
     return true;
 }
 
-QString RptSql::getFieldValue(QString fieldName, int recNo) {
+QString RptSql::getFieldValue(QString fieldName, int recNo)
+{
     if (query->isActive()){
         if (recNo >= getRecordCount()) {
             qDebug() << "recNo more than recordCount";
             return "";
-        } else {
+        }
+        else
+        {
             query->seek(recNo);
             int fieldNo = query->record().indexOf(fieldName);
             return query->value(fieldNo).toString();
         }
-    } else {
+    }
+    else
+    {
         qDebug() << "Query is not active";
         return "";
     }
 }
 
-QImage RptSql::getFieldImage(QString fieldName, int recNo) {
-    if (query->isActive()){
-        if (recNo >= getRecordCount()) {
+QImage RptSql::getFieldImage(QString fieldName, int recNo)
+{
+    if (query->isActive())
+    {
+        if (recNo >= getRecordCount())
+        {
             qDebug() << "recNo more than recordCount";
             return QImage();
-        } else {
+        }
+        else
+        {
             query->seek(recNo);
             int fieldNo = query->record().indexOf(fieldName);
             return QImage::fromData(query->value(fieldNo).toByteArray());
         }
-    } else {
+    }
+    else
+    {
         qDebug() << "Query is not active";
         return QImage();
     }
 }
 
-int RptSql::getRecordCount() {
-    if (query->isActive()){
+int RptSql::getRecordCount()
+{
+    if (query->isActive())
+    {
         query->last();
         return query->at()+1;
-    } else return 0;
+    }
+    else return 0;
 }

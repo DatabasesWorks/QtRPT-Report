@@ -26,7 +26,9 @@ limitations under the License.
 #include <QMessageBox>
 #include <QProcess>
 
-SettingDlg::SettingDlg(QWidget *parent) : QDialog(parent),  ui(new Ui::SettingDlg) {
+SettingDlg::SettingDlg(QWidget *parent)
+: QDialog(parent),  ui(new Ui::SettingDlg)
+{
     ui->setupUi(this);
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
@@ -94,7 +96,8 @@ SettingDlg::SettingDlg(QWidget *parent) : QDialog(parent),  ui(new Ui::SettingDl
     settings.endGroup();
 }
 
-void SettingDlg::showThis() {
+void SettingDlg::showThis()
+{
     if (exec() == QDialog::Accepted) {
         QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
         settings.setIniCodec("UTF-8");
@@ -103,8 +106,10 @@ void SettingDlg::showThis() {
         settings.setValue("CheckUpdates", ui->chkUpdates->checkState());
 
         settings.beginGroup("language");
-        if (ui->cmbLanguage->currentIndex() != langIndex) {
-            switch(ui->cmbLanguage->currentIndex())  {
+        if (ui->cmbLanguage->currentIndex() != langIndex)
+        {
+            switch(ui->cmbLanguage->currentIndex())
+            {
                 case 0://system default
                     settings.setValue("language", "");
                     break;
@@ -155,7 +160,8 @@ void SettingDlg::showThis() {
             reply = QMessageBox::question(this, tr("Message QtRptDesigner"),tr("The language for this application has been changed.\n"
                                                                                "The change will take effect the next time the application is started.\nRestart application?"),
                                              QMessageBox::Yes | QMessageBox::No);
-            if (reply == QMessageBox::Yes) {
+            if (reply == QMessageBox::Yes)
+            {
                 this->parentWidget()->close();
                 QProcess::startDetached(QApplication::applicationFilePath());
             }
@@ -172,6 +178,7 @@ void SettingDlg::showThis() {
     }
 }
 
-SettingDlg::~SettingDlg() {
+SettingDlg::~SettingDlg()
+{
     delete ui;
 }

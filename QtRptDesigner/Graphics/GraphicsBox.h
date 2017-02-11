@@ -124,13 +124,8 @@ private:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void adjustSize(int x, int y);
 
-    QPointF _location;
-    QPointF _dragStart;
     qreal   _width;
     qreal   _height;
-
-    int _XcornerGrabBuffer;
-    int _YcornerGrabBuffer;
 
     QString m_text;
     bool m_borderIsVisible;
@@ -143,15 +138,14 @@ private:
     bool m_textDirection;
     bool m_textWrap;
     int m_radius;
-    BarCode *m_barcode;
-    Chart *m_chart;
-    RptCrossTabObject *m_crossTab;
+    BarCode* m_barcode;
+    Chart* m_chart;
+    RptCrossTabObject* m_crossTab;
 
     QString m_formatString;
     QString m_highlighting;
     QString m_imgFormat;
     QPixmap m_pixmap;
-
 
 };
 

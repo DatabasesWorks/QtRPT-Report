@@ -31,18 +31,17 @@ limitations under the License.
 #include <QAbstractTextDocumentLayout>
 #include <QBuffer>
 
-GraphicsBox::GraphicsBox() {
-    _location = QPointF(0,0);
-    _dragStart = QPointF(0,0);
+GraphicsBox::GraphicsBox()
+{
     _width = 200;
     _height = 20;
 
-    _XcornerGrabBuffer = -3;
-    _YcornerGrabBuffer = -3;
-    _drawingWidth = (  _width -   _XcornerGrabBuffer);
-    _drawingHeight = ( _height -  _YcornerGrabBuffer);
-    _drawingOrigenX = ( _XcornerGrabBuffer);
-    _drawingOrigenY = ( _YcornerGrabBuffer);
+    m_XcornerGrabBuffer = -3;
+    m_YcornerGrabBuffer = -3;
+    _drawingWidth = (  _width -   m_XcornerGrabBuffer);
+    _drawingHeight = ( _height -  m_YcornerGrabBuffer);
+    _drawingOrigenX = ( m_XcornerGrabBuffer);
+    _drawingOrigenY = ( m_YcornerGrabBuffer);
 
     m_corners.resize(8);
     for (auto& corner : m_corners)
@@ -85,7 +84,8 @@ void GraphicsBox::setWidth(qreal value) {
         this->scene()->update();
 }
 
-void GraphicsBox::setHeight(qreal value) {
+void GraphicsBox::setHeight(qreal value)
+{
     _height = value;
     adjustSize(0,0);
     setCornerPositions();
@@ -93,17 +93,20 @@ void GraphicsBox::setHeight(qreal value) {
         this->scene()->update();
 }
 
-void GraphicsBox::adjustSize(int x, int y) {
+void GraphicsBox::adjustSize(int x, int y)
+{
     _width += x;
     _height += y;
 
-    _drawingWidth  =  _width + _XcornerGrabBuffer;
-    _drawingHeight =  _height + _YcornerGrabBuffer;
+    _drawingWidth  =  _width + m_XcornerGrabBuffer;
+    _drawingHeight =  _height + m_YcornerGrabBuffer;
 
-    if (m_chart != nullptr) {
+    if (m_chart != nullptr)
+    {
         m_chart->resize(_width, _height);
     }
-    if (m_crossTab != nullptr) {
+    if (m_crossTab != nullptr)
+    {
         m_crossTab->rect.setHeight(_height);
         m_crossTab->rect.setWidth(_width);
     }
@@ -242,11 +245,11 @@ bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) {
 }
 
 QPointF GraphicsBox::getPos() {
-    return _location;
+    return m_location;
 }
 
 void GraphicsBox::setPos(QPointF pos) {
-    _location = pos;
+    m_location = pos;
     QGraphicsItem::setPos(pos);
 }
 
@@ -272,7 +275,7 @@ void GraphicsBox::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) {
 void GraphicsBox::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
     QGraphicsItem::mousePressEvent(event);
     event->setAccepted(true);
-    _dragStart = event->pos();
+    m_dragStart = event->pos();
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     this->setSelected(!this->isSelected());
 }
@@ -306,8 +309,8 @@ void GraphicsBox::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
     }
 
     QPointF newPos = event->pos() ;
-    _location += (newPos - _dragStart);
-    this->setPos(_location);
+    m_location += (newPos - m_dragStart);
+    this->setPos(m_location);
     this->scene()->update();
 }
 
@@ -315,11 +318,14 @@ void GraphicsBox::setSelected(bool selected_) {
     QGraphicsItem::setSelected(selected_);
     if (itemInTree != nullptr)
         itemInTree->setSelected(selected_);
-    if (selected_) {
+
+    if (selected_)
+    {
         createCorners();
         auto m_scene = qobject_cast<GraphicsScene *>(scene());
         emit m_scene->itemSelected(this);
-    } else
+    }
+    else
         destroyCorners();
     this->scene()->update();
 }
@@ -776,8 +782,8 @@ void GraphicsBox::loadParamFromXML(QDomElement e) {
 QDomElement GraphicsBox::saveParamToXML(QDomDocument *xmlDoc) {
     QDomElement elem = GraphicsHelperClass::saveParamToXML(xmlDoc);
 
-    elem.setAttribute("top",this->_location.y()-20);
-    elem.setAttribute("left",this->_location.x());
+    elem.setAttribute("top",this->m_location.y()-20);
+    elem.setAttribute("left",this->m_location.x());
     elem.setAttribute("width",this->_width);
     elem.setAttribute("height",this->_height);
 

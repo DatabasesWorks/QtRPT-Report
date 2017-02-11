@@ -171,7 +171,9 @@ QtRPT* createQtRPT() {
  \fn QtRPT::QtRPT(QObject *parent)
     Constructs a QtRPT object with the given \a parent.
 */
-QtRPT::QtRPT(QObject *parent) : QObject(parent) {
+QtRPT::QtRPT(QObject *parent)
+: QObject(parent)
+{
     xmlDoc = QDomDocument("Reports");
     m_backgroundImage = 0;
     m_orientation = 0;
@@ -255,7 +257,7 @@ void QtRPT::makeReportObjectStructure() {
     for (int i = 0; i < xmlDoc.documentElement().childNodes().count(); i++) {
         QDomElement docElem = xmlDoc.documentElement().childNodes().at(i).toElement();
         auto pageObject = new RptPageObject();
-        pageObject->setProperty(this,docElem);
+        pageObject->setProperty(this, docElem);
         pageList.append(pageObject);
     }
 }
@@ -273,8 +275,7 @@ QtRPT::~QtRPT() {
  Destroy all objects and clear the report.
  */
 void QtRPT::clearObject() {
-    for (int i=0; i<pageList.size(); i++)
-        delete pageList.at(i);
+    qDeleteAll(pageList);
     pageList.clear();
 }
 
@@ -289,14 +290,14 @@ QDomNode QtRPT::getBand(BandType type, QDomElement docElem) {
     if (type == MasterHeader)    s_type = "MasterHeader";
     if (type == DataGroupHeader) s_type = "DataGroupHeader";
     if (type == DataGroupFooter) s_type = "DataGroupFooter";
-    //QDomElement docElem = xmlDoc.documentElement();  //get root element
-    QDomNode n = docElem.firstChild();//.firstChild();
+
+    QDomNode n = docElem.firstChild();
     while(!n.isNull()) {
         QDomElement e = n.toElement(); // try to convert the node to an element.
-        if ((!e.isNull()) && (e.tagName() == "ReportBand")) {
+        if (!e.isNull() && e.tagName() == "ReportBand")
             if (e.attribute("type") == s_type)
                 return n;
-        }
+
         n = n.nextSibling();
     }
     return n;
@@ -770,6 +771,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
                 int y = fieldObject->crossTab->rowHeight() * tmpRowN;
 
                 if (y > ph - mb - mt - fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
+                //if (y > fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
                 {
                     bandTop_ = 0;
                     tmpRowN = 0;
@@ -1364,10 +1366,10 @@ QVariant QtRPT::processFunctions(QString value) {
     }
     if (value.contains("LineCount")) {
         int maxLnNo = 0;
-        for (int i=0; i<listOfPair.size(); i++) {
-            if (listOfPair.at(i).pageReport == m_pageReport && listOfPair.at(i).lnNo > maxLnNo)
-                maxLnNo = listOfPair.at(i).lnNo;
-        }
+        for (auto& pair : listOfPair)
+            if (pair.pageReport == m_pageReport && pair.lnNo > maxLnNo)
+                maxLnNo = pair.lnNo;
+
         return maxLnNo+1;
     }
     return QVariant();
@@ -1563,8 +1565,8 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName) {
         geom.setWidth(geom.width()-6);
         preview.setGeometry(geom);
 
-        pr = preview.findChild<QPrintPreviewWidget *>();
-        lst = preview.findChildren<QAction *>();
+        pr = preview.findChild<QPrintPreviewWidget*>();
+        lst = preview.findChildren<QAction*>();
 
         QIcon icon;
         icon.addPixmap(QPixmap(QString::fromUtf8(":/pdf.png")), QIcon::Normal, QIcon::On);
@@ -1583,7 +1585,7 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName) {
         actExpToXlsx->setObjectName("actExpToXlsx");
         connect(actExpToXlsx, SIGNAL(triggered()), SLOT(exportTo()));
 
-        QList<QToolBar *> l1 = preview.findChildren<QToolBar *>();
+        QList<QToolBar *> l1 = preview.findChildren<QToolBar*>();
         l1.at(0)->addAction(actExpToPdf);
         l1.at(0)->addAction(actExpToHtml);
         l1.at(0)->addAction(actExpToXlsx);
@@ -1687,7 +1689,7 @@ void QtRPT::printPreview(QPrinter *printer) {
 #endif
 }
 
-void QtRPT::setPageSettings(QPrinter *printer, int pageReport) {
+void QtRPT::setPageSettings(QPrinter* printer, int pageReport) {
     ph = pageList.at(pageReport)->ph;
     pw = pageList.at(pageReport)->pw;
     ml = pageList.at(pageReport)->ml;
@@ -1718,7 +1720,7 @@ void QtRPT::setPageSettings(QPrinter *printer, int pageReport) {
             pen.setWidth(pageList.at(pageReport)->borderWidth*5);
             pen.setStyle(getPenStyle(pageList.at(pageReport)->borderStyle));
             painter->setPen(pen);
-            painter->drawRect(0-r.left()+92,0-r.top()+92,
+            painter->drawRect(0-r.left()+92, 0-r.top()+92,
                               printer->paperRect().width()-192,
                               printer->paperRect().height()-192);   //Rect around page
             painter->setPen(cpen);
@@ -1782,10 +1784,9 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport) {
  */
 bool QtRPT::eventFilter(QObject *obj, QEvent *e) {
     if (obj == pr && e->type()==QEvent::Show)  {
-        for (auto action : lst) {
+        for (auto action : lst)
             if (action->text().contains("Previous page", Qt::CaseInsensitive))
                 action->trigger();
-        }
 
         pr->setCurrentPage(0);
         return true;
@@ -1814,8 +1815,7 @@ bool QtRPT::allowNewPage(bool draw, int curPage_) {
     } else return false;
 }
 
-void QtRPT::newPage(QPrinter *printer, int &y, bool draw, bool newReportPage) {
-    //curPage += 1;
+void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage) {
     if (allowNewPage(draw, curPage+1)) {
         printer->newPage();
         drawBackground();
@@ -1871,7 +1871,7 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
     } else {
         if (pageList.at(pageReport)->getBand(MasterData) != nullptr)
             fillListOfValue(pageList.at(pageReport)->getBand(MasterData));
-        if (listOfPair.size() > 0) {
+        if (!listOfPair.isEmpty()) {
             if (recordCount.size() >= pageReport+1) {
                 for (int i = 0; i < recordCount.at(pageReport); i++) {
                     m_recNo = i;
@@ -1893,10 +1893,9 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
             for (int j = 0; j < listOfPair.size(); ++j) {
                 if (pageList.at(pageReport)->getBand(DataGroupHeader) != 0 && listOfPair.at(j).pageReport == pageReport && listOfPair.at(j).paramName == pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField) {
                     bool founded = false;
-                    for (auto group : listOfGroup) {
+                    for (auto group : listOfGroup)
                         if (group == listOfPair.at(j).paramValue)
                             founded = true;
-                    }
 
                     listIdxOfGroup.clear();
                     for (int k=0; k < listOfPair.size(); ++k) {
@@ -2050,7 +2049,7 @@ void QtRPT::processPHeader(int &y, bool draw) {
     //painter.drawLine(0,y*koefRes_h,pw*koefRes_h,y*koefRes_h);
 }
 
-void QtRPT::processMFooter(QPrinter *printer, int &y, bool draw) {
+void QtRPT::processMFooter(QPrinter* printer, int &y, bool draw) {
     if (pageList.at(m_pageReport)->getBand(MasterFooter) == nullptr) return;
     if (y > ph-mb-mt-pageList.at(m_pageReport)->getBand(MasterFooter)->height)
         newPage(printer, y, draw);
@@ -2086,7 +2085,7 @@ void QtRPT::openDataSource(int pageReport) {
     if (SqlConnection.m_bIsActive) {
         // If user connection is active, use their parameters
         QString sqlQuery = SqlConnection.m_sqlQuery;
-        RptSql *rptSql = new RptSql(SqlConnection.m_dbType,SqlConnection.m_dbName,SqlConnection.m_dbHost,SqlConnection.m_dbUser,SqlConnection.m_dbPassword,SqlConnection.m_dbPort,SqlConnection.m_dbConnectionName,this);
+        auto rptSql = new RptSql(SqlConnection.m_dbType,SqlConnection.m_dbName,SqlConnection.m_dbHost,SqlConnection.m_dbUser,SqlConnection.m_dbPassword,SqlConnection.m_dbPort,SqlConnection.m_dbConnectionName,this);
         rptSql->setObjectName(SqlConnection.m_dsName);
 
         if (rtpSqlVector.size() <= pageReport) {
@@ -2159,7 +2158,8 @@ void QtRPT::openDataSource(int pageReport) {
   Sets SQL query \a sqlString.
   If in XML was defined SQL query, it will be replaced.
  */
-void QtRPT::setSqlQuery(QString sqlString) {
+void QtRPT::setSqlQuery(QString sqlString)
+{
     m_sqlQuery = sqlString;
 }
 
@@ -2246,7 +2246,8 @@ void QtRPT::setSqlQuery(QString sqlString) {
   \endlist
 */
 
-void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection & SqlConnection) {
+void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection & SqlConnection)
+{
     if (userSqlConnection.count() <= pageReport) {
         // If page does not exist, add new connection for this page
         userSqlConnection.resize(pageReport);
@@ -2257,19 +2258,19 @@ void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection & SqlCon
     }
 }
 
-void QtRPT::getUserSqlConnection(int pageReport, RptSqlConnection & SqlConnection) {
-    if (userSqlConnection.count() <= pageReport) {
-        // Return inactive connection
+void QtRPT::getUserSqlConnection(int pageReport, RptSqlConnection & SqlConnection)
+{
+    if (userSqlConnection.count() <= pageReport)  // Return inactive connection
         SqlConnection.reset();
-    } else {
+    else
         SqlConnection = userSqlConnection.at(pageReport);
-    }
 }
 
 void QtRPT::setUserSqlConnection(int pageReport, QString dsName, QString dbType, QString dbName,
                                  QString dbHost, QString dbUser, QString dbPassword, int dbPort,
                                  QString dbConnectionName, QString sqlQuery, QString dbCoding,
-                                 QString charsetCoding) {
+                                 QString charsetCoding)
+{
     // Create enabled RptSqlConnection object with all parameters
     RptSqlConnection SqlConnection(dsName, dbType, dbName, dbHost, dbUser,
                                    dbPassword, dbPort, dbConnectionName, sqlQuery, dbCoding, charsetCoding);
@@ -2277,7 +2278,8 @@ void QtRPT::setUserSqlConnection(int pageReport, QString dsName, QString dbType,
     setUserSqlConnection(pageReport, SqlConnection);
 }
 
-void QtRPT::activateUserSqlConnection(int pageReport, bool bActive) {
+void QtRPT::activateUserSqlConnection(int pageReport, bool bActive)
+{
     RptSqlConnection SqlConnection;
 
     // Enable or disable connection

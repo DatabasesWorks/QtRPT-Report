@@ -66,20 +66,11 @@ private:
     void setCornerPositions();
     void createCustomPath(QPointF mouseLocation, CornerGrabber*);
 
-    QPointF _location;
-    QPointF _dragStart;
-
-    int _XcornerGrabBuffer;
-    int _YcornerGrabBuffer;
-
-    qreal   _graphicsItemBoundingBoxWidth;
     QList<QPointF> m_pointList;
 
-    bool _cornerGrabbed;
+    bool m_cornerGrabbed;
     bool m_arrowStart;
     bool m_arrowEnd;
-
-    QPolygonF _selectRegion;
     void initPolygon();
 
 };

@@ -53,13 +53,15 @@ MoveLineCommand::MoveLineCommand(const ItemsAndParams &itm, QUndoCommand *parent
     setText(QObject::tr("Moving line"));
 }
 
-void MoveLineCommand::redo() {
+void MoveLineCommand::redo()
+{
     auto line = static_cast<GraphicsLine*>(m_itm.item);
     line->setPos(m_itm.newPos);
     line->setPointList(m_itm.newPointList);
 }
 
-void MoveLineCommand::undo() {
+void MoveLineCommand::undo()
+{
     auto line = static_cast<GraphicsLine*>(m_itm.item);
     line->setPos(m_itm.oldPos);
     line->setPointList(m_itm.oldPointList);

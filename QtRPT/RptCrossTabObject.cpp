@@ -120,9 +120,11 @@ int RptCrossTabObject::fieldRow(RptFieldObject* field)
 
     \sa fieldRow
 */
-int RptCrossTabObject::fieldCol(RptFieldObject* field) {
+int RptCrossTabObject::fieldCol(RptFieldObject* field)
+{
     int index = fieldList.indexOf(field);
-    if (index != -1) {
+    if (index != -1)
+    {
         unsigned row = unsigned(index / m_colCount);
         unsigned column = index - row * m_colCount;
         index = column;
@@ -146,9 +148,7 @@ void RptCrossTabObject::addField(RptFieldObject *field)
  */
 RptCrossTabObject::~RptCrossTabObject()
 {
-    for (auto field : fieldList)
-        if (field != nullptr)
-            delete field;
+    qDeleteAll(fieldList);
     fieldList.clear();
 }
 

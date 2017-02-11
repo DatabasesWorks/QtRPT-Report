@@ -23,7 +23,9 @@ limitations under the License.
 
 #include "selectcolor.h"
 
-SelectColor::SelectColor(QWidget *parent, QString rgbColor) : QWidget(parent) {
+SelectColor::SelectColor(QWidget *parent, QString rgbColor)
+: QWidget(parent)
+{
     auto colorBox = new QWidget(this);
     colorBox->setObjectName("colorBox");
     QString stl = "QWidget#colorBox {;"
@@ -47,8 +49,9 @@ SelectColor::SelectColor(QWidget *parent, QString rgbColor) : QWidget(parent) {
     this->setLayout(vLayout);
 }
 
-QString SelectColor::getBackGroundColor() {
-    QWidget *colorBox = this->findChild<QWidget *>("colorBox");
+QString SelectColor::getBackGroundColor()
+{
+    auto colorBox = this->findChild<QWidget *>("colorBox");
     QString str1 = colorBox->styleSheet();
     int start; int end;
     start = str1.indexOf(";background-color:",0,Qt::CaseInsensitive);
@@ -57,12 +60,15 @@ QString SelectColor::getBackGroundColor() {
     QString tmp = str1.mid(start+1,end-start-1);
     start = tmp.indexOf("rgba",0,Qt::CaseInsensitive);
     tmp = tmp.mid(start);
-    if (start == -1) tmp = "";
-    if (tmp == "#ffffff") tmp = "rgba(255,255,255,0)";
+    if (start == -1)
+        tmp = "";
+    if (tmp == "#ffffff")
+        tmp = "rgba(255,255,255,0)";
     return tmp;
 }
 
-void SelectColor::setBackGroundColor(QString rgbColor) {
+void SelectColor::setBackGroundColor(QString rgbColor)
+{
     QString stl = "QWidget#colorBox {;"
                   "border-width:1px;"
                   "border-style:solid;"
@@ -74,10 +80,11 @@ void SelectColor::setBackGroundColor(QString rgbColor) {
                   "color:rgba(0,0,0,255);"
                   "background-color:"+rgbColor+";"
             "}";
-    QWidget *colorBox = this->findChild<QWidget *>("colorBox");
+    auto colorBox = this->findChild<QWidget *>("colorBox");
     colorBox->setStyleSheet(stl);
 }
 
-void SelectColor::setMargins(QMargins margins) {
+void SelectColor::setMargins(QMargins margins)
+{
     vLayout->setContentsMargins(margins);
 }

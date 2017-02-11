@@ -58,10 +58,13 @@ void PageSettingDlg::showThis(PageSetting pageSetting)
     settings.endGroup();
     QString meas_label;
 
-    if (measurement == "" || measurement == "Cm") {
+    if (measurement == "" || measurement == "Cm")
+    {
         meas_label = tr("Cm");
         koef = 40;
-    } else if (measurement == "Inch") {
+    }
+    else if (measurement == "Inch")
+    {
         meas_label = tr("Inch");
         koef = 101.59;
     }
@@ -113,7 +116,8 @@ void PageSettingDlg::showThis(PageSetting pageSetting)
 
 void PageSettingDlg::pageSizeChanged(int index)
 {
-    switch(index) {
+    switch(index)
+    {
         case 0: //A3
             ui->edtWidth->setText(QString::number(w_A3/koef,'f',2));
             ui->edtHeight->setText(QString::number(h_A3/koef,'f',2));
@@ -161,7 +165,8 @@ void PageSettingDlg::saveSettings()
     if (ui->rPortrait->isChecked())
         pageSetting.pageOrientation = 0;
 
-    switch(ui->cmbBorderStyle->currentIndex()) {
+    switch(ui->cmbBorderStyle->currentIndex())
+    {
         case 0:
             pageSetting.borderStyle = "solid";
             break;
@@ -187,7 +192,7 @@ void PageSettingDlg::saveSettings()
 void PageSettingDlg::selectColor()
 {
     QColor color;
-    auto dlg = new QColorDialog(color, this);
+    QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
     if (dlg->exec() == QDialog::Accepted)
         color = dlg->selectedColor();
     else

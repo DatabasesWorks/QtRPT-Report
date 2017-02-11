@@ -60,7 +60,7 @@ public:
     void setRowHeight(int height);
     int fieldRow(RptFieldObject* field);
     int fieldCol(RptFieldObject* field);
-    //****
+
     bool isColHeaderVisible() const {return colHeaderVisible;}
     bool isRowHeaderVisible() const {return rowHeaderVisible;}
     void setColHeaderVisible(bool value) {colHeaderVisible = value;}

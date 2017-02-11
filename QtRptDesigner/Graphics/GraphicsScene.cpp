@@ -48,12 +48,15 @@ GraphicsScene::GraphicsScene(QObject *parent) : QGraphicsScene(parent) {
 //    m_backgroundItem->setPixmap(pixmap);
 //}
 
-void GraphicsScene::addItem(QGraphicsItem* item) {
-    if (item->type() == ItemType::GLine) {
+void GraphicsScene::addItem(QGraphicsItem* item)
+{
+    if (item->type() == ItemType::GLine)
+    {
         auto line = static_cast<GraphicsLine*>(item);
         QObject::connect(line, SIGNAL(itemRemoving()), this, SLOT(itemRemoving()));
     }
-    if (item->type() == ItemType::GBox || item->type() == ItemType::GBand) {
+    if (item->type() == ItemType::GBox || item->type() == ItemType::GBand)
+    {
         auto box = static_cast<GraphicsBox*>(item);
         QObject::connect(box, SIGNAL(itemRemoving()), this, SLOT(itemRemoving()));
     }
@@ -161,7 +164,8 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
         return;
     }
 
-    for (auto item : this->items()) {
+    for (auto item : this->items())
+    {
         bool isSelected = false;
         GraphicsBox *box = nullptr;
         if (item->type() == ItemType::GBox || item->type() == ItemType::GBand) {
@@ -271,8 +275,9 @@ void GraphicsScene::removeItem(QGraphicsItem* item) {
             return;
 
         auto parent = treeItem->parent();
-        while (treeItem->childCount() > 0) {
-            QTreeWidgetItem *tmp = treeItem->takeChild(0);
+        while (treeItem->childCount() > 0)
+        {
+            auto tmp = treeItem->takeChild(0);
             tmp = nullptr;
             delete tmp;
         }
@@ -304,11 +309,13 @@ void GraphicsScene::removeItem(QGraphicsItem* item) {
     QGraphicsScene::removeItem(item);
 }
 
-void GraphicsScene::itemResizing(QGraphicsItem *item) {
+void GraphicsScene::itemResizing(QGraphicsItem *item)
+{
     emit itemResized(item);
 }
 
-void GraphicsScene::itemMoving(QGraphicsItem *item) {
+void GraphicsScene::itemMoving(QGraphicsItem *item)
+{
     if (m_trackingMoves) {
         bool founded = false;
         QList<ItemsAndParams>::iterator i;
@@ -320,12 +327,14 @@ void GraphicsScene::itemMoving(QGraphicsItem *item) {
             ItemsAndParams param;
             param.item = item;
             param.oldPos = item->pos();
-            if (item->type() == ItemType::GBox) {
+            if (item->type() == ItemType::GBox)
+            {
                 GraphicsBox *box = static_cast<GraphicsBox*>(item);
                 param.oldHeight = box->getHeight();
                 param.oldWidth = box->getWidth();
             }
-            if (item->type() == ItemType::GLine) {
+            if (item->type() == ItemType::GLine)
+            {
                 GraphicsLine *line = static_cast<GraphicsLine*>(item);
                 param.oldPointList = line->getPointList();
             }
@@ -334,15 +343,22 @@ void GraphicsScene::itemMoving(QGraphicsItem *item) {
     }
 }
 
-void GraphicsScene::unselectAll() {
-    for (auto item : this->items()) {
-        if (item->type() == ItemType::GLine) {
+void GraphicsScene::unselectAll()
+{
+    for (auto item : this->items())
+    {
+        if (item->type() == ItemType::GLine)
+        {
             auto line = static_cast<GraphicsLine*>(item);
             line->setSelected(false);
-        } else if (item->type() == ItemType::GBox) {
+        }
+        else if (item->type() == ItemType::GBox)
+        {
             auto box = static_cast<GraphicsBox*>(item);
             box->setSelected(false);
-        } else if (item->type() == ItemType::GBand) {
+        }
+        else if (item->type() == ItemType::GBand)
+        {
             auto box = static_cast<GraphicsBox*>(item);
             box->setSelected(false);
         } else
@@ -350,10 +366,13 @@ void GraphicsScene::unselectAll() {
     }
 }
 
-void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect) {
+void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
     QGraphicsScene::drawBackground(painter,rect);
 
-    if (isShowGrid == false) return;
+    if (isShowGrid == false)
+        return;
+
     QColor c(200,200,255,125);
     painter->setPen(c);
     const int gridSize = m_koef*m_gridStep;

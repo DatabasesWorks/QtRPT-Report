@@ -262,9 +262,8 @@ ReportBand* RepScrollArea::m_addBand(BandType type, QMenu* bandMenu, int m_heigh
         if (type == DataGroupHeader) {
             m_bandMenu.addAction(action);
         } else {
-            if (action->objectName() != "actGroupProperty") {
+            if (action->objectName() != "actGroupProperty")
                 m_bandMenu.addAction(action);
-            }
         }
     }
 
@@ -396,7 +395,7 @@ bool RepScrollArea::eventFilter(QObject *obj, QEvent *e)
 
 QList<ReportBand *> RepScrollArea::getReportBands()
 {
-    QList<ReportBand *> allReportBand;
+    QList<ReportBand*> allReportBand;
     for (auto item : scene->items())
         if (item->type() == ItemType::GBand)
             allReportBand << static_cast<ReportBand*>(item);

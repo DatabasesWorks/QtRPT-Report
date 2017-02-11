@@ -57,7 +57,7 @@ void EditFldDlg::chooseColor()
     if (sender() == ui->btnColorB)
         color = colorFromString(ui->lblColorB->styleSheet());
 
-    auto dlg = new QColorDialog(color, this);
+    QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
     if (dlg->exec() == QDialog::Accepted)
         color = dlg->selectedColor();
     else

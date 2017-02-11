@@ -23,21 +23,26 @@ limitations under the License.
 
 #include "XYZ_DownloadManager.h"
 
-XYZDownloadManager::XYZDownloadManager(QObject *parent) : QObject(parent) {
+XYZDownloadManager::XYZDownloadManager(QObject *parent)
+: QObject(parent)
+{
     manager = new QNetworkAccessManager(this);
     QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(downloadFinished(QNetworkReply*)));
 }
 
-void XYZDownloadManager::setTarget(const QString &t) {
+void XYZDownloadManager::setTarget(const QString &t)
+{
     this->m_target = t;
     m_isdownloaded = false;
 }
 
-bool XYZDownloadManager::isDownloaded() {
+bool XYZDownloadManager::isDownloaded()
+{
     return m_isdownloaded;
 }
 
-void XYZDownloadManager::download(bool ver) {
+void XYZDownloadManager::download(bool ver)
+{
     m_version = ver;
     m_isdownloaded = false;
     QUrl url = QUrl::fromEncoded(this->m_target.toLocal8Bit());
@@ -46,15 +51,18 @@ void XYZDownloadManager::download(bool ver) {
                      this, SIGNAL(downloadingProgress(qint64,qint64)));
 }
 
-void XYZDownloadManager::downloadFinished(QNetworkReply *data) {
+void XYZDownloadManager::downloadFinished(QNetworkReply *data)
+{
     error = data->error();
-    if (error != QNetworkReply::NoError) {
+    if (error != QNetworkReply::NoError)
+    {
         //QMessageBox::warning(0,tr("Error"),tr("No file or Internet is not connected"),QMessageBox::Ok);
         emit done();
         return;
     }
 
-    if (m_version) {
+    if (m_version)
+    {
         const QByteArray sdata = data->readAll();
         QStringList fl;
         fl << sdata;
@@ -62,15 +70,19 @@ void XYZDownloadManager::downloadFinished(QNetworkReply *data) {
         //qDebug()<<fl;
         //qDebug()<<fileList;
 
-        if (QApplication::applicationVersion().replace(".","") < fileList[0].replace(".","").simplified()) {
+        if (QApplication::applicationVersion().replace(".","") < fileList[0].replace(".","").simplified())
+        {
             fileList.removeAt(0);
             XYZUpdateDlg *updateDlg = new XYZUpdateDlg(m_target.replace("version.txt",""),qobject_cast<QWidget *>(this->parent()));
             updateDlg->showThis(fileList);
         }
-    } else {
+    }
+    else
+    {
         QFile localFile(fileName);
         if (!localFile.open(QIODevice::WriteOnly))
             return;
+
         const QByteArray sdata = data->readAll();
         localFile.write(sdata);
         localFile.close();
@@ -79,6 +91,7 @@ void XYZDownloadManager::downloadFinished(QNetworkReply *data) {
     emit done();
 }
 
-void XYZDownloadManager::downloadProgress(qint64 recieved, qint64 total) {
+void XYZDownloadManager::downloadProgress(qint64 recieved, qint64 total)
+{
     qDebug() << recieved << total;
 }

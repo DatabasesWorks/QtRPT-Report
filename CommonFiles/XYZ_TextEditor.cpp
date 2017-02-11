@@ -26,13 +26,16 @@ limitations under the License.
 #include "ui_XYZ_TextEditor.h"
 #include <QDebug>
 
-XYZTextEditor::XYZTextEditor(QWidget *parent) : QWidget(parent), m_ui(new Ui::XYZTextEditor) {
+XYZTextEditor::XYZTextEditor(QWidget *parent)
+: QWidget(parent), m_ui(new Ui::XYZTextEditor)
+{
     m_ui->setupUi(this);
     setupTextActions();
     fontChanged(m_ui->textEdit->font());
     alignmentChanged(m_ui->textEdit->alignment());
     m_ui->textEdit->setFocus();
     textEdit = m_ui->textEdit;
+
     auto btnGroup = new QButtonGroup(this);
     btnGroup->addButton(m_ui->btnAlignCenter);
     btnGroup->addButton(m_ui->btnAlignJustify);
@@ -60,15 +63,19 @@ XYZTextEditor::XYZTextEditor(QWidget *parent) : QWidget(parent), m_ui(new Ui::XY
 //    qDebug()<<m_ui->textEdit->toHtml();
 }
 
-void XYZTextEditor::textDirection() {
+void XYZTextEditor::textDirection()
+{
     QTextCursor cursor = m_ui->textEdit->textCursor();
     QTextBlockFormat blockFmt = cursor.blockFormat();
 
     QTextOption topt = m_ui->textEdit->document()->defaultTextOption();
-    if (m_ui->btnTextDirection->isChecked()) {
+    if (m_ui->btnTextDirection->isChecked())
+    {
         topt.setTextDirection(Qt::RightToLeft);
         blockFmt.setLayoutDirection(Qt::RightToLeft);
-    } else {
+    }
+    else
+    {
         topt.setTextDirection(Qt::LeftToRight);
         blockFmt.setLayoutDirection(Qt::LeftToRight);
     }
@@ -76,11 +83,13 @@ void XYZTextEditor::textDirection() {
     cursor.setBlockFormat(blockFmt);
 }
 
-XYZTextEditor::~XYZTextEditor() {
+XYZTextEditor::~XYZTextEditor()
+{
     delete m_ui;
 }
 
-void XYZTextEditor::setupTextActions() {
+void XYZTextEditor::setupTextActions()
+{
     QObject::connect(m_ui->btnTextBold, SIGNAL(clicked()), this, SLOT(textBold()));
     QObject::connect(m_ui->btnTextItalic, SIGNAL(clicked()), this, SLOT(textItalic()));
     QObject::connect(m_ui->btnUnderline, SIGNAL(clicked()), this, SLOT(textUnderline()));
@@ -110,43 +119,49 @@ void XYZTextEditor::setupTextActions() {
     m_ui->comboSize->setCurrentIndex(m_ui->comboSize->findText(QString::number(QApplication::font().pointSize())));
 }
 
-void XYZTextEditor::textAlign() {
-    if (sender()->objectName() == "btnAlignLeft") {
+void XYZTextEditor::textAlign()
+{
+    if (sender()->objectName() == "btnAlignLeft")
         m_ui->textEdit->setAlignment(Qt::AlignLeft | Qt::AlignAbsolute);
-    } else if (sender()->objectName() == "btnAlignCenter") {
+    else if (sender()->objectName() == "btnAlignCenter")
         m_ui->textEdit->setAlignment(Qt::AlignHCenter);
-    } else if (sender()->objectName() == "btnAlignRight") {
+    else if (sender()->objectName() == "btnAlignRight")
         m_ui->textEdit->setAlignment(Qt::AlignRight | Qt::AlignAbsolute);
-    } else if (sender()->objectName() == "btnAlignJustify") {
+    else if (sender()->objectName() == "btnAlignJustify")
         m_ui->textEdit->setAlignment(Qt::AlignJustify);
-    }
 }
 
-void XYZTextEditor::textBold() {
+void XYZTextEditor::textBold()
+{
     QTextCharFormat fmt;
     fmt.setFontWeight(m_ui->btnTextBold->isChecked() ? QFont::Bold : QFont::Normal);
     mergeFormatOnWordOrSelection(fmt);
 }
 
-void XYZTextEditor::textUnderline() {
+void XYZTextEditor::textUnderline()
+{
     QTextCharFormat fmt;
     fmt.setFontUnderline(m_ui->btnUnderline->isChecked());
     mergeFormatOnWordOrSelection(fmt);
 }
 
-void XYZTextEditor::textItalic() {
+void XYZTextEditor::textItalic()
+{
     QTextCharFormat fmt;
     fmt.setFontItalic(m_ui->btnTextItalic->isChecked());
     mergeFormatOnWordOrSelection(fmt);
 }
 
-void XYZTextEditor::textStyle(int styleIndex) {
+void XYZTextEditor::textStyle(int styleIndex)
+{
     QTextCursor cursor = m_ui->textEdit->textCursor();
 
-    if (styleIndex != 0) {
+    if (styleIndex != 0)
+    {
         QTextListFormat::Style style = QTextListFormat::ListDisc;
 
-        switch (styleIndex) {
+        switch (styleIndex)
+        {
             default:
             case 1:
                 style = QTextListFormat::ListDisc;
@@ -174,9 +189,12 @@ void XYZTextEditor::textStyle(int styleIndex) {
 
         QTextListFormat listFmt;
 
-        if (cursor.currentList()) {
+        if (cursor.currentList())
+        {
             listFmt = cursor.currentList()->format();
-        } else {
+        }
+        else
+        {
             listFmt.setIndent(blockFmt.indent() + 1);
             blockFmt.setIndent(0);
             cursor.setBlockFormat(blockFmt);
@@ -187,7 +205,9 @@ void XYZTextEditor::textStyle(int styleIndex) {
         cursor.createList(listFmt);
 
         cursor.endEditBlock();
-    } else {
+    }
+    else
+    {
         // ####
         QTextBlockFormat bfmt;
         bfmt.setObjectIndex(-1);
@@ -195,22 +215,26 @@ void XYZTextEditor::textStyle(int styleIndex) {
     }
 }
 
-void XYZTextEditor::textFamily(const QString &f) {
+void XYZTextEditor::textFamily(const QString &f)
+{
     QTextCharFormat fmt;
     fmt.setFontFamily(f);
     mergeFormatOnWordOrSelection(fmt);
 }
 
-void XYZTextEditor::textSize(const QString &p) {
+void XYZTextEditor::textSize(const QString &p)
+{
     qreal pointSize = p.toFloat();
-    if (p.toFloat() > 0) {
+    if (p.toFloat() > 0)
+    {
         QTextCharFormat fmt;
         fmt.setFontPointSize(pointSize);
         mergeFormatOnWordOrSelection(fmt);
     }
 }
 
-void XYZTextEditor::mergeFormatOnWordOrSelection(const QTextCharFormat &format) {
+void XYZTextEditor::mergeFormatOnWordOrSelection(const QTextCharFormat &format)
+{
     QTextCursor cursor = m_ui->textEdit->textCursor();
     if (!cursor.hasSelection())
         cursor.select(QTextCursor::WordUnderCursor);
@@ -218,23 +242,31 @@ void XYZTextEditor::mergeFormatOnWordOrSelection(const QTextCharFormat &format) 
     m_ui->textEdit->mergeCurrentCharFormat(format);
 }
 
-void XYZTextEditor::alignmentChanged(Qt::Alignment a) {
-    if (a & Qt::AlignLeft) {
+void XYZTextEditor::alignmentChanged(Qt::Alignment a)
+{
+    if (a & Qt::AlignLeft)
+    {
         m_ui->btnAlignLeft->setChecked(true);
         m_ui->btnAlignCenter->setChecked(false);
         m_ui->btnAlignRight->setChecked(false);
         m_ui->btnAlignJustify->setChecked(false);
-    } else if (a & Qt::AlignHCenter) {
+    }
+    else if (a & Qt::AlignHCenter)
+    {
         m_ui->btnAlignLeft->setChecked(false);
         m_ui->btnAlignCenter->setChecked(true);
         m_ui->btnAlignRight->setChecked(false);
         m_ui->btnAlignJustify->setChecked(false);
-    } else if (a & Qt::AlignRight) {
+    }
+    else if (a & Qt::AlignRight)
+    {
         m_ui->btnAlignLeft->setChecked(false);
         m_ui->btnAlignCenter->setChecked(false);
         m_ui->btnAlignRight->setChecked(true);
         m_ui->btnAlignJustify->setChecked(false);
-    } else if (a & Qt::AlignJustify) {
+    }
+    else if (a & Qt::AlignJustify)
+    {
         m_ui->btnAlignLeft->setChecked(false);
         m_ui->btnAlignCenter->setChecked(false);
         m_ui->btnAlignRight->setChecked(false);
@@ -242,7 +274,8 @@ void XYZTextEditor::alignmentChanged(Qt::Alignment a) {
     }
 }
 
-void XYZTextEditor::cursorPositionChanged() {
+void XYZTextEditor::cursorPositionChanged()
+{
     alignmentChanged(m_ui->textEdit->alignment());
 
     QTextBlockFormat blockFmt = m_ui->textEdit->textCursor().blockFormat();
@@ -252,7 +285,8 @@ void XYZTextEditor::cursorPositionChanged() {
         m_ui->btnTextDirection->setChecked(false);
 }
 
-void XYZTextEditor::fontChanged(const QFont &f) {
+void XYZTextEditor::fontChanged(const QFont &f)
+{
     m_ui->comboFont->setCurrentIndex(m_ui->comboFont->findText(QFontInfo(f).family()));
     m_ui->comboSize->setCurrentIndex(m_ui->comboSize->findText(QString::number(f.pointSize())));
     m_ui->btnTextBold->setChecked(f.bold());
@@ -260,17 +294,20 @@ void XYZTextEditor::fontChanged(const QFont &f) {
     m_ui->btnUnderline->setChecked(f.underline());
 }
 
-void XYZTextEditor::currentCharFormatChanged(const QTextCharFormat &format) {
+void XYZTextEditor::currentCharFormatChanged(const QTextCharFormat &format)
+{
     fontChanged(format.font());
-    //colorChanged(format.foreground().color());
 }
 
-void XYZTextEditor::textColor() {
+void XYZTextEditor::textColor()
+{
     QColor color;
-    QColorDialog *dlg = new QColorDialog(this);
-    if (dlg->exec() == QDialog::Accepted) {
+    QScopedPointer<QColorDialog> dlg(new QColorDialog(this));
+    if (dlg->exec() == QDialog::Accepted)
         color = dlg->selectedColor();
-    } else return;
+    else
+        return;
+
     QTextCharFormat fmt;
     fmt.setForeground( QBrush( color ) );
     mergeFormatOnWordOrSelection(fmt);

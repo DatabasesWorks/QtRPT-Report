@@ -683,18 +683,21 @@ void MainWindow::itemResizing(QGraphicsItem* item) {
         auto box = static_cast<GraphicsBox*>(item);
         setParamTree(Height, box->getHeight());
 
-        if (item->type() == ItemType::GBand) {
+        if (item->type() == ItemType::GBand)
+        {
             auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(ui->tabWidget->currentIndex()));
             repPage->correctBandGeom(0);
         }
-        if (item->type() == ItemType::GBox) {
+        if (item->type() == ItemType::GBox)
+        {
             auto band = static_cast<ReportBand *>(item->parentItem());
             setParamTree(Width, box->getWidth());
             setParamTree(Top, box->pos().y() - band->titleHeight);
             setParamTree(Left, box->pos().x());
         }
     }
-    if (item->type() == ItemType::GLine) {
+    if (item->type() == ItemType::GLine)
+    {
         auto line = static_cast<GraphicsLine*>(item);
         setParamTree(Length, (int)line->getLength());
     }

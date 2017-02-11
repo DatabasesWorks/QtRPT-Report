@@ -53,13 +53,13 @@ private:
     virtual void mousePressEvent(QGraphicsSceneDragDropEvent *event);
     virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent * event );
 
-    QColor outterborderColor_; ///< the hover event handlers will toggle this between red and black
-    QPen outterborderPen_; ///< the pen is used to paint the red/black border
+    QColor m_outterborderColor;   //< the hover event handlers will toggle this between red and black
+    QPen m_outterborderPen;       //< the pen is used to paint the red/black border
 
     qreal   m_width;
     qreal   m_height;
 
-    int corner_;// 0,1,2,3  - starting at x=0,y=0 and moving clockwise around the box
+    int corner_;  // 0,1,2,3  - starting at x=0,y=0 and moving clockwise around the box
     int mouseButtonState_;
 
 };
