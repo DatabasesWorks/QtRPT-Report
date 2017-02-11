@@ -31,7 +31,8 @@ FldPropertyDlg::FldPropertyDlg(QWidget *parent)
     ui->setupUi(this);
 }
 
-QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value) {
+QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
+{
     QIcon iconFolder(QPixmap(QString::fromUtf8(":/new/prefix1/images/folder.png")));
     QIcon iconVariable(QPixmap(QString::fromUtf8(":/new/prefix1/images/variable.png")));
     QIcon iconFunction(QPixmap(QString::fromUtf8(":/new/prefix1/images/function1.png")));
@@ -40,7 +41,8 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value) 
     else
         ui->stackedWidget->setCurrentIndex(index);
 
-    switch(index) {
+    switch(index)
+    {
         case 0:
         case 3: {
             QTreeWidgetItem *rootItem = new QTreeWidgetItem(ui->treeWidget,0);
@@ -304,7 +306,8 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value) 
 }
 
 void FldPropertyDlg::changeCategory(int row) {
-    if (row == 0) {
+    if (row == 0)
+    {
         ui->lstFormat->clear();
         QListWidgetItem *item;
         item = new QListWidgetItem("1 234.00", ui->lstFormat);
@@ -324,21 +327,27 @@ void FldPropertyDlg::changeCategory(int row) {
     }
 }
 
-void FldPropertyDlg::changeFormat(int row) {
-    if (row >= 0) {
+void FldPropertyDlg::changeFormat(int row)
+{
+    if (row >= 0)
+    {
         ui->edtFornatString->setText(
             ui->lstCategory->item(ui->lstCategory->currentRow())->data(Qt::UserRole).toString()+
             ui->lstFormat->item(row)->data(Qt::UserRole).toString()+
             ui->spnPrecision->text()
         );
-    } else ui->edtFornatString->setText("");
+    }
+    else
+        ui->edtFornatString->setText("");
 }
 
-void FldPropertyDlg::precisionChanged(int row) {
+void FldPropertyDlg::precisionChanged(int row)
+{
     Q_UNUSED(row);
     changeFormat(ui->lstFormat->currentRow());
 }
 
-FldPropertyDlg::~FldPropertyDlg() {
+FldPropertyDlg::~FldPropertyDlg()
+{
     delete ui;
 }

@@ -33,7 +33,8 @@ EditorDelegate::EditorDelegate(QObject *parent)
                      this, SLOT(editorClose_(QWidget *, QAbstractItemDelegate::EndEditHint)));
 }
 
-void EditorDelegate::editorClose_(QWidget *editor, QAbstractItemDelegate::EndEditHint hint) {
+void EditorDelegate::editorClose_(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
+{
     Q_UNUSED(editor);
     Q_UNUSED(hint);
     emit editorClose(this);
@@ -41,10 +42,12 @@ void EditorDelegate::editorClose_(QWidget *editor, QAbstractItemDelegate::EndEdi
 
 QWidget* EditorDelegate::createEditor(QWidget *parent,
                                       const QStyleOptionViewItem &option,
-                                      const QModelIndex &index) const {
+                                      const QModelIndex &index) const
+{
     if (index.column() == 1) {
         int command = index.model()->data(index, Qt::UserRole).toInt();
-        switch(command) {
+        switch(command)
+        {
             case FontName: {
                 QFontComboBox *editor = new QFontComboBox(parent);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
@@ -200,7 +203,8 @@ void EditorDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & op
         QItemDelegate::paint(painter,option,index);
 }
 
-void EditorDelegate::commitAndCloseEditor() {
+void EditorDelegate::commitAndCloseEditor()
+{
     auto editor = qobject_cast<QWidget*>(sender());
     emit commitData(editor);
     emit closeEditor(editor);
@@ -299,7 +303,8 @@ MainWindow::MainWindow(QWidget *parent)
     listFrameStyle->setIconSize(QSize(85, 16));
     QObject::connect(listFrameStyle, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(setFrameStyle(QListWidgetItem *)));
 
-    for (int i=1; i < 7; i++) {
+    for (int i=1; i < 7; i++)
+    {
         auto item = new QListWidgetItem(listFrameStyle);
         QIcon icn;
         icn.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/fs%1.png").arg(i)), QIcon::Normal, QIcon::On);
@@ -604,7 +609,8 @@ MainWindow::MainWindow(QWidget *parent)
     if (settings.value("CheckUpdates",true).toBool())
         checkUpdates();
 
-    if (QCoreApplication::instance()->arguments().size() > 1) {
+    if (QCoreApplication::instance()->arguments().size() > 1)
+    {
         fileName = QCoreApplication::instance()->arguments().at(1);
         openFile();
     }

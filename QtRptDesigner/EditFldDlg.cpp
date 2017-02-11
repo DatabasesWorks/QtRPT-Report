@@ -72,7 +72,8 @@ void EditFldDlg::chooseColor()
     encodeHighLightingString();
 }
 
-void EditFldDlg::conditionChanged(const QString &text) {
+void EditFldDlg::conditionChanged(const QString &text)
+{
     if (ui->rdPrinting->isChecked())
         m_cond_printing = text;
     if (ui->rdHighlighting->isChecked())
@@ -487,7 +488,7 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem) {
         ui->tableWidget->setItem(i,1,newItem);
 
         //-- color box and button for selecting color
-        SelectColor *sc = new SelectColor(ui->tableWidget, colorToString(graphParam.color));
+        auto sc = new SelectColor(ui->tableWidget, colorToString(graphParam.color));
         QObject::connect(sc->button, SIGNAL(clicked()), this, SLOT(selectGraphColor()));
         ui->tableWidget->setCellWidget(i,2,sc);
 
@@ -499,7 +500,7 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem) {
         cont->getChart()->clearData();
         for (int i=0; i<ui->tableWidget->rowCount(); i++) {
             GraphParam param;
-            SelectColor *sc = qobject_cast<SelectColor *>(ui->tableWidget->cellWidget(i,2));
+            auto sc = qobject_cast<SelectColor *>(ui->tableWidget->cellWidget(i,2));
             param.color = colorFromString(sc->getBackGroundColor());
             param.valueReal = ui->tableWidget->item(i,1)->text().toFloat();
             param.valueString = ui->tableWidget->item(i,1)->text();
@@ -519,14 +520,16 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem) {
     } else return QDialog::Rejected;
 }
 
-void EditFldDlg::removeRow() {
+void EditFldDlg::removeRow()
+{
     ui->tableWidget->removeRow(ui->tableWidget->currentRow());
 }
 
-void EditFldDlg::addRow() {
+void EditFldDlg::addRow()
+{
     ui->tableWidget->insertRow(ui->tableWidget->rowCount());
     ui->tableWidget->setCurrentCell(ui->tableWidget->rowCount()-1,0);
-    QTableWidgetItem *newItem;
+    QTableWidgetItem* newItem = nullptr;
 
     newItem = new QTableWidgetItem("New graph");
     ui->tableWidget->setItem(ui->tableWidget->rowCount()-1,0,newItem);
@@ -540,17 +543,23 @@ void EditFldDlg::addRow() {
     ui->tableWidget->setFocus();
 }
 
-void EditFldDlg::itemSelectionChanged() {
-    if (ui->tableWidget->rowCount() == 0) {
+void EditFldDlg::itemSelectionChanged()
+{
+    if (ui->tableWidget->rowCount() == 0)
+    {
         ui->btnUp->setEnabled(false);
         ui->btnDown->setEnabled(false);
         ui->btnRemoveRow->setEnabled(false);
     }
     int row = ui->tableWidget->currentRow();
-    if (row == 0 || ui->tableWidget->rowCount() == 1) ui->btnUp->setEnabled(false);
-    else ui->btnUp->setEnabled(true);
-    if (row == ui->tableWidget->rowCount()-1 || ui->tableWidget->rowCount() == 1) ui->btnDown->setEnabled(false);
-    else ui->btnDown->setEnabled(true);
+    if (row == 0 || ui->tableWidget->rowCount() == 1)
+        ui->btnUp->setEnabled(false);
+    else
+        ui->btnUp->setEnabled(true);
+    if (row == ui->tableWidget->rowCount()-1 || ui->tableWidget->rowCount() == 1)
+        ui->btnDown->setEnabled(false);
+    else
+        ui->btnDown->setEnabled(true);
 }
 
 void EditFldDlg::moveRow() {
@@ -580,14 +589,15 @@ void EditFldDlg::moveRow() {
 
 void EditFldDlg::selectGraphColor() {
     QColor color;
-    auto dlg = new QColorDialog(color, this);
+    QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
     if (dlg->exec() == QDialog::Accepted)
         color = dlg->selectedColor();
-    else return;
+    else
+        return;
 
     QString strColor = colorToString(color);
 
-    QWidget *colorBox = ui->tableWidget->cellWidget(ui->tableWidget->currentRow(),2)->findChild<QWidget *>("colorBox");
+    auto colorBox = ui->tableWidget->cellWidget(ui->tableWidget->currentRow(),2)->findChild<QWidget *>("colorBox");
 
     int start; int end;
     QString str = colorBox->styleSheet();
@@ -599,7 +609,8 @@ void EditFldDlg::selectGraphColor() {
 
 void EditFldDlg::loadImage() {
     QString fileName = QFileDialog::getOpenFileName(this);
-    if (!fileName.isEmpty()) {
+    if (!fileName.isEmpty())
+    {
         QPixmap p;
         p.load(fileName);        
         ui->label->setPixmap(p);
@@ -613,17 +624,20 @@ void EditFldDlg::saveImage() {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image As"),
                                                     QCoreApplication::applicationDirPath(),
                                                     tr("Images (*.png)"));
-    if (!fileName.isEmpty()) {
+    if (!fileName.isEmpty())
+    {
         QPixmap p = QPixmap(*ui->label->pixmap());
         if (p.isNull()) return;
         p.save(fileName, m_imgFormat.toLatin1().data());
     }
 }
 
-void EditFldDlg::autoFillData(bool value) {
+void EditFldDlg::autoFillData(bool value)
+{
     ui->tabDiagram->setTabEnabled(1,value);
 }
 
-EditFldDlg::~EditFldDlg() {
+EditFldDlg::~EditFldDlg()
+{
     delete ui;
 }
