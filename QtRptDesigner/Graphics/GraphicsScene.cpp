@@ -27,7 +27,9 @@ limitations under the License.
 #include "mainwindow.h"
 #include <QDebug>
 
-GraphicsScene::GraphicsScene(QObject *parent) : QGraphicsScene(parent) {
+GraphicsScene::GraphicsScene(QObject *parent)
+: QGraphicsScene(parent)
+{
     sceneMode = SelectObject;
     m_trackingMoves = false;
 
@@ -63,23 +65,27 @@ void GraphicsScene::addItem(QGraphicsItem* item)
     QGraphicsScene::addItem(item);
 }
 
-void GraphicsScene::setMode(Mode mode){
+void GraphicsScene::setMode(Mode mode)
+{
     sceneMode = mode;
 }
 
-void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
+void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
     emit sceneClick();
     m_movedItems.clear();
     m_trackingMoves = true;
 
-    QGraphicsItem *pItem = itemAt(event->scenePos(), this->views().at(0)->transform() );
-    if (pItem == nullptr) return;
+    auto pItem = itemAt(event->scenePos(), this->views().at(0)->transform() );
+    if (pItem == nullptr)
+        return;
     if (pItem->type() == ItemType::GBox)
         pItem = pItem->parentItem();
 
     QPointF origPoint = pItem->mapFromScene(event->scenePos());
 
-    if(sceneMode == Mode::DrawLine) {
+    if (sceneMode == Mode::DrawLine)
+    {
         QPointF startPoint(0,0);
         auto newLine = new GraphicsLine();
         newLine->setFieldType(m_newFieldType);
@@ -98,7 +104,8 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
         setMode(Mode::SelectObject);
         m_trackingMoves = false;
     }
-    if(sceneMode == DrawContainer) {
+    if(sceneMode == DrawContainer)
+    {
         auto graphicsBox = new GraphicsBox();
         graphicsBox->setFieldType(m_newFieldType);
         graphicsBox->setPos(origPoint);
@@ -117,17 +124,21 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     QGraphicsScene::mousePressEvent(event);
 }
 
-void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
+void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
     emit mousePos(event->scenePos());
     QGraphicsScene::mouseMoveEvent(event);
 }
 
-void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
+void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
     setMode(Mode::SelectObject);
     QApplication::restoreOverrideCursor();
 
-    if (sceneMode == Mode::SelectObject) {
-        if (QApplication::keyboardModifiers() != Qt::ControlModifier) {
+    if (sceneMode == Mode::SelectObject)
+    {
+        if (QApplication::keyboardModifiers() != Qt::ControlModifier)
+        {
 //            GraphicsBox *b = static_cast<GraphicsBox*>(itemAt(event->scenePos(), this->views().at(0)->transform()));
 //            if (b == 0 or b->type() == 7) {  //Make image transparent for mouse clicking
 //                QApplication::restoreOverrideCursor();
@@ -157,8 +168,10 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
     m_trackingMoves = false;
 }
 
-void GraphicsScene::keyPressEvent(QKeyEvent *event){
-    if (event->key() == Qt::Key_Delete) {
+void GraphicsScene::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Delete)
+    {
         m_undoStack->push(new DelItemCommand(this));
         update();
         return;
@@ -168,17 +181,20 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
     {
         bool isSelected = false;
         GraphicsBox *box = nullptr;
-        if (item->type() == ItemType::GBox || item->type() == ItemType::GBand) {
+        if (item->type() == ItemType::GBox || item->type() == ItemType::GBand)
+        {
             box = static_cast<GraphicsBox*>(item);
             isSelected = box->isSelected();
         }
         GraphicsLine *line = nullptr;
-        if (item->type() == ItemType::GLine) {
+        if (item->type() == ItemType::GLine)
+        {
             line = static_cast<GraphicsLine*>(item);
             isSelected = line->isSelected();
         }
 
-        if (item->type() == ItemType::GBox || item->type() == ItemType::GLine || item->type() == ItemType::GBand) {
+        if (item->type() == ItemType::GBox || item->type() == ItemType::GLine || item->type() == ItemType::GBand)
+        {
             if (isSelected) {
                 if(event->key() == Qt::Key_Left && item->type() != ItemType::GBand) {
                     if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
@@ -242,7 +258,8 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event){
     }
 }
 
-void GraphicsScene::itemRemoving() {
+void GraphicsScene::itemRemoving()
+{
     //Из поп-апа
     //GraphicsHelperClass *helper = qobject_cast<GraphicsHelperClass*>(sender());
     //QGraphicsItem *item = static_cast<QGraphicsItem*>(helper->graphicsItem);
@@ -251,7 +268,8 @@ void GraphicsScene::itemRemoving() {
     update();
 }
 
-void GraphicsScene::removeItem(QGraphicsItem* item) {
+void GraphicsScene::removeItem(QGraphicsItem* item)
+{
     GraphicsHelperClass *helper = nullptr;
 
     if (item->type() == ItemType::GBand || item->type() == ItemType::GBox) {

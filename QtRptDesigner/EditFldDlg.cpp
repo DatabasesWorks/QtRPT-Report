@@ -80,14 +80,18 @@ void EditFldDlg::conditionChanged(const QString &text) {
 }
 
 //Switching between Printing and Highlighting
-void EditFldDlg::conditionalToggled(bool value) {
+void EditFldDlg::conditionalToggled(bool value)
+{
     ui->grpBackground->setEnabled(!value);
     ui->grpFont->setEnabled(!value);
 
-    if (value) { //Show printting condition
+    if (value)   //Show printting condition
+    {
         encodeHighLightingString();
         ui->edtCondition->setText(m_cond_printing);
-    } else {  //Show highlighting condtion
+    }
+    else    //Show highlighting condtion
+    {
         m_cond_printing = ui->edtCondition->text();
         decodeHighLightingString();
         ui->edtCondition->setText(m_cond_higlighting.section(";",0,0));
@@ -623,5 +627,3 @@ void EditFldDlg::autoFillData(bool value) {
 EditFldDlg::~EditFldDlg() {
     delete ui;
 }
-
-
