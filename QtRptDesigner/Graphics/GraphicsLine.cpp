@@ -394,7 +394,7 @@ void GraphicsLine::loadParamFromXML(QDomElement e)
 	initPolygon();
 }
 
-QDomElement GraphicsLine::saveParamToXML(QDomDocument *xmlDoc)
+QDomElement GraphicsLine::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
 {
     QDomElement elem = GraphicsHelperClass::saveParamToXML(xmlDoc);
 

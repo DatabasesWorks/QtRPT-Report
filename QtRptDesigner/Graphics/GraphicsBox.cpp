@@ -779,7 +779,7 @@ void GraphicsBox::loadParamFromXML(QDomElement e) {
     m_alignment = hAl | vAl;
 }
 
-QDomElement GraphicsBox::saveParamToXML(QDomDocument *xmlDoc) {
+QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
     QDomElement elem = GraphicsHelperClass::saveParamToXML(xmlDoc);
 
     elem.setAttribute("top",this->m_location.y()-20);

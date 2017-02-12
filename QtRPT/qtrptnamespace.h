@@ -27,7 +27,8 @@ limitations under the License.
 #include <QMetaType>
 
 namespace QtRptName {
-    enum BandType {
+    enum BandType
+    {
         Undefined,
         ReportTitle,
         PageHeader,
@@ -40,7 +41,8 @@ namespace QtRptName {
         PageFooter
     };
 
-    enum FieldType {
+    enum FieldType
+    {
         Text,
         TextImage,
         TextRich,
@@ -57,7 +59,8 @@ namespace QtRptName {
         CrossTab
     };
 
-    enum BorderStyle {
+    enum BorderStyle
+    {
         Dashed,
         Dot_dash,
         Dot_dot_dash,
@@ -71,7 +74,8 @@ namespace QtRptName {
         BorderNone
     };
 
-    enum Command {
+    enum Command
+    {
         None,
         Name,
         Bold,

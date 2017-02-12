@@ -36,6 +36,7 @@ class RptBandObject
 {
     friend class QtRPT;
     friend class RptPageObject;
+
 public:
     RptBandObject() {}
     ~RptBandObject();
@@ -57,6 +58,7 @@ public:
 private:
 	QtRPT *m_qtrpt;
     void setProperty(QtRPT *qtrpt, QDomElement docElem);
+
 };
 
 Q_DECLARE_METATYPE(RptBandObject)

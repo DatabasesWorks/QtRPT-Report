@@ -44,7 +44,8 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                                       const QStyleOptionViewItem &option,
                                       const QModelIndex &index) const
 {
-    if (index.column() == 1) {
+    if (index.column() == 1)
+    {
         int command = index.model()->data(index, Qt::UserRole).toInt();
         switch(command)
         {
@@ -105,8 +106,10 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
     return 0;
 }
 
-void EditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
-    if (index.column() == 1) {
+void EditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    if (index.column() == 1)
+    {
         int command = index.model()->data(index, Qt::UserRole).toInt();
         switch (command) {
             case BarcodeType:
@@ -137,8 +140,10 @@ void EditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) co
     } else return;
 }
 
-void EditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex& index) const {
-    if (index.column() == 1) {
+void EditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex& index) const
+{
+    if (index.column() == 1)
+    {
         int command = index.model()->data(index, Qt::UserRole).toInt();
         switch (command) {
             case BarcodeFrameType:
@@ -176,7 +181,8 @@ void EditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
     } return;
 }
 
-void EditorDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const {
+void EditorDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
     if (index.column() == 1) {
         if (option.state & QStyle::State_Active) {
             QItemDelegate::paint(painter,option,index);
@@ -570,7 +576,7 @@ MainWindow::MainWindow(QWidget *parent)
     subBand2->addAction(actDrawRhombus);    
 
     ui->actAddDrawing->setMenu(subBand2);
-    QToolButton * btn2 = qobject_cast<QToolButton *>(ui->toolBar_3->widgetForAction(ui->actAddDrawing));
+    auto btn2 = qobject_cast<QToolButton *>(ui->toolBar_3->widgetForAction(ui->actAddDrawing));
     btn2->setPopupMode(QToolButton::InstantPopup);
     QObject::connect(subBand2, SIGNAL(aboutToShow()), this, SLOT(clickOnTBtn()));
 
@@ -590,7 +596,7 @@ MainWindow::MainWindow(QWidget *parent)
     bandMenu->setFocusPolicy(Qt::NoFocus);
     bandMenu->addSeparator();
 
-    xmlDoc = new QDomDocument("Report");
+    xmlDoc = QSharedPointer<QDomDocument>(new QDomDocument("Report"));
 
     sqlDesigner = new SqlDesigner(xmlDoc, this);
     QDomElement dsElement;
@@ -2672,15 +2678,16 @@ void MainWindow::clipBoard() {
     }
     if (sender() == ui->actPaste) {
         if (cloneContList->isEmpty()) return;
-        GraphicsScene *scene = repPage->scene;
+        auto scene = repPage->scene;
         ReportBand *band = nullptr;
         if (!scene->selectedItems().isEmpty()) {
             auto item = scene->selectedItems().at(0);
             if (item->type() == ItemType::GBand)
-                band = static_cast<ReportBand *>(item);
+                band = static_cast<ReportBand*>(item);
             else
-                band = static_cast<ReportBand *>(item->parentItem());
+                band = static_cast<ReportBand*>(item->parentItem());
         }
+        if (band == nullptr) return;
 
         for (auto item : *cloneContList) {
             item->setSelected(false);
@@ -2734,9 +2741,8 @@ void MainWindow::clipBoard() {
     }
 }
 
-MainWindow::~MainWindow() {
-    delete xmlDoc;
-    xmlDoc = nullptr;
+MainWindow::~MainWindow()
+{
     delete ui;
 }
 

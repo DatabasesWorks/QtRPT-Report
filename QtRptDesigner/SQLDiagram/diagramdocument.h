@@ -61,7 +61,7 @@ public:
 
     QList<DiagramItem *> selectedItems();
 
-    void save(QDomDocument *xmlDoc, QDomElement element);
+    void save(QSharedPointer<QDomDocument> xmlDoc, QDomElement element);
     bool load(QDomElement element);
 
     //QString fileName() { return m_fileName; }

@@ -24,46 +24,55 @@ limitations under the License.
 #include "ui_exampledlg18.h"
 #include <QDebug>
 
-ExampleDlg18::ExampleDlg18(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg18) {
+ExampleDlg18::ExampleDlg18(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg18)
+{
     ui->setupUi(this);
     QObject::connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
+
+    print();
 }
 
-void ExampleDlg18::print() {
+void ExampleDlg18::print()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
     #endif
 
     QString fileName = dir.absolutePath()+"/examples_report/example18.xml";
-    report = new QtRPT(this);
+    auto report = QtRPT::createSPtr(this);
     report->recordCount << 2;
 
-    if (report->loadReport(fileName) == false) {
+    if (report->loadReport(fileName) == false)
         qDebug()<<"Report file not found";
-    }
+
 //    QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
 //                     this, SLOT(setValue(const int, const QString, QVariant&, const int)));
 //    QObject::connect(report, SIGNAL(setValueImage(const int, const QString, QImage&, const int)),
 //                     this, SLOT(setValueImage(const int, const QString, QImage&, const int)));
 
-    QObject::connect(report, SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
+    QObject::connect(report.data(), SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
 
     report->printExec(true);
 }
 
-void ExampleDlg18::setField(RptFieldObject &fieldObject) {
-    if (fieldObject.fieldType == FieldType::CrossTab) {
+void ExampleDlg18::setField(RptFieldObject &fieldObject)
+{
+    if (fieldObject.fieldType == FieldType::CrossTab)
+    {
         fieldObject.crossTab->setColCount(3);
         fieldObject.crossTab->setRowCount(150);
     }
-    if (fieldObject.parentCrossTab != nullptr) {
+    if (fieldObject.parentCrossTab != nullptr)
+    {
         int row = fieldObject.parentCrossTab->fieldRow(&fieldObject);
         int col = fieldObject.parentCrossTab->fieldCol(&fieldObject);
         fieldObject.value = QString("f%1%2").arg(col).arg(row);
     }
 }
 
-ExampleDlg18::~ExampleDlg18() {
+ExampleDlg18::~ExampleDlg18()
+{
     delete ui;
 }

@@ -45,7 +45,6 @@ public:
 
 private:
     Ui::ExampleDlg18 *ui;
-    QtRPT *report;
 
 private slots:
     void print();

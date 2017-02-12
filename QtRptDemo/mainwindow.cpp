@@ -23,87 +23,101 @@ limitations under the License.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent)
+: QMainWindow(parent), ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
     connect(ui->btnShow, SIGNAL(clicked()), this, SLOT(showReport()));
 }
 
-void MainWindow::showReport() {
+void MainWindow::showReport()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
     #endif
 
-    QDialog *dlg = 0;
-    if (ui->rBtn1->isChecked()) {
+    QDialog *dlg = nullptr;
+    if (ui->rBtn1->isChecked())
         dlg = new ExampleDlg1(this);
-    } else if (ui->rBtn2->isChecked()) {
+    else if (ui->rBtn2->isChecked())
         dlg = new ExampleDlg2(this);
-    } else if (ui->rBtn3->isChecked()) {
+    else if (ui->rBtn3->isChecked())
         dlg = new ExampleDlg3(this);
-    } else if (ui->rBtn4->isChecked()) {
+    else if (ui->rBtn4->isChecked())
         dlg = new ExampleDlg4(this);
-    } else if (ui->rBtn5->isChecked()) {
+    else if (ui->rBtn5->isChecked())
         dlg = new ExampleDlg5(this);
-    } else if (ui->rBtn6a->isChecked()) {
+    else if (ui->rBtn6a->isChecked())
         dlg = new ExampleDlg6(this,1);
-    } else if (ui->rBtn6b->isChecked()) {
+    else if (ui->rBtn6b->isChecked())
         dlg = new ExampleDlg6(this,2);
-    } else if (ui->rBtn7->isChecked()) {
+    else if (ui->rBtn7->isChecked())
         dlg = new ExampleDlg7(this);
-    } else if (ui->rBtn8->isChecked()) {
+    else if (ui->rBtn8->isChecked())
         dlg = new ExampleDlg8(this);
-    } else if (ui->rBtn9->isChecked()) {
+    else if (ui->rBtn9->isChecked())
+    {
         QString fileName = dir.absolutePath()+"/examples_report/example9.xml";
-        QtRPT *report = new QtRPT(this);
-        if (report->loadReport(fileName) == false) {
+        auto report = new QtRPT(this);
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         report->printExec();
-    } else if (ui->rBtn10->isChecked()) {
+    }
+    else if (ui->rBtn10->isChecked())
+    {
         QString fileName = dir.absolutePath()+"/examples_report/example10.xml";
-        QtRPT *report = new QtRPT(this);
-        if (report->loadReport(fileName) == false) {
+        auto report = new QtRPT(this);
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         report->printExec();
-    } else if (ui->rBtn11->isChecked()) {
+    }
+    else if (ui->rBtn11->isChecked())
+    {
         QString fileName = dir.absolutePath()+"/examples_report/example11.xml";
-        QtRPT *report = new QtRPT(this);
+        auto report = new QtRPT(this);
         report->recordCount << 10;
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
-        if (report->loadReport(fileName) == false) {
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         report->printExec();
-    } else if (ui->rBtn12->isChecked()) {
+    }
+    else if (ui->rBtn12->isChecked())
+    {
         QString fileName = dir.absolutePath()+"/examples_report/example12.xml";
-        QtRPT *report = new QtRPT(this);
+        auto report = new QtRPT(this);
         report->recordCount << 3;
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
-        if (report->loadReport(fileName) == false) {
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         report->printExec();
-    } else if (ui->rBtn13->isChecked()) {
+    }
+    else if (ui->rBtn13->isChecked())
         dlg = new ExampleDlg13(this);
-    } else if (ui->rBtn14->isChecked()) {
+    else if (ui->rBtn14->isChecked())
         dlg = new ExampleDlg14(this);
-    } else if (ui->rBtn15->isChecked()) {
+    else if (ui->rBtn15->isChecked())
+    {
         QString fileName = dir.absolutePath()+"/examples_report/example9.xml";
-        QtRPT *report = new QtRPT(this);
-        if (report->loadReport(fileName) == false) {
+        auto report = new QtRPT(this);
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         report->printPDF(dir.absolutePath()+"/example9.pdf",true);
-    } else if (ui->rBtn16->isChecked()) {
+    }
+    else if (ui->rBtn16->isChecked())
+    {
         QString fileName = dir.absolutePath()+"/examples_report/example16.xml";
         QtRPT *report = new QtRPT(this);
-        if (report->loadReport(fileName) == false) {
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         QString strSQL =
                 "SELECT *\n"
                 "FROM artists\n"
@@ -111,41 +125,48 @@ void MainWindow::showReport() {
 
         report->setUserSqlConnection(0, "DB1", "QSQLITE", dir.absolutePath()+"/examples_report/example.sqlite", "", "", "", 0, "", strSQL);
         report->printExec();
-    } else if (ui->rBtn17->isChecked()) {
+    }
+    else if (ui->rBtn17->isChecked())
+    {
         for (int i=0; i<15; i++)
             doubleVector.append(32767 * (float)qrand() / RAND_MAX);
         QString fileName = dir.absolutePath()+"/examples_report/example17.xml";
-        QtRPT *report = new QtRPT(this);
+        auto report = new QtRPT(this);
         report->recordCount << doubleVector.size();
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
-        if (report->loadReport(fileName) == false) {
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         report->printExec();
-    } else if (ui->rBtn18->isChecked()) {
+    }
+    else if (ui->rBtn18->isChecked())
         dlg = new ExampleDlg18(this);
-    } else if (ui->rBtnRussian->isChecked()) {
+    else if (ui->rBtnRussian->isChecked())
+    {
         QString fileName = dir.absolutePath()+"/examples_report/RussianInvaders.xml";
-        QtRPT *report = new QtRPT(this);
+        auto report = new QtRPT(this);
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
-        if (report->loadReport(fileName) == false) {
+        if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
-        }
+
         report->printExec();
     }
-    if (dlg != 0) {
+    if (dlg != nullptr)
         dlg->exec();
-    }
+
     delete dlg;
 }
 
-void MainWindow::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
+void MainWindow::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
+{
     Q_UNUSED(reportPage);
 
-    if (ui->rBtn11->isChecked()) {
-        if (paramName == "bar1") {
+    if (ui->rBtn11->isChecked())
+    {
+        if (paramName == "bar1")
+        {
             QString tmp;
             if (recNo*2+1 < 10)
                 tmp = "0"+QString::number(recNo*2+1);
@@ -153,7 +174,8 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
                 tmp = QString::number(recNo*2+1);
             paramValue = "L261250000"+tmp;
         }
-        if (paramName == "bar2") {
+        if (paramName == "bar2")
+        {
             QString tmp;
             if (recNo*2+2 < 10)
                 tmp = "0"+QString::number(recNo*2+2);
@@ -162,8 +184,10 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
             paramValue = "L261250000"+tmp;
         }
     }
-    if (ui->rBtn12->isChecked()) {
-        if (paramName == "text1") {
+    if (ui->rBtn12->isChecked())
+    {
+        if (paramName == "text1")
+        {
             if (recNo == 0)
                 paramValue = "Mary";
             if (recNo == 1)
@@ -171,7 +195,8 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
             if (recNo == 2)
                 paramValue = "Vera";
         }
-        if (paramName == "text2") {
+        if (paramName == "text2")
+        {
             if (recNo == 0)
                 paramValue = "chocolate";
             if (recNo == 1)
@@ -179,19 +204,21 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
             if (recNo == 2)
                 paramValue = "apple";
         }
-        if (paramName == "text4") {
+        if (paramName == "text4")
+        {
             paramValue = "<body><font size=5>This тект is formatted by the user by means of HTML tags. You can do the text <b>bold</b>, "
                          "<i>italics</i>, <u>underline</u>. To allocate separate words in various color, as example: <font color=#0000FF>blue</font>, "
                          "<font color=#FF0000>red</font>, <font color=#CC6633>brown</font>, <font color=#00FF00>green</font> etc</font></body>";
         }
     }
-    if (ui->rBtn17->isChecked()) {
-        if (paramName == "number") {
+    if (ui->rBtn17->isChecked())
+    {
+        if (paramName == "number")
             paramValue = QString::number(doubleVector.at(recNo)/100,'f',2);
-        }
     }
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow()
+{
     delete ui;
 }

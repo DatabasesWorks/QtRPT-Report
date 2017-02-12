@@ -58,7 +58,7 @@ public:
     qreal getHeight() {return _height;}
     GraphicsBox *clone();
     void loadParamFromXML(QDomElement e);
-    QDomElement saveParamToXML(QDomDocument *xmlDoc);
+    QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
     void setText(QString value); //
     QString getText(); //
     void setFont(QFont font) {m_font = font;}

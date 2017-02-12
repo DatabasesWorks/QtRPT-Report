@@ -36,7 +36,8 @@ namespace Ui {
     class SqlDesigner;
 }
 
-struct DocumentSet {
+struct DocumentSet
+{
     DiagramDocument* document;
     QDomElement element;
 };
@@ -46,7 +47,7 @@ class SqlDesigner : public QWidget
     Q_OBJECT
 
 public:
-    explicit SqlDesigner(QDomDocument *xmlDoc, QWidget *parent = 0);
+    explicit SqlDesigner(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent = 0);
     void showDSData(QDomElement e);
     void showDSData(int pageNo);
     DiagramDocument *addDiagramDocument(QDomElement e);
@@ -54,7 +55,7 @@ public:
     void removeDiagramDocument(int pageNo);
     void setCurrentPage(int pageNo);
     void clearAll();
-    QDomElement saveParamToXML(QDomDocument *xmlDoc);
+    QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
     ~SqlDesigner();
 
 protected:
@@ -70,7 +71,7 @@ private:
     DocumentSet newDocumentSet(QDomElement e);
     QDomElement buildDomElem();
     int m_currentPageNo;
-    QDomDocument *m_xmlDoc;
+    QSharedPointer<QDomDocument> m_xmlDoc;
 
 private slots:
     void rbChecked();

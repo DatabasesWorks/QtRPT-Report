@@ -42,7 +42,7 @@ public:
     bool getArrow(QtRptName::Command command);
     GraphicsLine *clone();
     void loadParamFromXML(QDomElement e);
-    QDomElement saveParamToXML(QDomDocument *xmlDoc);
+    QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
     void setMenu(QMenu *menu_);
 
 protected:

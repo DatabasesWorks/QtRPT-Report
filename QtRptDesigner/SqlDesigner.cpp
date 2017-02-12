@@ -32,7 +32,7 @@ limitations under the License.
 #include "SQLHighlighter.h"
 #include "XmlViewModel.h"
 
-SqlDesigner::SqlDesigner(QDomDocument *xmlDoc, QWidget *parent)
+SqlDesigner::SqlDesigner(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent)
 : QWidget(parent), ui(new Ui::SqlDesigner)
 {
     ui->setupUi(this);
@@ -67,7 +67,8 @@ SqlDesigner::SqlDesigner(QDomDocument *xmlDoc, QWidget *parent)
     QObject::connect(ui->btnPreviewXMLData, SIGNAL(clicked()), this, SLOT(previewXMLData()));
 }
 
-void SqlDesigner::connectDB() {
+void SqlDesigner::connectDB()
+{
     if (db.isOpen())
     {
         QString connection = db.connectionName();
@@ -93,10 +94,12 @@ void SqlDesigner::connectDB() {
     }
 }
 
-void SqlDesigner::refreshTable(QSqlDatabase *db) {
+void SqlDesigner::refreshTable(QSqlDatabase *db)
+{
     ui->tablesTree->clear();
     QIcon icon;
-    for (auto tableName : db->tables(QSql::Tables)) {
+    for (auto tableName : db->tables(QSql::Tables))
+    {
         auto tableItem = new QTreeWidgetItem(ui->tablesTree);
         tableItem->setText(0,tableName);
         icon.addPixmap(QPixmap(":/new/prefix1/images/table.png"), QIcon::Normal, QIcon::On);
@@ -105,7 +108,7 @@ void SqlDesigner::refreshTable(QSqlDatabase *db) {
     }    
 }
 
-QDomElement SqlDesigner::saveParamToXML(QDomDocument *xmlDoc)
+QDomElement SqlDesigner::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
 {
     QDomElement elem;
     if (ui->rbSql->isChecked())
@@ -124,7 +127,7 @@ QDomElement SqlDesigner::saveParamToXML(QDomDocument *xmlDoc)
         elem.setAttribute("dbPort",ui->edtPort->text());
         QDomText t = xmlDoc->createTextNode(ui->sqlEditor->toPlainText());
         elem.appendChild(t);
-        currentScene->save(xmlDoc,elem);
+        currentScene->save(xmlDoc, elem);
     }
     if (ui->rbXml->isChecked())
     {
@@ -339,7 +342,7 @@ DiagramDocument* SqlDesigner::addDiagramDocument(QDomElement e)
 
 DocumentSet SqlDesigner::newDocumentSet(QDomElement e)
 {
-    DiagramDocument *scene = new DiagramDocument(this);
+    auto scene = new DiagramDocument(this);
     scene->load(e);
     DocumentSet documentSet;
     documentSet.document = scene;
@@ -384,7 +387,8 @@ void SqlDesigner::setCurrentPage(int pageNo)
         diagramDocumentList[m_currentPageNo].element = e;
     }
 
-    if (pageNo < diagramDocumentList.size()) {
+    if (pageNo < diagramDocumentList.size())
+    {
         currentScene = diagramDocumentList[pageNo].document;
         showDSData(diagramDocumentList[pageNo].element);
 

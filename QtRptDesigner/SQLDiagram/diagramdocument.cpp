@@ -139,7 +139,7 @@ void DiagramDocument::deleteSelectedItems() {
     }
 }
 
-void DiagramDocument::save(QDomDocument *xmlDoc, QDomElement element) {
+void DiagramDocument::save(QSharedPointer<QDomDocument> xmlDoc, QDomElement element) {
     QDomElement root = xmlDoc->createElement("diagram");
     element.appendChild(root);
 

@@ -41,10 +41,10 @@ limitations under the License.
     #endif
 #endif
 
-
 using namespace QtRptName;
 
-enum HiType {
+enum HiType
+{
     FntBold,
     FntItalic,
     FntUnderline,
@@ -53,7 +53,8 @@ enum HiType {
     BgColor
 };
 
-struct AggregateValues {
+struct AggregateValues
+{
     QString paramName;
     QVariant paramValue;
     int lnNo;
@@ -75,8 +76,10 @@ QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcFloor(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcCeil(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcRound(QScriptContext *context, QScriptEngine *engine);
+
 static QList<AggregateValues> listOfPair;
 static QList<int> listIdxOfGroup;
+
 
 #ifndef QTRPT_LIBRARY
     class QtRPT : public QObject
@@ -89,10 +92,19 @@ static QList<int> listIdxOfGroup;
     Q_OBJECT
     friend class RptFieldObject;
     friend class RptBandObject;
+
 public:
+    using SPtrQtRPT = QSharedPointer<QtRPT>;
+
     explicit QtRPT(QObject *parent = 0);
+    static SPtrQtRPT createSPtr(QObject *parent = 0)
+    {
+        SPtrQtRPT sptr= SPtrQtRPT(new QtRPT(parent));
+        return sptr;
+    }
+
     bool setPainter(QPainter *painter);
-    bool setPrinter(QPrinter* printer);
+    bool setPrinter(QPrinter *printer);
     void setResolution(QPrinter::PrinterMode resolution);
     bool loadReport(QString fileName);
     bool loadReport(QDomDocument xmlDoc);
@@ -209,6 +221,8 @@ private slots:
     void exportTo();
 
 };
+
+using SPtrQtRPT = QSharedPointer<QtRPT>;
 
 #ifdef QTRPT_LIBRARY
     extern "C" QTRPTSHARED_EXPORT QtRPT* createQtRPT();

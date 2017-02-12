@@ -97,7 +97,7 @@ private:
     Ui::MainWindow *ui;
     static MainWindow* mw;
     QListWidget *listFrameStyle;
-    QDomDocument *xmlDoc;
+    QSharedPointer<QDomDocument> xmlDoc;
     QTreeWidgetItem *rootItem;
     QList<QGraphicsItem*> *cloneContList;
     QFontComboBox *cbFontName;

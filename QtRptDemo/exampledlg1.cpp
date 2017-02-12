@@ -24,7 +24,9 @@ limitations under the License.
 #include "ui_exampledlg1.h"
 #include <QDebug>
 
-ExampleDlg1::ExampleDlg1(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg1) {
+ExampleDlg1::ExampleDlg1(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg1)
+{
     ui->setupUi(this);
 
     ui->dtp->setDate(QDate::currentDate());
@@ -33,7 +35,8 @@ ExampleDlg1::ExampleDlg1(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleD
     QObject::connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
 
     QTableWidgetItem *newItem;
-    for (int i = 0; i < ui->tableWidget->rowCount(); ++i) {
+    for (int i = 0; i < ui->tableWidget->rowCount(); ++i)
+    {
         newItem = new QTableWidgetItem("Goods "+QString::number(i));
         ui->tableWidget->setItem(i,0,newItem);
 
@@ -48,42 +51,56 @@ ExampleDlg1::ExampleDlg1(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleD
     }
 }
 
-void ExampleDlg1::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
+void ExampleDlg1::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
+{
     Q_UNUSED(reportPage);
+
     if (paramName == "customer")
         paramValue = ui->edtCustomer->text();
     if (paramName == "date")
         paramValue = ui->dtp->date().toString();
     if (paramName == "NN")
         paramValue = recNo+1;
-    if (paramName == "Goods") {
-        if (ui->tableWidget->item(recNo,0) == 0) return;
+    if (paramName == "Goods")
+    {
+        if (ui->tableWidget->item(recNo,0) == nullptr)
+            return;
         paramValue = ui->tableWidget->item(recNo,0)->text();
     }
-    if (paramName == "Quantity") {
-        if (ui->tableWidget->item(recNo,1) == 0) return;
+    if (paramName == "Quantity")
+    {
+        if (ui->tableWidget->item(recNo,1) == nullptr)
+            return;
         paramValue = ui->tableWidget->item(recNo,1)->text();
     }
-    if (paramName == "Price") {
-        if (ui->tableWidget->item(recNo,2) == 0) return;
+    if (paramName == "Price")
+    {
+        if (ui->tableWidget->item(recNo,2) == nullptr)
+            return;
         paramValue = ui->tableWidget->item(recNo,2)->text();
     }
-    if (paramName == "Sum") {
-        if (ui->tableWidget->item(recNo,3) == 0) return;
+    if (paramName == "Sum")
+    {
+        if (ui->tableWidget->item(recNo,3) == nullptr)
+            return;
         paramValue = ui->tableWidget->item(recNo,3)->text();
     }
 }
 
-void ExampleDlg1::setValueImage(const int recNo, const QString paramName, QImage &paramValue, const int reportPage) {
+void ExampleDlg1::setValueImage(const int recNo, const QString paramName, QImage &paramValue, const int reportPage)
+{
     Q_UNUSED(recNo);
     Q_UNUSED(reportPage);
-    if (paramName == "image") {
-        QImage *image = new QImage(QCoreApplication::applicationDirPath()+"/pdf.png");
+
+    if (paramName == "image")
+    {
+        auto image = new QImage(QCoreApplication::applicationDirPath()+"/pdf.png");
         paramValue = *image;
     }
 }
 
-void ExampleDlg1::print() {
+void ExampleDlg1::print()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
@@ -93,9 +110,8 @@ void ExampleDlg1::print() {
     report = new QtRPT(this);
     report->setBackgroundImage(QPixmap(dir.absolutePath()+"/examples_report/qt_background_portrait.png"));
     report->recordCount << ui->tableWidget->rowCount();
-    if (report->loadReport(fileName) == false) {
-        qDebug()<<"Report file not found";
-    }
+    report->loadReport(fileName);
+
     QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
     QObject::connect(report, SIGNAL(setValueImage(const int, const QString, QImage&, const int)),
@@ -104,6 +120,7 @@ void ExampleDlg1::print() {
     report->printExec(true);
 }
 
-ExampleDlg1::~ExampleDlg1() {
+ExampleDlg1::~ExampleDlg1()
+{
     delete ui;
 }

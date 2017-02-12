@@ -168,9 +168,17 @@ QtRPT* createQtRPT() {
 */
 
 /*!
- \fn QtRPT::QtRPT(QObject *parent)
-    Constructs a QtRPT object with the given \a parent.
+  \fn QtRPT::QtRPT(QObject *parent)
+  Constructs a QtRPT object with the given \a parent.
 */
+
+/*!
+  \since 2.0.1
+
+  \fn static SPtrQtRPT QtRPT::createSPtr(QObject *parent)
+  Constructs a QtRPT object as a QSharedPointer with the given \a parent.
+  The SPtrQtRPT is : \c {typedef QSharedPointer<QtRPT> SPtrQtRPT;}
+ */
 QtRPT::QtRPT(QObject *parent)
 : QObject(parent)
 {
@@ -197,16 +205,20 @@ void QtRPT::setResolution(QPrinter::PrinterMode resolution) {
   Loads report from XML file with \a fileName.
  Returns \c true if loading is success
  */
-bool QtRPT::loadReport(QString fileName) {
+bool QtRPT::loadReport(QString fileName)
+{
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
         return false;
-    else {
+    else
+    {
         listOfPair.clear();
         listIdxOfGroup.clear();
     }
-    if (!xmlDoc.setContent(&file)) {
+    if (!xmlDoc.setContent(&file))
+    {
         file.close();
+        qWarning()<<"Report file not found";
         return false;
     }
     file.close();
@@ -218,7 +230,8 @@ bool QtRPT::loadReport(QString fileName) {
  Loads report from QDomDocument \a xmlDoc.
  Returns \c true if loading is success
 */
-bool QtRPT::loadReport(QDomDocument xmlDoc) {
+bool QtRPT::loadReport(QDomDocument xmlDoc)
+{
     QtRPT::xmlDoc = xmlDoc;
     listOfPair.clear();
     listIdxOfGroup.clear();
@@ -231,8 +244,10 @@ bool QtRPT::loadReport(QDomDocument xmlDoc) {
   Set the \a painter that will be used for the report to draw.
   Returns \c true if assignment is success
  */
-bool QtRPT::setPainter(QPainter *painter) {
-    if (this->painter == nullptr) {
+bool QtRPT::setPainter(QPainter *painter)
+{
+    if (this->painter == nullptr)
+    {
         this->painter = painter;
         return true;
     }
@@ -244,17 +259,21 @@ bool QtRPT::setPainter(QPainter *painter) {
   Set the \a printer that will be used for the report to printing.
   Returns \c true if assignment is success
  */
-bool QtRPT::setPrinter(QPrinter *printer) {
-    if (this->printer == nullptr){
+bool QtRPT::setPrinter(QPrinter *printer)
+{
+    if (this->printer == nullptr)
+    {
         this->printer = printer;
         return true;
     };
     return false;
 }
 
-void QtRPT::makeReportObjectStructure() {
+void QtRPT::makeReportObjectStructure()
+{
     clearObject();
-    for (int i = 0; i < xmlDoc.documentElement().childNodes().count(); i++) {
+    for (int i = 0; i < xmlDoc.documentElement().childNodes().count(); i++)
+    {
         QDomElement docElem = xmlDoc.documentElement().childNodes().at(i).toElement();
         auto pageObject = new RptPageObject();
         pageObject->setProperty(this, docElem);
@@ -266,7 +285,8 @@ void QtRPT::makeReportObjectStructure() {
  \fn QtRPT::~QtRPT()
   Destroys the object, deleting all its child objects.
  */
-QtRPT::~QtRPT() {
+QtRPT::~QtRPT()
+{
     clearObject();
 }
 
@@ -274,12 +294,14 @@ QtRPT::~QtRPT() {
  \fn QtRPT::clearObject()
  Destroy all objects and clear the report.
  */
-void QtRPT::clearObject() {
+void QtRPT::clearObject()
+{
     qDeleteAll(pageList);
     pageList.clear();
 }
 
-QDomNode QtRPT::getBand(BandType type, QDomElement docElem) {
+QDomNode QtRPT::getBand(BandType type, QDomElement docElem)
+{
     QString s_type;
     if (type == ReportTitle)     s_type = "ReportTitle";
     if (type == PageHeader)      s_type = "PageHeader";
@@ -292,7 +314,8 @@ QDomNode QtRPT::getBand(BandType type, QDomElement docElem) {
     if (type == DataGroupFooter) s_type = "DataGroupFooter";
 
     QDomNode n = docElem.firstChild();
-    while(!n.isNull()) {
+    while(!n.isNull())
+    {
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if (!e.isNull() && e.tagName() == "ReportBand")
             if (e.attribute("type") == s_type)
@@ -303,14 +326,17 @@ QDomNode QtRPT::getBand(BandType type, QDomElement docElem) {
     return n;
 }
 
-void QtRPT::setFont(RptFieldObject *fieldObject) {
-    if (painter->isActive()) {
+void QtRPT::setFont(RptFieldObject *fieldObject)
+{
+    if (painter->isActive())
+    {
         painter->setFont(fieldObject->font);
         painter->setPen(Qt::black);
     }
 }
 
-Qt::Alignment QtRPT::getAligment(QDomElement e) {
+Qt::Alignment QtRPT::getAligment(QDomElement e)
+{
     Qt::Alignment al;
     Qt::Alignment alH, alV;
     if (e.attribute("aligmentH") == "hRight")   alH = Qt::AlignRight;
@@ -339,7 +365,8 @@ QPen QtRPT::getPen(RptFieldObject *fieldObject) {
  \fn Qt::PenStyle QtRPT::getPenStyle(QString value)
  Convert and return Pen style of field for given \a value
  */
-Qt::PenStyle QtRPT::getPenStyle(QString value) {
+Qt::PenStyle QtRPT::getPenStyle(QString value)
+{
     Qt::PenStyle style;
     if (value == "dashed") style = Qt::DashLine;
     else if (value == "dotted") style = Qt::DotLine;
@@ -758,6 +785,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
             int page = 0;     //page number
             int nmr = 0;
 
+            bool isPageHeader = fieldObject->parentBand->type == BandType::PageHeader;
+            bool isPageFooter = fieldObject->parentBand->type == BandType::PageFooter;
+            bool isReportTitle = fieldObject->parentBand->type == BandType::ReportTitle;
+
             for (auto field : fieldObject->crossTab->fieldList)
             {
                 int row = fieldObject->crossTab->fieldRow(field);
@@ -770,15 +801,24 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
 
                 int y = fieldObject->crossTab->rowHeight() * tmpRowN;
 
-                if (y > ph - mb - mt - fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
-                //if (y > fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
+                //if (y > ph - mb - mt - fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
+                if (y > /*fieldObject->rect.y() +*/ fieldObject->rect.height() - fieldObject->crossTab->rowHeight() )
                 {
-                    bandTop_ = 0;
-                    tmpRowN = 0;
-                    page += 1;
-                    newPage(printer, bandTop_, draw);
+                    // we create a new page only for the particular types of the bands
+                    if (isPageHeader || isPageFooter)
+                    {
+                        bandTop_ = 0;
+                        tmpRowN = 0;
+                        page += 1;
+                        //newPage(printer, bandTop_, draw);
+                        printer->newPage();
 
-                    y = fieldObject->crossTab->rowHeight() * tmpRowN;  //update Y value
+                        y = fieldObject->crossTab->rowHeight() * tmpRowN;  //update Y value
+                    }
+                    else  //for other bands, if band cant fit the fields - we just ignore its
+                    {
+                        break;
+                    }
                 }
 
                 if (page == 0)
@@ -787,12 +827,12 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
                 }
                 else
                 {
-                    if (fieldObject->parentBand->type == ReportTitle)
+                    //if (isReportTitle)
                         field->rect.setTop( y );
                 }
 
                 field->rect.setHeight(fieldObject->crossTab->rowHeight());
-                drawFields(field,bandTop_,true);
+                drawFields(field, bandTop_, true);
 
                 nmr += 1;
 
@@ -1804,25 +1844,30 @@ bool QtRPT::allowPrintPage(bool draw, int curPage_) {
     } else return false;
 }
 
-bool QtRPT::allowNewPage(bool draw, int curPage_) {
-    if (draw) {
-        if (curPage-fromPage < 0) return false;
+bool QtRPT::allowNewPage(bool draw, int curPage_)
+{
+    if (draw)
+    {
+        if (curPage-fromPage < 0)
+            return false;
         if (curPage_ < fromPage )
-            draw = false;
-        if ((toPage!=0) && (curPage_ > toPage ))
-            draw = false;
-        return draw;
-    } else return false;
+            return false;
+        if (toPage != 0 && curPage_ > toPage )
+            return false;
+    }
+    else
+        return false;
 }
 
 void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage) {
-    if (allowNewPage(draw, curPage+1)) {
+    if (allowNewPage(draw, curPage+1))
+    {
         printer->newPage();
         drawBackground();
     }
     curPage += 1;
     if (draw)
-      emit newPage(curPage);
+        emit newPage(curPage);
 
     if (m_printMode != QtRPT::Html && m_printMode != QtRPT::Xlsx)
         y = 0;

@@ -25,7 +25,9 @@ limitations under the License.
 #include <QDir>
 #include <QDebug>
 
-ExampleDlg3::ExampleDlg3(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg3) {
+ExampleDlg3::ExampleDlg3(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg3)
+{
     ui->setupUi(this);
     ui->edtFirstName->setText("Aleksey");
     ui->edtLastName->setText("Osipov");
@@ -39,9 +41,8 @@ ExampleDlg3::ExampleDlg3(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleD
 
     QString fileName = dir.absolutePath()+"/examples_report/example3.xml";
     report = new QtRPT(this);
-    if (report->loadReport(fileName) == false) {
-        qDebug()<<"Report file not found";
-    }
+    report->loadReport(fileName);
+
     QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
 
@@ -60,9 +61,11 @@ ExampleDlg3::ExampleDlg3(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleD
     updatePreview();
 }
 
-void ExampleDlg3::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
+void ExampleDlg3::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
+{
     Q_UNUSED(recNo);
     Q_UNUSED(reportPage);
+
     if (paramName == "FirstName")
         paramValue = ui->edtFirstName->text();
     if (paramName == "LastName")
@@ -71,10 +74,12 @@ void ExampleDlg3::setValue(const int recNo, const QString paramName, QVariant &p
         paramValue = ui->edtEmail->text();
 }
 
-void ExampleDlg3::updatePreview() {
+void ExampleDlg3::updatePreview()
+{
     preview->updatePreview();
 }
 
-ExampleDlg3::~ExampleDlg3() {
+ExampleDlg3::~ExampleDlg3()
+{
     delete ui;
 }

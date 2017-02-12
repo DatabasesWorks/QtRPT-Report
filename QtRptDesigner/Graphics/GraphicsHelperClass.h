@@ -64,7 +64,7 @@ public:
     void setBorder(Command command, QVariant values, bool yesFrame = false);
     Qt::PenStyle borderStyle() {return m_borderStyle;}
     virtual void loadParamFromXML(QDomElement e);
-    virtual QDomElement saveParamToXML(QDomDocument *xmlDoc);
+    virtual QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
     QString getGroupName() {return m_groupName;}
     void setGroupName(QString value) {m_groupName = value;}
     bool helperIsSelected();

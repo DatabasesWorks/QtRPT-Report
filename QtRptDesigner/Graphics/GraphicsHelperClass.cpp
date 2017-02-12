@@ -50,13 +50,15 @@ GraphicsHelperClass::GraphicsHelperClass(QObject *parent)
     m_outterborderColor = Qt::black;
 }
 
-void GraphicsHelperClass::setObjectName(const QString &name) {
+void GraphicsHelperClass::setObjectName(const QString &name)
+{
     QObject::setObjectName(name);
     if (itemInTree != nullptr)
         itemInTree->setText(0, name);
 }
 
-QColor GraphicsHelperClass::getColorValue(Command param) {
+QColor GraphicsHelperClass::getColorValue(Command param)
+{
     switch(param) {
         case FontColor:
             return m_fontColor;
@@ -76,8 +78,10 @@ QColor GraphicsHelperClass::getColorValue(Command param) {
     }
 }
 
-void GraphicsHelperClass::setColorValue(Command param, QColor value) {
-    switch(param) {
+void GraphicsHelperClass::setColorValue(Command param, QColor value)
+{
+    switch(param)
+    {
         case FontColor:
             m_fontColor = value;
             break;
@@ -104,7 +108,8 @@ void GraphicsHelperClass::setColorValue(Command param, QColor value) {
 }
 
 //Check, is there any side
-bool GraphicsHelperClass::borderIsCheck(Command command) {
+bool GraphicsHelperClass::borderIsCheck(Command command)
+{
     QColor color;
     if (command == FrameTop)
         color = m_borderTopColor;
@@ -121,7 +126,8 @@ bool GraphicsHelperClass::borderIsCheck(Command command) {
         return false;
 }
 
-void GraphicsHelperClass::setBorder(Command command, QVariant values, bool yesFrame) {
+void GraphicsHelperClass::setBorder(Command command, QVariant values, bool yesFrame)
+{
     QColor color = values.value<QColor>();
     if (color.isValid())
         m_borderColor = color;
@@ -130,7 +136,8 @@ void GraphicsHelperClass::setBorder(Command command, QVariant values, bool yesFr
 
     m_borderColor = color;
 
-    switch(command) {
+    switch(command)
+    {
         case None: {
             if (getColorValue(FrameTop) != Qt::black)
                 m_borderTopColor = color;
@@ -209,16 +216,20 @@ void GraphicsHelperClass::setBorder(Command command, QVariant values, bool yesFr
     }
 }
 
-void GraphicsHelperClass::setBorderWidth(int value) {
+void GraphicsHelperClass::setBorderWidth(int value)
+{
     borderWidth = value;
 }
 
-int GraphicsHelperClass::getBorderWidth() {
+int GraphicsHelperClass::getBorderWidth()
+{
     return borderWidth;
 }
 
-void GraphicsHelperClass::edit() {
-    if (graphicsItem->type() == ItemType::GBox) {
+void GraphicsHelperClass::edit()
+{
+    if (graphicsItem->type() == ItemType::GBox)
+    {
         GraphicsHelperList selContList;
         selContList.append(this);
 
@@ -252,7 +263,8 @@ void GraphicsHelperClass::edit() {
                 break;
             default: return;
         }
-        if (dlg->result() == QDialog::Accepted) {
+        if (dlg->result() == QDialog::Accepted)
+        {
             mw->setReportChanged();
 
             //gets new params
@@ -265,15 +277,18 @@ void GraphicsHelperClass::edit() {
     }
 }
 
-void GraphicsHelperClass::moveForward() {
+void GraphicsHelperClass::moveForward()
+{
     graphicsItem->setZValue(graphicsItem->zValue()+1);
 }
 
-void GraphicsHelperClass::moveBack() {
+void GraphicsHelperClass::moveBack()
+{
     graphicsItem->setZValue(graphicsItem->zValue()-1);
 }
 
-void GraphicsHelperClass::loadParamFromXML(QDomElement e) {
+void GraphicsHelperClass::loadParamFromXML(QDomElement e)
+{
     m_type = QtRPT::getFieldType(e);
     this->setObjectName(e.attribute("name"));
     this->m_printing = e.attribute("printing","1");
@@ -284,7 +299,8 @@ void GraphicsHelperClass::loadParamFromXML(QDomElement e) {
     this->graphicsItem->setZValue(e.attribute("ZValue","11").toInt());
 }
 
-QDomElement GraphicsHelperClass::saveParamToXML(QDomDocument *xmlDoc) {
+QDomElement GraphicsHelperClass::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
+{
     QDomElement elem;
     if (graphicsItem->type() == ItemType::GBox)
         elem = xmlDoc->createElement("TContainerField");
@@ -302,7 +318,8 @@ QDomElement GraphicsHelperClass::saveParamToXML(QDomDocument *xmlDoc) {
     return elem;
 }
 
-QString GraphicsHelperClass::setPenStyle(Qt::PenStyle style) {
+QString GraphicsHelperClass::setPenStyle(Qt::PenStyle style)
+{
     QString str;
     if (style == Qt::SolidLine) str = "solid";
     else if (style == Qt::DashLine) str = "dashed";
@@ -313,7 +330,8 @@ QString GraphicsHelperClass::setPenStyle(Qt::PenStyle style) {
     return str;
 }
 
-bool GraphicsHelperClass::helperIsSelected() {
+bool GraphicsHelperClass::helperIsSelected()
+{
     if (itemInTree != nullptr)
         return itemInTree->isSelected();
     return false;
@@ -321,22 +339,27 @@ bool GraphicsHelperClass::helperIsSelected() {
 
 void GraphicsHelperClass::helperSelect(bool value)
 {
-    if (graphicsItem->type() == ItemType::GBox || graphicsItem->type() == ItemType::GBand) {
+    if (graphicsItem->type() == ItemType::GBox || graphicsItem->type() == ItemType::GBand)
+    {
         auto box = static_cast<GraphicsBox*>(graphicsItem);
         box->setSelected(value);
     }
-    if (graphicsItem->type() == ItemType::GLine) {
+    if (graphicsItem->type() == ItemType::GLine)
+    {
         auto line = static_cast<GraphicsLine*>(graphicsItem);
         line->setSelected(value);
     }
 }
 
 // remove the corner grabbers
-void GraphicsHelperClass::destroyCorners() {
+void GraphicsHelperClass::destroyCorners()
+{
     m_outterborderColor = m_borderColor;
 
-    for (auto& corner : m_corners) {
-        if (corner != nullptr) {
+    for (auto& corner : m_corners)
+    {
+        if (corner != nullptr)
+        {
             corner->setParentItem(NULL);
             delete corner;
             corner = nullptr;
@@ -344,7 +367,8 @@ void GraphicsHelperClass::destroyCorners() {
     }
 }
 
-QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj) {
+QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj)
+{
     for (int i=0; i<obj.metaObject()->propertyCount(); ++i)
         if (obj.metaObject()->property(i).isStored(&obj))
             stream << obj.metaObject()->property(i).read(&obj);
@@ -354,15 +378,18 @@ QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj) {
 
     auto item = qgraphicsitem_cast<GraphicsBox*>(obj.graphicsItem);
 
-    if (item->type() == ItemType::GBox ) {
+    if (item->type() == ItemType::GBox )
+    {
         stream << item->getText();
         stream << item->getFont();
     }
-    if (obj.m_type == Diagram) {
+    if (obj.m_type == Diagram)
+    {
         item->getChart()->setProperties();
         stream << *item->getChart();
     }
-    if (obj.m_type == Barcode) {
+    if (obj.m_type == Barcode)
+    {
         item->getBarCode()->setProperties();
         stream << *item->getBarCode();
     }
@@ -370,10 +397,13 @@ QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj) {
     return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj) {
+QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj)
+{
     QVariant var;
-    for (int i=0; i<obj.metaObject()->propertyCount(); ++i) {
-        if (obj.metaObject()->property(i).isStored(&obj)) {
+    for (int i=0; i<obj.metaObject()->propertyCount(); ++i)
+    {
+        if (obj.metaObject()->property(i).isStored(&obj))
+        {
             stream >> var;
             if (!var.isNull())
                 obj.metaObject()->property(i).write(&obj, var);
@@ -381,14 +411,16 @@ QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj) {
     }
     //obj.setProperties();
 
-    for (auto& byteArray : obj.dynamicPropertyNames()) {
+    for (auto& byteArray : obj.dynamicPropertyNames())
+    {
         stream >> var;
         obj.setProperty(byteArray, QVariant(var));
     }
 
     auto item = qgraphicsitem_cast<GraphicsBox*>(obj.graphicsItem);
 
-    if (item->type() == ItemType::GBox ) {
+    if (item->type() == ItemType::GBox )
+    {
         QString text;
         stream >> text;
         item->setText(text);
@@ -396,12 +428,14 @@ QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj) {
         stream >> font;
         item->setFont(font);
     }
-    if (obj.m_type == Diagram) {
+    if (obj.m_type == Diagram)
+    {
         Chart *chart = item->getChart();
         chart = new Chart(0);
         stream >> *item->getChart();
     }
-    if (obj.m_type == Barcode) {
+    if (obj.m_type == Barcode)
+    {
         BarCode *barcode = item->getBarCode();
         barcode = new BarCode(0);
         stream >> *item->getBarCode();
