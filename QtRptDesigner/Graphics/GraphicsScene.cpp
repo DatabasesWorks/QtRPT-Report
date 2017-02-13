@@ -50,18 +50,11 @@ GraphicsScene::GraphicsScene(QObject *parent)
 //    m_backgroundItem->setPixmap(pixmap);
 //}
 
-void GraphicsScene::addItem(QGraphicsItem* item)
+void GraphicsScene::addItem(QGraphicsItem *item)
 {
-    if (item->type() == ItemType::GLine)
-    {
-        auto line = static_cast<GraphicsLine*>(item);
-        QObject::connect(line, SIGNAL(itemRemoving()), this, SLOT(itemRemoving()));
-    }
-    if (item->type() == ItemType::GBox || item->type() == ItemType::GBand)
-    {
-        auto box = static_cast<GraphicsBox*>(item);
-        QObject::connect(box, SIGNAL(itemRemoving()), this, SLOT(itemRemoving()));
-    }
+    auto helper = dynamic_cast<GraphicsHelperClass*>(item);
+    QObject::connect(helper, SIGNAL(itemRemoving()), this, SLOT(itemRemoving()));
+
     QGraphicsScene::addItem(item);
 }
 
@@ -270,16 +263,9 @@ void GraphicsScene::itemRemoving()
 
 void GraphicsScene::removeItem(QGraphicsItem* item)
 {
-    GraphicsHelperClass *helper = nullptr;
-
-    if (item->type() == ItemType::GBand || item->type() == ItemType::GBox) {
-        auto box = static_cast<GraphicsBox*>(item);
-        helper = static_cast<GraphicsHelperClass*>(box);
-    }
-    if (item->type() == ItemType::GLine) {
-        auto line = static_cast<GraphicsLine*>(item);
-        helper = static_cast<GraphicsHelperClass*>(line);
-    }
+    auto helper = dynamic_cast<GraphicsHelperClass*>(item);
+    if (helper == nullptr)
+        return;
 
     if (helper->itemInTree != nullptr) {
         auto mw = MainWindow::instance();
