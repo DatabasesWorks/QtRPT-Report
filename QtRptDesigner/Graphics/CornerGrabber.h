@@ -59,8 +59,8 @@ private:
     qreal   m_width;
     qreal   m_height;
 
-    int corner_;  // 0,1,2,3  - starting at x=0,y=0 and moving clockwise around the box
-    int mouseButtonState_;
+    int m_corner;  // 0,1,2,3  - starting at x=0,y=0 and moving clockwise around the box
+    int m_mouseButtonState;
 
 };
 

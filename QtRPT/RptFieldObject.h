@@ -113,6 +113,7 @@ private:
 };
 
 Q_DECLARE_METATYPE(RptFieldObject)
+
 QDebug operator<<(QDebug dbg, const RptFieldObject &obj);
 QDebug operator<<(QDebug dbg, const RptFieldObject *obj);
 

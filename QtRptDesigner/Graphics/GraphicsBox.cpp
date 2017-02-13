@@ -33,15 +33,15 @@ limitations under the License.
 
 GraphicsBox::GraphicsBox()
 {
-    _width = 200;
-    _height = 20;
+    m_width = 200;
+    m_height = 20;
 
     m_XcornerGrabBuffer = -3;
     m_YcornerGrabBuffer = -3;
-    _drawingWidth = (  _width -   m_XcornerGrabBuffer);
-    _drawingHeight = ( _height -  m_YcornerGrabBuffer);
-    _drawingOrigenX = ( m_XcornerGrabBuffer);
-    _drawingOrigenY = ( m_YcornerGrabBuffer);
+    m_drawingWidth = (  m_width -   m_XcornerGrabBuffer);
+    m_drawingHeight = ( m_height -  m_YcornerGrabBuffer);
+    m_drawingOrigenX = ( m_XcornerGrabBuffer);
+    m_drawingOrigenY = ( m_YcornerGrabBuffer);
 
     m_corners.resize(8);
     for (auto& corner : m_corners)
@@ -76,8 +76,9 @@ GraphicsBox::GraphicsBox()
     this->setAcceptHoverEvents(true);
 }
 
-void GraphicsBox::setWidth(qreal value) {
-    _width = value;
+void GraphicsBox::setWidth(qreal value)
+{
+    m_width = value;
     adjustSize(0,0);
     setCornerPositions();
     if (this->scene() != nullptr)
@@ -86,7 +87,7 @@ void GraphicsBox::setWidth(qreal value) {
 
 void GraphicsBox::setHeight(qreal value)
 {
-    _height = value;
+    m_height = value;
     adjustSize(0,0);
     setCornerPositions();
     if (this->scene() != nullptr)
@@ -95,20 +96,20 @@ void GraphicsBox::setHeight(qreal value)
 
 void GraphicsBox::adjustSize(int x, int y)
 {
-    _width += x;
-    _height += y;
+    m_width += x;
+    m_height += y;
 
-    _drawingWidth  =  _width + m_XcornerGrabBuffer;
-    _drawingHeight =  _height + m_YcornerGrabBuffer;
+    m_drawingWidth  =  m_width + m_XcornerGrabBuffer;
+    m_drawingHeight =  m_height + m_YcornerGrabBuffer;
 
     if (m_chart != nullptr)
     {
-        m_chart->resize(_width, _height);
+        m_chart->resize(m_width, m_height);
     }
     if (m_crossTab != nullptr)
     {
-        m_crossTab->rect.setHeight(_height);
-        m_crossTab->rect.setWidth(_width);
+        m_crossTab->rect.setHeight(m_height);
+        m_crossTab->rect.setWidth(m_width);
     }
 }
 
@@ -203,11 +204,11 @@ bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) {
         int xMoved = corner->mouseDownX - x;
         int yMoved = corner->mouseDownY - y;
 
-        int newWidth = _width + ( XaxisSign * xMoved);
-        int newHeight = _height + (YaxisSign * yMoved) ;
+        int newWidth = m_width + ( XaxisSign * xMoved);
+        int newHeight = m_height + (YaxisSign * yMoved) ;
 
-        int deltaWidth  =   newWidth - _width ;
-        int deltaHeight =   newHeight - _height ;
+        int deltaWidth  =   newWidth - m_width ;
+        int deltaHeight =   newHeight - m_height ;
 
         adjustSize(  deltaWidth ,   deltaHeight);
 
@@ -379,25 +380,26 @@ void GraphicsBox::createCorners() {
 
 void GraphicsBox::setCornerPositions() {
     if (m_corners[0] != nullptr)  //top-left
-        m_corners[0]->setPos(_drawingOrigenX, _drawingOrigenY);
+        m_corners[0]->setPos(m_drawingOrigenX, m_drawingOrigenY);
     if (m_corners[1] != nullptr)
-        m_corners[1]->setPos(_drawingWidth,  _drawingOrigenY);
+        m_corners[1]->setPos(m_drawingWidth,  m_drawingOrigenY);
     if (m_corners[2] != nullptr)
-        m_corners[2]->setPos(_drawingWidth , _drawingHeight);
+        m_corners[2]->setPos(m_drawingWidth , m_drawingHeight);
     if (m_corners[3] != nullptr)
-        m_corners[3]->setPos(_drawingOrigenX, _drawingHeight);
+        m_corners[3]->setPos(m_drawingOrigenX, m_drawingHeight);
     if (m_corners[4] != nullptr) //bottom-center
-        m_corners[4]->setPos((_drawingWidth-_drawingOrigenX)/2, _drawingHeight);
+        m_corners[4]->setPos((m_drawingWidth - m_drawingOrigenX)/2, m_drawingHeight);
     if (m_corners[5] != nullptr) //top-center
-        m_corners[5]->setPos((_drawingWidth-_drawingOrigenX)/2, _drawingOrigenY);
+        m_corners[5]->setPos((m_drawingWidth - m_drawingOrigenX)/2, m_drawingOrigenY);
     if (m_corners[6] != nullptr) //left-center
-        m_corners[6]->setPos(_drawingOrigenX, (_drawingHeight+_drawingOrigenY)/2);
+        m_corners[6]->setPos(m_drawingOrigenX, (m_drawingHeight + m_drawingOrigenY)/2);
     if (m_corners[7] != nullptr) //rigth-center
-        m_corners[7]->setPos(_drawingWidth, (_drawingHeight+_drawingOrigenY)/2);
+        m_corners[7]->setPos(m_drawingWidth, (m_drawingHeight + m_drawingOrigenY)/2);
 }
 
-QRectF GraphicsBox::boundingRect() const {
-    return QRectF(0,0,_width-1,_height);
+QRectF GraphicsBox::boundingRect() const
+{
+    return QRectF(0, 0, m_width-1, m_height);
 }
 
 void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
@@ -431,7 +433,7 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
 
         painter->drawLine(QPointF(0,20),  p2R);
         painter->drawText(textRect,Qt::AlignCenter,m_text);
-        painter->drawPixmap(QRect(_drawingWidth-18,2,16,16), m_bandPixmap);
+        painter->drawPixmap(QRect(m_drawingWidth-18,2,16,16), m_bandPixmap);
     }
     if (type() == ItemType::GBox) {
         QRectF rc (QPointF(0,0), QPointF(getWidth(), getHeight()));
@@ -635,6 +637,7 @@ void GraphicsBox::mousePressEvent(QGraphicsSceneDragDropEvent *event) {
 
 void GraphicsBox::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
     Q_UNUSED(event);
+
     edit();
     //QGraphicsItem::mouseDoubleClickEvent(event);
 }
@@ -784,8 +787,8 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
 
     elem.setAttribute("top",this->m_location.y()-20);
     elem.setAttribute("left",this->m_location.x());
-    elem.setAttribute("width",this->_width);
-    elem.setAttribute("height",this->_height);
+    elem.setAttribute("width",this->m_width);
+    elem.setAttribute("height",this->m_height);
 
     //---FROM TCONTAINERFIELD
     if (this->m_type == Text) {
@@ -937,7 +940,7 @@ void GraphicsBox::setFieldType(FieldType value) {
             m_chart->setObjectName("chart");
             m_chart->setVisible(false);
             m_chart->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-            m_chart->resize(_width, _height);
+            m_chart->resize(m_width, m_height);
             //if (xmlDoc != 0)
             //    m_chart->loadXML(xmlDoc->createElement("TContainerField"));
             break;
@@ -979,28 +982,35 @@ void GraphicsBox::setFieldType(FieldType value) {
     graphicsItem->setZValue(11);
 }
 
-void GraphicsBox::setText(QString value) {
+void GraphicsBox::setText(QString value)
+{
     m_text = value;
 }
 
-QString GraphicsBox::getText() {
+QString GraphicsBox::getText()
+{
     return m_text;
 }
 
-void GraphicsBox::setBorderVisible(bool value) {
+void GraphicsBox::setBorderVisible(bool value)
+{
     m_borderIsVisible = value;
 }
 
-bool GraphicsBox::borderIsVisible() {
+bool GraphicsBox::borderIsVisible()
+{
     return m_borderIsVisible;
 }
 
-void GraphicsBox::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
+void GraphicsBox::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
     m_menu->popup(event->screenPos());
 }
 
-void GraphicsBox::setMenu(QMenu *menu_) {
-    if (this->type() == ItemType::GBand) return;
+void GraphicsBox::setMenu(QMenu *menu_)
+{
+    if (this->type() == ItemType::GBand)
+        return;
 
     QIcon icon;
     auto actContEdit = new QAction(tr("Edit"),this);
@@ -1034,58 +1044,71 @@ void GraphicsBox::setMenu(QMenu *menu_) {
     m_menu->addAction(actContMoveBack);
 }
 
-BarCode::BarcodeTypes GraphicsBox::getBarcodeType() {
+BarCode::BarcodeTypes GraphicsBox::getBarcodeType()
+{
     return m_barcode->getBarcodeType();
 }
 
-void GraphicsBox::setBarcodeType(BarCode::BarcodeTypes value) {
+void GraphicsBox::setBarcodeType(BarCode::BarcodeTypes value)
+{
     m_barcode->setBarcodeType(value);
     update();
 }
 
-BarCode::FrameTypes GraphicsBox::getBarcodeFrameType() {
+BarCode::FrameTypes GraphicsBox::getBarcodeFrameType()
+{
     return m_barcode->getFrameType();
 }
 
-void GraphicsBox::setBarcodeFrameType(BarCode::FrameTypes value) {
+void GraphicsBox::setBarcodeFrameType(BarCode::FrameTypes value)
+{
     m_barcode->setFrameType(value);
     update();
 }
 
-int GraphicsBox::getBarcodeHeight() {
+int GraphicsBox::getBarcodeHeight()
+{
     return m_barcode->getHeight();
 }
 
-void GraphicsBox::setBarcodeHeight(int value) {
+void GraphicsBox::setBarcodeHeight(int value)
+{
     m_barcode->setHeight(value);
     update();
 }
 
-void GraphicsBox::setImage(QPixmap p) {
-    m_pixmap = p;
+void GraphicsBox::setImage(QPixmap pixmap)
+{
+    m_pixmap = pixmap;
 }
 
-QPixmap GraphicsBox::getImage() {
+QPixmap GraphicsBox::getImage()
+{
     return m_pixmap;
 }
 
-QString GraphicsBox::getImgFormat() {
+QString GraphicsBox::getImgFormat()
+{
     return m_imgFormat;
 }
 
-void GraphicsBox::setImgFromat(QString value) {
+void GraphicsBox::setImgFromat(QString value)
+{
     m_imgFormat = value;
 }
 
-RptCrossTabObject *GraphicsBox::getCrossTab() {
+RptCrossTabObject *GraphicsBox::getCrossTab()
+{
     return m_crossTab;
 }
 
-Chart *GraphicsBox::getChart() {
+Chart *GraphicsBox::getChart()
+{
     return m_chart;
 }
 
-BarCode *GraphicsBox::getBarCode() {
+BarCode *GraphicsBox::getBarCode()
+{
     return m_barcode;
 }
 

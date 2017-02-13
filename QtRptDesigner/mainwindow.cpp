@@ -649,14 +649,16 @@ void MainWindow::openDBGroupProperty() {
     }
 }
 
-void MainWindow::updateRecentFileActions() {
+void MainWindow::updateRecentFileActions()
+{
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
     QStringList files = settings.value("recentFileList").toStringList();
 
     int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);
 
-    for (int i = 0; i < numRecentFiles; ++i) {
+    for (int i = 0; i < numRecentFiles; ++i)
+    {
         QString text = tr("&%1 %2").arg(i + 1).arg(QFileInfo(files[i]).fileName());
         recentFileActs[i]->setText(text);
         recentFileActs[i]->setData(files[i]);
@@ -668,15 +670,18 @@ void MainWindow::updateRecentFileActions() {
     separatorAct->setVisible(numRecentFiles > 0);
 }
 
-void MainWindow::openRecentFile() {
+void MainWindow::openRecentFile()
+{
     auto action = qobject_cast<QAction *>(sender());
-    if (action) {
+    if (action)
+    {
         fileName = action->data().toString();
         openFile();
     }
 }
 
-void MainWindow::setCurrentFile(const QString &fileName) {
+void MainWindow::setCurrentFile(const QString &fileName)
+{
     setWindowFilePath(fileName);
 
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);

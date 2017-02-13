@@ -10,8 +10,8 @@ CornerGrabber::CornerGrabber(QGraphicsItem *parent,  int corner)
     m_outterborderPen(),
     m_width(6),
     m_height(6),
-    corner_(corner),
-    mouseButtonState_(kMouseReleased)
+    m_corner(corner),
+    m_mouseButtonState(kMouseReleased)
 {
     setParentItem(parent);
 
@@ -23,17 +23,17 @@ CornerGrabber::CornerGrabber(QGraphicsItem *parent,  int corner)
 
 void CornerGrabber::setMouseState(int s)
 {
-    mouseButtonState_ = s;
+    m_mouseButtonState = s;
 }
 
 int CornerGrabber::getMouseState()
 {
-    return mouseButtonState_;
+    return m_mouseButtonState;
 }
 
 int CornerGrabber::getCorner()
 {
-    return corner_;
+    return m_corner;
 }
 
 // we have to implement the mouse events to keep the linker happy,
@@ -115,7 +115,7 @@ void CornerGrabber::setCursorToResize(bool on)
 {
     if (on)
     {
-        switch(corner_)
+        switch(m_corner)
         {
         case 0:
         case 2:

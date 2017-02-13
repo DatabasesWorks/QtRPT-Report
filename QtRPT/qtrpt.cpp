@@ -381,7 +381,8 @@ Qt::PenStyle QtRPT::getPenStyle(QString value)
  Return field's type of given QDomElement \a e which represents a field
  \sa getFieldTypeName()
  */
-FieldType QtRPT::getFieldType(QDomElement e) {
+FieldType QtRPT::getFieldType(QDomElement e)
+{
     if (e.attribute("type","label") == "barcode")
         return Barcode;
     else if (e.attribute("type","label") == "reactangle")
@@ -418,8 +419,10 @@ FieldType QtRPT::getFieldType(QDomElement e) {
  Return the field's type name for given \a type
  \sa getFieldType()
  */
-QString QtRPT::getFieldTypeName(FieldType type) {
-    switch (type) {
+QString QtRPT::getFieldTypeName(FieldType type)
+{
+    switch (type)
+    {
         case Reactangle: return "reactangle";
         case RoundedReactangle: return "roundedReactangle";
         case Circle: return "circle";
@@ -450,7 +453,8 @@ QString QtRPT::getFieldTypeName(FieldType type) {
     \li Reactangle
  \endlist
  */
-QList<FieldType> QtRPT::getDrawingFields() {
+QList<FieldType> QtRPT::getDrawingFields()
+{
     QList<FieldType> set;
     set << Circle << Triangle << Rhombus << RoundedReactangle << Reactangle;
     return set;
@@ -777,20 +781,23 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
         }
     }
     if (fieldType == CrossTab) {
-        if (draw) {
-            fieldObject->crossTab->buildMatrix();
-            int bandTop_ = bandTop;
+        if (draw)
+        {
+            if (curPage == 1)
+                fieldObject->crossTab->buildMatrix();
+
             int tmpRowN = 0;  //fact row number
             int prevRow = 0;  //previous row number
-            int page = 0;     //page number
-            int nmr = 0;
 
             bool isPageHeader = fieldObject->parentBand->type == BandType::PageHeader;
             bool isPageFooter = fieldObject->parentBand->type == BandType::PageFooter;
-            bool isReportTitle = fieldObject->parentBand->type == BandType::ReportTitle;
 
-            for (auto field : fieldObject->crossTab->fieldList)
+            unsigned startFrom = fieldObject->crossTab->processedCount();
+            unsigned fieldsCount = fieldObject->crossTab->fieldList.size();
+
+            for (unsigned nmr = startFrom; nmr < fieldsCount; nmr++)
             {
+                auto field = fieldObject->crossTab->fieldList[nmr];
                 int row = fieldObject->crossTab->fieldRow(field);
 
                 if (prevRow != row)
@@ -804,48 +811,25 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
                 //if (y > ph - mb - mt - fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
                 if (y > /*fieldObject->rect.y() +*/ fieldObject->rect.height() - fieldObject->crossTab->rowHeight() )
                 {
-                    // we create a new page only for the particular types of the bands
-                    if (isPageHeader || isPageFooter)
+                    // we create a new page only for the particular types of the bands.
+                    // And only if No new page will be created from other places
+                    if ((isPageHeader || isPageFooter) && curPage >= totalPage)
                     {
-                        bandTop_ = 0;
                         tmpRowN = 0;
-                        page += 1;
-                        //newPage(printer, bandTop_, draw);
-                        printer->newPage();
-
-                        y = fieldObject->crossTab->rowHeight() * tmpRowN;  //update Y value
+                        newPage(printer, bandTop, draw);
+                        return;
                     }
-                    else  //for other bands, if band cant fit the fields - we just ignore its
+                    else
                     {
                         break;
                     }
                 }
 
-                if (page == 0)
-                {
-                    field->rect.setTop(fieldObject->rect.y() + y );
-                }
-                else
-                {
-                    //if (isReportTitle)
-                        field->rect.setTop( y );
-                }
-
+                field->rect.setTop(fieldObject->rect.y() + y );
                 field->rect.setHeight(fieldObject->crossTab->rowHeight());
-                drawFields(field, bandTop_, true);
+                drawFields(field, bandTop, true);
 
-                nmr += 1;
-
-                /*
-                if (type == ReportTitle)     s_type = "ReportTitle";
-                if (type == PageHeader)      s_type = "PageHeader";
-                if (type == MasterData)      s_type = "MasterData";
-                if (type == PageFooter)      s_type = "PageFooter";
-                if (type == ReportSummary)   s_type = "ReportSummary";
-                if (type == MasterFooter)    s_type = "MasterFooter";
-                if (type == MasterHeader)    s_type = "MasterHeader";
-                if (type == DataGroupHeader) s_type = "DataGroupHeader";
-                if (type == DataGroupFooter) s_type = "DataGroupFooter";*/
+                fieldObject->crossTab->setProcessedCount(nmr+1);
             }
         }
     }
@@ -1625,7 +1609,7 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName) {
         actExpToXlsx->setObjectName("actExpToXlsx");
         connect(actExpToXlsx, SIGNAL(triggered()), SLOT(exportTo()));
 
-        QList<QToolBar *> l1 = preview.findChildren<QToolBar*>();
+        QList<QToolBar*> l1 = preview.findChildren<QToolBar*>();
         l1.at(0)->addAction(actExpToPdf);
         l1.at(0)->addAction(actExpToHtml);
         l1.at(0)->addAction(actExpToXlsx);
@@ -1786,14 +1770,18 @@ void QtRPT::setPageSettings(QPrinter* printer, int pageReport) {
     }
 }
 
-void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport) {
+void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
+{
     setPageSettings(printer, pageReport);
     int y = 0;
 
     drawBackground();
-    if (pageReport > 0) {
+    if (pageReport > 0)
+    {
         newPage(printer, y, draw, true);
-    } else {
+    }
+    else
+    {
         processRTitle(y,draw);
         processPHeader(y,draw);
     }
@@ -1854,12 +1842,14 @@ bool QtRPT::allowNewPage(bool draw, int curPage_)
             return false;
         if (toPage != 0 && curPage_ > toPage )
             return false;
+        return true;
     }
     else
         return false;
 }
 
-void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage) {
+void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage)
+{
     if (allowNewPage(draw, curPage+1))
     {
         printer->newPage();
@@ -2021,25 +2011,35 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
     }
 }
 
-void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int pageReport) {
-    if (!recordCount.isEmpty()) {
-        if (pageReport < recordCount.size() && recordCount.at(pageReport) > 0) {
-            if (pageList.at(m_pageReport)->getBand(MasterData) != nullptr) {
-                for (int i = 0; i < recordCount.at(pageReport); i++) {
+void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int pageReport)
+{
+    if (!recordCount.isEmpty())
+    {
+        if (pageReport < recordCount.size() && recordCount.at(pageReport) > 0)
+        {
+            if (pageList.at(m_pageReport)->getBand(MasterData) != nullptr)
+            {
+                for (int i = 0; i < recordCount.at(pageReport); i++)
+                {
                     m_recNo = i;
 
                     bool found = false;
                     //If report with groups, we checking that current line in the current group
-                    if (!listIdxOfGroup.isEmpty()) {
-                        for (auto idxGroup : listIdxOfGroup) {
+                    if (!listIdxOfGroup.isEmpty())
+                    {
+                        for (auto idxGroup : listIdxOfGroup)
+                        {
                             if (idxGroup == i)
                                 found = true;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         found = true;
                     }
 
-                    if (found) {
+                    if (found)
+                    {
                         mg_recNo += 1;
                         int yPF = 0;
                         if (pageList.at(pageReport)->getBand(PageFooter) != nullptr)
@@ -2050,8 +2050,10 @@ void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int pageRepo
                             yMF = pageList.at(pageReport)->getBand(MasterFooter)->height;
 
                         drawBandRow(pageList.at(pageReport)->getBand(MasterData), y, false);
-                        if (y + pageList.at(pageReport)->getBand(MasterData)->realHeight > ph-mb-mt-yPF-yMF) {
-                            if (m_printMode != QtRPT::Html) {
+                        if (y + pageList.at(pageReport)->getBand(MasterData)->realHeight > ph-mb-mt-yPF-yMF)
+                        {
+                            if (m_printMode != QtRPT::Html)
+                            {
                                 newPage(printer, y, draw);
                                 processMHeader(y,draw);
                             }
@@ -2061,6 +2063,7 @@ void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int pageRepo
                             drawBandRow(pageList.at(pageReport)->getBand(MasterData), y, true);
                         else
                             fillListOfValue(pageList.at(pageReport)->getBand(MasterData));
+
                         y += pageList.at(m_pageReport)->getBand(MasterData)->realHeight;
                     }
                 }

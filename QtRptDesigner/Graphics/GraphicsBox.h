@@ -54,8 +54,8 @@ public:
     bool isSelected();
     void setWidth(qreal value);
     void setHeight(qreal value);
-    qreal getWidth() {return _width;}
-    qreal getHeight() {return _height;}
+    qreal getWidth() {return m_width;}
+    qreal getHeight() {return m_height;}
     GraphicsBox *clone();
     void loadParamFromXML(QDomElement e);
     QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
@@ -78,7 +78,7 @@ public:
     bool getTextWrap() {return m_textWrap;}
     QString getFormatString() {return m_formatString;}
     void setFormatString(QString value) {m_formatString = value;}
-    void setImage(QPixmap p);
+    void setImage(QPixmap pixmap);
     QPixmap getImage();
     QString getImgFormat();
     void setImgFromat(QString value);
@@ -99,10 +99,10 @@ public:
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    qreal   _drawingWidth;
-    qreal   _drawingHeight;
-    qreal   _drawingOrigenX;
-    qreal   _drawingOrigenY;
+    qreal   m_drawingWidth;
+    qreal   m_drawingHeight;
+    qreal   m_drawingOrigenX;
+    qreal   m_drawingOrigenY;
 
     void createCorners();
     void setCornerPositions();
@@ -124,8 +124,8 @@ private:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void adjustSize(int x, int y);
 
-    qreal   _width;
-    qreal   _height;
+    qreal   m_width;
+    qreal   m_height;
 
     QString m_text;
     bool m_borderIsVisible;

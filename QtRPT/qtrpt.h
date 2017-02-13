@@ -90,6 +90,7 @@ static QList<int> listIdxOfGroup;
 
 {
     Q_OBJECT
+
     friend class RptFieldObject;
     friend class RptBandObject;
 
@@ -147,7 +148,7 @@ private:
     int totalPage;
     int m_orientation;
     QPrintPreviewWidget *pr;
-    QList<QAction *> lst;
+    QList<QAction*> lst;
     QDomDocument xmlDoc;
     QDomNode getBand(BandType type, QDomElement docElem);
     void drawBandRow(RptBandObject *band, int bandTop, bool allowDraw = true);
@@ -187,7 +188,7 @@ private:
     void openDataSource(int pageReport);
     void setUserSqlConnection(int pageReport, const RptSqlConnection &SqlConnection);
     void getUserSqlConnection(int pageReport, RptSqlConnection &SqlConnection);
-    QVector <RptSql *> rtpSqlVector;
+    QVector <RptSql*> rtpSqlVector;
     QVector <RptSqlConnection> userSqlConnection;
     QString m_sqlQuery;
     QString m_HTML;
@@ -195,7 +196,8 @@ private:
     RptCrossTabObject *crossTab;
 
     void makeReportObjectStructure();
-    enum PrintMode {
+    enum PrintMode
+    {
         Printer = 0,
         Pdf = 1,
         Html = 2,

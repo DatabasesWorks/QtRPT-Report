@@ -35,12 +35,12 @@ class RptFieldObject;
 struct RptTabElement {
     RptFieldObject *fieldObject;
     QVariant value;
-    int left;
-    int top;
-    int height;
-    int width;
-    int corrLeft;
-    int corrTop;
+    unsigned left;
+    unsigned top;
+    unsigned height;
+    unsigned width;
+    unsigned corrLeft;
+    unsigned corrTop;
 };
 
 typedef QVector<RptTabElement> VectorRptTabElement;
@@ -58,6 +58,8 @@ public:
     void setRowCount(int value);
     int rowHeight();
     void setRowHeight(int height);
+    int processedCount();
+    void setProcessedCount(int value);
     int fieldRow(RptFieldObject* field);
     int fieldCol(RptFieldObject* field);
 
@@ -74,9 +76,10 @@ public:
     void resortMatrix();
 
 private:
-    int m_colCount;
-    int m_rowCount;
-    int m_rowHeight;
+    unsigned m_colCount;
+    unsigned m_rowCount;
+    unsigned m_rowHeight;
+    unsigned m_processedCount;
     //****
     bool colHeaderVisible;
     bool rowHeaderVisible;

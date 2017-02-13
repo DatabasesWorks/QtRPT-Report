@@ -431,12 +431,14 @@ QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj)
     if (obj.m_type == Diagram)
     {
         Chart *chart = item->getChart();
+        Q_UNUSED(chart);
         chart = new Chart(0);
         stream >> *item->getChart();
     }
     if (obj.m_type == Barcode)
     {
         BarCode *barcode = item->getBarCode();
+        Q_UNUSED(barcode);
         barcode = new BarCode(0);
         stream >> *item->getBarCode();
     }

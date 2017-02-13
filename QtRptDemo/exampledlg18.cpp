@@ -42,7 +42,7 @@ void ExampleDlg18::print()
 
     QString fileName = dir.absolutePath()+"/examples_report/example18.xml";
     auto report = QtRPT::createSPtr(this);
-    report->recordCount << 2;
+    //report->recordCount << 290;
 
     if (report->loadReport(fileName) == false)
         qDebug()<<"Report file not found";
@@ -62,7 +62,7 @@ void ExampleDlg18::setField(RptFieldObject &fieldObject)
     if (fieldObject.fieldType == FieldType::CrossTab)
     {
         fieldObject.crossTab->setColCount(3);
-        fieldObject.crossTab->setRowCount(150);
+        fieldObject.crossTab->setRowCount(50);
     }
     if (fieldObject.parentCrossTab != nullptr)
     {

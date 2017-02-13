@@ -34,6 +34,7 @@ RptCrossTabObject::RptCrossTabObject()
     m_rowHeight = 20;
     m_rowCount = 3;
     m_colCount = 3;
+    m_processedCount = 0;
 
     qRegisterMetaType<RptCrossTabObject>( "RptCrossTabObject" );
 }
@@ -68,6 +69,16 @@ void RptCrossTabObject::setRowCount(int value)
     m_rowCount = value;
 }
 
+int RptCrossTabObject::processedCount()
+{
+    return m_processedCount;
+}
+
+void RptCrossTabObject::setProcessedCount(int value)
+{
+    m_processedCount = value;
+}
+
 void RptCrossTabObject::buildMatrix()
 {
     float fieldWidth = rect.width();
@@ -77,12 +88,12 @@ void RptCrossTabObject::buildMatrix()
     if (m_rowCount == 0)
         return;
 
-    fieldWidth = rect.width()/colCount();
+    fieldWidth  = rect.width()/colCount();
     fieldheight = rowHeight();
 
-    for (int row=0; row < m_rowCount; row++)
+    for (unsigned row=0; row < m_rowCount; row++)
     {
-        for (int col=0; col < m_colCount; col++)
+        for (unsigned col=0; col < m_colCount; col++)
         {
             auto h1 = new RptFieldObject();
             h1->parentCrossTab = this;
