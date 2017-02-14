@@ -936,7 +936,7 @@ void GraphicsBox::setFieldType(FieldType value) {
             this->setWidth(300);
             this->setHeight(300);
 
-            m_chart = new Chart(0);
+            m_chart = SPtrChart(new Chart(nullptr));
             m_chart->setObjectName("chart");
             m_chart->setVisible(false);
             m_chart->setAttribute(Qt::WA_TransparentForMouseEvents, true);
@@ -946,7 +946,7 @@ void GraphicsBox::setFieldType(FieldType value) {
             break;
         }
         case Barcode: {
-            m_barcode = new BarCode(0);
+            m_barcode = SPtrBarCode(new BarCode(nullptr));
             this->setWidth(200);
             this->setHeight(100);
             break;
@@ -1102,21 +1102,18 @@ RptCrossTabObject *GraphicsBox::getCrossTab()
     return m_crossTab;
 }
 
-Chart *GraphicsBox::getChart()
+SPtrChart GraphicsBox::getChart()
 {
     return m_chart;
 }
 
-BarCode *GraphicsBox::getBarCode()
+SPtrBarCode GraphicsBox::getBarCode()
 {
     return m_barcode;
 }
 
-GraphicsBox::~GraphicsBox() {
-    if (m_barcode != nullptr)
-        delete m_barcode;
+GraphicsBox::~GraphicsBox()
+{
     if (m_crossTab != nullptr)
         delete m_crossTab;
-    if (m_chart != nullptr)
-        delete m_chart;
 }

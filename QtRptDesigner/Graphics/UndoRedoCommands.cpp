@@ -198,7 +198,7 @@ void ParamCommand::undo()
     {
         QDataStream in(pair.oldBArray);
         auto second = qobject_cast<GraphicsHelperClass *>(pair.gHelper);
-        if (second == 0)
+        if (second == nullptr)
             continue;
         in >> *second;
         pair.gHelper = second;

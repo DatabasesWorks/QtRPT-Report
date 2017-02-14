@@ -42,7 +42,8 @@ enum ChartParam {
     AutoFillData = 6
 };
 
-struct GraphParam {
+struct GraphParam
+{
     QColor color;
     float valuePercent;
     float valueReal;
@@ -52,6 +53,7 @@ struct GraphParam {
 };
 
 typedef QList<GraphParam> GraphParamList;
+
 Q_DECLARE_METATYPE(GraphParam)
 Q_DECLARE_METATYPE(GraphParamList)
 Q_DECLARE_METATYPE(QDomElement)
@@ -100,5 +102,6 @@ public slots:
 
 };
 
+using SPtrChart = QSharedPointer<Chart>;
 
 #endif // CHART_H

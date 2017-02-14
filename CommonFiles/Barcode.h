@@ -140,4 +140,6 @@ public slots:
 
 };
 
+using SPtrBarCode = QSharedPointer<BarCode>;
+
 #endif // BARCODE_H

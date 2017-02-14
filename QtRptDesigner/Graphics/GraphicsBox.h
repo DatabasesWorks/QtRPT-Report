@@ -93,8 +93,8 @@ public:
     QString getHighlighting() {return m_highlighting;}
     void setHighlighting(QString value) {m_highlighting = value;}
     RptCrossTabObject *getCrossTab();
-    Chart *getChart();
-    BarCode *getBarCode();
+    SPtrChart getChart();
+    SPtrBarCode getBarCode();
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -138,8 +138,8 @@ private:
     bool m_textDirection;
     bool m_textWrap;
     int m_radius;
-    BarCode* m_barcode;
-    Chart* m_chart;
+    SPtrBarCode m_barcode;
+    SPtrChart m_chart;
     RptCrossTabObject* m_crossTab;
 
     QString m_formatString;

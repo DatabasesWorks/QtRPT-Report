@@ -59,7 +59,8 @@ void GraphicsHelperClass::setObjectName(const QString &name)
 
 QColor GraphicsHelperClass::getColorValue(Command param)
 {
-    switch(param) {
+    switch(param)
+    {
         case FontColor:
             return m_fontColor;
         case BackgroundColor:
@@ -185,7 +186,8 @@ void GraphicsHelperClass::setBorder(Command command, QVariant values, bool yesFr
         }
         case FrameStyle: {
             BorderStyle borderStyle = (BorderStyle)values.toInt();
-            switch(borderStyle) {
+            switch(borderStyle)
+            {
                 case Solid:
                     m_borderStyle = Qt::SolidLine;
                     break;
@@ -430,16 +432,10 @@ QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj)
     }
     if (obj.m_type == Diagram)
     {
-        Chart *chart = item->getChart();
-        Q_UNUSED(chart);
-        chart = new Chart(0);
         stream >> *item->getChart();
     }
     if (obj.m_type == Barcode)
     {
-        BarCode *barcode = item->getBarCode();
-        Q_UNUSED(barcode);
-        barcode = new BarCode(0);
         stream >> *item->getBarCode();
     }
     //obj.setParamFromProperties();
