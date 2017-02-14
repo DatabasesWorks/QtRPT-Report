@@ -32,7 +32,8 @@ using namespace QtRptName;
 
 class RptFieldObject;
 
-struct RptTabElement {
+struct RptTabElement
+{
     RptFieldObject *fieldObject;
     QVariant value;
     unsigned left;
@@ -63,11 +64,6 @@ public:
     int fieldRow(RptFieldObject* field);
     int fieldCol(RptFieldObject* field);
 
-    bool isColHeaderVisible() const {return colHeaderVisible;}
-    bool isRowHeaderVisible() const {return rowHeaderVisible;}
-    void setColHeaderVisible(bool value) {colHeaderVisible = value;}
-    void setRowHeaderVisible(bool value) {rowHeaderVisible = value;}
-
     void buildMatrix();
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
@@ -80,9 +76,7 @@ private:
     unsigned m_rowCount;
     unsigned m_rowHeight;
     unsigned m_processedCount;
-    //****
-    bool colHeaderVisible;
-    bool rowHeaderVisible;
+
     bool colTotalExists;
     bool rowTotalExists;
 
@@ -92,7 +86,10 @@ private:
 
 };
 
+using SPtrCrossTab = QSharedPointer<RptCrossTabObject>;
+
 Q_DECLARE_METATYPE(RptCrossTabObject)
+
 QDebug operator<<(QDebug dbg, const RptCrossTabObject &obj);
 QDebug operator<<(QDebug dbg, const RptCrossTabObject *obj);
 

@@ -34,7 +34,7 @@ class ReportBand : public GraphicsBox
 public:
     explicit ReportBand(BandType type = ReportTitle);
     int type() const Q_DECL_OVERRIDE { return ItemType::GBand; }
-    void setMenu(QMenu *menu_);
+    void setMenu(QMenu *menu);
     qreal scale;
     void setHeight(qreal value);
     QString getGroupingField();

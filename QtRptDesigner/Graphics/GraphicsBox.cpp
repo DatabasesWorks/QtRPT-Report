@@ -402,7 +402,8 @@ QRectF GraphicsBox::boundingRect() const
     return QRectF(0, 0, m_width-1, m_height);
 }
 
-void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
+void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+{
     QBrush brush2(m_backgroundColor,Qt::SolidPattern);
 
     m_outterborderPen.setCapStyle(Qt::RoundCap);
@@ -418,7 +419,8 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
 
     QRectF rcT (QPointF(2,0), QPointF(getWidth(), getHeight()));
 
-    if (type() == ItemType::GBand) {
+    if (type() == ItemType::GBand)
+    {
         QRectF rc (QPointF(0,0), QPointF(getWidth()-1, getHeight()));
         painter->drawRect(rc);
 
@@ -435,9 +437,11 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
         painter->drawText(textRect,Qt::AlignCenter,m_text);
         painter->drawPixmap(QRect(m_drawingWidth-18,2,16,16), m_bandPixmap);
     }
-    if (type() == ItemType::GBox) {
+    if (type() == ItemType::GBox)
+    {
         QRectF rc (QPointF(0,0), QPointF(getWidth(), getHeight()));
-        switch(this->getFieldType()) {
+        switch(this->getFieldType())
+        {
             case Text:
             case TextImage:
                 {
@@ -580,44 +584,7 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
                                         m_crossTab->rect.right(), y));
 
                 painter->drawLines(lines.data(), lines.size());
-
                 painter->setPen(QPen( getColorValue(BorderColor), 1, Qt::SolidLine, Qt::RoundCap));
-
-
-
-                /*for (int col=0; col<m_crossTab->colCount()+1; col++) {
-                    QPoint p1(col*fieldWidth, 0),
-                           p2(col*fieldWidth, this->getHeight());
-                    if (col != m_crossTab->colCount() )
-                        painter->drawLine(p1,p2);
-                    else {
-                        QPoint p1(this->getWidth(), 0),
-                               p2(this->getWidth(), this->getHeight());
-                        painter->drawLine(p1,p2);
-                    }
-
-                    if (m_crossTab->isColHeaderVisible()) {
-                        if (col<m_crossTab->colDataCount()) {
-                            int tmpCol = col;
-                            if (m_crossTab->isRowHeaderVisible()) {
-                                tmpCol += 1;
-                            }
-
-                            QString col_txt = m_crossTab->getColName(col);
-                            QPoint p1(tmpCol*fieldWidth+posInCell_H, posInCell_V);
-                            painter->drawText(p1,col_txt);
-                        }
-
-                        //Col "total" - total per row
-                        if (m_crossTab->isRowTotalVisible()) {
-                            if (col == m_crossTab->colCount()) {
-                                QPoint p1((m_crossTab->colCount()-1) * fieldWidth+posInCell_H, posInCell_V);
-                                painter->drawText(p1,tr("Total"));
-                            }
-                        }
-                    }
-                }*/
-
                 break;
             }
             default: {
@@ -627,37 +594,43 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
     }
 }
 
-void GraphicsBox::mouseMoveEvent(QGraphicsSceneDragDropEvent *event) {
+void GraphicsBox::mouseMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
     event->setAccepted(false);
 }
 
-void GraphicsBox::mousePressEvent(QGraphicsSceneDragDropEvent *event) {
+void GraphicsBox::mousePressEvent(QGraphicsSceneDragDropEvent *event)
+{
     event->setAccepted(false);
 }
 
-void GraphicsBox::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+void GraphicsBox::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
     Q_UNUSED(event);
 
     edit();
     //QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
-QVariant GraphicsBox::itemChange(GraphicsItemChange change, const QVariant &value) {
-    if (change == ItemPositionChange) {
-        GraphicsScene *m_scene = qobject_cast<GraphicsScene *>(scene());
-        if (m_scene) {
+QVariant GraphicsBox::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemPositionChange)
+    {
+        auto m_scene = qobject_cast<GraphicsScene *>(scene());
+        if (m_scene)
             m_scene->itemMoving(this);
-        }
     }
+
     return QGraphicsItem::itemChange(change, value);
 }
 
-GraphicsBox* GraphicsBox::clone() {
+GraphicsBox* GraphicsBox::clone()
+{
     QPoint newPos(this->x(),this->y());
     newPos.setY(newPos.y()+5);
     newPos.setX(newPos.x()+5);
 
-    GraphicsBox *newContField  = new GraphicsBox();
+    auto newContField  = new GraphicsBox();
     newContField->setColorValue(FrameTop, this->getColorValue(FrameTop));
     newContField->setColorValue(FrameBottom, this->getColorValue(FrameBottom));
     newContField->setColorValue(FrameLeft, this->getColorValue(FrameLeft));
@@ -671,24 +644,29 @@ GraphicsBox* GraphicsBox::clone() {
     newContField->setHeight(this->getHeight());
     newContField->m_formatString = this->m_formatString;
     newContField->m_textWrap = this->m_textWrap;
-    if (newContField->getFieldType() == Image) {
+    if (newContField->getFieldType() == Image)
+    {
         newContField->setImgFromat(this->getImgFormat());
         newContField->setIgnoreAspectRatio(this->getIgnoreAspectRatio());
         newContField->setImage(this->getImage());
     }
-    if (newContField->getFieldType() == Barcode) {
+    if (newContField->getFieldType() == Barcode)
+    {
         newContField->setBarcodeType(this->getBarcodeType());
         newContField->setBarcodeFrameType(this->getBarcodeFrameType());
     }
-    if (newContField->getFieldType() == CrossTab) {
+    if (newContField->getFieldType() == CrossTab)
+    {
         newContField->m_crossTab = this->m_crossTab;
     }
     newContField->setVisible(true);
     newContField->setPos(newPos);
+
     return newContField;
 }
 
-void GraphicsBox::loadParamFromXML(QDomElement e) {
+void GraphicsBox::loadParamFromXML(QDomElement e)
+{
     GraphicsHelperClass::loadParamFromXML(e);
     this->setFieldType(m_type);
 
@@ -696,17 +674,22 @@ void GraphicsBox::loadParamFromXML(QDomElement e) {
     this->setWidth(e.attribute("width").toInt());
     this->setHeight(e.attribute("height").toInt());
 
-    if (this->m_type == Text) {
+    if (this->m_type == Text)
+    {
         this->m_formatString = e.attribute("format","");
         this->m_highlighting = e.attribute("highlighting","");
         m_textWrap = e.attribute("textWrap","1").toInt();
-    } else if (this->m_type == Image || e.attribute("picture","text") != "text") {
+    }
+    else if (this->m_type == Image || e.attribute("picture","text") != "text")
+    {
         //load picture into lable
         QByteArray byteArray = QByteArray::fromBase64(e.attribute("picture","text").toLatin1());
         m_imgFormat = e.attribute("imgFormat","PNG");
         m_pixmap = QPixmap::fromImage(QImage::fromData(byteArray, m_imgFormat.toLatin1().data()));
         m_ignoreAspectRatio = e.attribute("ignoreAspectRatio","1").toInt();
-    } else if (this->m_type == Diagram) {
+    }
+    else if (this->m_type == Diagram)
+    {
         m_chart->setParams(e.attribute("showGrid","1").toInt(),
                          e.attribute("showLegend","1").toInt(),
                          e.attribute("showCaption","1").toInt(),
@@ -716,27 +699,19 @@ void GraphicsBox::loadParamFromXML(QDomElement e) {
                          e.attribute("autoFillData","0").toInt()
                          );
         m_chart->loadXML(e);
-    } else if (this->m_type == Barcode) {
+    }
+    else if (this->m_type == Barcode)
+    {
         setBarcodeType( (BarCode::BarcodeTypes)e.attribute("barcodeType","13").toInt() );
         setBarcodeFrameType( (BarCode::FrameTypes)e.attribute("barcodeFrameType","0").toInt() );
         setBarcodeHeight(e.attribute("barcodeHeight","50").toInt() );
-    } else if (this->m_type == CrossTab) {
+    }
+    else if (this->m_type == CrossTab)
+    {
         m_crossTab->setRowHeight(e.attribute("rowHeight","20").toInt());
 
-        m_crossTab->setColHeaderVisible(e.attribute("crossTabColHeaderVisible","1").toInt());
-        m_crossTab->setRowHeaderVisible(e.attribute("crossTabRowHeaderVisible","1").toInt());
 //        m_crossTab->setColTotalVisible(e.attribute("crossTabColTotalVisible","1").toInt());
 //        m_crossTab->setRowTotalVisible(e.attribute("crossTabRowTotalVisible","1").toInt());
-        QDomNode g = e.firstChild();
-        while(!g.isNull()) {
-            QDomElement ge = g.toElement(); // try to convert the node to an element.
-//            if (ge.nodeName() == "row")
-//                m_crossTab->addRow(ge.attribute("caption"));
-//            if (ge.nodeName() == "col")
-//                m_crossTab->addCol(ge.attribute("caption"));
-
-            g = g.nextSibling();
-        }
     }
     m_text = e.attribute("value");
 
@@ -782,7 +757,8 @@ void GraphicsBox::loadParamFromXML(QDomElement e) {
     m_alignment = hAl | vAl;
 }
 
-QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
+QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
+{
     QDomElement elem = GraphicsHelperClass::saveParamToXML(xmlDoc);
 
     elem.setAttribute("top",this->m_location.y()-20);
@@ -791,12 +767,14 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
     elem.setAttribute("height",this->m_height);
 
     //---FROM TCONTAINERFIELD
-    if (this->m_type == Text) {
+    if (this->m_type == Text)
+    {
         elem.setAttribute("format",this->m_formatString);
         elem.setAttribute("highlighting",this->m_highlighting);
         elem.setAttribute("textWrap",this->m_textWrap);
     }
-    if (this->m_type == Image) {
+    if (this->m_type == Image)
+    {
         //Saving picture
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
@@ -811,7 +789,8 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
         elem.setAttribute("imgFormat",m_imgFormat);
         elem.setAttribute("ignoreAspectRatio",m_ignoreAspectRatio);
     }
-    if (this->m_type == Diagram) {
+    if (this->m_type == Diagram)
+    {
         elem.setAttribute("showGrid",m_chart->getParam(DrawGrid).toBool());
         elem.setAttribute("showLegend",m_chart->getParam(ShowLegend).toBool());
         elem.setAttribute("showCaption",m_chart->getParam(ShowCaption).toBool());
@@ -820,9 +799,11 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
         elem.setAttribute("caption",m_chart->getParam(Caption).toString());
         elem.setAttribute("autoFillData",m_chart->getParam(AutoFillData).toBool());
 
-        if (m_chart->getParam(AutoFillData).toBool()) {
+        if (m_chart->getParam(AutoFillData).toBool())
+        {
             //get info about graphs
-            for(auto graphParam : getChart()->getGraphParamList()) {
+            for (auto graphParam : getChart()->getGraphParamList())
+            {
                 QDomElement graph = xmlDoc->createElement("graph");
                 graph.setAttribute("caption",graphParam.caption);
                 graph.setAttribute("value",graphParam.valueString);
@@ -831,29 +812,18 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
             }
         }
     }
-    if (this->m_type == Barcode) {
+    if (this->m_type == Barcode)
+    {
         elem.setAttribute("barcodeType",m_barcode->getBarcodeType());
         elem.setAttribute("barcodeFrameType",m_barcode->getFrameType());
         elem.setAttribute("barcodeHeight",m_barcode->getHeight());
     }
-    if (this->m_type == CrossTab) {
+    if (this->m_type == CrossTab)
+    {
         elem.setAttribute("rowHeight",m_crossTab->rowHeight());
 
-        elem.setAttribute("crossTabColHeaderVisible",m_crossTab->isColHeaderVisible());
-        elem.setAttribute("crossTabRowHeaderVisible",m_crossTab->isRowHeaderVisible());
 //        elem.setAttribute("crossTabColTotalVisible",m_crossTab->isColTotalVisible());
 //        elem.setAttribute("crossTabRowTotalVisible",m_crossTab->isRowTotalVisible());
-
-//        for(int i=0; i<m_crossTab->rowDataCount(); i++) {
-//            QDomElement row = xmlDoc->createElement("row");
-//            row.setAttribute("caption",m_crossTab->getRowName(i));
-//            elem.appendChild(row);
-//        }
-//        for(int i=0; i<m_crossTab->colDataCount(); i++) {
-//            QDomElement col = xmlDoc->createElement("col");
-//            col.setAttribute("caption",m_crossTab->getColName(i));
-//            elem.appendChild(col);
-//        }
     }
 
     QString hAl, vAl;
@@ -885,8 +855,10 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) {
     elem.setAttribute("fontItalic",m_font.italic());
     elem.setAttribute("fontUnderline",m_font.underline());
     elem.setAttribute("fontStrikeout",m_font.strikeOut());
-    if (m_font.family().isEmpty()) elem.setAttribute("fontFamily","Arial");
-    else elem.setAttribute("fontFamily",m_font.family());
+    if (m_font.family().isEmpty())
+        elem.setAttribute("fontFamily","Arial");
+    else
+        elem.setAttribute("fontFamily",m_font.family());
     elem.setAttribute("fontSize",m_font.pointSize());
 
     QString fontColor = colorToString(getColorValue(FontColor));
@@ -954,26 +926,9 @@ void GraphicsBox::setFieldType(FieldType value) {
         case CrossTab: {
             this->setWidth(400);
             this->setHeight(300);
-            m_crossTab = new RptCrossTabObject();
+            m_crossTab = SPtrCrossTab(new RptCrossTabObject());
             m_crossTab->rect.setHeight(this->getHeight());
             m_crossTab->rect.setWidth(this->getWidth());
-//            m_crossTab->addCol("C1");
-//            m_crossTab->addCol("C2");
-//            m_crossTab->addCol("C3");
-//            m_crossTab->addRow("R1");
-//            m_crossTab->addRow("R2");
-//            m_crossTab->addRow("R3");
-            m_crossTab->setColHeaderVisible(true);
-            m_crossTab->setRowHeaderVisible(true);
-//            m_crossTab->setColTotalVisible(true);
-//            m_crossTab->setRowTotalVisible(true);
-//            m_crossTab->initMatrix();
-//            //Fill values into matrix
-//            for (int r=0; r<m_crossTab->rowDataCount(); r++)
-//                for (int c=0; c<m_crossTab->colDataCount(); c++)
-//                    m_crossTab->setMatrixValue(QString::number(c),
-//                                               QString::number(r),
-//                                               QString("%1%2").arg(c).arg(r).toDouble());
             break;
         }
         default:
@@ -1097,7 +1052,7 @@ void GraphicsBox::setImgFromat(QString value)
     m_imgFormat = value;
 }
 
-RptCrossTabObject *GraphicsBox::getCrossTab()
+SPtrCrossTab GraphicsBox::getCrossTab()
 {
     return m_crossTab;
 }
@@ -1113,7 +1068,4 @@ SPtrBarCode GraphicsBox::getBarCode()
 }
 
 GraphicsBox::~GraphicsBox()
-{
-    if (m_crossTab != nullptr)
-        delete m_crossTab;
-}
+{}

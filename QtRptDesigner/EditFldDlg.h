@@ -77,8 +77,6 @@ private slots:
     void setScaledContents(bool value);
     void update_preview();
     void textDirection();
-    void setCrossTabRowCount(int value);
-    void setCrossTabColCount(int value);
 
 };
 

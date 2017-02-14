@@ -92,7 +92,7 @@ public:
     void setFieldType(FieldType value);
     QString getHighlighting() {return m_highlighting;}
     void setHighlighting(QString value) {m_highlighting = value;}
-    RptCrossTabObject *getCrossTab();
+    SPtrCrossTab getCrossTab();
     SPtrChart getChart();
     SPtrBarCode getBarCode();
 
@@ -140,7 +140,7 @@ private:
     int m_radius;
     SPtrBarCode m_barcode;
     SPtrChart m_chart;
-    RptCrossTabObject* m_crossTab;
+    SPtrCrossTab m_crossTab;
 
     QString m_formatString;
     QString m_highlighting;

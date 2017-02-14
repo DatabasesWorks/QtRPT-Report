@@ -482,44 +482,56 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
     FieldType fieldType = fieldObject->fieldType;
     QPen pen = getPen(fieldObject);
 
-	if (draw) {
-        if (!getDrawingFields().contains(fieldType) && fieldType != Barcode && fieldType != Image && fieldType != CrossTab) {
+    if (draw)
+    {
+        if (!getDrawingFields().contains(fieldType) && fieldType != Barcode && fieldType != Image && fieldType != CrossTab)
+        {
             //Fill background
-            if ( fieldObject->backgroundColor  != QColor(255,255,255,0)) {
+            if ( fieldObject->backgroundColor  != QColor(255,255,255,0))
+            {
                 if (painter->isActive())
                     painter->fillRect(left_+1,top_+1,width_-2,height_-2,fieldObject->backgroundColor);
             }
             //Draw frame
-            if (fieldObject->borderTop != QColor(255,255,255,0) ) {
+            if (fieldObject->borderTop != QColor(255,255,255,0) )
+            {
                 pen.setColor(fieldObject->borderTop);
-                if (painter->isActive()) {
+                if (painter->isActive())
+                {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_ + width_, top_);
                 }
             }
-            if (fieldObject->borderBottom != QColor(255,255,255,0) ) {
+            if (fieldObject->borderBottom != QColor(255,255,255,0) )
+            {
                 pen.setColor(fieldObject->borderBottom);
-                if (painter->isActive()) {
+                if (painter->isActive())
+                {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_ + height_, left_ + width_, top_ + height_);
                 }
             }
-            if (fieldObject->borderLeft != QColor(255,255,255,0) ) {
+            if (fieldObject->borderLeft != QColor(255,255,255,0) )
+            {
                 pen.setColor(fieldObject->borderLeft);
-                if (painter->isActive()) {
+                if (painter->isActive())
+                {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_, top_ + height_);
                 }
             }
-            if (fieldObject->borderRight != QColor(255,255,255,0) ) {
+            if (fieldObject->borderRight != QColor(255,255,255,0) )
+            {
                 pen.setColor(fieldObject->borderRight);
-                if (painter->isActive()) {
+                if (painter->isActive())
+                {
                     painter->setPen(pen);
                     painter->drawLine(left_ + width_, top_, left_ + width_, top_ + height_);
                 }
             }
         }
-        if (fieldType == Rhombus) {
+        if (fieldType == Rhombus)
+        {
             qreal pointX1 = width_/2+left_;
             qreal pointY1 = height_-1+top_;
 
@@ -546,7 +558,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
                 painter->fillPath (path, brush);
             }
         }
-        if (fieldType == Triangle) {
+        if (fieldType == Triangle)
+        {
             qreal pointX1 = left_;
             qreal pointY1 = height_-1+top_;
 
@@ -564,61 +577,73 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
 
             QBrush brush(fieldObject->backgroundColor);
             pen.setColor(fieldObject->borderColor);
-            if (painter->isActive()) {
+            if (painter->isActive())
+            {
                 painter->drawPath(path);
                 painter->fillPath (path, brush);
             }
         }
-        if (fieldType == RoundedReactangle) {
+        if (fieldType == RoundedReactangle)
+        {
             QRectF rect(left_,top_,width_-2,height_-2);
             QBrush brush(fieldObject->backgroundColor);
             pen.setColor(fieldObject->borderColor);
-            if (painter->isActive()) {
+            if (painter->isActive())
+            {
                 painter->setBrush(brush);
                 painter->setPen(pen);
                 painter->drawRoundedRect(rect, 40, 40);
             }
         }
-        if (fieldType == Reactangle) {
+        if (fieldType == Reactangle)
+        {
             QRectF rect(left_,top_,width_-2,height_-2);
             QBrush brush(fieldObject->backgroundColor);
             pen.setColor(fieldObject->borderColor);
-            if (painter->isActive()) {
+            if (painter->isActive())
+            {
                 painter->setBrush(brush);
                 painter->setPen(pen);
                 painter->drawRect(rect);
             }
         }
-        if (fieldType == Circle) {
+        if (fieldType == Circle)
+        {
             QBrush brush(fieldObject->backgroundColor);
             pen.setColor(fieldObject->borderColor);
-            if (painter->isActive()) {
+            if (painter->isActive())
+            {
                 painter->setBrush(brush);
                 painter->setPen(pen);
                 painter->drawEllipse(left_, top_, width_, height_);
             }
         }
-        if (fieldType == TextImage || fieldType == DatabaseImage) { //Proccess field as ImageField
+        if (fieldType == TextImage || fieldType == DatabaseImage)  //Proccess field as ImageField
+        {
             QImage image = (fieldType == TextImage) ? sectionValueImage(fieldObject->value) : sectionFieldImage(fieldObject->value);
 
-            if (!image.isNull()) {
+            if (!image.isNull())
+            {
                 QImage scaledImage = image.scaled(QSize(width_,height_),Qt::KeepAspectRatio);
                 QPoint point(left_, top_);
                 Qt::Alignment alignment = fieldObject->aligment;
                 // Horizontal Center
-                if (alignment.testFlag(Qt::AlignHCenter)) {
+                if (alignment.testFlag(Qt::AlignHCenter))
+                {
                     int offsetX = (width_ - scaledImage.width()) / 2;
                     point.setX(left_ + offsetX);
                 }
                 // Vertical Center
-                if (alignment.testFlag(Qt::AlignVCenter)) {
+                if (alignment.testFlag(Qt::AlignVCenter))
+                {
                     int offsetY = (height_ - scaledImage.height()) / 2;
                     point.setY(top_ + offsetY);
                 }
                 if (painter->isActive())
                     painter->drawImage(point,scaledImage);
 
-                if (m_printMode == QtRPT::Html) {
+                if (m_printMode == QtRPT::Html)
+                {
                     QByteArray ba;
                     QBuffer buffer(&ba);
                     buffer.open(QIODevice::WriteOnly);
@@ -629,22 +654,26 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
                 }
             }
         }
-        if (fieldType == Image) {  //Proccess as static ImageField
+        if (fieldType == Image)  //Proccess as static ImageField
+        {
             QImage image = QImage::fromData(fieldObject->picture, fieldObject->imgFormat.toLatin1().data());
-            if (fieldObject->ignoreAspectRatio == 1) {
+            if (fieldObject->ignoreAspectRatio == 1)
+            {
                 if (painter->isActive())
                     painter->drawImage(QRectF(left_,top_,width_,height_),image);
-            } else {
+            }
+            else
+            {
                 if (painter->isActive())
                     painter->drawImage(QRectF(left_,top_,image.width()*koefRes_w,image.height()*koefRes_h),image);
             }
 
-            if (m_printMode == QtRPT::Html) {
+            if (m_printMode == QtRPT::Html)
                 m_HTML.append(fieldObject->getHTMLStyle());
-            }
         }
-        if (fieldType == Diagram) {
-            Chart *chart = new Chart();
+        if (fieldType == Diagram)
+        {
+            auto chart = SPtrChart(new Chart(nullptr));
             chart->setObjectName(fieldObject->name);
             chart->setParams(fieldObject->showGrid,
                              fieldObject->showLegend,
@@ -657,9 +686,12 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
             chart->clearData();
             chart->setKoef(koefRes_w, koefRes_h, left_, top_);
             chart->resize(width_,height_);
-            if (fieldObject->autoFillData == 0) {
+            if (fieldObject->autoFillData == 0)
+            {
                 emit setValueDiagram(*chart);
-            } else {
+            }
+            else
+            {
                 fieldObject->updateDiagramValue();
                 for (auto graph : fieldObject->graphList)
                     chart->setData(graph);
@@ -667,7 +699,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
             if (painter->isActive())
                 chart->paintChart(painter);
         }
-        if (fieldType == Barcode) {
+        if (fieldType == Barcode)
+        {
             #ifndef NO_BARCODE
                 BarCode br;
                 br.setObjectName(fieldObject->name);
@@ -682,7 +715,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
             #endif
         }
     }
-    if (fieldType == TextRich) {
+    if (fieldType == TextRich)
+    {
         QString txt = fieldObject->value;
 
         QTextDocument document;
@@ -690,8 +724,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
         document.setDefaultFont(painter->font());
 
         QTextBlock block = document.firstBlock();
-        while (block.isValid()) {
-            for (QTextBlock::iterator it = block.begin(); !it.atEnd(); ++it) {
+        while (block.isValid())
+        {
+            for (QTextBlock::iterator it = block.begin(); !it.atEnd(); ++it)
+            {
                 QTextFragment currentFragment = it.fragment();
                 if (!currentFragment.isValid())
                     continue;
@@ -703,11 +739,13 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
                     QTextCursor c = document.find(currentFragment.text(),0,QTextDocument::FindWholeWords);
                     if (tmpTxt.isEmpty() || tmpTxt.isNull())
                         tmpTxt = " ";
-                    if (tmpTxt.toLower().contains("<body") && tmpTxt.toLower().contains("</body>")) {
+                    if (tmpTxt.toLower().contains("<body") && tmpTxt.toLower().contains("</body>"))
+                    {
                         int start = tmpTxt.toLower().indexOf("<body");
                         int end = tmpTxt.toLower().indexOf("</body>")+1;
                         c.insertHtml(tmpTxt.mid(start,end));
-                    } else
+                    }
+                    else
                         c.insertText(tmpTxt);
                 }
             }
@@ -716,7 +754,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
 
         QRectF rect = QRectF(left_+10, top_, width_-15, height_);
         document.setTextWidth( rect.width() );
-        if (painter->isActive()) {
+        if (painter->isActive())
+        {
             painter->save();
             painter->translate( rect.topLeft() );
         }
@@ -734,7 +773,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
         int flags = fieldObject->aligment | Qt::TextDontClip; //getAligment(e);
         if (fieldObject->textWrap == 1)
             flags = flags | Qt::TextWordWrap;
-        if (draw) {
+        if (draw)
+        {
             if (painter->isActive())
                 painter->drawText(left_+10,top_,width_-15,height_, flags, txt);
 
@@ -760,18 +800,23 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
                     bool fnd = false;
                     for (int row=1; row<100; ++row) {
                         if (QXlsx::Cell *cell=m_xlsx->cellAt(row, col))
-                            if (!cell->value().toString().isEmpty()) {
+                            if (!cell->value().toString().isEmpty())
+                            {
                                 fnd = true;
                                 break;
                             }
                     }
                     m_xlsx->setColumnHidden(col,!fnd);
-                    if (fnd) m_xlsx->setColumnWidth(col,10);
+                    if (fnd)
+                        m_xlsx->setColumnWidth(col,10);
                 }*/
             }
-        } else {
+        }
+        else
+        {
             QRect boundRect = painter->boundingRect(left_+10,top_,width_-15,height_, flags, txt);
-            if (boundRect.height() > height_ && fieldObject->autoHeight == 1) {
+            if (boundRect.height() > height_ && fieldObject->autoHeight == 1)
+            {
                 /*To correct adjust and display a height of the band we use a param 'realHeight'.
                  Currently this param used only to correct a MasterBand. If will be needed, possible
                  correct also another bands.
@@ -780,7 +825,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
             }
         }
     }
-    if (fieldType == CrossTab) {
+    if (fieldType == CrossTab)
+    {
         if (draw)
         {
             if (curPage == 1)
@@ -835,7 +881,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw) {
     }
 }
 
-void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop) {
+void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop)
+{
     int startX = fieldObject->lineStartX*koefRes_w;
     int endX = fieldObject->lineEndX*koefRes_w;
 
@@ -847,7 +894,8 @@ void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop) {
     pen.setColor(fieldObject->borderColor);
     if (painter->isActive())
         painter->setPen(pen);
-    if (fieldType == Line) {
+    if (fieldType == Line)
+    {
         if (painter->isActive())
             painter->drawLine(startX, startY, endX, endY);
     }
@@ -868,7 +916,8 @@ void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop) {
      if (painter->isActive())
         painter->setBrush(fieldObject->borderColor);
 
-     if (fieldObject->arrowStart == 1) {
+     if (fieldObject->arrowStart == 1)
+     {
          QPointF sourceArrowP1 = sourcePoint + QPointF(sin(angle + Pi / 3) * arrowSize,
                                                        cos(angle + Pi / 3) * arrowSize);
          QPointF sourceArrowP2 = sourcePoint + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
@@ -876,7 +925,8 @@ void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop) {
          if (painter->isActive())
             painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
      }
-     if (fieldObject->arrowEnd == 1) {
+     if (fieldObject->arrowEnd == 1)
+     {
          QPointF destArrowP1 = destPoint + QPointF(sin(angle - Pi / 3) * arrowSize,
                                                    cos(angle - Pi / 3) * arrowSize);
          QPointF destArrowP2 = destPoint + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
@@ -886,7 +936,8 @@ void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop) {
      }
 }
 
-void QtRPT::drawBandRow(RptBandObject *band, int bandTop, bool allowDraw) {
+void QtRPT::drawBandRow(RptBandObject *band, int bandTop, bool allowDraw)
+{
     band->realHeight = band->height; //set a 'realHeight' to default value
     /*First pass used to determine a max height of the band*/
     for (auto field : band->fieldList)
@@ -894,9 +945,12 @@ void QtRPT::drawBandRow(RptBandObject *band, int bandTop, bool allowDraw) {
             drawFields(field,bandTop,false);
 
     /*Second pass used for drawing*/
-    if (allowDraw) {
-        for (auto field : band->fieldList) {
-            if (isFieldVisible(field)) {
+    if (allowDraw)
+    {
+        for (auto field : band->fieldList)
+        {
+            if (isFieldVisible(field))
+            {
                 if (field->fieldType != Line)
                     drawFields(field,bandTop,true);
                 else
@@ -992,10 +1046,12 @@ QVariant QtRPT::processHighligthing(RptFieldObject *field, HiType type) {
     return QVariant();
 }
 
-bool QtRPT::isFieldVisible(RptFieldObject *fieldObject) {
+bool QtRPT::isFieldVisible(RptFieldObject *fieldObject)
+{
     bool visible;
     QString formulaStr = fieldObject->printing;
-    if (fieldObject->printing.size() > 1) {
+    if (fieldObject->printing.size() > 1)
+    {
         formulaStr = sectionField(fieldObject->parentBand,fieldObject->printing,true);
         QScriptEngine myEngine;
         //myEngine.globalObject().setProperty("quant1","3");
@@ -1009,7 +1065,9 @@ bool QtRPT::isFieldVisible(RptFieldObject *fieldObject) {
         QScriptValue threeAgain = fun.call(QScriptValue(), args);
         qDebug()<<threeAgain.toString();*/
 
-    } else {
+    }
+    else
+    {
         visible = formulaStr.toInt();
     }
     return visible;
@@ -1079,26 +1137,30 @@ QScriptValue funcAggregate(QScriptContext *context, QScriptEngine *engine) {
     return 0;
 }
 
-QScriptValue funcToUpper(QScriptContext *context, QScriptEngine *engine) {
+QScriptValue funcToUpper(QScriptContext *context, QScriptEngine *engine)
+{
     Q_UNUSED(engine);
     QString param = context->argument(0).toString();
     return param.toUpper();
 }
 
-QScriptValue funcToLower(QScriptContext *context, QScriptEngine *engine) {
+QScriptValue funcToLower(QScriptContext *context, QScriptEngine *engine)
+{
     Q_UNUSED(engine);
     QString param = context->argument(0).toString();
     return param.toLower();
 }
 
-QScriptValue funcNumberToWords(QScriptContext *context, QScriptEngine *engine) {
+QScriptValue funcNumberToWords(QScriptContext *context, QScriptEngine *engine)
+{
     Q_UNUSED(engine);
     QString paramLanguage = context->argument(0).toString();
     double value = context->argument(1).toString().toDouble();
     return double2Money(value,paramLanguage);
 }
 
-QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine) {
+QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine)
+{
     Q_UNUSED(engine);
     double value = context->argument(0).toString().toDouble();
     int b = qFloor(value);
@@ -1106,37 +1168,46 @@ QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine) {
     return b;
 }
 
-QScriptValue funcFloor(QScriptContext *context, QScriptEngine *engine) {
+QScriptValue funcFloor(QScriptContext *context, QScriptEngine *engine)
+{
     Q_UNUSED(engine);
     double value = context->argument(0).toString().toDouble();
     return qFloor(value);
 }
 
-QScriptValue funcCeil(QScriptContext *context, QScriptEngine *engine) {
+QScriptValue funcCeil(QScriptContext *context, QScriptEngine *engine)
+{
     Q_UNUSED(engine);
     double value = context->argument(0).toString().toDouble();
     return qCeil(value);
 }
 
-QScriptValue funcRound(QScriptContext *context, QScriptEngine *engine) {
+QScriptValue funcRound(QScriptContext *context, QScriptEngine *engine)
+{
     Q_UNUSED(engine);
     double value = context->argument(0).toString().toDouble();
     return qRound(value);
 }
 
-QStringList QtRPT::splitValue(QString value) {
+QStringList QtRPT::splitValue(QString value)
+{
     QString tmpStr;
     QStringList res;
-    for (int i = 0; i < value.size(); ++i) {
+
+    for (int i = 0; i < value.size(); ++i)
+    {
         if (value.at(i) != '[' && value.at(i) != ']')
             tmpStr += value.at(i);
-        else {
-            if (value.at(i) == ']') {
+        else
+        {
+            if (value.at(i) == ']')
+            {
                 tmpStr += value.at(i);
                 res << tmpStr;
                 tmpStr.clear();
             }
-            if (value.at(i) == '[') {
+            if (value.at(i) == '[')
+            {
                 if (!tmpStr.isEmpty())
                     res << tmpStr;
                 tmpStr.clear();
@@ -1144,7 +1215,8 @@ QStringList QtRPT::splitValue(QString value) {
             }
         }
     }
-    if (!tmpStr.isEmpty()) res << tmpStr;
+    if (!tmpStr.isEmpty())
+        res << tmpStr;
     return res;
 }
 
@@ -1365,13 +1437,15 @@ QString QtRPT::getFormattedValue(QString value, QString formatString) {
     return value;
 }
 
-void QtRPT::fillListOfValue(RptBandObject *bandObject) {
+void QtRPT::fillListOfValue(RptBandObject *bandObject)
+{
     for (auto field : bandObject->fieldList)
         if (field->fieldType == Text && isFieldVisible(field))
             QString txt = sectionField(bandObject, field->value, false, true);
 }
 
-QVariant QtRPT::processFunctions(QString value) {
+QVariant QtRPT::processFunctions(QString value)
+{
     if (value.contains("Date"))
         return QDate::currentDate().toString("dd.MM.yyyy");
     if (value.contains("Time"))
@@ -1380,7 +1454,8 @@ QVariant QtRPT::processFunctions(QString value) {
         return QString::number(curPage);
     if (value.contains("TotalPages"))
         return QString::number(totalPage);
-    if (value.contains("LineNo")) {
+    if (value.contains("LineNo"))
+    {
         int recNo;
         if (!listOfGroup.isEmpty()) //group processing
             recNo = mg_recNo;
@@ -1388,7 +1463,8 @@ QVariant QtRPT::processFunctions(QString value) {
             recNo = m_recNo+1;
         return QString::number(recNo);
     }
-    if (value.contains("LineCount")) {
+    if (value.contains("LineCount"))
+    {
         int maxLnNo = 0;
         for (auto& pair : listOfPair)
             if (pair.pageReport == m_pageReport && pair.lnNo > maxLnNo)
@@ -1399,7 +1475,8 @@ QVariant QtRPT::processFunctions(QString value) {
     return QVariant();
 }
 
-QImage QtRPT::sectionFieldImage(QString value) {
+QImage QtRPT::sectionFieldImage(QString value)
+{
     QString fieldName = value;
     fieldName.replace("[","");
     fieldName.replace("]","");
@@ -1407,7 +1484,8 @@ QImage QtRPT::sectionFieldImage(QString value) {
     return rtpSqlVector[m_pageReport]->getFieldImage(fieldName, m_recNo);
 }
 
-QString QtRPT::sectionValue(QString paramName) {
+QString QtRPT::sectionValue(QString paramName)
+{
     QVariant paramValue;
     paramName.replace("[","");
     paramName.replace("]","");
@@ -1421,7 +1499,8 @@ QString QtRPT::sectionValue(QString paramName) {
     return paramValue.toString();
 }
 
-QImage QtRPT::sectionValueImage(QString paramName) {
+QImage QtRPT::sectionValueImage(QString paramName)
+{
     QImage paramValue;
     paramName.replace("[","");
     paramName.replace("]","");
@@ -1440,7 +1519,8 @@ QImage QtRPT::sectionValueImage(QString paramName) {
 
  \sa printExec(), printHTML(), printXLSX()
  */
-void QtRPT::printPDF(const QString &filePath, bool open) {
+void QtRPT::printPDF(const QString &filePath, bool open)
+{
 #ifndef QT_NO_PRINTER
     m_printMode = QtRPT::Pdf;
     if (printer == nullptr)
@@ -1464,7 +1544,8 @@ void QtRPT::printPDF(const QString &filePath, bool open) {
 
  \sa printExec(), printPDF(), printXLSX()
  */
-void QtRPT::printHTML(const QString &filePath, bool open) {
+void QtRPT::printHTML(const QString &filePath, bool open)
+{
 #ifndef QT_NO_PRINTER
     m_printMode = QtRPT::Html;
     m_HTML.clear();
@@ -1555,14 +1636,16 @@ void QtRPT::printXLSX(const QString &filePath, bool open) {
 
  \sa printPDF(), printHTML(), printXLSX()
  */
-void QtRPT::printExec(bool maximum, bool direct, QString printerName) {
+void QtRPT::printExec(bool maximum, bool direct, QString printerName)
+{
 #ifndef QT_NO_PRINTER
     m_printMode = QtRPT::Printer;
 
     if (printer == nullptr)
         printer = new QPrinter(m_resolution);
 
-    if (!printerName.isEmpty() && !printerName.isNull()) {
+    if (!printerName.isEmpty() && !printerName.isNull())
+    {
         printer->setPrinterName(printerName);
         if (!printer->isValid())
             printer->setPrinterName(QPrinterInfo::defaultPrinter().printerName());
@@ -1571,10 +1654,12 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName) {
     if (painter == nullptr)
         painter = new QPainter();
 
-    if (!direct) {
+    if (!direct)
+    {
         QPrintPreviewDialog preview(printer, qobject_cast<QWidget *>(this->parent()), Qt::Window);
 
-        if (maximum) {
+        if (maximum)
+        {
             auto list = preview.findChildren<QPrintPreviewWidget *>();
             if (!list.isEmpty()) // paranoiac safety check
                 list.first()->setZoomMode(QPrintPreviewWidget::FitToWidth);
@@ -1618,30 +1703,42 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName) {
         pr->installEventFilter(this);
         //curPage = 1;
         preview.exec();
-    } else
+    }
+    else
         printPreview(printer);  ///print without preview dialog
 #endif
 }
 
-void QtRPT::exportTo() {
-    if (sender()->objectName() == "actExpToPdf") {
-        QString fileName = QFileDialog::getSaveFileName(qobject_cast<QWidget *>(this->parent()), tr("Save File"), "", tr("PDF Files (*.pdf)"));
-        if (fileName.isEmpty() || fileName.isNull() ) return;
+void QtRPT::exportTo()
+{
+    QString fileName;
+    auto parentWidget = qobject_cast<QWidget *>(this->parent());
+
+    if (sender()->objectName() == "actExpToPdf")
+    {
+        fileName = QFileDialog::getSaveFileName(parentWidget, tr("Save File"), "", tr("PDF Files (*.pdf)"));
+        if (fileName.isEmpty() || fileName.isNull() )
+            return;
         printPDF(fileName,false);
     }
-    if (sender()->objectName() == "actExpToHtml") {
-        QString fileName = QFileDialog::getSaveFileName(qobject_cast<QWidget *>(this->parent()), tr("Save File"), "", tr("HTML Files (*.html)"));
-        if (fileName.isEmpty() || fileName.isNull() ) return;
+    if (sender()->objectName() == "actExpToHtml")
+    {
+        fileName = QFileDialog::getSaveFileName(parentWidget, tr("Save File"), "", tr("HTML Files (*.html)"));
+        if (fileName.isEmpty() || fileName.isNull() )
+            return;
         printHTML(fileName,true);
     }
-    if (sender()->objectName() == "actExpToXlsx") {
-        QString fileName = QFileDialog::getSaveFileName(qobject_cast<QWidget *>(this->parent()), tr("Save File"), "", tr("XLSX Files (*.xlsx)"));
-        if (fileName.isEmpty() || fileName.isNull() ) return;
+    if (sender()->objectName() == "actExpToXlsx")
+    {
+        fileName = QFileDialog::getSaveFileName(parentWidget, tr("Save File"), "", tr("XLSX Files (*.xlsx)"));
+        if (fileName.isEmpty() || fileName.isNull() )
+            return;
         printXLSX(fileName,true);
     }
 }
 
-bool lessThan(const AggregateValues a, const AggregateValues b) {
+bool lessThan(const AggregateValues a, const AggregateValues b)
+{
     if (a.paramValue.toString() == b.paramValue.toString())
         return a.lnNo < b.lnNo;
     else
@@ -1764,7 +1861,8 @@ void QtRPT::setPageSettings(QPrinter* printer, int pageReport) {
 
     koefRes_h = static_cast<double>(r.height()) / (ph - mt - mb);
     koefRes_w = static_cast<double>(r.width())  / (pw - ml - mr);
-    if (orientation == 1) {
+    if (orientation == 1)
+    {
         koefRes_h = static_cast<double>(r.width()) / (ph - mt - mb);
         koefRes_w = static_cast<double>(r.height())  / (pw - ml - mr);
     }
@@ -1810,8 +1908,10 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
 
   Reimplemented from QObject::eventFilter()
  */
-bool QtRPT::eventFilter(QObject *obj, QEvent *e) {
-    if (obj == pr && e->type()==QEvent::Show)  {
+bool QtRPT::eventFilter(QObject *obj, QEvent *e)
+{
+    if (obj == pr && e->type()==QEvent::Show)
+    {
         for (auto action : lst)
             if (action->text().contains("Previous page", Qt::CaseInsensitive))
                 action->trigger();
@@ -1822,8 +1922,10 @@ bool QtRPT::eventFilter(QObject *obj, QEvent *e) {
     return QObject::eventFilter(obj,e);
 }
 
-bool QtRPT::allowPrintPage(bool draw, int curPage_) {
-    if (draw) {
+bool QtRPT::allowPrintPage(bool draw, int curPage_)
+{
+    if (draw)
+    {
         if (curPage_ < fromPage )
             draw = false;
         if ((toPage != 0) && (curPage_ > toPage ))
@@ -1872,22 +1974,26 @@ void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage)
  \fn QtRPT::setBackgroundImage(QPixmap &image)
  Sets background image from \a image
  */
-void QtRPT::setBackgroundImage(QPixmap &image) {
+void QtRPT::setBackgroundImage(QPixmap &image)
+{
     m_backgroundImage = &image;
 }
 
 /*! \overload
  Sets background image from \a image
 */
-void QtRPT::setBackgroundImage(QPixmap image) {
+void QtRPT::setBackgroundImage(QPixmap image)
+{
     m_backgroundImage = &image;
 }
 
-void QtRPT::drawBackground() {
+void QtRPT::drawBackground()
+{
     if (painter->isActive())
         painter->setBackgroundMode(Qt::TransparentMode);
 
-    if (m_backgroundImage != 0) {
+    if (m_backgroundImage != 0)
+    {
         if (painter->isActive())
             painter->drawPixmap(-ml*koefRes_w,
                                 -mt*koefRes_h,
@@ -1896,21 +2002,29 @@ void QtRPT::drawBackground() {
     }
 }
 
-void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageReport) {
+void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageReport)
+{
     m_recNo = 0;
-    if (pageList.at(m_pageReport)->getBand(DataGroupHeader) == nullptr) {
+    if (pageList.at(m_pageReport)->getBand(DataGroupHeader) == nullptr)
+    {
         processMHeader(y,draw);
         processPFooter(draw);
         processMasterData(printer,y,draw,pageReport);
         processMFooter(printer,y,draw);
-    } else {
+    }
+    else
+    {
         if (pageList.at(pageReport)->getBand(MasterData) != nullptr)
             fillListOfValue(pageList.at(pageReport)->getBand(MasterData));
+
         if (!listOfPair.isEmpty()) {
-            if (recordCount.size() >= pageReport+1) {
-                for (int i = 0; i < recordCount.at(pageReport); i++) {
+            if (recordCount.size() >= pageReport+1)
+            {
+                for (int i = 0; i < recordCount.at(pageReport); i++)
+                {
                     m_recNo = i;
-                    if (pageList.at(pageReport)->getBand(DataGroupHeader) != nullptr) {
+                    if (pageList.at(pageReport)->getBand(DataGroupHeader) != nullptr)
+                    {
                         sectionField(pageList.at(pageReport)->getBand(DataGroupHeader),
                                      pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField, false, true);
                     }
@@ -1925,7 +2039,8 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
                 processMHeader(y,draw);
 
             int grpNo = 0;
-            for (int j = 0; j < listOfPair.size(); ++j) {
+            for (int j = 0; j < listOfPair.size(); ++j)
+            {
                 if (pageList.at(pageReport)->getBand(DataGroupHeader) != 0 && listOfPair.at(j).pageReport == pageReport && listOfPair.at(j).paramName == pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField) {
                     bool founded = false;
                     for (auto group : listOfGroup)
@@ -1933,11 +2048,13 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
                             founded = true;
 
                     listIdxOfGroup.clear();
-                    for (int k=0; k < listOfPair.size(); ++k) {
+                    for (int k=0; k < listOfPair.size(); ++k)
+                    {
                         if (listOfPair.at(k).paramName == pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField &&
                             listOfPair.at(k).pageReport == pageReport &&
                             listOfPair.at(k).paramValue.toString() == listOfPair.at(j).paramValue.toString()
-                           ) {
+                           )
+                        {
                             //fill the idx for current group
                             listIdxOfGroup << listOfPair.at(k).lnNo;
                         }
@@ -1990,13 +2107,15 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
                         m_recNo = listOfPair.at(j).lnNo;
 
                         //-----------Added codes here. Thanks to puterk
-                        if (pageList.at(pageReport)->getBand(DataGroupFooter) != nullptr) {
+                        if (pageList.at(pageReport)->getBand(DataGroupFooter) != nullptr)
+                        {
                             if (y + pageList.at(pageReport)->getBand(DataGroupFooter)->height > ph-mb-mt-yPF-yMF)
                                 newPage(printer, y, draw);
                         }
                         //-----------ends here. Thanks to puterk
 
-                        if (pageList.at(pageReport)->getBand(DataGroupFooter) != nullptr) {
+                        if (pageList.at(pageReport)->getBand(DataGroupFooter) != nullptr)
+                        {
                             if (allowPrintPage(draw,curPage))  //Draw footer of the group
                                 drawBandRow(pageList.at(pageReport)->getBand(DataGroupFooter), y);
 
@@ -2125,38 +2244,47 @@ void QtRPT::processRSummary(QPrinter *printer, int &y, bool draw) {
     //painter.drawLine(0,y*koefRes_h,pw*koefRes_h,y*koefRes_h);
 }
 
-void QtRPT::openDataSource(int pageReport) {
+void QtRPT::openDataSource(int pageReport)
+{
     RptSqlConnection SqlConnection;
 
     getUserSqlConnection(pageReport, SqlConnection);
 
-    if (SqlConnection.m_bIsActive) {
+    if (SqlConnection.m_bIsActive)
+    {
         // If user connection is active, use their parameters
         QString sqlQuery = SqlConnection.m_sqlQuery;
         auto rptSql = new RptSql(SqlConnection.m_dbType,SqlConnection.m_dbName,SqlConnection.m_dbHost,SqlConnection.m_dbUser,SqlConnection.m_dbPassword,SqlConnection.m_dbPort,SqlConnection.m_dbConnectionName,this);
         rptSql->setObjectName(SqlConnection.m_dsName);
 
-        if (rtpSqlVector.size() <= pageReport) {
+        if (rtpSqlVector.size() <= pageReport)
+        {
             rtpSqlVector.resize(pageReport);
             rtpSqlVector.insert(pageReport, rptSql);
-        } else {
+        }
+        else
+        {
             rtpSqlVector.replace(pageReport, rptSql);
         }
 
         if (!m_sqlQuery.isEmpty())
             sqlQuery = m_sqlQuery;
-        if (!rptSql->openQuery(sqlQuery,SqlConnection.m_dbCoding,SqlConnection.m_charsetCoding)) {
+
+        if (!rptSql->openQuery(sqlQuery,SqlConnection.m_dbCoding,SqlConnection.m_charsetCoding))
+        {
             recordCount << 0;
             return;
         }
 
         recordCount << rptSql->getRecordCount();
     }
-    else {
+    else
+    {
         QDomElement docElem = xmlDoc.documentElement().childNodes().at(pageReport).toElement();
         QDomNode n = docElem.firstChild();
         QDomElement dsElement;
-        while(!n.isNull()) {
+        while(!n.isNull())
+        {
             QDomElement e = n.toElement();
             if ((!e.isNull()) && (e.tagName() == "DataSource"))
                 dsElement = e;
@@ -2164,7 +2292,8 @@ void QtRPT::openDataSource(int pageReport) {
             n = n.nextSibling();
         }
 
-        if (!dsElement.isNull() && dsElement.attribute("type") == "SQL") {
+        if (!dsElement.isNull() && dsElement.attribute("type") == "SQL")
+        {
             QString dsName = dsElement.attribute("name");
             QString dbType = dsElement.attribute("dbType");
             QString dbName = dsElement.attribute("dbName");
@@ -2179,23 +2308,28 @@ void QtRPT::openDataSource(int pageReport) {
             auto rptSql = new RptSql(dbType,dbName,dbHost,dbUser,dbPassword,dbPort,dbConnectionName,this);
             rptSql->setObjectName(dsName);
 
-            if (rtpSqlVector.size() <= pageReport) {
+            if (rtpSqlVector.size() <= pageReport)
+            {
                 rtpSqlVector.resize(pageReport);
                 rtpSqlVector.insert(pageReport, rptSql);
-            } else {
+            }
+            else
+            {
                 rtpSqlVector.replace(pageReport, rptSql);
             }
 
             if (!m_sqlQuery.isEmpty())
                 sqlQuery = m_sqlQuery;
-            if (!rptSql->openQuery(sqlQuery,dbCoding,charsetCoding)) {
+            if (!rptSql->openQuery(sqlQuery,dbCoding,charsetCoding))
+            {
                 recordCount << 0;
                 return;
             }
 
             recordCount << rptSql->getRecordCount();
         }
-        if (!dsElement.isNull() && dsElement.attribute("type") == "XML") {
+        if (!dsElement.isNull() && dsElement.attribute("type") == "XML")
+        {
 
         }
     }

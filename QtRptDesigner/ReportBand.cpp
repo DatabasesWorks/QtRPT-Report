@@ -87,7 +87,7 @@ ReportBand::ReportBand(BandType type)
     }   
 }
 
-void ReportBand::setMenu(QMenu* menu_)
+void ReportBand::setMenu(QMenu* menu)
 {
     QIcon icon;
     icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/delete.png")), QIcon::Normal, QIcon::On);
@@ -98,7 +98,7 @@ void ReportBand::setMenu(QMenu* menu_)
     QObject::connect(actBandDel, SIGNAL(triggered()), this, SIGNAL(itemRemoving()));
 
     m_menu->actions().clear();
-    m_menu->addActions(menu_->actions());
+    m_menu->addActions(menu->actions());
     m_menu->addAction(actBandDel);
 }
 

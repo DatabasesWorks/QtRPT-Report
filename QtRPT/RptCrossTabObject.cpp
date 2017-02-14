@@ -103,7 +103,6 @@ void RptCrossTabObject::buildMatrix()
             h1->rect.setLeft(rect.left() + fieldWidth*col);
             h1->rect.setHeight(fieldheight);
             h1->rect.setWidth(fieldWidth);
-            //h1->value =  QString("f%1%2").arg(col).arg(row);  //getMatrixValue(col,row).toString();
             h1->aligment = Qt::AlignCenter;
             addField(h1);  //Append field
         }
@@ -185,26 +184,30 @@ void RptCrossTabObject::addElement(RptTabElement element) {
 //    int correlation = 50;
 //    int tmpCol = 0, tmpRow = 0;
 
-//    //---
 //    bool fnd = false;
-//    for (int col=0; col < colVector.size(); col++) {
+//    for (int col=0; col < colVector.size(); col++)
+//    {
 //        if (element.left <= colVector.at(col)+correlation &&
-//            element.left >= colVector.at(col)-correlation ) {
+//            element.left >= colVector.at(col)-correlation )
+//        {
 //            fnd = true;
 //            element.corrLeft = colVector.at(col);
 //            tmpCol = col;
 //            break;
 //        }
 //    }
-//    if (!fnd) {
+//    if (!fnd)
+//    {
 //        colVector.append(element.left);
 //        tmpCol = appendColumn(QString("%1").arg(element.left));
 //    }
-//    //---
+
 //    fnd = false;
-//    for (int row=0; row < rowVector.size(); row++) {
+//    for (int row=0; row < rowVector.size(); row++)
+//    {
 //        if (element.top <= rowVector.at(row)+correlation &&
-//            element.top >= rowVector.at(row)-correlation ) {
+//            element.top >= rowVector.at(row)-correlation )
+//        {
 //            fnd = true;
 //            //qDebug()<< element.top << rowVector.at(row)+correlation << rowVector.at(row)-correlation;
 //            element.corrTop = rowVector.at(row);
@@ -212,7 +215,8 @@ void RptCrossTabObject::addElement(RptTabElement element) {
 //            break;
 //        }
 //    }
-//    if (!fnd) {
+//    if (!fnd)
+//    {
 //        rowVector.append(element.top);
 //        tmpRow = appendRow(QString("%1").arg(element.top));
 //    }
