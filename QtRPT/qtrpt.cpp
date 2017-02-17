@@ -1295,10 +1295,10 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                     av.lnNo = m_recNo;
                     av.pageReport = m_pageReport;
                     bool founded = false;
-                    for (int j = 0; j < listOfPair.size(); ++j) {
-                        if (listOfPair.at(j).pageReport == av.pageReport &&
-                            listOfPair.at(j).lnNo == av.lnNo &&
-                            listOfPair.at(j).paramName == av.paramName)
+                    for (auto& values : listOfPair) {
+                        if (values.pageReport == av.pageReport &&
+                            values.lnNo == av.lnNo &&
+                            values.paramName == av.paramName)
                             founded = true;
                     }
                     if (!founded)
@@ -2041,22 +2041,25 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
             int grpNo = 0;
             for (int j = 0; j < listOfPair.size(); ++j)
             {
-                if (pageList.at(pageReport)->getBand(DataGroupHeader) != 0 && listOfPair.at(j).pageReport == pageReport && listOfPair.at(j).paramName == pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField) {
+                if (pageList.at(pageReport)->getBand(DataGroupHeader) != 0 &&
+                    listOfPair.at(j).pageReport == pageReport &&
+                    listOfPair.at(j).paramName == pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField) {
+
                     bool founded = false;
-                    for (auto group : listOfGroup)
-                        if (group == listOfPair.at(j).paramValue)
-                            founded = true;
+
+                    if (listOfGroup.indexOf( listOfPair.at(j).paramValue.toString() ) != -1)
+                        founded = true;
 
                     listIdxOfGroup.clear();
-                    for (int k=0; k < listOfPair.size(); ++k)
+                    for (const auto& pair : listOfPair)
                     {
-                        if (listOfPair.at(k).paramName == pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField &&
-                            listOfPair.at(k).pageReport == pageReport &&
-                            listOfPair.at(k).paramValue.toString() == listOfPair.at(j).paramValue.toString()
+                        if (pair.paramName == pageList.at(pageReport)->getBand(DataGroupHeader)->groupingField &&
+                            pair.pageReport == pageReport &&
+                            pair.paramValue == listOfPair.at(j).paramValue
                            )
                         {
                             //fill the idx for current group
-                            listIdxOfGroup << listOfPair.at(k).lnNo;
+                            listIdxOfGroup << pair.lnNo;
                         }
                     }
 
@@ -2146,11 +2149,8 @@ void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int pageRepo
                     //If report with groups, we checking that current line in the current group
                     if (!listIdxOfGroup.isEmpty())
                     {
-                        for (auto idxGroup : listIdxOfGroup)
-                        {
-                            if (idxGroup == i)
-                                found = true;
-                        }
+                        if (listIdxOfGroup.indexOf(i) != -1)
+                            found = true;
                     }
                     else
                     {
