@@ -69,13 +69,10 @@ void XYZTextEditor::textDirection()
     QTextBlockFormat blockFmt = cursor.blockFormat();
 
     QTextOption topt = m_ui->textEdit->document()->defaultTextOption();
-    if (m_ui->btnTextDirection->isChecked())
-    {
+    if (m_ui->btnTextDirection->isChecked()) {
         topt.setTextDirection(Qt::RightToLeft);
         blockFmt.setLayoutDirection(Qt::RightToLeft);
-    }
-    else
-    {
+    } else {
         topt.setTextDirection(Qt::LeftToRight);
         blockFmt.setLayoutDirection(Qt::LeftToRight);
     }
@@ -112,7 +109,7 @@ void XYZTextEditor::setupTextActions()
 
     m_ui->comboSize->clear();
     QFontDatabase db;
-    for(int size : db.standardSizes())
+    for (int size : db.standardSizes())
         m_ui->comboSize->addItem(QString::number(size));
 
     QObject::connect(m_ui->comboSize, SIGNAL(activated(const QString &)), this, SLOT(textSize(const QString &)));
@@ -156,12 +153,10 @@ void XYZTextEditor::textStyle(int styleIndex)
 {
     QTextCursor cursor = m_ui->textEdit->textCursor();
 
-    if (styleIndex != 0)
-    {
+    if (styleIndex != 0) {
         QTextListFormat::Style style = QTextListFormat::ListDisc;
 
-        switch (styleIndex)
-        {
+        switch (styleIndex) {
             default:
             case 1:
                 style = QTextListFormat::ListDisc;
@@ -189,12 +184,9 @@ void XYZTextEditor::textStyle(int styleIndex)
 
         QTextListFormat listFmt;
 
-        if (cursor.currentList())
-        {
+        if (cursor.currentList()) {
             listFmt = cursor.currentList()->format();
-        }
-        else
-        {
+        } else {
             listFmt.setIndent(blockFmt.indent() + 1);
             blockFmt.setIndent(0);
             cursor.setBlockFormat(blockFmt);
@@ -205,9 +197,7 @@ void XYZTextEditor::textStyle(int styleIndex)
         cursor.createList(listFmt);
 
         cursor.endEditBlock();
-    }
-    else
-    {
+    } else {
         // ####
         QTextBlockFormat bfmt;
         bfmt.setObjectIndex(-1);
@@ -244,29 +234,22 @@ void XYZTextEditor::mergeFormatOnWordOrSelection(const QTextCharFormat &format)
 
 void XYZTextEditor::alignmentChanged(Qt::Alignment a)
 {
-    if (a & Qt::AlignLeft)
-    {
+    if (a & Qt::AlignLeft) {
         m_ui->btnAlignLeft->setChecked(true);
         m_ui->btnAlignCenter->setChecked(false);
         m_ui->btnAlignRight->setChecked(false);
         m_ui->btnAlignJustify->setChecked(false);
-    }
-    else if (a & Qt::AlignHCenter)
-    {
+    } else if (a & Qt::AlignHCenter) {
         m_ui->btnAlignLeft->setChecked(false);
         m_ui->btnAlignCenter->setChecked(true);
         m_ui->btnAlignRight->setChecked(false);
         m_ui->btnAlignJustify->setChecked(false);
-    }
-    else if (a & Qt::AlignRight)
-    {
+    } else if (a & Qt::AlignRight) {
         m_ui->btnAlignLeft->setChecked(false);
         m_ui->btnAlignCenter->setChecked(false);
         m_ui->btnAlignRight->setChecked(true);
         m_ui->btnAlignJustify->setChecked(false);
-    }
-    else if (a & Qt::AlignJustify)
-    {
+    } else if (a & Qt::AlignJustify) {
         m_ui->btnAlignLeft->setChecked(false);
         m_ui->btnAlignCenter->setChecked(false);
         m_ui->btnAlignRight->setChecked(false);

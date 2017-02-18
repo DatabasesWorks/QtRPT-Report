@@ -113,10 +113,8 @@ void CornerGrabber::paint (QPainter *painter, const QStyleOptionGraphicsItem *, 
 
 void CornerGrabber::setCursorToResize(bool on)
 {
-    if (on)
-    {
-        switch(m_corner)
-        {
+    if (on) {
+        switch(m_corner) {
         case 0:
         case 2:
             QApplication::setOverrideCursor(Qt::SizeFDiagCursor);
@@ -134,9 +132,7 @@ void CornerGrabber::setCursorToResize(bool on)
             QApplication::setOverrideCursor(Qt::SizeHorCursor);
             break;
         }
-    }
-    else
-    {
+    } else {
         QApplication::restoreOverrideCursor();
     }
 }

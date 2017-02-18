@@ -25,7 +25,9 @@ limitations under the License.
 #include <QDir>
 #include <QDebug>
 
-ExampleDlg8::ExampleDlg8(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg8) {
+ExampleDlg8::ExampleDlg8(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg8)
+{
     ui->setupUi(this);
 
     QObject::connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
@@ -179,7 +181,8 @@ ExampleDlg8::ExampleDlg8(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleD
     ui->tableWidget->setItem(15,1,newItem);
 }
 
-void ExampleDlg8::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
+void ExampleDlg8::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
+{
     Q_UNUSED(reportPage);
 
     if (paramName == "Text") {
@@ -188,7 +191,8 @@ void ExampleDlg8::setValue(const int recNo, const QString paramName, QVariant &p
     }
 }
 
-void ExampleDlg8::print() {
+void ExampleDlg8::print()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
@@ -205,6 +209,7 @@ void ExampleDlg8::print() {
     report->printExec();
 }
 
-ExampleDlg8::~ExampleDlg8() {
+ExampleDlg8::~ExampleDlg8()
+{
     delete ui;
 }

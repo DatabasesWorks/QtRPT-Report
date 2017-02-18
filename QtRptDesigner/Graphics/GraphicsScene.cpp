@@ -77,8 +77,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QPointF origPoint = pItem->mapFromScene(event->scenePos());
 
-    if (sceneMode == Mode::DrawLine)
-    {
+    if (sceneMode == Mode::DrawLine) {
         QPointF startPoint(0,0);
         auto newLine = new GraphicsLine();
         newLine->setFieldType(m_newFieldType);
@@ -97,8 +96,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         setMode(Mode::SelectObject);
         m_trackingMoves = false;
     }
-    if(sceneMode == DrawContainer)
-    {
+    if(sceneMode == DrawContainer) {
         auto graphicsBox = new GraphicsBox();
         graphicsBox->setFieldType(m_newFieldType);
         graphicsBox->setPos(origPoint);
@@ -128,10 +126,8 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     setMode(Mode::SelectObject);
     QApplication::restoreOverrideCursor();
 
-    if (sceneMode == Mode::SelectObject)
-    {
-        if (QApplication::keyboardModifiers() != Qt::ControlModifier)
-        {
+    if (sceneMode == Mode::SelectObject) {
+        if (QApplication::keyboardModifiers() != Qt::ControlModifier) {
 //            GraphicsBox *b = static_cast<GraphicsBox*>(itemAt(event->scenePos(), this->views().at(0)->transform()));
 //            if (b == 0 or b->type() == 7) {  //Make image transparent for mouse clicking
 //                QApplication::restoreOverrideCursor();
@@ -163,31 +159,26 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void GraphicsScene::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Delete)
-    {
+    if (event->key() == Qt::Key_Delete) {
         m_undoStack->push(new DelItemCommand(this));
         update();
         return;
     }
 
-    for (auto item : this->items())
-    {
+    for (auto item : this->items()) {
         bool isSelected = false;
         GraphicsBox *box = nullptr;
-        if (item->type() == ItemType::GBox || item->type() == ItemType::GBand)
-        {
+        if (item->type() == ItemType::GBox || item->type() == ItemType::GBand) {
             box = static_cast<GraphicsBox*>(item);
             isSelected = box->isSelected();
         }
         GraphicsLine *line = nullptr;
-        if (item->type() == ItemType::GLine)
-        {
+        if (item->type() == ItemType::GLine) {
             line = static_cast<GraphicsLine*>(item);
             isSelected = line->isSelected();
         }
 
-        if (item->type() == ItemType::GBox || item->type() == ItemType::GLine || item->type() == ItemType::GBand)
-        {
+        if (item->type() == ItemType::GBox || item->type() == ItemType::GLine || item->type() == ItemType::GBand) {
             if (isSelected) {
                 if(event->key() == Qt::Key_Left && item->type() != ItemType::GBand) {
                     if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
@@ -279,8 +270,7 @@ void GraphicsScene::removeItem(QGraphicsItem* item)
             return;
 
         auto parent = treeItem->parent();
-        while (treeItem->childCount() > 0)
-        {
+        while (treeItem->childCount() > 0) {
             auto tmp = treeItem->takeChild(0);
             tmp = nullptr;
             delete tmp;
@@ -331,14 +321,12 @@ void GraphicsScene::itemMoving(QGraphicsItem *item)
             ItemsAndParams param;
             param.item = item;
             param.oldPos = item->pos();
-            if (item->type() == ItemType::GBox)
-            {
+            if (item->type() == ItemType::GBox) {
                 GraphicsBox *box = static_cast<GraphicsBox*>(item);
                 param.oldHeight = box->getHeight();
                 param.oldWidth = box->getWidth();
             }
-            if (item->type() == ItemType::GLine)
-            {
+            if (item->type() == ItemType::GLine) {
                 GraphicsLine *line = static_cast<GraphicsLine*>(item);
                 param.oldPointList = line->getPointList();
             }
@@ -349,24 +337,19 @@ void GraphicsScene::itemMoving(QGraphicsItem *item)
 
 void GraphicsScene::unselectAll()
 {
-    for (auto item : this->items())
-    {
-        if (item->type() == ItemType::GLine)
-        {
+    for (auto item : this->items()) {
+        if (item->type() == ItemType::GLine) {
             auto line = static_cast<GraphicsLine*>(item);
             line->setSelected(false);
-        }
-        else if (item->type() == ItemType::GBox)
-        {
+        } else if (item->type() == ItemType::GBox) {
             auto box = static_cast<GraphicsBox*>(item);
             box->setSelected(false);
-        }
-        else if (item->type() == ItemType::GBand)
-        {
+        } else if (item->type() == ItemType::GBand) {
             auto box = static_cast<GraphicsBox*>(item);
             box->setSelected(false);
-        } else
+        } else {
             item->setSelected(false);
+        }
     }
 }
 

@@ -62,8 +62,7 @@ void RptSqlConnection::reset()
 
 RptSqlConnection & RptSqlConnection::operator=(const RptSqlConnection & other)
 {
-    if (this != &other)
-    {
+    if (this != &other) {
         m_bIsActive         = other.m_bIsActive;
         m_dsName            = other.m_dsName;
         m_dbType            = other.m_dbType;

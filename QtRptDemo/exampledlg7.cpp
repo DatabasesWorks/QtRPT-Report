@@ -25,7 +25,9 @@ limitations under the License.
 #include <QDir>
 #include <QDebug>
 
-ExampleDlg7::ExampleDlg7(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg7) {
+ExampleDlg7::ExampleDlg7(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg7)
+{
     ui->setupUi(this);
 
     QObject::connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
@@ -77,7 +79,8 @@ ExampleDlg7::ExampleDlg7(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleD
     }
 }
 
-void ExampleDlg7::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
+void ExampleDlg7::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
+{
     Q_UNUSED(reportPage);
     if (paramName == "month") {
         if (ui->tableWidget->item(recNo,0) == 0) return;
@@ -105,7 +108,8 @@ void ExampleDlg7::setValue(const int recNo, const QString paramName, QVariant &p
     }
 }
 
-void ExampleDlg7::setValueDiagram(Chart &chart) {
+void ExampleDlg7::setValueDiagram(Chart &chart)
+{
     if (chart.objectName() == "diagram1") {
         GraphParam param;
 
@@ -131,7 +135,8 @@ void ExampleDlg7::setValueDiagram(Chart &chart) {
     }
 }
 
-void ExampleDlg7::print() {
+void ExampleDlg7::print()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
@@ -150,6 +155,7 @@ void ExampleDlg7::print() {
 
 }
 
-ExampleDlg7::~ExampleDlg7() {
+ExampleDlg7::~ExampleDlg7()
+{
     delete ui;
 }

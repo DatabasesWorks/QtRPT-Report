@@ -100,26 +100,20 @@ void RepScrollArea::vScrolling(int value)
 
 double RepScrollArea::setPaperSize(qreal scale)
 {
-    if (scale == 0)
-    {
+    if (scale == 0) {
         m_scale = 1;
-    } else
-    {
-        if (qFabs(scale) > 1)  //Change zoom from combobox
-        {
+    } else {
+        if (qFabs(scale) > 1) {  //Change zoom from combobox
             m_scale = scale/100;
             if (m_scale < 0.5) return -1;
-        }
-        else  //Change zoom from wheel or click mouse
-        {
+        } else {  //Change zoom from wheel or click mouse
             if (scale>0)
                 m_scale+=0.25;
             else
                 m_scale+=-0.25;
         }
 
-        if (m_scale < 0.5)   //Not allow zoom less than 50%
-        {
+        if (m_scale < 0.5) {  //Not allow zoom less than 50%
             m_scale = 0.5;
             return -1;
         }
@@ -218,26 +212,19 @@ void RepScrollArea::paintHorRuler()
     QPainter painter(ui->horRuler);
     double x_ = 0 ;
     bool showNum = false;
-    while ( x_ < ui->horRuler->width() )
-    {
+    while ( x_ < ui->horRuler->width() ) {
         x_ = x_ + m_koef/2;
-        if (showNum)
-        {
-            if (this->isLeftToRight())
-            {
+        if (showNum) {
+            if (this->isLeftToRight()) {
                 const QString rt = QString::number(x_/m_koef);
                 painter.drawText(x_,15,rt);
             }
-            if (this->isRightToLeft())
-            {
+            if (this->isRightToLeft()) {
                 const QString rt = QString::number(x_/m_koef);
                 painter.drawText(ui->horRuler->width() - x_,15,rt);
             }
-        }
-        else
-        {
-            if (m_scale > 0.5)
-            {
+        } else {
+            if (m_scale > 0.5) {
                 if (this->isLeftToRight())
                     painter.drawText(x_,15,"-");
                 if (this->isRightToLeft())
@@ -255,16 +242,12 @@ void RepScrollArea::paintVerRuler()
     double y_ = 0 ;
     painter.rotate(-90);
     bool showNum = false;
-    while ( y_ < ui->verRuler->height() )
-    {
+    while ( y_ < ui->verRuler->height() ) {
         y_ = y_ + m_koef/2;
-        if (showNum)
-        {
+        if (showNum) {
             const QString rt = QString::number(y_/m_koef);
             painter.drawText(-y_,15,rt);
-        }
-        else
-        {
+        } else {
             if (m_scale > 0.5)
                 painter.drawText(-y_,15,"-");
         }
@@ -275,14 +258,10 @@ void RepScrollArea::paintVerRuler()
 ReportBand* RepScrollArea::m_addBand(BandType type, QMenu* bandMenu, int m_height)
 {
     QMenu m_bandMenu;
-    for (auto action : bandMenu->actions())
-    {
-        if (type == DataGroupHeader)
-        {
+    for (auto action : bandMenu->actions()) {
+        if (type == DataGroupHeader) {
             m_bandMenu.addAction(action);
-        }
-        else
-        {
+        } else {
             if (action->objectName() != "actGroupProperty")
                 m_bandMenu.addAction(action);
         }
@@ -326,8 +305,7 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
         gLine = static_cast<GraphicsLine *>(item);
 
     QIcon icon;
-    if (gBand != nullptr)
-    {
+    if (gBand != nullptr) {
         m_rootItem->treeWidget()->clearSelection();
 
         auto t_item = new QTreeWidgetItem(m_rootItem);
@@ -342,8 +320,7 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
         for (auto child : gBand->childItems())
             newFieldTreeItem(child);
     }
-    if (gItem != nullptr)
-    {
+    if (gItem != nullptr) {
         auto bandItem = static_cast<GraphicsBox*>(gItem->parentItem())->itemInTree;
 
         m_rootItem->treeWidget()->clearSelection();
@@ -369,8 +346,7 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
         m_rootItem->addChild(item);
         bandItem->setExpanded(true);
     }
-    if (gLine != nullptr)
-    {
+    if (gLine != nullptr) {
         auto bandItem = static_cast<GraphicsBox*>(gLine->parentItem())->itemInTree;
 
         m_rootItem->treeWidget()->clearSelection();
@@ -387,7 +363,7 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
 }
 
 //Correct band position after inserting, deleteing
-void RepScrollArea::correctBandGeom(ReportBand* rep)
+void RepScrollArea::correctBandGeom(ReportBand *rep)
 {
     QPointF p = ui->graphicsView->mapToScene(0,0);
     int top_ = p.y()+pageSetting.marginsTop;
@@ -396,8 +372,7 @@ void RepScrollArea::correctBandGeom(ReportBand* rep)
     if (!allReportBand.isEmpty())
         qSort(allReportBand.begin(), allReportBand.end(), [](ReportBand* p1, ReportBand* p2) { return p1->bandType < p2->bandType; });
 
-    for (auto band : allReportBand)
-    {
+    for (auto band : allReportBand) {
         if (band == rep)
             continue;
         band->setPos( QPointF(band->pos().x(), top_) );
@@ -407,13 +382,11 @@ void RepScrollArea::correctBandGeom(ReportBand* rep)
 
 bool RepScrollArea::eventFilter(QObject *obj, QEvent *e)
 {
-    if (obj==ui->horRuler && e->type()==QEvent::Paint)
-    {
+    if (obj==ui->horRuler && e->type()==QEvent::Paint) {
         paintHorRuler();
         return true;
     }
-    if (obj==ui->verRuler && e->type()==QEvent::Paint)
-    {
+    if (obj==ui->verRuler && e->type()==QEvent::Paint) {
         paintVerRuler();        
         return true;
     }

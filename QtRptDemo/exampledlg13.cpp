@@ -25,12 +25,15 @@ limitations under the License.
 #include <QDir>
 #include <QDebug>
 
-ExampleDlg13::ExampleDlg13(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg13) {
+ExampleDlg13::ExampleDlg13(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg13)
+{
     ui->setupUi(this);
     QObject::connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
 }
 
-void ExampleDlg13::print() {
+void ExampleDlg13::print()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
@@ -47,7 +50,8 @@ void ExampleDlg13::print() {
     report->printExec();
 }
 
-void ExampleDlg13::setField(RptFieldObject &fieldObject) {
+void ExampleDlg13::setField(RptFieldObject &fieldObject)
+{
     RptFieldObject *fieldObject2 = fieldObject.parentBand->parentReportPage->findFieldObjectByName("field2");
 
     if (fieldObject.name == "field1") {
@@ -133,6 +137,7 @@ void ExampleDlg13::setField(RptFieldObject &fieldObject) {
     }
 }
 
-ExampleDlg13::~ExampleDlg13() {
+ExampleDlg13::~ExampleDlg13()
+{
     delete ui;
 }

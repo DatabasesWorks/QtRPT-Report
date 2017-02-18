@@ -25,7 +25,9 @@ limitations under the License.
 #include <QDir>
 #include <QDebug>
 
-ExampleDlg5::ExampleDlg5(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg5) {
+ExampleDlg5::ExampleDlg5(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg5)
+{
     ui->setupUi(this);
 
     ui->tableWidget->setRowCount(20);
@@ -53,7 +55,8 @@ ExampleDlg5::ExampleDlg5(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleD
     }
 }
 
-void ExampleDlg5::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
+void ExampleDlg5::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
+{
     Q_UNUSED(reportPage);
     if (paramName == "NN")
         paramValue = recNo+1;
@@ -75,7 +78,8 @@ void ExampleDlg5::setValue(const int recNo, const QString paramName, QVariant &p
     }
 }
 
-void ExampleDlg5::print() {
+void ExampleDlg5::print()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
@@ -93,6 +97,7 @@ void ExampleDlg5::print() {
 
 }
 
-ExampleDlg5::~ExampleDlg5() {
+ExampleDlg5::~ExampleDlg5()
+{
     delete ui;
 }

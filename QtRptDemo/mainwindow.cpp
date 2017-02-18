@@ -163,10 +163,8 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
 {
     Q_UNUSED(reportPage);
 
-    if (ui->rBtn11->isChecked())
-    {
-        if (paramName == "bar1")
-        {
+    if (ui->rBtn11->isChecked()) {
+        if (paramName == "bar1") {
             QString tmp;
             if (recNo*2+1 < 10)
                 tmp = "0"+QString::number(recNo*2+1);
@@ -174,8 +172,7 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
                 tmp = QString::number(recNo*2+1);
             paramValue = "L261250000"+tmp;
         }
-        if (paramName == "bar2")
-        {
+        if (paramName == "bar2") {
             QString tmp;
             if (recNo*2+2 < 10)
                 tmp = "0"+QString::number(recNo*2+2);
@@ -184,10 +181,8 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
             paramValue = "L261250000"+tmp;
         }
     }
-    if (ui->rBtn12->isChecked())
-    {
-        if (paramName == "text1")
-        {
+    if (ui->rBtn12->isChecked()) {
+        if (paramName == "text1") {
             if (recNo == 0)
                 paramValue = "Mary";
             if (recNo == 1)
@@ -195,8 +190,7 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
             if (recNo == 2)
                 paramValue = "Vera";
         }
-        if (paramName == "text2")
-        {
+        if (paramName == "text2") {
             if (recNo == 0)
                 paramValue = "chocolate";
             if (recNo == 1)
@@ -204,15 +198,13 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
             if (recNo == 2)
                 paramValue = "apple";
         }
-        if (paramName == "text4")
-        {
+        if (paramName == "text4") {
             paramValue = "<body><font size=5>This тект is formatted by the user by means of HTML tags. You can do the text <b>bold</b>, "
                          "<i>italics</i>, <u>underline</u>. To allocate separate words in various color, as example: <font color=#0000FF>blue</font>, "
                          "<font color=#FF0000>red</font>, <font color=#CC6633>brown</font>, <font color=#00FF00>green</font> etc</font></body>";
         }
     }
-    if (ui->rBtn17->isChecked())
-    {
+    if (ui->rBtn17->isChecked()) {
         if (paramName == "number")
             paramValue = QString::number(doubleVector.at(recNo)/100,'f',2);
     }

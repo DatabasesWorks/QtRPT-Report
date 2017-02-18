@@ -15,7 +15,7 @@ GraphicsLine::GraphicsLine()
     setDrawingState(true);
 
     m_corners.resize(2);
-    for (auto& corner : m_corners)
+    for (auto &corner : m_corners)
         corner = nullptr;
 
     setFlag(QGraphicsItem::ItemIsSelectable,true);
@@ -32,8 +32,7 @@ GraphicsLine::GraphicsLine()
 void GraphicsLine::initPolygon()
 {
     QPolygonF selectRegion;
-    for (int p=0; p<m_pointList.size(); p++)
-    {
+    for (int p=0; p<m_pointList.size(); p++) {
         QPointF p1  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
         QPointF p2  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
 
@@ -43,8 +42,7 @@ void GraphicsLine::initPolygon()
         selectRegion << p1 << p2 << p3 << p4 << p1 << p2;
     }
 
-    for (int p=m_pointList.size()-1; p>-1; p--)
-    {
+    for (int p=m_pointList.size()-1; p>-1; p--) {
         QPointF p3  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
         QPointF p4  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
         selectRegion << p3 << p4;
@@ -71,14 +69,12 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
     if ( corner == NULL) return false; // not expected to get here
 
     QGraphicsSceneMouseEvent * mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
-    if ( mevent == NULL)
-    {
+    if ( mevent == NULL) {
         // this is not one of the mouse events we are interrested in
         return false;
     }
 
-    switch (event->type())
-    {
+    switch (event->type()) {
         // if the mouse went down, record the x,y coords of the press, record it inside the corner object
     case QEvent::GraphicsSceneMousePress: {
         corner->setMouseState(CornerGrabber::kMouseDown);
@@ -147,17 +143,14 @@ void GraphicsLine::createCustomPath(QPointF mouseLocation, CornerGrabber* corner
 
     // which corner needs to get moved?
     int idx = -1;
-    for (int p=0; p<m_pointList.size(); p++)
-    {
-        if ( corner == m_corners[p])
-        {
+    for (int p=0; p<m_pointList.size(); p++) {
+        if ( corner == m_corners[p]) {
             idx = p;
             m_pointList[p] = mapFromScene(scenePosition);
         }
     }
     initPolygon();
-    if (idx > -1)
-    {
+    if (idx > -1) {
         int cornerWidth = (m_corners[0]->boundingRect().width())/2;
         int cornerHeight = ( m_corners[0]->boundingRect().height())/2;
         m_corners[idx]->setPos(m_pointList[idx].x() - cornerWidth, m_pointList[idx].y() - cornerHeight );
@@ -209,15 +202,12 @@ void GraphicsLine::setSelected(bool selected_)
     if (itemInTree != nullptr)
         itemInTree->setSelected(selected_);
 
-    if (selected_)
-    {
+    if (selected_) {
         createCorners();
         auto m_scene = qobject_cast<GraphicsScene *>(scene());
         emit m_scene->itemSelected(this);
         this->setZValue(3);
-    }
-    else
-    {
+    } else {
         destroyCorners();
         this->setZValue(2);
     }
@@ -228,7 +218,6 @@ void GraphicsLine::setSelected(bool selected_)
 bool GraphicsLine::isSelected()
 {
     if (itemInTree != nullptr)
-
         return itemInTree->isSelected();
     return false;
 }
@@ -238,10 +227,8 @@ void GraphicsLine::createCorners()
 {
     m_outterborderColor = m_borderColor;
 
-    for (int p=0; p<m_pointList.size(); p++)
-    {
-        if (m_corners[p] == nullptr)
-        {
+    for (int p=0; p<m_pointList.size(); p++) {
+        if (m_corners[p] == nullptr) {
             m_corners[p] = new CornerGrabber(this,p);
             m_corners[p]->installSceneEventFilter(this);
         }
@@ -273,8 +260,7 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
     Q_UNUSED(i);
     Q_UNUSED(w);
 
-    if (getDrawingState())
-    {
+    if (getDrawingState()) {
         m_outterborderPen.setStyle(borderStyle());
         m_outterborderPen.setColor(m_borderColor);
         m_outterborderPen.setWidth(getBorderWidth());
@@ -285,7 +271,7 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
         QPainterPath path;
         path.moveTo(m_pointList.at(0));
 
-        for (auto& point : m_pointList)
+        for (auto &point : m_pointList)
             path.lineTo(point);
 
         painter->drawPath(path);
@@ -305,8 +291,7 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
 
         int arrowSize= 10;
 
-        if (m_arrowStart)
-        {
+        if (m_arrowStart) {
             QPointF sourceArrowP1 = m_pointList[0] + QPointF(sin(angle + Pi / 3) * arrowSize,
                                                           cos(angle + Pi / 3) * arrowSize);
             QPointF sourceArrowP2 = m_pointList[0] + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
@@ -321,8 +306,7 @@ void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, 
             path.addPolygon(polygon);
             painter->fillPath(path,brush2);
         }
-        if (m_arrowEnd)
-        {
+        if (m_arrowEnd) {
             QPointF destArrowP1 = m_pointList[1] + QPointF(sin(angle - Pi / 3) * arrowSize,
                                                       cos(angle - Pi / 3) * arrowSize);
             QPointF destArrowP2 = m_pointList[1] + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
@@ -353,8 +337,7 @@ void GraphicsLine::mousePressEvent(QGraphicsSceneDragDropEvent *event)
 
 QVariant GraphicsLine::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (change == ItemPositionChange)
-    {
+    if (change == ItemPositionChange) {
         auto model = qobject_cast<GraphicsScene *>(scene());
         if (model)
             model->itemMoving(this);

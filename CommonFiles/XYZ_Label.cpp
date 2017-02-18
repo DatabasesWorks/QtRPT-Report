@@ -38,8 +38,7 @@ XYZLabel::XYZLabel(const QString &Text, QWidget *parent)
 }
 
 XYZLabel::~XYZLabel()
-{
-}
+{}
 
 void XYZLabel::setHoverText(bool bHover)
 {
@@ -48,8 +47,7 @@ void XYZLabel::setHoverText(bool bHover)
 
 void XYZLabel::enterEvent(QEvent *)
 {
-    if( m_bHover )
-    {
+    if( m_bHover ) {
         QFont font = this->font();
         font.setUnderline(m_bHover);
         setFont(font);
@@ -58,8 +56,7 @@ void XYZLabel::enterEvent(QEvent *)
 
 void XYZLabel::leaveEvent(QEvent *)
 {
-    if( m_bHover )
-    {
+    if( m_bHover ) {
         QFont font = this->font();
         font.setUnderline(false);
         setFont(font);

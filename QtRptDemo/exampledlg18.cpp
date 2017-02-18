@@ -59,13 +59,11 @@ void ExampleDlg18::print()
 
 void ExampleDlg18::setField(RptFieldObject &fieldObject)
 {
-    if (fieldObject.fieldType == FieldType::CrossTab)
-    {
+    if (fieldObject.fieldType == FieldType::CrossTab) {
         fieldObject.crossTab->setColCount(3);
         fieldObject.crossTab->setRowCount(50);
     }
-    if (fieldObject.parentCrossTab != nullptr)
-    {
+    if (fieldObject.parentCrossTab != nullptr) {
         int row = fieldObject.parentCrossTab->fieldRow(&fieldObject);
         int col = fieldObject.parentCrossTab->fieldCol(&fieldObject);
         fieldObject.value = QString("f%1%2").arg(col).arg(row);

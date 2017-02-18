@@ -23,12 +23,15 @@ limitations under the License.
 #include "exampledlg14.h"
 #include "ui_exampledlg14.h"
 
-ExampleDlg14::ExampleDlg14(QWidget *parent) : QDialog(parent), ui(new Ui::ExampleDlg14) {
+ExampleDlg14::ExampleDlg14(QWidget *parent)
+: QDialog(parent), ui(new Ui::ExampleDlg14)
+{
     ui->setupUi(this);
     QObject::connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
 }
 
-void ExampleDlg14::print() {
+void ExampleDlg14::print()
+{
     QtRPT *report = new QtRPT(this);
 
     //Make a page of report
@@ -194,7 +197,8 @@ void ExampleDlg14::print() {
     report->printExec();
 }
 
-void ExampleDlg14::setField(RptFieldObject &fieldObject) {
+void ExampleDlg14::setField(RptFieldObject &fieldObject)
+{
     if (fieldObject.name == "c1") {
         fieldObject.value = "Column 1 Row "+QString::number(fieldObject.recNo()+1);
         if (fieldObject.recNo() == 0)
@@ -241,6 +245,7 @@ void ExampleDlg14::setField(RptFieldObject &fieldObject) {
     }
 }
 
-ExampleDlg14::~ExampleDlg14() {
+ExampleDlg14::~ExampleDlg14()
+{
     delete ui;
 }

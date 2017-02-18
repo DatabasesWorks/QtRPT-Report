@@ -87,8 +87,7 @@ void Chart::loadXML(QDomElement e)
     if (e.hasChildNodes())
         clearData();
 
-    while(!g.isNull())
-    {
+    while(!g.isNull()) {
         QDomElement ge = g.toElement(); // try to convert the node to an element.
 
         GraphParam param;
@@ -111,20 +110,16 @@ void Chart::setData(GraphParam param, float value100Percent)
 {
     listOfGraph.append(param);
     float maxValue = 0;
-    for (int i=0; i < listOfGraph.size(); i++)
-    {
+    for (int i=0; i < listOfGraph.size(); i++) {
         if (maxValue < listOfGraph.at(i).valueReal)
             maxValue = listOfGraph.at(i).valueReal;
     }
-    for (int i=0; i < listOfGraph.size(); i++)
-    {
-        if (value100Percent == 0)
-        {
+
+    for (int i=0; i < listOfGraph.size(); i++) {
+        if (value100Percent == 0) {
             listOfGraph[i].valuePercent = listOfGraph.at(i).valueReal / maxValue;
             m_correctValue = 1;
-        }
-        else
-        {
+        } else {
             listOfGraph[i].valuePercent = listOfGraph.at(i).valueReal / value100Percent;
             m_correctValue = value100Percent / maxValue;
         }
@@ -168,8 +163,7 @@ GraphParamList Chart::getGraphParamList()
 
 QVariant Chart::getParam(ChartParam param)
 {
-    switch(param)
-    {
+    switch(param) {
         case DrawGrid:
             return m_drawGrid;
             break;
@@ -218,8 +212,7 @@ void Chart::paintChart(QPainter *painter)
 
     QFont font(this->font());
     int cor = QFontMetrics(font).height() * m_koefRes_h;
-    if (m_drawCaption)
-    {
+    if (m_drawCaption) {
         font.setBold(true);
         //font.setItalic(processHighligthing(e, FontItalic).toInt());
         painter->setFont(font);
@@ -234,21 +227,18 @@ void Chart::paintChart(QPainter *painter)
     }
 
     int heightOfGraph = (this->height() - captionHeight - m_bottomSpaceHeight) * m_correctValue;
-    if (!listOfGraph.isEmpty())
-    {
+    if (!listOfGraph.isEmpty()) {
         int widthOfGraph = (this->width()-m_rightSpaceWidth-leftSpaceWidth) / listOfGraph.size();
 
         //Draw graps
-        for (int i=0; i < listOfGraph.size(); i++)
-        {
+        for (int i=0; i < listOfGraph.size(); i++) {
             painter->fillRect(widthOfGraph*i+1+leftSpaceWidth+m_left,        //x
                              this->height()-1-m_bottomSpaceHeight + m_top,   //y
                              widthOfGraph,                                   //width
                              heightOfGraph*listOfGraph.at(i).valuePercent*-1 ,
                              listOfGraph.at(i).color);
 
-            if (m_drawHistory)
-            {
+            if (m_drawHistory) {
                 QRectF textRect(m_left+this->width()-m_rightSpaceWidth+20*m_koefRes_w,
                                 m_top+(100 + (i+1)*20)*m_koefRes_h,
                                 m_rightSpaceWidth,
@@ -264,15 +254,14 @@ void Chart::paintChart(QPainter *painter)
         }
 
         //Draw graph's caption
-        if (m_drawGraphCaption)
-        {
-            for (int i=0; i < listOfGraph.size(); i++)
-            {
+        if (m_drawGraphCaption) {
+            for (int i=0; i < listOfGraph.size(); i++) {
                 QString txt;
                 if (m_showPercent)
                     txt = QString::number(listOfGraph.at(i).valuePercent*100,'f',1)+"%";
                 else
                     txt = QString::number(listOfGraph.at(i).valueReal);
+
                 QRectF textRect(m_left + widthOfGraph*i+1+leftSpaceWidth,   //x
                                 m_top + heightOfGraph*listOfGraph.at(i).valuePercent*-1 + this->height()-20*m_koefRes_h-m_bottomSpaceHeight,
                                 widthOfGraph+5*m_koefRes_w,                      //width
@@ -304,8 +293,7 @@ void Chart::paintChart(QPainter *painter)
 
     //draw grid
     if (m_drawGrid)
-        for (int i=4; i > 0; i--)
-        {
+        for (int i=4; i > 0; i--) {
             painter->drawLine(m_left + leftSpaceWidth-5,
                              m_top + this->height()-2*m_koefRes_h-m_bottomSpaceHeight - heightOfGraph/4*i,
                              m_left + this->width()-m_rightSpaceWidth+5,
@@ -330,6 +318,7 @@ void Chart::setProperties()
     this->setProperty("m_koefRes_w",m_koefRes_w);
     this->setProperty("m_left",m_left);
     this->setProperty("m_top",m_top);
+
     QVariant v = QVariant::fromValue<GraphParamList>(listOfGraph);
     this->setProperty("listOfGraph",v);
 }
@@ -373,7 +362,7 @@ QDataStream &operator<<(QDataStream &stream, const Chart &obj)
         if (obj.metaObject()->property(i).isStored(&obj))
             stream << obj.metaObject()->property(i).read(&obj);
 
-    for (auto& byteArray : obj.dynamicPropertyNames())
+    for (auto &byteArray : obj.dynamicPropertyNames())
         stream << obj.property(byteArray);
 
     return stream;
@@ -382,10 +371,8 @@ QDataStream &operator<<(QDataStream &stream, const Chart &obj)
 QDataStream &operator>>(QDataStream &stream, Chart &obj)
 {
     QVariant var;
-    for (int i=0; i<obj.metaObject()->propertyCount(); ++i)
-    {
-        if(obj.metaObject()->property(i).isStored(&obj))
-        {
+    for (int i=0; i<obj.metaObject()->propertyCount(); ++i) {
+        if (obj.metaObject()->property(i).isStored(&obj)) {
             stream >> var;
             if (!var.isNull())
                 obj.metaObject()->property(i).write(&obj, var);
@@ -393,8 +380,7 @@ QDataStream &operator>>(QDataStream &stream, Chart &obj)
     }
     obj.setProperties();
 
-    for (auto& byteArray : obj.dynamicPropertyNames())
-    {
+    for (auto &byteArray : obj.dynamicPropertyNames()) {
         stream >> var;
         obj.setProperty(byteArray, QVariant(var));
     }

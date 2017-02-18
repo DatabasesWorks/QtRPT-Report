@@ -415,13 +415,10 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     arrowStart = e.attribute("arrowStart","0").toInt();
     arrowEnd = e.attribute("arrowEnd","0").toInt();
 
-    if (fieldType == Diagram)
-    {
-        if (autoFillData == 1)
-        {
+    if (fieldType == Diagram) {
+        if (autoFillData == 1) {
             QDomNode g = e.firstChild();
-            while(!g.isNull())
-            {
+            while(!g.isNull()) {
                 QDomElement ge = g.toElement();
 
                 GraphParam param;
@@ -435,15 +432,13 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
             }
         }
     }
-    if (fieldType == CrossTab)
-    {
+    if (fieldType == CrossTab) {
         crossTab = new RptCrossTabObject();
         crossTab->rect = this->rect;
         crossTab->parentField = this;
 
         QDomNode g = e.firstChild();
-        while(!g.isNull())
-        {
+        while(!g.isNull()) {
             QDomElement ge = g.toElement();
 //            if (!ge.isNull() && ge.tagName() == "row")
 //                crossTab->addRow(ge.attribute("caption"));
@@ -482,7 +477,7 @@ void RptFieldObject::updateHighlightingParam()
 void RptFieldObject::updateDiagramValue()
 {
     if (autoFillData == 1)
-        for (auto& graph : graphList)
+        for (auto &graph : graphList)
             graph.valueReal = m_qtrpt->sectionField(this->parentBand, graph.formula, false).toFloat();
 }
 
@@ -514,8 +509,7 @@ QString RptFieldObject::getHTMLStyle()
     if (this->autoHeight == 1)
         this->rect.setHeight(parentBand->realHeight);
 
-    if (fieldType == Text)
-    {
+    if (fieldType == Text) {
         style = "style='color:"+this->fontColor.name()+";"+
                 "background:"+this->backgroundColor.name()+";"+
                 "border-left: solid thin "+this->borderLeft.name()+";"+
@@ -535,8 +529,7 @@ QString RptFieldObject::getHTMLStyle()
         style += "'";
     }
 
-    if (fieldType == TextImage || fieldType == Image || fieldType == DatabaseImage)
-    {
+    if (fieldType == TextImage || fieldType == Image || fieldType == DatabaseImage) {
         double dblAspectRatio = 0;
         int nHeight = this->rect.height();
         int nWidth = this->rect.height();
@@ -544,12 +537,10 @@ QString RptFieldObject::getHTMLStyle()
         if (this->rect.height())
             dblAspectRatio = (double)this->rect.width() / (double)this->rect.height();
 
-        if (dblAspectRatio)
-        {
+        if (dblAspectRatio) {
             nWidth = ((int)rint(nHeight * dblAspectRatio)) & -3;
 
-            if (nWidth > this->rect.width())
-            {
+            if (nWidth > this->rect.width()) {
                 nWidth = this->rect.width();
                 nHeight = ((int)rint(nWidth / dblAspectRatio)) & -3;
             }

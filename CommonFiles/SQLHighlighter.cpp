@@ -6,7 +6,8 @@
 
 #include "SQLHighlighter.h"
 
-FontHihgligthParam SQLHighlighter::getFontColor(int type) {
+FontHihgligthParam SQLHighlighter::getFontColor(int type)
+{
     FontHihgligthParam fh;
     for (int i=0; i<lst.size(); i++) {
         if (lst.at(i).type == type)
@@ -15,7 +16,8 @@ FontHihgligthParam SQLHighlighter::getFontColor(int type) {
     return fh;
 }
 
-void SQLHighlighter::fillArray() {
+void SQLHighlighter::fillArray()
+{
     FontHihgligthParam fh;
 
     fh.type = Comment;
@@ -54,7 +56,8 @@ void SQLHighlighter::fillArray() {
     lst.append(fh);
 }
 
-void SQLHighlighter::saveSettings(QSettings *settings) {
+void SQLHighlighter::saveSettings(QSettings *settings)
+{
     settings->beginGroup("SQLEHighligheter");
     settings->beginWriteArray("Params");
     for (int i=0; i<lst.size(); ++i) {
@@ -71,7 +74,8 @@ void SQLHighlighter::saveSettings(QSettings *settings) {
 }
 
 // largely based on the highlight example in qt's docs
-SQLHighlighter::SQLHighlighter(class QTextDocument *parent, QSettings *settings) : QSyntaxHighlighter(parent) {
+SQLHighlighter::SQLHighlighter(class QTextDocument *parent, QSettings *settings) : QSyntaxHighlighter(parent)
+{
     //qRegisterMetaType<FontHihgligth>("FontHihgligth");
     if (settings == 0) {
         fillArray();
@@ -174,7 +178,8 @@ SQLHighlighter::SQLHighlighter(class QTextDocument *parent, QSettings *settings)
     }
 }
 
-void SQLHighlighter::highlightBlock(const QString &text) {
+void SQLHighlighter::highlightBlock(const QString &text)
+{
     Q_FOREACH(Rule rule, rules) {
         QRegExp expr(rule.pattern);
         int index = text.indexOf(expr);

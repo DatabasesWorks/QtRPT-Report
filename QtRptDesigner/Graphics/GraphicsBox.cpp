@@ -44,7 +44,7 @@ GraphicsBox::GraphicsBox()
     m_drawingOrigenY = ( m_YcornerGrabBuffer);
 
     m_corners.resize(8);
-    for (auto& corner : m_corners)
+    for (auto &corner : m_corners)
         corner = nullptr;
 
     setFlag(QGraphicsItem::ItemIsSelectable,true);
@@ -102,18 +102,17 @@ void GraphicsBox::adjustSize(int x, int y)
     m_drawingWidth  =  m_width + m_XcornerGrabBuffer;
     m_drawingHeight =  m_height + m_YcornerGrabBuffer;
 
-    if (m_chart != nullptr)
-    {
+    if (m_chart != nullptr) {
         m_chart->resize(m_width, m_height);
     }
-    if (m_crossTab != nullptr)
-    {
+    if (m_crossTab != nullptr) {
         m_crossTab->rect.setHeight(m_height);
         m_crossTab->rect.setWidth(m_width);
     }
 }
 
-bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) {
+bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
+{
     //qDebug() << " QEvent == " + QString::number(event->type());
 
     CornerGrabber * corner = dynamic_cast<CornerGrabber *>(watched);
@@ -245,35 +244,42 @@ bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) {
     return true;// true => do not send event to watched - we are finished with this event
 }
 
-QPointF GraphicsBox::getPos() {
+QPointF GraphicsBox::getPos()
+{
     return m_location;
 }
 
-void GraphicsBox::setPos(QPointF pos) {
+void GraphicsBox::setPos(QPointF pos)
+{
     m_location = pos;
     QGraphicsItem::setPos(pos);
 }
 
-void GraphicsBox::setPos(qreal x, qreal y) {
+void GraphicsBox::setPos(qreal x, qreal y)
+{
     setPos(QPoint(x,y));
 }
 
-void GraphicsBox::hoverLeaveEvent ( QGraphicsSceneHoverEvent * ) {
+void GraphicsBox::hoverLeaveEvent ( QGraphicsSceneHoverEvent * )
+{
     this->scene()->update();
 }
 
-void GraphicsBox::hoverEnterEvent ( QGraphicsSceneHoverEvent * ) {
+void GraphicsBox::hoverEnterEvent ( QGraphicsSceneHoverEvent * )
+{
     this->scene()->update();
 }
 
 //for supporting moving the box across the scene
-void GraphicsBox::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) {
+void GraphicsBox::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+{
     QGraphicsItem::mouseReleaseEvent(event);
     event->setAccepted(true);
 }
 
 // for supporting moving the box across the scene
-void GraphicsBox::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
+void GraphicsBox::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+{
     QGraphicsItem::mousePressEvent(event);
     event->setAccepted(true);
     m_dragStart = event->pos();
@@ -282,7 +288,8 @@ void GraphicsBox::mousePressEvent ( QGraphicsSceneMouseEvent * event ) {
 }
 
 // for supporting moving the box across the scene
-void GraphicsBox::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
+void GraphicsBox::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+{
     if (this->type() == ItemType::GBand) return;
     QGraphicsItem::mouseMoveEvent(event); // move the item...
     auto m_scene = qobject_cast<GraphicsScene *>(scene());
@@ -315,30 +322,31 @@ void GraphicsBox::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
     this->scene()->update();
 }
 
-void GraphicsBox::setSelected(bool selected_) {
+void GraphicsBox::setSelected(bool selected_)
+{
     QGraphicsItem::setSelected(selected_);
     if (itemInTree != nullptr)
         itemInTree->setSelected(selected_);
 
-    if (selected_)
-    {
+    if (selected_) {
         createCorners();
         auto m_scene = qobject_cast<GraphicsScene *>(scene());
         emit m_scene->itemSelected(this);
-    }
-    else
+    } else
         destroyCorners();
     this->scene()->update();
 }
 
-bool GraphicsBox::isSelected() {
+bool GraphicsBox::isSelected()
+{
     if (itemInTree != nullptr)
         return itemInTree->isSelected();
     return false;
 }
 
 // create the corner grabbers
-void GraphicsBox::createCorners() {
+void GraphicsBox::createCorners()
+{
     m_outterborderColor = m_borderColor;
 
     if (type() != ItemType::GBand) {
@@ -378,7 +386,8 @@ void GraphicsBox::createCorners() {
     setCornerPositions();
 }
 
-void GraphicsBox::setCornerPositions() {
+void GraphicsBox::setCornerPositions()
+{
     if (m_corners[0] != nullptr)  //top-left
         m_corners[0]->setPos(m_drawingOrigenX, m_drawingOrigenY);
     if (m_corners[1] != nullptr)
@@ -419,8 +428,7 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
 
     QRectF rcT (QPointF(2,0), QPointF(getWidth(), getHeight()));
 
-    if (type() == ItemType::GBand)
-    {
+    if (type() == ItemType::GBand) {
         QRectF rc (QPointF(0,0), QPointF(getWidth()-1, getHeight()));
         painter->drawRect(rc);
 
@@ -437,14 +445,11 @@ void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
         painter->drawText(textRect,Qt::AlignCenter,m_text);
         painter->drawPixmap(QRect(m_drawingWidth-18,2,16,16), m_bandPixmap);
     }
-    if (type() == ItemType::GBox)
-    {
+    if (type() == ItemType::GBox) {
         QRectF rc (QPointF(0,0), QPointF(getWidth(), getHeight()));
-        switch(this->getFieldType())
-        {
+        switch(this->getFieldType()) {
             case Text:
-            case TextImage:
-                {
+            case TextImage: {
                 if (m_backgroundColor != Qt::white)
                     painter->fillRect(rc, brush2);
 
@@ -614,8 +619,7 @@ void GraphicsBox::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 QVariant GraphicsBox::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (change == ItemPositionChange)
-    {
+    if (change == ItemPositionChange) {
         auto m_scene = qobject_cast<GraphicsScene *>(scene());
         if (m_scene)
             m_scene->itemMoving(this);
@@ -644,19 +648,16 @@ GraphicsBox* GraphicsBox::clone()
     newContField->setHeight(this->getHeight());
     newContField->m_formatString = this->m_formatString;
     newContField->m_textWrap = this->m_textWrap;
-    if (newContField->getFieldType() == Image)
-    {
+    if (newContField->getFieldType() == Image) {
         newContField->setImgFromat(this->getImgFormat());
         newContField->setIgnoreAspectRatio(this->getIgnoreAspectRatio());
         newContField->setImage(this->getImage());
     }
-    if (newContField->getFieldType() == Barcode)
-    {
+    if (newContField->getFieldType() == Barcode) {
         newContField->setBarcodeType(this->getBarcodeType());
         newContField->setBarcodeFrameType(this->getBarcodeFrameType());
     }
-    if (newContField->getFieldType() == CrossTab)
-    {
+    if (newContField->getFieldType() == CrossTab) {
         newContField->m_crossTab = this->m_crossTab;
     }
     newContField->setVisible(true);
@@ -674,22 +675,17 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
     this->setWidth(e.attribute("width").toInt());
     this->setHeight(e.attribute("height").toInt());
 
-    if (this->m_type == Text)
-    {
+    if (this->m_type == Text) {
         this->m_formatString = e.attribute("format","");
         this->m_highlighting = e.attribute("highlighting","");
         m_textWrap = e.attribute("textWrap","1").toInt();
-    }
-    else if (this->m_type == Image || e.attribute("picture","text") != "text")
-    {
+    } else if (this->m_type == Image || e.attribute("picture","text") != "text") {
         //load picture into lable
         QByteArray byteArray = QByteArray::fromBase64(e.attribute("picture","text").toLatin1());
         m_imgFormat = e.attribute("imgFormat","PNG");
         m_pixmap = QPixmap::fromImage(QImage::fromData(byteArray, m_imgFormat.toLatin1().data()));
         m_ignoreAspectRatio = e.attribute("ignoreAspectRatio","1").toInt();
-    }
-    else if (this->m_type == Diagram)
-    {
+    } else if (this->m_type == Diagram) {
         m_chart->setParams(e.attribute("showGrid","1").toInt(),
                          e.attribute("showLegend","1").toInt(),
                          e.attribute("showCaption","1").toInt(),
@@ -699,15 +695,11 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
                          e.attribute("autoFillData","0").toInt()
                          );
         m_chart->loadXML(e);
-    }
-    else if (this->m_type == Barcode)
-    {
+    } else if (this->m_type == Barcode) {
         setBarcodeType( (BarCode::BarcodeTypes)e.attribute("barcodeType","13").toInt() );
         setBarcodeFrameType( (BarCode::FrameTypes)e.attribute("barcodeFrameType","0").toInt() );
         setBarcodeHeight(e.attribute("barcodeHeight","50").toInt() );
-    }
-    else if (this->m_type == CrossTab)
-    {
+    } else if (this->m_type == CrossTab) {
         m_crossTab->setRowHeight(e.attribute("rowHeight","20").toInt());
 
 //        m_crossTab->setColTotalVisible(e.attribute("crossTabColTotalVisible","1").toInt());
@@ -767,14 +759,12 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
     elem.setAttribute("height",this->m_height);
 
     //---FROM TCONTAINERFIELD
-    if (this->m_type == Text)
-    {
+    if (this->m_type == Text) {
         elem.setAttribute("format",this->m_formatString);
         elem.setAttribute("highlighting",this->m_highlighting);
         elem.setAttribute("textWrap",this->m_textWrap);
     }
-    if (this->m_type == Image)
-    {
+    if (this->m_type == Image) {
         //Saving picture
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
@@ -789,8 +779,7 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
         elem.setAttribute("imgFormat",m_imgFormat);
         elem.setAttribute("ignoreAspectRatio",m_ignoreAspectRatio);
     }
-    if (this->m_type == Diagram)
-    {
+    if (this->m_type == Diagram) {
         elem.setAttribute("showGrid",m_chart->getParam(DrawGrid).toBool());
         elem.setAttribute("showLegend",m_chart->getParam(ShowLegend).toBool());
         elem.setAttribute("showCaption",m_chart->getParam(ShowCaption).toBool());
@@ -799,11 +788,9 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
         elem.setAttribute("caption",m_chart->getParam(Caption).toString());
         elem.setAttribute("autoFillData",m_chart->getParam(AutoFillData).toBool());
 
-        if (m_chart->getParam(AutoFillData).toBool())
-        {
+        if (m_chart->getParam(AutoFillData).toBool()) {
             //get info about graphs
-            for (auto graphParam : getChart()->getGraphParamList())
-            {
+            for (const auto &graphParam : getChart()->getGraphParamList()) {
                 QDomElement graph = xmlDoc->createElement("graph");
                 graph.setAttribute("caption",graphParam.caption);
                 graph.setAttribute("value",graphParam.valueString);
@@ -812,14 +799,12 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
             }
         }
     }
-    if (this->m_type == Barcode)
-    {
+    if (this->m_type == Barcode) {
         elem.setAttribute("barcodeType",m_barcode->getBarcodeType());
         elem.setAttribute("barcodeFrameType",m_barcode->getFrameType());
         elem.setAttribute("barcodeHeight",m_barcode->getHeight());
     }
-    if (this->m_type == CrossTab)
-    {
+    if (this->m_type == CrossTab) {
         elem.setAttribute("rowHeight",m_crossTab->rowHeight());
 
 //        elem.setAttribute("crossTabColTotalVisible",m_crossTab->isColTotalVisible());
@@ -880,7 +865,8 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
     return elem;
 }
 
-void GraphicsBox::setFieldType(FieldType value) {
+void GraphicsBox::setFieldType(FieldType value)
+{
     GraphicsHelperClass::setFieldType(value);
     switch(value) {
         case TextRich: {

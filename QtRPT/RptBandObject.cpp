@@ -147,8 +147,7 @@ void RptBandObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
         type = DataGroupFooter;
 
     QDomNode n = docElem.firstChild();
-    while(!n.isNull())
-    {
+    while(!n.isNull()) {
         QDomElement e = n.toElement();
         auto fieldObject = new RptFieldObject();
         fieldObject->parentBand = this;

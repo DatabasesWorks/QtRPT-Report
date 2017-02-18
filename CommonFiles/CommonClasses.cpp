@@ -23,7 +23,8 @@ limitations under the License.
 #include "CommonClasses.h"
 #include <QDebug>
 
-QString double2MoneyUKR(double n, int currency) {
+QString double2MoneyUKR(double n, int currency)
+{
     static QString cap[4][10] =	{
         {
             "",
@@ -474,7 +475,8 @@ QString double2MoneyENG(double number) {
 }
 
 //Thanks to Norbert Schlia
-QString double2MoneyGER(double number, bool bAdditional /*= false*/) {
+QString double2MoneyGER(double number, bool bAdditional /*= false*/)
+{
     Q_UNUSED(bAdditional);
     static QMap<double, QString> numbers;
 
@@ -573,14 +575,14 @@ QString double2MoneyGER(double number, bool bAdditional /*= false*/) {
 
 //Thanks to Manuel Soriano
 #define	VALEN 16
-QString double2MoneyESP_Group(int _siGroup, char *_tscGroup, int _siGValue) {
+QString double2MoneyESP_Group(int _siGroup, char *_tscGroup, int _siGValue)
+{
     int			siInd1, siWk1, siValue;
     QString		stReturn, stWk1;
 
     static QMap<int, QString> stUnits;
     static QMap<int, QString> stDeci;
-    if (stUnits.isEmpty())
-    {
+    if (stUnits.isEmpty()) {
         stUnits[0] = "cero ";
         stUnits[1] = "uno ";
         stUnits[2] = "dos ";
@@ -612,73 +614,59 @@ QString double2MoneyESP_Group(int _siGroup, char *_tscGroup, int _siGValue) {
         stDeci[9] = "noventa ";
     }
 
-    for (siInd1=0; siInd1 < 3; siInd1++)
-    {
+    for (siInd1=0; siInd1 < 3; siInd1++) {
         siValue = *(_tscGroup+siInd1) - 0x30;
         stWk1 = stUnits[siValue];
 
-        if (_siGValue == 0)			// "cero" away
-        {
+        // "cero" away
+        if (_siGValue == 0)	{
             stReturn.clear();
             siInd1 = 3;
             continue;
         }
 
-        if (siValue == 0)			// We do not want the "cero" text in our sentence
-        {
+        // We do not want the "cero" text in our sentence
+        if (siValue == 0) {
             continue;
         }
 
-        if (_siGValue == 1)
-        {
-            if (_siGroup == 3)
-            {
+        if (_siGValue == 1) {
+            if (_siGroup == 3) {
                 stReturn.clear();	// mil
                 siInd1 = 3;
                 continue;
             }
         }
 
-        if (siInd1 == 0)
-        {
-            if (siValue == 1)
-            {
-                if (atoi(_tscGroup) == 100)
-                {
+        if (siInd1 == 0) {
+            if (siValue == 1) {
+                if (atoi(_tscGroup) == 100) {
                     stReturn = ::QString("cien ");
                     siInd1 = 3;
                     continue;
-                }
-                else
-                {
+                } else {
                     stWk1 = ::QString("ciento ");
                 }
-            }
-            else
-            {
+            } else {
                 stWk1 += ::QString("cientos ");
             }
         }
 
-        if (siInd1 == 1)
-        {
-            if (siValue == 1)
-            {
+        if (siInd1 == 1) {
+            if (siValue == 1) {
                 siWk1 = (siValue * 10) + *(_tscGroup+siInd1+1) - 0x30;
                 stReturn += stUnits[siWk1];
                 siInd1 = 3;
                 continue;
             }
 
-            if (siValue > 1)
-            {
+            if (siValue > 1) {
                 stWk1 = stDeci[siValue];
                 stWk1 += ::QString("y ");
             }
         }
 
-        if (siInd1 == 2)
-        {
+        if (siInd1 == 2) {
             if ((siValue == 1) && (_siGroup < 4))
                 stWk1 = ::QString("un ");
         }
@@ -694,7 +682,8 @@ Thank you to Manuel Soriano
 0 : Does not print the decimals
 1 : Print the decimals
 */
-QString double2MoneyESP(double _dbValue, int _blDecimals) {
+QString double2MoneyESP(double _dbValue, int _blDecimals)
+{
     QString		stValue, stReturn;
 
     long		slValue, slDecimals;
@@ -702,8 +691,7 @@ QString double2MoneyESP(double _dbValue, int _blDecimals) {
     char		tscGroup[4], tscValue[VALEN];
 
     static QMap<int, QString> stMillos;
-    if (stMillos.isEmpty())
-    {
+    if (stMillos.isEmpty()) {
         stMillos[0] = "billónes ";
         stMillos[1] = "millardos ";
         stMillos[2] = "millones ";
@@ -713,8 +701,7 @@ QString double2MoneyESP(double _dbValue, int _blDecimals) {
     }
 
     static QMap<int, QString> stMillo;
-    if (stMillo.isEmpty())
-    {
+    if (stMillo.isEmpty()) {
         stMillo[0] = "billón ";
         stMillo[1] = "millardo ";
         stMillo[2] = "millón ";
@@ -736,22 +723,22 @@ QString double2MoneyESP(double _dbValue, int _blDecimals) {
 
     memcpy(tscValue+((VALEN-siLen)-1), stValue.toLatin1().data(), siLen);
 
-    for (siWk1=0; siWk1 < (VALEN/3); siWk1++)
-    {
+    for (siWk1=0; siWk1 < (VALEN/3); siWk1++) {
         memset(tscGroup, 0x00, sizeof(tscGroup));
         memcpy(tscGroup, tscValue+(3*siWk1), 3);
         if (strcmp(tscGroup, "000") == 0)
             continue;
+
         siValue = atoi(tscGroup);
         stReturn += double2MoneyESP_Group(siWk1, tscGroup, siValue);
+
         if (siValue == 1)
             stReturn += stMillo[siWk1];
         else
             stReturn += stMillos[siWk1];
     }
 
-    if ((slDecimals > 0) && _blDecimals)
-    {
+    if ((slDecimals > 0) && _blDecimals) {
         stReturn += ::QString("con ");
         stValue.setNum(slDecimals);
         siLen = stValue.length();
@@ -760,14 +747,15 @@ QString double2MoneyESP(double _dbValue, int _blDecimals) {
         memset(tscValue, 0x30, sizeof(tscValue)-1);
         memcpy(tscValue+((VALEN-siLen)-1), stValue.toLatin1().data(), siLen);
 
-        for (siWk1=0; siWk1 < (VALEN/3); siWk1++)
-        {
+        for (siWk1=0; siWk1 < (VALEN/3); siWk1++) {
             memset(tscGroup, 0x00, sizeof(tscGroup));
             memcpy(tscGroup, tscValue+(3*siWk1), 3);
             if (strcmp(tscGroup, "000") == 0)
                 continue;
+
             siValue = atoi(tscGroup);
             stReturn += double2MoneyESP_Group(siWk1, tscGroup, siValue);
+
             if (siValue == 1)
                 stReturn += stMillo[siWk1];
             else
@@ -779,7 +767,8 @@ QString double2MoneyESP(double _dbValue, int _blDecimals) {
 }
 
 //Thanks to Laurent Guilbert
-QString double2MoneyFrenchBE(double number, bool bAdditional /*= false*/) {
+QString double2MoneyFrenchBE(double number, bool bAdditional /*= false*/)
+{
     Q_UNUSED(bAdditional);
     int whole = (int)number;
     int precision = ((number-whole)*100)+0.5;
@@ -791,7 +780,8 @@ QString double2MoneyFrenchBE(double number, bool bAdditional /*= false*/) {
     }
 }
 
-QString double2MoneyFrenchFR(double number, bool bAdditional /*= false*/) {
+QString double2MoneyFrenchFR(double number, bool bAdditional /*= false*/)
+{
     Q_UNUSED(bAdditional);
     int whole = (int)number;
     int precision = (number - whole) * 100;
@@ -803,7 +793,8 @@ QString double2MoneyFrenchFR(double number, bool bAdditional /*= false*/) {
     }
 }
 
-QString double2MoneyFrenchCH(double number, bool bAdditional /*= false*/) {
+QString double2MoneyFrenchCH(double number, bool bAdditional /*= false*/)
+{
     Q_UNUSED(bAdditional);
     int whole = (int)number;
     int precision = (number - whole) * 100;
@@ -815,7 +806,8 @@ QString double2MoneyFrenchCH(double number, bool bAdditional /*= false*/) {
     }
 }
 
-QString double2MoneyFrench(int number, int language) {
+QString double2MoneyFrench(int number, int language)
+{
     QMap<double, QString> numbers;
 
     //Only initialize once
@@ -984,7 +976,8 @@ QString double2MoneyFrench(int number, int language) {
     return output;
 }
 
-QString double2Money(double n, QString lang) {
+QString double2Money(double n, QString lang)
+{
     if (lang == "UKR")
         return double2MoneyUKR(n,0);
     //else if (lang == "RUS")
@@ -1005,7 +998,8 @@ QString double2Money(double n, QString lang) {
         return double2MoneyENG(n);
 }
 
-QString colorToString(QColor color) {
+QString colorToString(QColor color)
+{
     QString str("rgba("+
                 QString::number(color.red())+","+
                 QString::number(color.green())+","+
@@ -1014,11 +1008,13 @@ QString colorToString(QColor color) {
     return str;
 }
 
-QColor colorFromString(QString value) {
+QColor colorFromString(QString value)
+{
     //if (value == "rgba(255,255,255,0)")
     //    value = "rgba(255,255,255,255)";
     QColor color;
-    if (value.isEmpty()) return color;
+    if (value.isEmpty())
+        return color;
     int start; int end;
     start = value.indexOf("(",0,Qt::CaseInsensitive);
     end =   value.indexOf(")",start+1,Qt::CaseInsensitive);
@@ -1034,11 +1030,15 @@ QColor colorFromString(QString value) {
     return color;
 }
 
-QString eventType(QEvent *ev) {
+QString eventType(QEvent *ev)
+{
     static int eventEnumIndex = QEvent::staticMetaObject.indexOfEnumerator("Type");
     QString name = QEvent::staticMetaObject.enumerator(eventEnumIndex).valueToKey(ev->type());
 
-    if (!name.isEmpty()) return name; else return (QString)ev->type();
+    if (!name.isEmpty())
+        return name;
+    else
+        return (QString)ev->type();
 }
 
 

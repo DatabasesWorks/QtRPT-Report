@@ -46,8 +46,7 @@ void BarCode::paintEvent(QPaintEvent * event)
 void BarCode::drawBarcode(QPainter *painter, qreal x, qreal y, qreal width, qreal height)
 {
     #ifndef NO_BARCODE
-        if (bc == nullptr)
-        {
+        if (bc == nullptr) {
             painter->drawText(QRectF(x,y,width,height), Qt::AlignCenter,"Zint library not found");
             return;
         }
@@ -105,8 +104,7 @@ BarCode::BarcodeTypePairList BarCode::getTypeList()
 {
     BarcodeTypePairList list;
     const QMetaObject &mo = staticMetaObject;
-    for (int i=0; i < mo.enumerator(0).keyCount(); i++)
-    {
+    for (int i=0; i < mo.enumerator(0).keyCount(); i++) {
         QPair<BarcodeTypes, QString> pair;
         pair.first = (BarcodeTypes)mo.enumerator(0).value(i);
         pair.second = getTypeNameList()[i];
@@ -117,11 +115,10 @@ BarCode::BarcodeTypePairList BarCode::getTypeList()
 
 QString BarCode::getTypeName(BarcodeTypes type)
 {
-    for (auto pair : getTypeList())
-    {
+    for (const auto &pair : getTypeList())
         if (pair.first == type)
             return pair.second;
-    }
+
     return QString();
 }
 
@@ -206,8 +203,7 @@ BarCode::FrameTypePairList BarCode::getFrameTypeList()
 {
     FrameTypePairList list;
     const QMetaObject &mo = staticMetaObject;
-    for (int i=0; i < mo.enumerator(1).keyCount(); i++)
-    {
+    for (int i=0; i < mo.enumerator(1).keyCount(); i++) {
         QPair<FrameTypes, QString> pair;
         pair.first = (FrameTypes)mo.enumerator(1).value(i);
         pair.second = mo.enumerator(1).key(i);
@@ -220,10 +216,9 @@ QString BarCode::getFrameTypeName(FrameTypes type)
 {
     const QMetaObject &mo = staticMetaObject;
     for (int i=0; i < mo.enumerator(1).keyCount(); i++)
-    {
         if (mo.enumerator(1).value(i) == type)
             return mo.enumerator(1).key(i);
-    }
+
     return QString();
 }
 
@@ -260,11 +255,11 @@ void BarCode::setParamFromProperties()
 
 QDataStream &operator<<(QDataStream &stream, const BarCode &obj)
 {
-    for(int i=0; i<obj.metaObject()->propertyCount(); ++i)
-        if(obj.metaObject()->property(i).isStored(&obj))
+    for (int i=0; i<obj.metaObject()->propertyCount(); ++i)
+        if (obj.metaObject()->property(i).isStored(&obj))
             stream << obj.metaObject()->property(i).read(&obj);
 
-    for (auto& byteArray : obj.dynamicPropertyNames())
+    for (auto &byteArray : obj.dynamicPropertyNames())
         stream << obj.property(byteArray);
 
     return stream;
@@ -273,10 +268,8 @@ QDataStream &operator<<(QDataStream &stream, const BarCode &obj)
 QDataStream &operator>>(QDataStream &stream, BarCode &obj)
 {
     QVariant var;
-    for (int i=0; i<obj.metaObject()->propertyCount(); ++i)
-    {
-        if(obj.metaObject()->property(i).isStored(&obj))
-        {
+    for (int i=0; i<obj.metaObject()->propertyCount(); ++i) {
+        if (obj.metaObject()->property(i).isStored(&obj)) {
             stream >> var;
             if (!var.isNull())
                 obj.metaObject()->property(i).write(&obj, var);
@@ -284,8 +277,7 @@ QDataStream &operator>>(QDataStream &stream, BarCode &obj)
     }
     obj.setProperties();
 
-    for (auto& byteArray : obj.dynamicPropertyNames())
-    {
+    for (auto &byteArray : obj.dynamicPropertyNames()) {
         stream >> var;
         obj.setProperty(byteArray, QVariant(var));
     }

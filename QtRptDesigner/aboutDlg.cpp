@@ -23,7 +23,9 @@ limitations under the License.
 
 #include "aboutDlg.h"
 
-AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
+AboutDlg::AboutDlg(QWidget *parent)
+: QDialog(parent)
+{
     this->setWindowTitle(tr("About QtRptDesigner"));
     QSize MaxSize(420, 450);
     QSize MinSize(420, 450);

@@ -25,7 +25,9 @@ limitations under the License.
 #include <QDir>
 #include <QDebug>
 
-ExampleDlg6::ExampleDlg6(QWidget *parent, int mode) :  QDialog(parent),  ui(new Ui::ExampleDlg6) {
+ExampleDlg6::ExampleDlg6(QWidget *parent, int mode)
+: QDialog(parent),  ui(new Ui::ExampleDlg6)
+{
     ui->setupUi(this);
 
     m_mode = mode;
@@ -86,7 +88,8 @@ ExampleDlg6::ExampleDlg6(QWidget *parent, int mode) :  QDialog(parent),  ui(new 
     }
 }
 
-void ExampleDlg6::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage) {
+void ExampleDlg6::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
+{
     Q_UNUSED(reportPage);
 
     if ((paramName == "sampleId") && (reportPage >= 1)) {
@@ -152,7 +155,8 @@ void ExampleDlg6::setValue(const int recNo, const QString paramName, QVariant &p
     }
 }
 
-void ExampleDlg6::print() {
+void ExampleDlg6::print()
+{
     QDir dir(qApp->applicationDirPath());
     #if defined(Q_OS_MAC)
         dir.cd(QFile::decodeName("../Resources"));
@@ -173,7 +177,8 @@ void ExampleDlg6::print() {
     report->printExec();
 }
 
-ExampleDlg6::~ExampleDlg6() {
+ExampleDlg6::~ExampleDlg6()
+{
     delete ui;
 }
 

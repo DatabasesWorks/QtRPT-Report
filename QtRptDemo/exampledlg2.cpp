@@ -34,13 +34,11 @@ ExampleDlg2::ExampleDlg2(QWidget *parent)
     ui->table2->setRowCount(55);
 
     QTableWidgetItem *newItem;
-    for (int i = 0; i < ui->table1->rowCount(); ++i)
-    {
+    for (int i = 0; i < ui->table1->rowCount(); ++i) {
         newItem = new QTableWidgetItem("DS1: "+QString::number(i+1));
         ui->table1->setItem(i,0,newItem);
     }
-    for (int i = 0; i < ui->table2->rowCount(); ++i)
-    {
+    for (int i = 0; i < ui->table2->rowCount(); ++i) {
         newItem = new QTableWidgetItem("DS2: "+QString::number(i+1));
         ui->table2->setItem(i,0,newItem);
     }
@@ -66,16 +64,13 @@ void ExampleDlg2::print()
 
 void ExampleDlg2::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
 {
-    if (paramName == "value")
-    {
-        if (reportPage == 0)
-        {
+    if (paramName == "value") {
+        if (reportPage == 0) {
             if (ui->table1->item(recNo,0) == nullptr)
                 return;
             paramValue = ui->table1->item(recNo,0)->text();
         }
-        if (reportPage == 1)
-        {
+        if (reportPage == 1) {
             if (ui->table2->item(recNo,0) == nullptr)
                 return;
             paramValue = ui->table2->item(recNo,0)->text();

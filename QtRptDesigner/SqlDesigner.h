@@ -38,7 +38,7 @@ namespace Ui {
 
 struct DocumentSet
 {
-    DiagramDocument* document;
+    DiagramDocument *document;
     QDomElement element;
 };
 

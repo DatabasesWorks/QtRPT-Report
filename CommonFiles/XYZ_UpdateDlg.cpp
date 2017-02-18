@@ -65,10 +65,8 @@ void XYZUpdateDlg::doDownload()
     ui->pb2->setMaximum(checked);
     XYZDownloadManager dl1;
 
-    for (int i = 0; i < ui->tableWidget->rowCount(); ++i)
-    {
-        if (ui->tableWidget->item(i,1)->checkState() == Qt::Checked)
-        {
+    for (int i = 0; i < ui->tableWidget->rowCount(); ++i) {
+        if (ui->tableWidget->item(i,1)->checkState() == Qt::Checked) {
             ui->pb1->setValue(0);
             QString url = m_url+ui->tableWidget->item(i,1)->text();
             QString fileName = ui->tableWidget->item(i,1)->text().simplified();

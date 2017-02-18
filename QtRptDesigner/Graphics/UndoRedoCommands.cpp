@@ -76,23 +76,19 @@ DelItemCommand::DelItemCommand(GraphicsScene *scene, QUndoCommand *parent)
 {
     myGraphicsScene = scene;
 
-    for (auto item : scene->items())
-    {
+    for (auto item : scene->items()) {
         bool isSelected = false;
         GraphicsBox* box = nullptr;
-        if (item->type() == ItemType::GBand)
-        {
+        if (item->type() == ItemType::GBand) {
             box = static_cast<GraphicsBox*>(item);
             isSelected = box->isSelected();
         }
-        if (item->type() == ItemType::GBox)
-        {
+        if (item->type() == ItemType::GBox) {
             box = static_cast<GraphicsBox*>(item);
             isSelected = box->isSelected();
         }
         GraphicsLine* line = nullptr;
-        if (item->type() == ItemType::GLine)
-        {
+        if (item->type() == ItemType::GLine) {
             line = static_cast<GraphicsLine*>(item);
             isSelected = line->isSelected();
         }
@@ -103,20 +99,18 @@ DelItemCommand::DelItemCommand(GraphicsScene *scene, QUndoCommand *parent)
     setText(QObject::tr("Delete"));
 }
 
-void DelItemCommand::undo() {
+void DelItemCommand::undo()
+{
     auto area = qobject_cast<RepScrollArea*>(myGraphicsScene->parent());
 
     unsigned i = 0;
-    for (auto& item : itemList)
-    {
+    for (auto &item : itemList) {
         myGraphicsScene->addItem(item);
-        if (item->type() == ItemType::GBox || item->type() == ItemType::GLine)
-        {
+        if (item->type() == ItemType::GBox || item->type() == ItemType::GLine) {
             item->setParentItem(parentList[i]);
             area->newFieldTreeItem(item);
         }
-        if (itemList[i]->type() == ItemType::GBand)
-        {
+        if (itemList[i]->type() == ItemType::GBand) {
             area->newFieldTreeItem(item);
         }
         i++;
@@ -126,8 +120,7 @@ void DelItemCommand::undo() {
 
 void DelItemCommand::redo()
 {
-    for (auto cont1 : itemList)
-    {
+    for (auto cont1 : itemList) {
         parentList << cont1->parentItem();
         myGraphicsScene->removeItem(cont1);
     }
@@ -165,8 +158,7 @@ void AddCommand::redo()
 {
     if (myDiagramItem->scene() == nullptr)
         myGraphicsScene->addItem(myDiagramItem);
-    if (mpItem != nullptr)
-    {
+    if (mpItem != nullptr) {
 		myDiagramItem->setParentItem(mpItem);
 
         auto area = qobject_cast<RepScrollArea*>(myGraphicsScene->parent());
@@ -188,14 +180,11 @@ ParamCommand::ParamCommand(QList<PairCont>& list, GraphicsScene *scene, QUndoCom
 }
 
 ParamCommand::~ParamCommand()
-{
-
-}
+{}
 
 void ParamCommand::undo()
 {
-    for (auto& pair : m_dataList)
-    {
+    for (auto &pair : m_dataList) {
         QDataStream in(pair.oldBArray);
         auto second = qobject_cast<GraphicsHelperClass *>(pair.gHelper);
         if (second == nullptr)
@@ -208,8 +197,7 @@ void ParamCommand::undo()
 
 void ParamCommand::redo()
 {
-    for (auto& pair : m_dataList)
-    {
+    for (auto &pair : m_dataList) {
         QDataStream in(pair.newBArray);
         auto second = qobject_cast<GraphicsHelperClass *>(pair.gHelper);
         in >> *second;
@@ -221,8 +209,7 @@ void ParamCommand::redo()
 BArrayList ParamCommand::getBArrayFromContList(GraphicsHelperList contList)
 {
     BArrayList list;
-    for (auto& cont1 : contList)
-    {
+    for (auto &cont1 : contList) {
         QByteArray byteArray;
         QDataStream out(&byteArray, QIODevice::WriteOnly);
         out << *cont1;
@@ -238,12 +225,9 @@ BArrayList ParamCommand::getBArrayFromContList(GraphicsHelperList contList)
 QList<PairCont> ParamCommand::compoundArrays(BArrayList oldList, BArrayList newList)
 {
     QList<PairCont> list;
-    for (int i=0; i<oldList.size(); i++)
-    {
-        for (int j=0; j<newList.size(); j++)
-        {
-            if (oldList[i].second == newList[j].second)
-            {
+    for (int i=0; i<oldList.size(); i++) {
+        for (int j=0; j<newList.size(); j++) {
+            if (oldList[i].second == newList[j].second) {
                 PairCont pair;
                 pair.oldBArray = oldList[i].first;
                 pair.gHelper = oldList[i].second;

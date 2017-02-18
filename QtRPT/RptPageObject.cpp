@@ -136,12 +136,10 @@ void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
     borderStyle = docElem.attribute("borderStyle");
 
     QDomNode n = docElem.firstChild();
-    while(!n.isNull())
-    {
+    while(!n.isNull()) {
         QDomElement e = n.toElement();
-        if (!e.isNull() && e.tagName() == "ReportBand")
-        {
-            RptBandObject *bandObject = new RptBandObject();
+        if (!e.isNull() && e.tagName() == "ReportBand") {
+            auto bandObject = new RptBandObject();
             bandObject->parentReportPage = this;
             bandObject->setProperty(qtrpt,e);
             bandList.append(bandObject);
@@ -191,6 +189,7 @@ RptFieldObject *RptPageObject::findFieldObjectByName(QString name)
         for (auto field : band->fieldList)
             if (field->name == name)
                 return field;
+
     return nullptr;
 }
 

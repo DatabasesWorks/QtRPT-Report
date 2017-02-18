@@ -17,7 +17,8 @@
 #include "qzint.h"
 #include <stdio.h>
 
-Zint::QZint* createWidget() {
+Zint::QZint* createWidget()
+{
      Zint::QZint *z = new  Zint::QZint();
      return z;
 }
@@ -104,6 +105,7 @@ int  QZint::symbol()
 {
 	return m_symbol;
 }
+
 void QZint::setSymbol(int symbol)
 {
 	m_symbol=symbol;
@@ -173,6 +175,7 @@ QColor QZint::fgColor()
 {
 	return m_fgColor;
 }
+
 void QZint::setFgColor(const QColor & fgColor)
 {
 	m_fgColor=fgColor;
@@ -182,6 +185,7 @@ QColor QZint::bgColor()
 {
 	return m_bgColor;
 }
+
 void QZint::setBgColor(const QColor & bgColor)
 {
 	m_bgColor=bgColor;
@@ -191,6 +195,7 @@ QZint::BorderType QZint::borderType()
 {
 	return m_border;
 }
+
 void QZint::setBorderType(BorderType border)
 {
 	m_border=border;
@@ -200,6 +205,7 @@ int QZint::borderWidth()
 {
 	return m_borderWidth;
 }
+
 void QZint::setBorderWidth(int boderWidth)
 {
 	if (boderWidth<1 || boderWidth>16)
@@ -216,6 +222,7 @@ int QZint::pdf417CodeWords()
 {
 	return m_pdf417CodeWords;
 }
+
 void QZint::setPdf417CodeWords(int pdf417CodeWords)
 {
 	m_pdf417CodeWords=pdf417CodeWords;
@@ -225,6 +232,7 @@ int QZint::securityLevel()
 {
 	return m_securityLevel;
 }
+
 void QZint::setSecurityLevel(int securityLevel)
 {
 	m_securityLevel=securityLevel;

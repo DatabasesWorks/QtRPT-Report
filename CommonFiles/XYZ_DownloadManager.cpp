@@ -54,15 +54,13 @@ void XYZDownloadManager::download(bool ver)
 void XYZDownloadManager::downloadFinished(QNetworkReply *data)
 {
     error = data->error();
-    if (error != QNetworkReply::NoError)
-    {
+    if (error != QNetworkReply::NoError) {
         //QMessageBox::warning(0,tr("Error"),tr("No file or Internet is not connected"),QMessageBox::Ok);
         emit done();
         return;
     }
 
-    if (m_version)
-    {
+    if (m_version) {
         const QByteArray sdata = data->readAll();
         QStringList fl;
         fl << sdata;
@@ -70,15 +68,12 @@ void XYZDownloadManager::downloadFinished(QNetworkReply *data)
         //qDebug()<<fl;
         //qDebug()<<fileList;
 
-        if (QApplication::applicationVersion().replace(".","") < fileList[0].replace(".","").simplified())
-        {
+        if (QApplication::applicationVersion().replace(".","") < fileList[0].replace(".","").simplified()) {
             fileList.removeAt(0);
             XYZUpdateDlg *updateDlg = new XYZUpdateDlg(m_target.replace("version.txt",""),qobject_cast<QWidget *>(this->parent()));
             updateDlg->showThis(fileList);
         }
-    }
-    else
-    {
+    } else {
         QFile localFile(fileName);
         if (!localFile.open(QIODevice::WriteOnly))
             return;

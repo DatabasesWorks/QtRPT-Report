@@ -41,8 +41,7 @@ PageSettingDlg::PageSettingDlg(QWidget *parent)
     ui->spnBorderWidth->setValue(1);
     ui->lblBorderColor->setStyleSheet("QLabel {background-color: black}");
     
-    for (int i=1; i < 7; i++)
-    {
+    for (int i=1; i < 7; i++) {
         QIcon icon;
         icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/fs%1.png").arg(i)), QIcon::Normal, QIcon::On);
         ui->cmbBorderStyle->addItem(icon,"", i);
@@ -58,13 +57,10 @@ void PageSettingDlg::showThis(PageSetting pageSetting)
     settings.endGroup();
     QString meas_label;
 
-    if (measurement == "" || measurement == "Cm")
-    {
+    if (measurement == "" || measurement == "Cm") {
         meas_label = tr("Cm");
         koef = 40;
-    }
-    else if (measurement == "Inch")
-    {
+    } else if (measurement == "Inch") {
         meas_label = tr("Inch");
         koef = 101.59;
     }
@@ -116,8 +112,7 @@ void PageSettingDlg::showThis(PageSetting pageSetting)
 
 void PageSettingDlg::pageSizeChanged(int index)
 {
-    switch(index)
-    {
+    switch(index) {
         case 0: //A3
             ui->edtWidth->setText(QString::number(w_A3/koef,'f',2));
             ui->edtHeight->setText(QString::number(h_A3/koef,'f',2));
@@ -165,8 +160,7 @@ void PageSettingDlg::saveSettings()
     if (ui->rPortrait->isChecked())
         pageSetting.pageOrientation = 0;
 
-    switch(ui->cmbBorderStyle->currentIndex())
-    {
+    switch(ui->cmbBorderStyle->currentIndex()) {
         case 0:
             pageSetting.borderStyle = "solid";
             break;

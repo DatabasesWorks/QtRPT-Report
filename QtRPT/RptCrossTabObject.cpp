@@ -91,10 +91,8 @@ void RptCrossTabObject::buildMatrix()
     fieldWidth  = rect.width()/colCount();
     fieldheight = rowHeight();
 
-    for (unsigned row=0; row < m_rowCount; row++)
-    {
-        for (unsigned col=0; col < m_colCount; col++)
-        {
+    for (unsigned row=0; row < m_rowCount; row++) {
+        for (unsigned col=0; col < m_colCount; col++) {
             auto h1 = new RptFieldObject();
             h1->parentCrossTab = this;
             h1->name = QString("f%1%2").arg(col).arg(row);
@@ -133,8 +131,7 @@ int RptCrossTabObject::fieldRow(RptFieldObject* field)
 int RptCrossTabObject::fieldCol(RptFieldObject* field)
 {
     int index = fieldList.indexOf(field);
-    if (index != -1)
-    {
+    if (index != -1) {
         unsigned row = unsigned(index / m_colCount);
         unsigned column = index - row * m_colCount;
         index = column;

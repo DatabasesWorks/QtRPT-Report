@@ -86,13 +86,10 @@ void EditFldDlg::conditionalToggled(bool value)
     ui->grpBackground->setEnabled(!value);
     ui->grpFont->setEnabled(!value);
 
-    if (value)   //Show printting condition
-    {
+    if (value) {  //Show printting condition
         encodeHighLightingString();
         ui->edtCondition->setText(m_cond_printing);
-    }
-    else    //Show highlighting condtion
-    {
+    } else {  //Show highlighting condtion
         m_cond_printing = ui->edtCondition->text();
         decodeHighLightingString();
         ui->edtCondition->setText(m_cond_higlighting.section(";",0,0));
@@ -102,8 +99,7 @@ void EditFldDlg::conditionalToggled(bool value)
 
 void EditFldDlg::decodeHighLightingString()
 {
-    for (auto str : m_cond_higlighting.split(";"))
-    {
+    for (const auto &str : m_cond_higlighting.split(";")) {
         if (str.contains("bold"))
             ui->chkBold->setChecked(true);
         if (str.contains("italic"))
@@ -112,13 +108,11 @@ void EditFldDlg::decodeHighLightingString()
             ui->chkUnderline->setChecked(true);
         if (str.contains("strikeout"))
             ui->chkStrikeout->setChecked(true);
-        if (str.contains("fontColor"))
-        {
+        if (str.contains("fontColor")) {
             int start = str.indexOf("rgba(",0,Qt::CaseInsensitive);
             ui->lblColorF->setStyleSheet("QLabel {background-color: "+str.mid(start)+"}");
         }
-        if (str.contains("backgroundColor"))
-        {
+        if (str.contains("backgroundColor")) {
             int start = str.indexOf("rgba(",0,Qt::CaseInsensitive);
             ui->lblColorB->setStyleSheet("QLabel {background-color: "+str.mid(start)+"}");
             ui->rdOther->setChecked(true);
@@ -175,18 +169,15 @@ void EditFldDlg::openProperty()
 {
     QScopedPointer<FldPropertyDlg> dlg(new FldPropertyDlg(this));
 
-    if (sender() == ui->btnAddVariable)
-    {
+    if (sender() == ui->btnAddVariable) {
         QString str = dlg->showThis(0,0,"");
         ui->textEdit->insertPlainText(str);
     }
-    if (sender() == ui->btnAddFunction)
-    {
+    if (sender() == ui->btnAddFunction) {
         QString str = dlg->showThis(3,0,"");
         ui->textEdit->insertPlainText(str);
     }
-    if (sender() == ui->btnFormatting)
-    {
+    if (sender() == ui->btnFormatting) {
          QString str = dlg->showThis(2, 0, m_cont->getFormatString());
          m_cont->setFormatString(str);
     }
@@ -216,8 +207,7 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
     if (cont->getTextDirection())
         ui->btnTextDirection->click();
 
-    switch (cont->getFieldType())
-    {
+    switch (cont->getFieldType()) {
         case TextImage:
             ui->radioButtonTextImage->setChecked(true);
             boolImage = true;
@@ -235,19 +225,16 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
     ui->lblAttention->setVisible(boolImage);
     ui->rdPrinting->setChecked(true);
 
-    if (cont->getPrinting().size() > 1)
-    {
+    if (cont->getPrinting().size() > 1) {
         m_cond_printing = cont->getPrinting().replace("?1:0","");
         ui->edtCondition->setText(m_cond_printing);
     }
-    if (cont->getHighlighting().size() > 0)
-    {
+    if (cont->getHighlighting().size() > 0) {
         m_cond_higlighting = cont->getHighlighting();
         decodeHighLightingString();
     }
 
-    if (this->exec())
-    {
+    if (this->exec()) {
         if (ui->radioButtonTextImage->isChecked())
             cont->setFieldType(TextImage);
         else if (ui->radioButtonDatabaseImage->isChecked())
@@ -258,25 +245,21 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
         QString plainTextEditContents = ui->textEdit->toPlainText();
         QStringList lines = plainTextEditContents.split("\n");
 
-        if (lines.count() > 1 && lines.last().trimmed().isEmpty())
-        {
+        if (lines.count() > 1 && lines.last().trimmed().isEmpty()) {
             QMessageBox::StandardButton reply;            
             reply = QMessageBox::question(this, tr("Empty line"),tr("The field contains empty line at the end.\nRemove it?"),
                                              QMessageBox::Yes | QMessageBox::No);
-            if (reply == QMessageBox::Yes)
-            {
+            if (reply == QMessageBox::Yes) {
                 plainTextEditContents.clear();
                 //Remove last empty lines
                 int i = lines.count()-1;
-                while (i>0)
-                {
+                while (i>0) {
                     if (lines.last().trimmed().isEmpty() && i==lines.count()-1)
                         lines.removeAt(lines.count()-1);
                     else i--;
                 }
                 //join all in one string
-                for (int i = 0; i < lines.size(); ++i)
-                {
+                for (int i = 0; i < lines.size(); ++i) {
                     plainTextEditContents += lines.at(i);
                     if (i!=lines.size()-1)
                         plainTextEditContents += "\n";
@@ -284,8 +267,7 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
             }
         }
 
-        if (cont->getTextDirection() != ui->btnTextDirection->isChecked())
-        {
+        if (cont->getTextDirection() != ui->btnTextDirection->isChecked()) {
             if (ui->btnTextDirection->isChecked())
                 cont->setAlignment(Qt::AlignRight);
             else
@@ -295,10 +277,9 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
 
         cont->setText(plainTextEditContents);
 
-        if (m_cond_printing.size() > 0)
+        if (m_cond_printing.size() > 0) {
             cont->setPrinting( m_cond_printing+"?1:0" );
-        else
-        {
+        } else {
             if (cont->getPrinting().size() > 1)  //If previous was a Formula, now just a Visible
                 cont->setPrinting("1");
         }
@@ -321,31 +302,26 @@ int EditFldDlg::showTextRich(QGraphicsItem *gItem)
     ui->textEdit->setFocus();
     m_cont = cont;
 
-    if (this->exec())
-    {
+    if (this->exec()) {
         QString plainTextEditContents = ui->textEditRich->textEdit->toHtml();
         auto lines = plainTextEditContents.split("\n");
 
-        if (lines.count() > 1 && lines.last().trimmed().isEmpty())
-        {
+        if (lines.count() > 1 && lines.last().trimmed().isEmpty()) {
             QMessageBox::StandardButton reply;
             reply = QMessageBox::question(this, tr("Empty line"),tr("The field contains empty line at the end.\nRemove it?"),
                                           QMessageBox::Yes | QMessageBox::No);
-            if (reply == QMessageBox::Yes)
-            {
+            if (reply == QMessageBox::Yes) {
                 plainTextEditContents.clear();
                 //Remove last empty lines
                 int i = lines.count()-1;
-                while (i>0)
-                {
+                while (i>0) {
                     if (lines.last().trimmed().isEmpty() && i==lines.count()-1)
                         lines.removeAt(lines.count()-1);
                     else
                         i--;
                 }
                 //join all in one string
-                for (int i = 0; i < lines.size(); ++i)
-                {
+                for (int i = 0; i < lines.size(); ++i) {
                     plainTextEditContents += lines.at(i);
                     if (i!=lines.size()-1)
                         plainTextEditContents += "\n";
@@ -371,15 +347,13 @@ int EditFldDlg::showImage(QGraphicsItem *gItem)
 
     ui->chkIgnoreAspectRatio->setChecked(cont->getIgnoreAspectRatio());
     m_imgFormat = cont->getImgFormat();
-    if (this->exec())
-    {
+    if (this->exec()) {
         cont->setIgnoreAspectRatio(ui->chkIgnoreAspectRatio->isChecked());
         cont->setImage(*ui->label->pixmap());
         cont->setImgFromat(m_imgFormat);
 
         return QDialog::Accepted;
-    }
-    else
+    } else
         return QDialog::Rejected;
 }
 
@@ -394,32 +368,28 @@ int EditFldDlg::showBarcode(QGraphicsItem *gItem)
     ui->edtValue->setText(cont->getText());
 
     BarCode::BarcodeTypePairList list1 = BarCode::getTypeList();
-    for (int i=0; i < list1.size(); i++)
-    {
+    for (int i=0; i < list1.size(); i++) {
         ui->bstyle->addItem(list1.at(i).second,list1.at(i).first);
         if (list1.at(i).first == cont->getBarcodeType() )
             ui->bstyle->setCurrentIndex(i);
     }
 
     BarCode::FrameTypePairList list2 = BarCode::getFrameTypeList();
-    for (int i=0; i < list2.size(); i++)
-    {
+    for (int i=0; i < list2.size(); i++) {
         ui->cbFrameType->addItem(list2.at(i).second,list2.at(i).first);
         if (list2.at(i).first == cont->getBarcodeFrameType() )
             ui->cbFrameType->setCurrentIndex(i);
     }
     ui->spnHeight->setValue(cont->getBarcodeHeight());
 
-    if (this->exec())
-    {
+    if (this->exec()) {
         cont->setText(ui->edtValue->text());
         cont->setBarcodeType((BarCode::BarcodeTypes)ui->wBarcode->metaObject()->enumerator(0).value(ui->bstyle->currentIndex()));
         cont->setBarcodeFrameType((BarCode::FrameTypes)ui->wBarcode->metaObject()->enumerator(1).value(ui->cbFrameType->currentIndex()));
         cont->setBarcodeHeight(ui->spnHeight->value());
 
         return QDialog::Accepted;
-    }
-    else
+    } else
         return QDialog::Rejected;
 }
 
@@ -441,8 +411,7 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
     QObject::connect(ui->spnRowCount, SIGNAL(valueChanged(int)), SLOT(setCrossTabRowCount(int)));
     QObject::connect(ui->spnColCount, SIGNAL(valueChanged(int)), SLOT(setCrossTabColCount(int)));
 
-    if (this->exec())
-    {
+    if (this->exec()) {
 //        m_crossTab->setRowTotalVisible(ui->chkRowTotal->isChecked());
 //        m_crossTab->setColTotalVisible(ui->chkColTotal->isChecked());
 
@@ -496,10 +465,9 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
     QObject::connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChanged()));
 
     QTableWidgetItem *newItem;
-    int i=0;
+    int i = 0;
     ui->tableWidget->setRowCount( cont->getChart()->getGraphParamList().size() );
-    for (auto graphParam : cont->getChart()->getGraphParamList() )
-    {
+    for (const auto &graphParam : cont->getChart()->getGraphParamList()) {
         newItem = new QTableWidgetItem( graphParam.caption );
         ui->tableWidget->setItem(i,0,newItem);
 
@@ -517,12 +485,10 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
         i++;
     }
 
-    if (this->exec())
-    {
+    if (this->exec()) {
         //saving graphs to XML nodes
         cont->getChart()->clearData();
-        for (int i=0; i<ui->tableWidget->rowCount(); i++)
-        {
+        for (int i=0; i<ui->tableWidget->rowCount(); i++) {
             GraphParam param;
             auto sc = qobject_cast<SelectColor *>(ui->tableWidget->cellWidget(i,2));
             param.color = colorFromString(sc->getBackGroundColor());
@@ -541,8 +507,7 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
 
 
         return QDialog::Accepted;
-    }
-    else
+    } else
         return QDialog::Rejected;
 }
 
@@ -571,8 +536,7 @@ void EditFldDlg::addRow()
 
 void EditFldDlg::itemSelectionChanged()
 {
-    if (ui->tableWidget->rowCount() == 0)
-    {
+    if (ui->tableWidget->rowCount() == 0) {
         ui->btnUp->setEnabled(false);
         ui->btnDown->setEnabled(false);
         ui->btnRemoveRow->setEnabled(false);
@@ -596,8 +560,7 @@ void EditFldDlg::moveRow()
     auto newItem2 = ui->tableWidget->takeItem(ui->tableWidget->currentRow(),1);
     auto newItem3 = ui->tableWidget->cellWidget(ui->tableWidget->currentRow(),2);
 
-    if (sender() == ui->btnUp)
-    {
+    if (sender() == ui->btnUp) {
         ui->tableWidget->insertRow(row-1);
         ui->tableWidget->setItem(row-1,0,newItem1);
         ui->tableWidget->setItem(row-1,1,newItem2);
@@ -605,8 +568,7 @@ void EditFldDlg::moveRow()
         ui->tableWidget->setCurrentCell(row-1,col);
         ui->tableWidget->removeRow(row+1);
     }
-    if (sender() == ui->btnDown)
-    {
+    if (sender() == ui->btnDown) {
         ui->tableWidget->insertRow(row+2);
         ui->tableWidget->setItem(row+2,0,newItem1);
         ui->tableWidget->setItem(row+2,1,newItem2);
@@ -640,8 +602,7 @@ void EditFldDlg::selectGraphColor()
 void EditFldDlg::loadImage()
 {
     QString fileName = QFileDialog::getOpenFileName(this);
-    if (!fileName.isEmpty())
-    {
+    if (!fileName.isEmpty()) {
         QPixmap p;
         p.load(fileName);        
         ui->label->setPixmap(p);
@@ -656,8 +617,7 @@ void EditFldDlg::saveImage()
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image As"),
                                                     QCoreApplication::applicationDirPath(),
                                                     tr("Images (*.png)"));
-    if (!fileName.isEmpty())
-    {
+    if (!fileName.isEmpty()) {
         QPixmap p = QPixmap(*ui->label->pixmap());
         if (p.isNull()) return;
         p.save(fileName, m_imgFormat.toLatin1().data());

@@ -106,10 +106,8 @@ void SettingDlg::showThis()
         settings.setValue("CheckUpdates", ui->chkUpdates->checkState());
 
         settings.beginGroup("language");
-        if (ui->cmbLanguage->currentIndex() != langIndex)
-        {
-            switch(ui->cmbLanguage->currentIndex())
-            {
+        if (ui->cmbLanguage->currentIndex() != langIndex) {
+            switch(ui->cmbLanguage->currentIndex()) {
                 case 0://system default
                     settings.setValue("language", "");
                     break;
@@ -160,8 +158,7 @@ void SettingDlg::showThis()
             reply = QMessageBox::question(this, tr("Message QtRptDesigner"),tr("The language for this application has been changed.\n"
                                                                                "The change will take effect the next time the application is started.\nRestart application?"),
                                              QMessageBox::Yes | QMessageBox::No);
-            if (reply == QMessageBox::Yes)
-            {
+            if (reply == QMessageBox::Yes) {
                 this->parentWidget()->close();
                 QProcess::startDetached(QApplication::applicationFilePath());
             }

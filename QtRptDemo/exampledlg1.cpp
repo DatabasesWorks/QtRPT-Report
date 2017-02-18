@@ -35,8 +35,7 @@ ExampleDlg1::ExampleDlg1(QWidget *parent)
     QObject::connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
 
     QTableWidgetItem *newItem;
-    for (int i = 0; i < ui->tableWidget->rowCount(); ++i)
-    {
+    for (int i = 0; i < ui->tableWidget->rowCount(); ++i) {
         newItem = new QTableWidgetItem("Goods "+QString::number(i));
         ui->tableWidget->setItem(i,0,newItem);
 
@@ -61,26 +60,22 @@ void ExampleDlg1::setValue(const int recNo, const QString paramName, QVariant &p
         paramValue = ui->dtp->date().toString();
     if (paramName == "NN")
         paramValue = recNo+1;
-    if (paramName == "Goods")
-    {
+    if (paramName == "Goods") {
         if (ui->tableWidget->item(recNo,0) == nullptr)
             return;
         paramValue = ui->tableWidget->item(recNo,0)->text();
     }
-    if (paramName == "Quantity")
-    {
+    if (paramName == "Quantity") {
         if (ui->tableWidget->item(recNo,1) == nullptr)
             return;
         paramValue = ui->tableWidget->item(recNo,1)->text();
     }
-    if (paramName == "Price")
-    {
+    if (paramName == "Price") {
         if (ui->tableWidget->item(recNo,2) == nullptr)
             return;
         paramValue = ui->tableWidget->item(recNo,2)->text();
     }
-    if (paramName == "Sum")
-    {
+    if (paramName == "Sum") {
         if (ui->tableWidget->item(recNo,3) == nullptr)
             return;
         paramValue = ui->tableWidget->item(recNo,3)->text();
@@ -92,8 +87,7 @@ void ExampleDlg1::setValueImage(const int recNo, const QString paramName, QImage
     Q_UNUSED(recNo);
     Q_UNUSED(reportPage);
 
-    if (paramName == "image")
-    {
+    if (paramName == "image") {
         auto image = new QImage(QCoreApplication::applicationDirPath()+"/pdf.png");
         paramValue = *image;
     }

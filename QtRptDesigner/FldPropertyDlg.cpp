@@ -41,8 +41,7 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
     else
         ui->stackedWidget->setCurrentIndex(index);
 
-    switch(index)
-    {
+    switch(index) {
         case 0:
         case 3: {
             QTreeWidgetItem *rootItem = new QTreeWidgetItem(ui->treeWidget,0);
@@ -305,9 +304,9 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
     } else return "";
 }
 
-void FldPropertyDlg::changeCategory(int row) {
-    if (row == 0)
-    {
+void FldPropertyDlg::changeCategory(int row)
+{
+    if (row == 0) {
         ui->lstFormat->clear();
         QListWidgetItem *item;
         item = new QListWidgetItem("1 234.00", ui->lstFormat);
@@ -329,8 +328,7 @@ void FldPropertyDlg::changeCategory(int row) {
 
 void FldPropertyDlg::changeFormat(int row)
 {
-    if (row >= 0)
-    {
+    if (row >= 0) {
         ui->edtFornatString->setText(
             ui->lstCategory->item(ui->lstCategory->currentRow())->data(Qt::UserRole).toString()+
             ui->lstFormat->item(row)->data(Qt::UserRole).toString()+
