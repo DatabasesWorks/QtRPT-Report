@@ -132,10 +132,9 @@ bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
                 corner->mouseDownY = mevent->pos().y();
 
                 //Посылаем сигнал в сцену для отслеживания Ундо при перемещении концов
-                GraphicsScene *model = qobject_cast<GraphicsScene *>(scene());
-                if (model) {
+                auto model = qobject_cast<GraphicsScene *>(scene());
+                if (model)
                     model->itemMoving(this);
-                }
             }
             break;
         case QEvent::GraphicsSceneMouseRelease: {

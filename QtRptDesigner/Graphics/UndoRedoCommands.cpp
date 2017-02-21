@@ -120,7 +120,7 @@ void DelItemCommand::undo()
 
 void DelItemCommand::redo()
 {
-    for (auto cont1 : itemList) {
+    for (auto &cont1 : itemList) {
         parentList << cont1->parentItem();
         myGraphicsScene->removeItem(cont1);
     }
@@ -225,13 +225,13 @@ BArrayList ParamCommand::getBArrayFromContList(GraphicsHelperList contList)
 QList<PairCont> ParamCommand::compoundArrays(BArrayList oldList, BArrayList newList)
 {
     QList<PairCont> list;
-    for (int i=0; i<oldList.size(); i++) {
-        for (int j=0; j<newList.size(); j++) {
-            if (oldList[i].second == newList[j].second) {
+    for (auto &oldPair : oldList) {
+        for (auto &newPair : newList) {
+            if (oldPair.second == newPair.second) {
                 PairCont pair;
-                pair.oldBArray = oldList[i].first;
-                pair.gHelper = oldList[i].second;
-                pair.newBArray = newList[j].first;
+                pair.oldBArray = oldPair.first;
+                pair.gHelper   = oldPair.second;
+                pair.newBArray = newPair.first;
                 list.append(pair);
             }
         }

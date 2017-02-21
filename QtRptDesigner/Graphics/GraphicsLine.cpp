@@ -65,7 +65,7 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
 {
     //qDebug() << " QEvent == " + QString::number(event->type());
 
-    CornerGrabber * corner = dynamic_cast<CornerGrabber *>(watched);
+    CornerGrabber *corner = dynamic_cast<CornerGrabber *>(watched);
     if ( corner == NULL) return false; // not expected to get here
 
     QGraphicsSceneMouseEvent * mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
@@ -86,7 +86,7 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
         m_cornerGrabbed = true;
 
         //Посылаем сигнал в сцену для отслеживания Ундо при перемещении концов
-        GraphicsScene *model = qobject_cast<GraphicsScene *>(scene());
+        auto model = qobject_cast<GraphicsScene *>(scene());
         if (model)
         	model->itemMoving(this);
         break;
@@ -107,7 +107,7 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
     }
 
     if ( corner->getMouseState() == CornerGrabber::kMouseMoving ) {
-        GraphicsScene *m_scene = qobject_cast<GraphicsScene *>(scene());
+        auto m_scene = qobject_cast<GraphicsScene *>(scene());
         m_scene->itemResizing(this);
 
         createCustomPath(mevent->pos(), corner);
@@ -152,7 +152,7 @@ void GraphicsLine::createCustomPath(QPointF mouseLocation, CornerGrabber* corner
     initPolygon();
     if (idx > -1) {
         int cornerWidth = (m_corners[0]->boundingRect().width())/2;
-        int cornerHeight = ( m_corners[0]->boundingRect().height())/2;
+        int cornerHeight = (m_corners[0]->boundingRect().height())/2;
         m_corners[idx]->setPos(m_pointList[idx].x() - cornerWidth, m_pointList[idx].y() - cornerHeight );
     }
 }

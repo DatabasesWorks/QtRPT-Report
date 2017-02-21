@@ -413,12 +413,13 @@ QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj)
         stream >> font;
         item->setFont(font);
     }
-    if (obj.m_type == Diagram) {
+
+    if (obj.m_type == Diagram)
         stream >> *item->getChart();
-    }
-    if (obj.m_type == Barcode) {
+
+    if (obj.m_type == Barcode)
         stream >> *item->getBarCode();
-    }
+
     //obj.setParamFromProperties();
 
     return stream;

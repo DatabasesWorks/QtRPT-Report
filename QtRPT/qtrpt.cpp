@@ -353,7 +353,18 @@ QPen QtRPT::getPen(RptFieldObject *fieldObject)
         pen = painter->pen();
 
     //Set border width
-    pen.setWidth(fieldObject->borderWidth*5);
+    int width;
+    switch (m_resolution) {
+    case QPrinter::ScreenResolution:
+        width = 1;
+        break;
+    case QPrinter::HighResolution:
+    default:
+        width = 5;
+        break;
+    }
+    pen.setWidth(fieldObject->borderWidth * width);
+
     //Set border style
     QString borderStyle = fieldObject->borderStyle;
     pen.setStyle(getPenStyle(borderStyle));
@@ -380,34 +391,20 @@ Qt::PenStyle QtRPT::getPenStyle(QString value)
  */
 FieldType QtRPT::getFieldType(QDomElement e)
 {
-    if (e.attribute("type","label") == "barcode")
-        return Barcode;
-    else if (e.attribute("type","label") == "reactangle")
-        return Reactangle;
-    else if (e.attribute("type","label") == "roundedReactangle")
-        return RoundedReactangle;
-    else if (e.attribute("type","label") == "circle")
-        return Circle;
-    else if (e.attribute("type","label") == "triangle")
-        return Triangle;
-    else if (e.attribute("type","label") == "rhombus")
-        return Rhombus;
-    else if (e.attribute("type","label") == "textRich")
-        return TextRich;
-    else if (e.attribute("type","label") == "label")
-        return Text;
-    else if (e.attribute("type","label") == "labelImage")
-        return TextImage;
-    else if (e.attribute("type","label") == "image" || e.attribute("picture","text") != "text")
-        return Image;
-    else if (e.attribute("type","label") == "diagram")
-        return Diagram;
-    else if (e.attribute("type","label") == "line")
-        return Line;
-    else if (e.attribute("type","label") == "DatabaseImage")
-        return DatabaseImage;
-    else if (e.attribute("type","label") == "crossTab")
-        return CrossTab;
+    if (e.attribute("type","label") == "barcode") return Barcode;
+    else if (e.attribute("type","label") == "reactangle") return Reactangle;
+    else if (e.attribute("type","label") == "roundedReactangle") return RoundedReactangle;
+    else if (e.attribute("type","label") == "circle") return Circle;
+    else if (e.attribute("type","label") == "triangle") return Triangle;
+    else if (e.attribute("type","label") == "rhombus") return Rhombus;
+    else if (e.attribute("type","label") == "textRich") return TextRich;
+    else if (e.attribute("type","label") == "label") return Text;
+    else if (e.attribute("type","label") == "labelImage") return TextImage;
+    else if (e.attribute("type","label") == "image" || e.attribute("picture","text") != "text") return Image;
+    else if (e.attribute("type","label") == "diagram") return Diagram;
+    else if (e.attribute("type","label") == "line") return Line;
+    else if (e.attribute("type","label") == "DatabaseImage") return DatabaseImage;
+    else if (e.attribute("type","label") == "crossTab") return CrossTab;
     else return Text;
 }
 
@@ -843,6 +840,7 @@ void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop)
     pen.setColor(fieldObject->borderColor);
     if (painter->isActive())
         painter->setPen(pen);
+
     if (fieldType == Line) {
         if (painter->isActive())
             painter->drawLine(startX, startY, endX, endY);
@@ -1202,6 +1200,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
             }
         }
     }
+
     if (!tmpStr.isEmpty())
         res << tmpStr;
 
@@ -1288,7 +1287,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                     )
                     {
                         //if we have Sql DataSource
-                        if (rtpSqlVector.size() > 0 && rtpSqlVector[m_pageReport] != 0 ) {
+                        if (rtpSqlVector.size() > 0 && rtpSqlVector[m_pageReport] != nullptr) {
                             if (tl.at(j).contains(rtpSqlVector[m_pageReport]->objectName())) {
                                 QString fieldName = tl.at(j);
                                 fieldName.replace("[","");
@@ -1846,7 +1845,7 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
 bool QtRPT::eventFilter(QObject *obj, QEvent *e)
 {
     if (obj == pr && e->type()==QEvent::Show) {
-        for (auto action : lst)
+        for (auto &action : lst)
             if (action->text().contains("Previous page", Qt::CaseInsensitive))
                 action->trigger();
 
