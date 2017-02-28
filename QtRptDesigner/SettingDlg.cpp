@@ -155,8 +155,10 @@ void SettingDlg::showThis()
                     break;
             }
             QMessageBox::StandardButton reply;
-            reply = QMessageBox::question(this, tr("Message QtRptDesigner"),tr("The language for this application has been changed.\n"
-                                                                               "The change will take effect the next time the application is started.\nRestart application?"),
+            reply = QMessageBox::question(this, tr("Message QtRptDesigner"),
+                                          tr("The language for this application has been changed.\n"
+                                             "The change will take effect the next time the application is started.\n"
+                                             "Restart application?"),
                                              QMessageBox::Yes | QMessageBox::No);
             if (reply == QMessageBox::Yes) {
                 this->parentWidget()->close();

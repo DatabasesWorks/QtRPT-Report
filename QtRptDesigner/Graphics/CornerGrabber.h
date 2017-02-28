@@ -24,37 +24,37 @@ class CornerGrabber : public QGraphicsItem
 public:
     explicit CornerGrabber(QGraphicsItem *parent = 0,  int corner=0);
 
-    int  getCorner(); ///< allows the owner to find out which coner this is
-    void setMouseState(int); ///< allows the owner to record the current mouse state
-    int  getMouseState(); ///< allows the owner to get the current mouse state
+    int  getCorner(); // allows the owner to find out which coner this is
+    void setMouseState(int); // allows the owner to record the current mouse state
+    int  getMouseState(); // allows the owner to get the current mouse state
     QPointF getCenterPoint();
 
     qreal mouseDownX;
     qreal mouseDownY;
 
-    enum {kMouseReleased=0, kMouseDown, kMouseMoving}; ///< define the mouse states
+    enum {kMouseReleased=0, kMouseDown, kMouseMoving}; //  define the mouse states
 
-    virtual QRectF boundingRect() const; ///< must be re-implemented in this class to provide the diminsions of the box to the QGraphicsView
+    virtual QRectF boundingRect() const; // must be re-implemented in this class to provide the diminsions of the box to the QGraphicsView
     void setCursorToResize(bool on);
 
 private:
-    virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget); ///< must be re-implemented here to pain the box on the paint-event
-    virtual void hoverEnterEvent ( QGraphicsSceneHoverEvent * event ); ///< must be re-implemented to handle mouse hover enter events
-    virtual void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ); ///< must be re-implemented to handle mouse hover leave events
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget); // must be re-implemented here to pain the box on the paint-event
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover enter events
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover leave events
 
     // once the hover event handlers are implemented in this class,
     // the mouse events must allow be implemented because of
     // some linkage issue - apparrently there is some connection
     // between the hover events and mouseMove/Press/Release
     // events which triggers a vtable issue
-    virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-    virtual void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
-    virtual void mousePressEvent (QGraphicsSceneMouseEvent * event );
-    virtual void mousePressEvent(QGraphicsSceneDragDropEvent *event);
-    virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent * event );
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneDragDropEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-    QColor m_outterborderColor;   //< the hover event handlers will toggle this between red and black
-    QPen m_outterborderPen;       //< the pen is used to paint the red/black border
+    QColor m_outterborderColor;   // the hover event handlers will toggle this between red and black
+    QPen m_outterborderPen;       // the pen is used to paint the red/black border
 
     qreal   m_width;
     qreal   m_height;

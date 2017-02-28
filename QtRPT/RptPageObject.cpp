@@ -185,8 +185,8 @@ RptBandObject *RptPageObject::getBand(BandType type)
 */
 RptFieldObject *RptPageObject::findFieldObjectByName(QString name)
 {
-    for (auto band : bandList)
-        for (auto field : band->fieldList)
+    for (auto &band : bandList)
+        for (auto &field : band->fieldList)
             if (field->name == name)
                 return field;
 

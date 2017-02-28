@@ -48,24 +48,24 @@ void CornerGrabber::mousePressEvent(QGraphicsSceneDragDropEvent *event)
     event->setAccepted(false);
 }
 
-void CornerGrabber::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+void CornerGrabber::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     event->setAccepted(true);
 }
 
-void CornerGrabber::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void CornerGrabber::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     event->setAccepted(false);
 }
 
-void CornerGrabber::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+void CornerGrabber::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     event->setAccepted(false);
 }
 
 // change the color on hover events to indicate to the use the object has
 // been captured by the mouse
-void CornerGrabber::hoverLeaveEvent ( QGraphicsSceneHoverEvent * )
+void CornerGrabber::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
 {
     m_outterborderColor = Qt::black;
 
@@ -74,7 +74,7 @@ void CornerGrabber::hoverLeaveEvent ( QGraphicsSceneHoverEvent * )
     this->update(0,0,m_width,m_height);
 }
 
-void CornerGrabber::hoverEnterEvent ( QGraphicsSceneHoverEvent * )
+void CornerGrabber::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
     m_outterborderColor = Qt::red;
 
@@ -93,7 +93,7 @@ QPointF CornerGrabber::getCenterPoint()
     return QPointF(pos().x() + m_width/2,pos().y() + m_height/2);
 }
 
-void CornerGrabber::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void CornerGrabber::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     // fill the box with solid color, use sharp corners
 

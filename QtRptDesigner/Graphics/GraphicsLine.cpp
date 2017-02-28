@@ -10,7 +10,7 @@
 
 GraphicsLine::GraphicsLine()
 : QGraphicsPolygonItem(),
-        m_cornerGrabbed(false)
+m_cornerGrabbed(false)
 {
     setDrawingState(true);
 
@@ -61,15 +61,15 @@ void GraphicsLine::initPolygon()
   * event.  A dynamic_cast is used to determine if the event type is one of the events
   * we are interrested in.
   */
-bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
+bool GraphicsLine::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 {
     //qDebug() << " QEvent == " + QString::number(event->type());
 
     CornerGrabber *corner = dynamic_cast<CornerGrabber *>(watched);
-    if ( corner == NULL) return false; // not expected to get here
+    if (corner == nullptr) return false; // not expected to get here
 
     QGraphicsSceneMouseEvent * mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
-    if ( mevent == NULL) {
+    if (mevent == nullptr) {
         // this is not one of the mouse events we are interrested in
         return false;
     }
@@ -114,7 +114,7 @@ bool GraphicsLine::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
         this->scene()->update();
     }
 
-    return true;// true => do not send event to watched - we are finished with this event
+    return true; // true => do not send event to watched - we are finished with this event
 }
 
 void GraphicsLine::setPos(QPointF pos)
@@ -157,18 +157,18 @@ void GraphicsLine::createCustomPath(QPointF mouseLocation, CornerGrabber* corner
     }
 }
 
-void GraphicsLine::hoverLeaveEvent ( QGraphicsSceneHoverEvent * )
+void GraphicsLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
 {
     this->scene()->update();
 }
 
-void GraphicsLine::hoverEnterEvent ( QGraphicsSceneHoverEvent * )
+void GraphicsLine::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
     this->scene()->update();
 }
 
 // for supporting moving the box across the scene
-void GraphicsLine::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+void GraphicsLine::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     event->setAccepted(true);
     this->setPos(m_location);
@@ -176,7 +176,7 @@ void GraphicsLine::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 }
 
 // for supporting moving the box across the scene
-void GraphicsLine::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void GraphicsLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     event->setAccepted(true);
     m_dragStart = event->pos();
@@ -185,15 +185,15 @@ void GraphicsLine::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 }
 
 // for supporting moving the box across the scene
-void GraphicsLine::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+void GraphicsLine::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF newPos = event->pos() ;
     m_location += (newPos - m_dragStart);
     this->setPos(m_location);
 
-    GraphicsScene *m_scene = qobject_cast<GraphicsScene *>(scene());
+    auto m_scene = qobject_cast<GraphicsScene *>(scene());
     m_scene->itemResizing(this);
-    this->scene()->update();
+    m_scene->update();
 }
 
 void GraphicsLine::setSelected(bool selected_)
@@ -229,7 +229,7 @@ void GraphicsLine::createCorners()
 
     for (int p=0; p<m_pointList.size(); p++) {
         if (m_corners[p] == nullptr) {
-            m_corners[p] = new CornerGrabber(this,p);
+            m_corners[p] = new CornerGrabber(this, p);
             m_corners[p]->installSceneEventFilter(this);
         }
     }
@@ -425,7 +425,7 @@ void GraphicsLine::setLength(qreal value)
     setEndPosition(line.p2());
 }
 
-void GraphicsLine::setMenu(QMenu *menu_)
+void GraphicsLine::setMenu(QMenu *menu)
 {
     QIcon icon;
 
@@ -433,7 +433,7 @@ void GraphicsLine::setMenu(QMenu *menu_)
     icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/delete.png")), QIcon::Normal, QIcon::On);
     actContDel->setObjectName("actContDel");
     actContDel->setIcon(icon);
-    QObject::connect(actContDel, SIGNAL(triggered()), this, SLOT(deleteLater()));
+    QObject::connect(actContDel, SIGNAL(triggered()), this, SIGNAL(itemRemoving()));
 
     auto actContMoveForward = new QAction(tr("Move forward"),this);
     actContMoveForward->setObjectName("actContMoveForward");
@@ -448,7 +448,7 @@ void GraphicsLine::setMenu(QMenu *menu_)
     QObject::connect(actContMoveBack, SIGNAL(triggered()), this, SLOT(moveBack()));
 
     m_menu->clear();
-    m_menu->insertActions(0,menu_->actions());
+    m_menu->insertActions(0, menu->actions());
     m_menu->addAction(actContDel);
     m_menu->addSeparator();
     m_menu->addAction(actContMoveForward);

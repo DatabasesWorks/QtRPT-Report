@@ -1719,7 +1719,7 @@ void QtRPT::printPreview(QPrinter *printer)
      *Second pass draw a report
      */
     curPage = 1;
-    for (int i=0; i<pageList.size(); i++) {
+    for (int i = 0; i < pageList.size(); i++) {
         openDataSource(i);
         //listOfPair.clear();
         listIdxOfGroup.clear();
@@ -1734,7 +1734,7 @@ void QtRPT::printPreview(QPrinter *printer)
     painter->resetTransform();
     //setPageSettings(printer,0);
     curPage = 1;
-    for (int i=0; i<pageList.size(); i++) {
+    for (int i = 0; i < pageList.size(); i++) {
         //listOfPair.clear();
         listIdxOfGroup.clear();
         m_recNo = 0;

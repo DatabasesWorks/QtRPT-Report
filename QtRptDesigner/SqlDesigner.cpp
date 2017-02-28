@@ -96,7 +96,7 @@ void SqlDesigner::refreshTable(QSqlDatabase *db)
 {
     ui->tablesTree->clear();
     QIcon icon;
-    for (auto tableName : db->tables(QSql::Tables)) {
+    for (auto &tableName : db->tables(QSql::Tables)) {
         auto tableItem = new QTreeWidgetItem(ui->tablesTree);
         tableItem->setText(0,tableName);
         icon.addPixmap(QPixmap(":/new/prefix1/images/table.png"), QIcon::Normal, QIcon::On);
@@ -171,15 +171,17 @@ void SqlDesigner::selectXMLFile()
             ui->xmlStructTree->setModel(model);
 
         } else {
-            qDebug()<<"not set";
+            qDebug() << "not set";
         }
         file.close();
-    } else qDebug()<<"not found";
+    } else {
+        qDebug() << "not found";
+    }
 }
 
 void SqlDesigner::previewXMLData()
 {
-    qDebug()<<"preview xml data";
+    qDebug() << "preview xml data";
 }
 
 void SqlDesigner::rbChecked()
@@ -198,8 +200,7 @@ void SqlDesigner::btnClose()
     setVisible(false);
     auto act1 = this->parentWidget()->parentWidget()->findChild<QAction *>("actDataSource");
     auto act2 = this->parentWidget()->parentWidget()->findChild<QAction *>("actSaveReport");
-    if (act1 != nullptr)
-    {
+    if (act1 != nullptr) {
         act1->setChecked(false);
         act2->setEnabled(true);
     }

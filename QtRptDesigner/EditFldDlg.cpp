@@ -80,7 +80,7 @@ void EditFldDlg::conditionChanged(const QString &text)
         encodeHighLightingString();
 }
 
-//Switching between Printing and Highlighting
+// Switching between Printing and Highlighting
 void EditFldDlg::conditionalToggled(bool value)
 {
     ui->grpBackground->setEnabled(!value);
@@ -283,15 +283,16 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
             if (cont->getPrinting().size() > 1)  //If previous was a Formula, now just a Visible
                 cont->setPrinting("1");
         }
+
         if (m_cond_higlighting.size() > 0)
             cont->setHighlighting(m_cond_higlighting);
         else
             cont->setHighlighting("");
 
         return QDialog::Accepted;
-    }
-    else
+    } else {
         return QDialog::Rejected;
+    }
 }
 
 int EditFldDlg::showTextRich(QGraphicsItem *gItem)
@@ -312,7 +313,7 @@ int EditFldDlg::showTextRich(QGraphicsItem *gItem)
                                           QMessageBox::Yes | QMessageBox::No);
             if (reply == QMessageBox::Yes) {
                 plainTextEditContents.clear();
-                //Remove last empty lines
+                // Remove last empty lines
                 int i = lines.count()-1;
                 while (i>0) {
                     if (lines.last().trimmed().isEmpty() && i==lines.count()-1)
@@ -320,7 +321,8 @@ int EditFldDlg::showTextRich(QGraphicsItem *gItem)
                     else
                         i--;
                 }
-                //join all in one string
+
+                // join all in one string
                 for (int i = 0; i < lines.size(); ++i) {
                     plainTextEditContents += lines.at(i);
                     if (i!=lines.size()-1)
@@ -339,7 +341,7 @@ int EditFldDlg::showTextRich(QGraphicsItem *gItem)
 
 int EditFldDlg::showImage(QGraphicsItem *gItem)
 {
-    auto cont = static_cast<GraphicsBox*>(gItem);
+    auto cont = qgraphicsitem_cast<GraphicsBox*>(gItem);
 
     ui->stackedWidget->setCurrentIndex(1);
     ui->label->setPixmap(cont->getImage());
@@ -347,14 +349,16 @@ int EditFldDlg::showImage(QGraphicsItem *gItem)
 
     ui->chkIgnoreAspectRatio->setChecked(cont->getIgnoreAspectRatio());
     m_imgFormat = cont->getImgFormat();
+
     if (this->exec()) {
         cont->setIgnoreAspectRatio(ui->chkIgnoreAspectRatio->isChecked());
         cont->setImage(*ui->label->pixmap());
         cont->setImgFromat(m_imgFormat);
 
         return QDialog::Accepted;
-    } else
+    } else {
         return QDialog::Rejected;
+    }
 }
 
 int EditFldDlg::showBarcode(QGraphicsItem *gItem)
@@ -422,9 +426,9 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
 //        m_crossTab->clear();
 //        m_crossTab->initMatrix();
         return QDialog::Accepted;
-    }
-    else
+    } else {
         return QDialog::Rejected;
+    }
 }
 
 void EditFldDlg::update_preview()
@@ -465,7 +469,7 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
     QObject::connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChanged()));
 
     QTableWidgetItem *newItem;
-    int i = 0;
+    unsigned i = 0;
     ui->tableWidget->setRowCount( cont->getChart()->getGraphParamList().size() );
     for (const auto &graphParam : cont->getChart()->getGraphParamList()) {
         newItem = new QTableWidgetItem( graphParam.caption );
@@ -507,8 +511,9 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
 
 
         return QDialog::Accepted;
-    } else
+    } else {
         return QDialog::Rejected;
+    }
 }
 
 void EditFldDlg::removeRow()

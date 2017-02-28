@@ -106,20 +106,20 @@ protected:
 
     void createCorners();
     void setCornerPositions();
-    virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent * event );
-    virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-    virtual void mousePressEvent (QGraphicsSceneMouseEvent * event );
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 private:
-    virtual QRectF boundingRect() const; ///< must be re-implemented in this class to provide the diminsions of the box to the QGraphicsView
-    virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *); ///< must be re-implemented here to pain the box on the paint-event
-    virtual void hoverEnterEvent ( QGraphicsSceneHoverEvent * event ); ///< must be re-implemented to handle mouse hover enter events
-    virtual void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ); ///< must be re-implemented to handle mouse hover leave events
+    QRectF boundingRect() const; // must be re-implemented in this class to provide the diminsions of the box to the QGraphicsView
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *); // must be re-implemented here to pain the box on the paint-event
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover enter events
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover leave events
 
-    virtual void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
-    virtual void mousePressEvent(QGraphicsSceneDragDropEvent *event);
-    virtual bool sceneEventFilter ( QGraphicsItem * watched, QEvent * event ) ;
+    void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
+    void mousePressEvent(QGraphicsSceneDragDropEvent *event);
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event);
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void adjustSize(int x, int y);

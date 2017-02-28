@@ -42,7 +42,7 @@ XYZTextEditor::XYZTextEditor(QWidget *parent)
     btnGroup->addButton(m_ui->btnAlignLeft);
     btnGroup->addButton(m_ui->btnAlignRight);
     QObject::connect(m_ui->textEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)),
-            this, SLOT(currentCharFormatChanged(const QTextCharFormat &)));
+                     this, SLOT(currentCharFormatChanged(const QTextCharFormat &)));
     QObject::connect(m_ui->textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
     QObject::connect(m_ui->btnCut, SIGNAL(clicked()), m_ui->textEdit, SLOT(cut()));
     QObject::connect(m_ui->btnCopy, SIGNAL(clicked()), m_ui->textEdit, SLOT(copy()));
@@ -215,8 +215,7 @@ void XYZTextEditor::textFamily(const QString &f)
 void XYZTextEditor::textSize(const QString &p)
 {
     qreal pointSize = p.toFloat();
-    if (p.toFloat() > 0)
-    {
+    if (p.toFloat() > 0) {
         QTextCharFormat fmt;
         fmt.setFontPointSize(pointSize);
         mergeFormatOnWordOrSelection(fmt);

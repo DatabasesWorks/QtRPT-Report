@@ -301,7 +301,9 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
             default:
                 return "";
         }
-    } else return "";
+    } else {
+        return "";
+    }
 }
 
 void FldPropertyDlg::changeCategory(int row)
@@ -334,9 +336,9 @@ void FldPropertyDlg::changeFormat(int row)
             ui->lstFormat->item(row)->data(Qt::UserRole).toString()+
             ui->spnPrecision->text()
         );
-    }
-    else
+    } else {
         ui->edtFornatString->setText("");
+    }
 }
 
 void FldPropertyDlg::precisionChanged(int row)

@@ -112,6 +112,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_trackingMoves = false;
     }
 
+    //Added to prevent lost focus on right click on the item
     if (event->button() != Qt::LeftButton) {
         event->accept();
         return;
