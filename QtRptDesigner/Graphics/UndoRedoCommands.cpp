@@ -76,7 +76,7 @@ DelItemCommand::DelItemCommand(GraphicsScene *scene, QUndoCommand *parent)
 {
     myGraphicsScene = scene;
 
-    for (auto item : scene->items()) {
+    for (auto &item : scene->items()) {
         bool isSelected = false;
         GraphicsBox* box = nullptr;
         if (item->type() == ItemType::GBand) {

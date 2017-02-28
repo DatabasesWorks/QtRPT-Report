@@ -258,7 +258,7 @@ void RepScrollArea::paintVerRuler()
 ReportBand* RepScrollArea::m_addBand(BandType type, QMenu* bandMenu, int m_height)
 {
     QMenu m_bandMenu;
-    for (auto action : bandMenu->actions()) {
+    for (auto &action : bandMenu->actions()) {
         if (type == DataGroupHeader) {
             m_bandMenu.addAction(action);
         } else {
@@ -287,7 +287,6 @@ ReportBand* RepScrollArea::m_addBand(BandType type, QMenu* bandMenu, int m_heigh
 
     correctBandGeom();
 
-    QObject::connect(reportBand, SIGNAL(itemRemoving()), scene, SLOT(itemRemoving()));
     return reportBand;
 }
 

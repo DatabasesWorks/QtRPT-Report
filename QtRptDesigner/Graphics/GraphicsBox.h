@@ -82,7 +82,7 @@ public:
     QPixmap getImage();
     QString getImgFormat();
     void setImgFromat(QString value);
-    void setMenu(QMenu *menu_);
+    void setMenu(QMenu *menu);
     BarCode::BarcodeTypes getBarcodeType();
     void setBarcodeType(BarCode::BarcodeTypes value);
     BarCode::FrameTypes getBarcodeFrameType();

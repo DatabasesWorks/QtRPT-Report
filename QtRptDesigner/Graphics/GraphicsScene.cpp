@@ -112,6 +112,11 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_trackingMoves = false;
     }
 
+    if (event->button() != Qt::LeftButton) {
+        event->accept();
+        return;
+    }
+
     QGraphicsScene::mousePressEvent(event);
 }
 

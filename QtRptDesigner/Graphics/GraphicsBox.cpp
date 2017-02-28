@@ -259,25 +259,25 @@ void GraphicsBox::setPos(qreal x, qreal y)
     setPos(QPoint(x,y));
 }
 
-void GraphicsBox::hoverLeaveEvent ( QGraphicsSceneHoverEvent * )
+void GraphicsBox::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
 {
     this->scene()->update();
 }
 
-void GraphicsBox::hoverEnterEvent ( QGraphicsSceneHoverEvent * )
+void GraphicsBox::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
     this->scene()->update();
 }
 
-//for supporting moving the box across the scene
-void GraphicsBox::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+// for supporting moving the box across the scene
+void GraphicsBox::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mouseReleaseEvent(event);
     event->setAccepted(true);
 }
 
 // for supporting moving the box across the scene
-void GraphicsBox::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void GraphicsBox::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mousePressEvent(event);
     event->setAccepted(true);
@@ -287,9 +287,10 @@ void GraphicsBox::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 }
 
 // for supporting moving the box across the scene
-void GraphicsBox::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+void GraphicsBox::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (this->type() == ItemType::GBand) return;
+    if (this->type() == ItemType::GBand)
+        return;
     QGraphicsItem::mouseMoveEvent(event); // move the item...
     auto m_scene = qobject_cast<GraphicsScene *>(scene());
 
@@ -410,7 +411,7 @@ QRectF GraphicsBox::boundingRect() const
     return QRectF(0, 0, m_width-1, m_height);
 }
 
-void GraphicsBox::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     QBrush brush2(m_backgroundColor,Qt::SolidPattern);
 
@@ -947,7 +948,7 @@ void GraphicsBox::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     m_menu->popup(event->screenPos());
 }
 
-void GraphicsBox::setMenu(QMenu *menu_)
+void GraphicsBox::setMenu(QMenu *menu)
 {
     if (this->type() == ItemType::GBand)
         return;
@@ -961,7 +962,7 @@ void GraphicsBox::setMenu(QMenu *menu_)
     icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/delete.png")), QIcon::Normal, QIcon::On);
     actContDel->setObjectName("actContDel");
     actContDel->setIcon(icon);
-    QObject::connect(actContDel, SIGNAL(triggered()), this, SLOT(deleteLater()));
+    QObject::connect(actContDel, SIGNAL(triggered()), this, SIGNAL(itemRemoving()));
 
     auto actContMoveForward = new QAction(tr("Move forward"),this);
     actContMoveForward->setObjectName("actContMoveForward");
@@ -976,7 +977,7 @@ void GraphicsBox::setMenu(QMenu *menu_)
     QObject::connect(actContMoveBack, SIGNAL(triggered()), this, SLOT(moveBack()));
 
     m_menu->clear();
-    m_menu->insertActions(0,menu_->actions());
+    m_menu->insertActions(0, menu->actions());
     m_menu->addAction(actContEdit);
     m_menu->addAction(actContDel);
     m_menu->addSeparator();
