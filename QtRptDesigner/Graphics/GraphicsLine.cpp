@@ -33,18 +33,18 @@ void GraphicsLine::initPolygon()
 {
     QPolygonF selectRegion;
     for (int p = 0; p < m_pointList.size(); p++) {
-        QPointF p1  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
-        QPointF p2  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
+        QPointF p1(m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
+        QPointF p2(m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
 
-        QPointF p3  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
-        QPointF p4  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
+        QPointF p3(m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
+        QPointF p4(m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
 
         selectRegion << p1 << p2 << p3 << p4 << p1 << p2;
     }
 
     for (int p = m_pointList.size()-1; p > -1; p--) {
-        QPointF p3  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
-        QPointF p4  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
+        QPointF p3(m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
+        QPointF p4(m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
         selectRegion << p3 << p4;
     }
 
