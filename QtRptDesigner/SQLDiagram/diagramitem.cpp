@@ -87,7 +87,7 @@ DiagramItem *DiagramItem::fromMimeData(const QMimeData *mimeData) {
 		return 0;
 
 	DiagramItem *item = DiagramItemFactory::create(element.attribute("type"));
-	if (item == NULL)
+    if (item == nullptr)
 		return 0;
 
 	item->loadFromXml(element);

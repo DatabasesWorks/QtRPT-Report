@@ -37,7 +37,7 @@ class SQLHighlighter : public QSyntaxHighlighter
     Q_ENUMS(FontHihgligth)
 
 public:
-    SQLHighlighter(class QTextDocument *parent = NULL, QSettings *settings = 0);
+    SQLHighlighter(class QTextDocument *parent = nullptr, QSettings *settings = 0);
     FontHihgligthParam getFontColor(int type);
     void saveSettings(QSettings *settings);
 

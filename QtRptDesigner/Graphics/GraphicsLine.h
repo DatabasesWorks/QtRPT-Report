@@ -41,26 +41,25 @@ public:
     void setArrow(QtRptName::Command command, QVariant value);
     bool getArrow(QtRptName::Command command);
     GraphicsLine *clone();
-    void loadParamFromXML(QDomElement e);
-    QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
+    void loadParamFromXML(QDomElement e) Q_DECL_OVERRIDE;
+    QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) Q_DECL_OVERRIDE;
     void setMenu(QMenu *menu);
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
-    // virtual QRectF boundingRect() const; // must be re-implemented in this class to provide the diminsions of the box to the QGraphicsView
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget); // must be re-implemented here to pain the box on the paint-event
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover enter events
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover leave events
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE; // must be re-implemented here to pain the box on the paint-event
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE; // must be re-implemented to handle mouse hover enter events
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE; // must be re-implemented to handle mouse hover leave events
 
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);  // allows the main object to be moved in the scene by capturing the mouse move events
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;  // allows the main object to be moved in the scene by capturing the mouse move events
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
     void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
     void mousePressEvent(QGraphicsSceneDragDropEvent *event);
-    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event);
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) Q_DECL_OVERRIDE;
 
     void createCorners();
     void setCornerPositions();

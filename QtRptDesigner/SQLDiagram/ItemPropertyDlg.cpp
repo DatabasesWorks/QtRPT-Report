@@ -65,13 +65,14 @@ void ItemPropertyDlg::showThis(DiagramItem *item) {
             DatabaseTable *parentTable = relation->parentTable();
 
             if (ui->childColumn->currentIndex() == 0)
-                relation->setChildColumn( NULL );
+                relation->setChildColumn(nullptr);
             else
-                relation->setChildColumn( childTable->columnList()->column( ui->childColumn->currentIndex()-1 ) );
+                relation->setChildColumn(childTable->columnList()->column( ui->childColumn->currentIndex()-1));
+
             if (ui->parentColumn->currentIndex() == 0)
-                relation->setParentColumn( NULL );
+                relation->setParentColumn(nullptr);
             else
-                relation->setParentColumn( parentTable->columnList()->column( ui->parentColumn->currentIndex()-1 ) );
+                relation->setParentColumn( parentTable->columnList()->column( ui->parentColumn->currentIndex()-1));
         }
     }
 }

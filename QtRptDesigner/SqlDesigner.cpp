@@ -218,7 +218,7 @@ bool SqlDesigner::eventFilter(QObject *obj, QEvent *e)
                 auto item = ui->tablesTree->itemAt(me->pos());
 
                 if (item) {
-                    auto colLst = new ColumnList(NULL);
+                    auto colLst = new ColumnList(nullptr);
 
                     QSqlQuery q("select * from "+item->text(0)+" LIMIT 0, 0",db);
                     QSqlRecord rec = q.record();

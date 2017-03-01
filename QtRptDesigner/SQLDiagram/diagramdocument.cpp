@@ -52,7 +52,9 @@ public:
 
 static const int UPDATE_DELAY = 2;
 
-DiagramDocument::DiagramDocument(QWidget *parentWidget) : QGraphicsScene(parentWidget), d(new DiagramDocumentPrivate), m_mode(DiagramDocument::Select), m_line(NULL) {
+DiagramDocument::DiagramDocument(QWidget *parentWidget)
+: QGraphicsScene(parentWidget), d(new DiagramDocumentPrivate), m_mode(DiagramDocument::Select), m_line(nullptr)
+{
     m_parentWidget = parentWidget;
     m_undoStack = new QUndoStack(this);
     d->updateTimer = new QTimer();
@@ -61,7 +63,8 @@ DiagramDocument::DiagramDocument(QWidget *parentWidget) : QGraphicsScene(parentW
     connect(d->updateTimer, SIGNAL(timeout()), this, SLOT(_updateLines()));
 }
 
-void DiagramDocument::updatePositions(DiagramObject *object, bool force) {
+void DiagramDocument::updatePositions(DiagramObject *object, bool force)
+{
     d->objectsToUpdate.insert(object);
     if (force) {
 		d->updateTimer->start(0);
@@ -72,7 +75,8 @@ void DiagramDocument::updatePositions(DiagramObject *object, bool force) {
     }
 }
 
-void DiagramDocument::_updateLines() {
+void DiagramDocument::_updateLines()
+{
     d->updateTimerIsRunning = true;
     QSet<DiagramObject *> objectsToUpdate(d->objectsToUpdate);
     d->objectsToUpdate.clear();
@@ -80,7 +84,8 @@ void DiagramDocument::_updateLines() {
     d->updateTimerIsRunning = false;
 }
 
-void DiagramDocument::updateLines(QSet<DiagramObject *> objectsToUpdate) {
+void DiagramDocument::updateLines(QSet<DiagramObject *> objectsToUpdate)
+{
     QSet<Hub *> hubsToUpdate;
     for(DiagramObject *obj : objectsToUpdate) {
 		hubsToUpdate.insert(obj->hub());
@@ -108,7 +113,8 @@ void DiagramDocument::updateLines(QSet<DiagramObject *> objectsToUpdate) {
     d->itemsToRemove.clear();
 }
 
-void DiagramDocument::addItemLater(DiagramItem *item) {
+void DiagramDocument::addItemLater(DiagramItem *item)
+{
 	Q_ASSERT(d->updateTimerIsRunning == false);
 	item->hide();
 	addItem(item);
@@ -116,14 +122,16 @@ void DiagramDocument::addItemLater(DiagramItem *item) {
 	d->updateTimer->start(0);
 }
 
-void DiagramDocument::removeItemLater(DiagramItem *item) {
+void DiagramDocument::removeItemLater(DiagramItem *item)
+{
 	Q_ASSERT(d->updateTimerIsRunning == false);
 	item->hide();
 	d->itemsToRemove.append(item);
 	d->updateTimer->start(0);
 }
 
-void DiagramDocument::deleteSelectedItems() {
+void DiagramDocument::deleteSelectedItems()
+{
     for(DiagramItem *item : selectedItems()) {
 		DiagramObject *obj = qobject_cast<DiagramObject *>(item);
 		if (obj) {
@@ -139,24 +147,26 @@ void DiagramDocument::deleteSelectedItems() {
     }
 }
 
-void DiagramDocument::save(QSharedPointer<QDomDocument> xmlDoc, QDomElement element) {
+void DiagramDocument::save(QSharedPointer<QDomDocument> xmlDoc, QDomElement element)
+{
     QDomElement root = xmlDoc->createElement("diagram");
     element.appendChild(root);
 
-    for(DiagramObject *item : itemsByType<DiagramObject>()) {
+    for (DiagramObject *item : itemsByType<DiagramObject>()) {
         QDomElement element = xmlDoc->createElement("item");
         root.appendChild(element);
         item->saveToXml(element, *xmlDoc);
 	}
 
-    for(Line *item : itemsByType<Line>()) {
+    for (Line *item : itemsByType<Line>()) {
         QDomElement element = xmlDoc->createElement("item");
         root.appendChild(element);
         item->saveToXml(element, *xmlDoc);
 	}
 }
 
-bool DiagramDocument::load(QDomElement element) {
+bool DiagramDocument::load(QDomElement element)
+{
     QDomElement root = element.firstChildElement("diagram");
     QDomElement itemElement = root.firstChildElement("item");
 	while (!itemElement.isNull()) {
@@ -164,7 +174,7 @@ bool DiagramDocument::load(QDomElement element) {
         DiagramItem *item;
         if (itemTypeName == "database-table") item = new DatabaseTable;
         if (itemTypeName == "database-relationship") item = new DatabaseRelationship;
-		if (item == NULL) {
+        if (item == nullptr) {
 			qWarning() << "Unknown item type:" << itemTypeName;
         } else {
 			item->loadFromXml(itemElement, this);
@@ -176,9 +186,10 @@ bool DiagramDocument::load(QDomElement element) {
 }
 
 template <class T> QList<T *>
-DiagramDocument::itemsByType() {
+DiagramDocument::itemsByType()
+{
     QList<T *> result;
-    for(QGraphicsItem *item : items()) {
+    for (QGraphicsItem *item : items()) {
         T *typedItem = dynamic_cast<T *>(item);
         if (typedItem) {
             result.append(typedItem);
@@ -190,14 +201,16 @@ DiagramDocument::itemsByType() {
     return result;
 }
 
-DatabaseTable *DiagramDocument::selectedTable() {
+DatabaseTable *DiagramDocument::selectedTable()
+{
     QList<DiagramItem *> items = selectedItems();
     if (items.size() != 1)
-        return NULL;
+        return nullptr;
     return qgraphicsitem_cast<DatabaseTable *>(items[0]);
 }
 
-QList<Line *> DiagramDocument::findConnections(DiagramObject *object) {
+QList<Line *> DiagramDocument::findConnections(DiagramObject *object)
+{
     QList<Line *> result;
     for(Line *connection : itemsByType<Line>())
         if (connection->connector(0)->connectedObject() == object || connection->connector(1)->connectedObject() == object)
@@ -205,7 +218,8 @@ QList<Line *> DiagramDocument::findConnections(DiagramObject *object) {
     return result;
 }
 
-void DiagramDocument::itemMoved(DiagramItem *item) {
+void DiagramDocument::itemMoved(DiagramItem *item)
+{
     if (m_trackingMoves) {
         if (!m_movedItems.contains(item)) {
             m_movedItems[item] = item->pos();
@@ -213,25 +227,29 @@ void DiagramDocument::itemMoved(DiagramItem *item) {
     }
 }
 
-void DiagramDocument::itemHasMoved(DiagramItem *item) {
+void DiagramDocument::itemHasMoved(DiagramItem *item)
+{
     DiagramObject *obj = static_cast<DiagramObject *>(item);
     if (obj) {
         updatePositions(obj);
     }
 }
 
-void DiagramDocument::updateLineLayout(Line *line) {
+void DiagramDocument::updateLineLayout(Line *line)
+{
     d->linesToUpdate.insert(line);
 }
 
-DiagramItem *DiagramDocument::itemById(const QUuid &id) {
+DiagramItem *DiagramDocument::itemById(const QUuid &id)
+{
     for(DiagramItem *item : itemsByType<DiagramItem>())
 		if (item->id() == id)
 			return item;
 	return 0;
 }
 
-QList<DiagramItem *> DiagramDocument::selectedItems() {
+QList<DiagramItem *> DiagramDocument::selectedItems()
+{
     QList<DiagramItem *> result;
     for(QGraphicsItem *item : QGraphicsScene::selectedItems()) {
         DiagramItem *typedItem = dynamic_cast<DiagramItem *>(item);
@@ -242,16 +260,19 @@ QList<DiagramItem *> DiagramDocument::selectedItems() {
     return result;
 }
 
-DiagramDocument::Mode DiagramDocument::mode() {
+DiagramDocument::Mode DiagramDocument::mode()
+{
     return m_mode;
 }
 
-void DiagramDocument::setMode(Mode mode) {
+void DiagramDocument::setMode(Mode mode)
+{
     m_mode = mode;
     emit modeChanged(mode);
 }
 
-void DiagramDocument::drawBackground ( QPainter * painter, const QRectF & rect ) {
+void DiagramDocument::drawBackground(QPainter *painter, const QRectF &rect)
+{
     /*Drawing grid*/
     const int pointBufferSize = 5000;
     static QPoint pointBuffer[pointBufferSize];
@@ -294,7 +315,8 @@ void DiagramDocument::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsScene::mouseMoveEvent(event);
 }
 
-void DiagramDocument::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event ) {
+void DiagramDocument::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
     setMode(Select);
     QGraphicsScene::mousePressEvent(event);
     if (m_mode == Select) {
@@ -308,7 +330,8 @@ void DiagramDocument::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event ) 
     }
 }
 
-void DiagramDocument::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+void DiagramDocument::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
     m_movedItems.clear();
     m_trackingMoves = true;
     if (m_mode == AddRelation && event->button() == Qt::LeftButton) {
@@ -327,7 +350,8 @@ void DiagramDocument::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsScene::mousePressEvent(event);
 }
 
-void DiagramDocument::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void DiagramDocument::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
     if (m_line) {
         removeItem(m_line);
         DatabaseTable *source = qgraphicsitem_cast<DatabaseTable *>(itemAt(m_line->line().p1(), QTransform()));
@@ -353,24 +377,28 @@ void DiagramDocument::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
             }
         }
         delete m_line;
-        m_line = NULL;
+        m_line = nullptr;
         setMode(Select);
         event->accept();
         return;
     }
+
     QGraphicsScene::mouseReleaseEvent(event);
     m_trackingMoves = false;
 }
 
-void DiagramDocument::dragEnterEvent( QGraphicsSceneDragDropEvent * event ) {
+void DiagramDocument::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
+{
     event->accept();
 }
 
-void DiagramDocument::dragMoveEvent ( QGraphicsSceneDragDropEvent * event ) {    
+void DiagramDocument::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
     event->accept();
 }
 
-void DiagramDocument::dropEvent ( QGraphicsSceneDragDropEvent * event ) {
+void DiagramDocument::dropEvent(QGraphicsSceneDragDropEvent *event)
+{
     const QMimeData *mimeData = event->mimeData();
     QByteArray encoded = mimeData->data("application/x-qabstractitemmodeldatalist");
     QDataStream stream(&encoded, QIODevice::ReadOnly);
@@ -398,7 +426,8 @@ void DiagramDocument::dropEvent ( QGraphicsSceneDragDropEvent * event ) {
     event->accept();
 }
 
-void DiagramDocument::makeSQLQuery() {
+void DiagramDocument::makeSQLQuery()
+{
     QList<DatabaseTable *> tmpLst;
     QString sqlQueryStr;
     QString selectedColumns;
@@ -472,6 +501,7 @@ void DiagramDocument::makeSQLQuery() {
     emit sqlChanged(sqlQueryStr);
 }
 
-void DiagramDocument::passColumnsForDroping(ColumnList *columnList) {
+void DiagramDocument::passColumnsForDroping(ColumnList *columnList)
+{
     m_columnList = columnList;
 }

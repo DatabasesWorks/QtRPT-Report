@@ -50,17 +50,17 @@ public:
     virtual void setPos(qreal x, qreal y);
     QPointF getPos();
     int type() const Q_DECL_OVERRIDE { return ItemType::GBox; }
-    void setSelected(bool selected_);
+    void setSelected(bool selected);
     bool isSelected();
     void setWidth(qreal value);
     void setHeight(qreal value);
     qreal getWidth() {return m_width;}
     qreal getHeight() {return m_height;}
     GraphicsBox *clone();
-    void loadParamFromXML(QDomElement e);
-    QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
-    void setText(QString value); //
-    QString getText(); //
+    void loadParamFromXML(QDomElement e) Q_DECL_OVERRIDE;
+    QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc) Q_DECL_OVERRIDE;
+    void setText(QString value);
+    QString getText();
     void setFont(QFont font) {m_font = font;}
     QFont getFont() {return m_font;}
     Qt::Alignment getAlignment() {return m_alignment;}
@@ -106,22 +106,24 @@ protected:
 
     void createCorners();
     void setCornerPositions();
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    QRectF boundingRect() const; // must be re-implemented in this class to provide the diminsions of the box to the QGraphicsView
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *); // must be re-implemented here to pain the box on the paint-event
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover enter events
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event); // must be re-implemented to handle mouse hover leave events
-
-    void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
-    void mousePressEvent(QGraphicsSceneDragDropEvent *event);
-    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event);
+    QRectF boundingRect() const Q_DECL_OVERRIDE; // must be re-implemented in this class to provide the diminsions of the box to the QGraphicsView
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *) Q_DECL_OVERRIDE; // must be re-implemented here to pain the box on the paint-event
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE; // must be re-implemented to handle mouse hover enter events
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE; // must be re-implemented to handle mouse hover leave events
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
+    void mousePressEvent(QGraphicsSceneDragDropEvent *event);
+
+
     void adjustSize(int x, int y);
 
     qreal   m_width;

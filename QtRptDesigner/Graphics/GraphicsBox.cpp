@@ -38,10 +38,10 @@ GraphicsBox::GraphicsBox()
 
     m_XcornerGrabBuffer = -3;
     m_YcornerGrabBuffer = -3;
-    m_drawingWidth = (  m_width -   m_XcornerGrabBuffer);
-    m_drawingHeight = ( m_height -  m_YcornerGrabBuffer);
-    m_drawingOrigenX = ( m_XcornerGrabBuffer);
-    m_drawingOrigenY = ( m_YcornerGrabBuffer);
+    m_drawingWidth = (m_width - m_XcornerGrabBuffer);
+    m_drawingHeight = (m_height - m_YcornerGrabBuffer);
+    m_drawingOrigenX = (m_XcornerGrabBuffer);
+    m_drawingOrigenY = (m_YcornerGrabBuffer);
 
     m_corners.resize(8);
     for (auto &corner : m_corners)
@@ -111,20 +111,20 @@ void GraphicsBox::adjustSize(int x, int y)
     }
 }
 
-bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
+bool GraphicsBox::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 {
     //qDebug() << " QEvent == " + QString::number(event->type());
 
-    CornerGrabber * corner = dynamic_cast<CornerGrabber *>(watched);
-    if ( corner == NULL) return false; // not expected to get here
+    CornerGrabber *corner = dynamic_cast<CornerGrabber *>(watched);
+    if (corner == nullptr) return false; // not expected to get here
 
-    QGraphicsSceneMouseEvent * mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
-    if ( mevent == NULL) {
+    QGraphicsSceneMouseEvent *mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
+    if (mevent == nullptr) {
         // this is not one of the mouse events we are interrested in
         return false;
     }
 
-    switch (event->type() ) {
+    switch (event->type()) {
         // if the mouse went down, record the x,y coords of the press, record it inside the corner object
         case QEvent::GraphicsSceneMousePress: {
                 corner->setMouseState(CornerGrabber::kMouseDown);
@@ -142,7 +142,7 @@ bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
             }
             break;
         case QEvent::GraphicsSceneMouseMove: {
-                corner->setMouseState(CornerGrabber::kMouseMoving );
+                corner->setMouseState(CornerGrabber::kMouseMoving);
             }
             break;
         default:
@@ -151,7 +151,7 @@ bool GraphicsBox::sceneEventFilter ( QGraphicsItem * watched, QEvent * event )
             break;
     }
 
-    if (corner->getMouseState() == CornerGrabber::kMouseMoving ) {
+    if (corner->getMouseState() == CornerGrabber::kMouseMoving) {
         qreal x = mevent->pos().x(), y = mevent->pos().y();
 
         // depending on which corner has been grabbed, we want to move the position
@@ -322,13 +322,13 @@ void GraphicsBox::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     this->scene()->update();
 }
 
-void GraphicsBox::setSelected(bool selected_)
+void GraphicsBox::setSelected(bool selected)
 {
-    QGraphicsItem::setSelected(selected_);
+    QGraphicsItem::setSelected(selected);
     if (itemInTree != nullptr)
-        itemInTree->setSelected(selected_);
+        itemInTree->setSelected(selected);
 
-    if (selected_) {
+    if (selected) {
         createCorners();
         auto m_scene = qobject_cast<GraphicsScene *>(scene());
         emit m_scene->itemSelected(this);

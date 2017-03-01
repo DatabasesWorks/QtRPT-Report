@@ -16,7 +16,7 @@
 
 #include "diagramobject.h"
 
-DiagramObject::DiagramObject(DiagramItem *parent) : DiagramItem(parent), m_hub(NULL) {
+DiagramObject::DiagramObject(DiagramItem *parent) : DiagramItem(parent), m_hub(nullptr) {
 	setZValue(100.0);
 }
 

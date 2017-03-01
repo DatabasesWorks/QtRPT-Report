@@ -263,7 +263,7 @@ void GraphicsHelperClass::edit()
         if (dlg->result() == QDialog::Accepted) {
             mw->setReportChanged();
 
-            //gets new params
+            // gets new params
             BArrayList newList = ParamCommand::getBArrayFromContList(selContList);
             QList<PairCont> lst = ParamCommand::compoundArrays(oldList,newList);
 
@@ -352,7 +352,7 @@ void GraphicsHelperClass::destroyCorners()
 
     for (auto &corner : m_corners) {
         if (corner != nullptr) {
-            corner->setParentItem(NULL);
+            corner->setParentItem(nullptr);
             delete corner;
             corner = nullptr;
         }

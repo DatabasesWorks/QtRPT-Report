@@ -19,7 +19,7 @@
 #include "hub.h"
 #include "line.h"
 
-Connector::Connector(Line *owner) : m_owner(owner), m_hub(NULL) {
+Connector::Connector(Line *owner) : m_owner(owner), m_hub(nullptr) {
 }
 
 Line *Connector::owner() const {
@@ -67,7 +67,7 @@ bool Connector::isConnected() const {
 DiagramObject *Connector::connectedObject() const {
     if (isConnected())
         return hub()->owner();
-    return NULL;
+    return nullptr;
 }
 
 Connector *Connector::otherEnd() const {

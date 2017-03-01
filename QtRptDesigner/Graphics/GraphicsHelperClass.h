@@ -74,7 +74,7 @@ public:
     friend QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj);
 
 protected:
-    QColor m_outterborderColor; ///< the hover event handlers will toggle this between red and black
+    QColor m_outterborderColor; // the hover event handlers will toggle this between red and black
     QColor m_borderColor;
     QColor m_backgroundColor;
     QColor m_fontColor;
@@ -82,7 +82,7 @@ protected:
     QMenu* m_menu;
     QtRptName::FieldType m_type;
     QString setPenStyle(Qt::PenStyle style);
-    QPen m_outterborderPen; ///< the pen is used to paint the red/black border
+    QPen m_outterborderPen; // the pen is used to paint the red/black border
     int m_XcornerGrabBuffer;
     int m_YcornerGrabBuffer;
     QPointF m_location;
