@@ -16,14 +16,18 @@
 
 #include "diagramobject.h"
 
-DiagramObject::DiagramObject(DiagramItem *parent) : DiagramItem(parent), m_hub(nullptr) {
+DiagramObject::DiagramObject(DiagramItem *parent)
+: DiagramItem(parent), m_hub(nullptr)
+{
 	setZValue(100.0);
 }
 
-Hub *DiagramObject::hub() const {
+Hub *DiagramObject::hub() const
+{
 	return m_hub;
 }
 
-void DiagramObject::setHub(Hub *hub) {
+void DiagramObject::setHub(Hub *hub)
+{
 	m_hub = hub;
 }

@@ -19,10 +19,12 @@
 #include "column.h"
 #include "databasetable.h"
 
-ColumnList::ColumnList(DatabaseTable *table) : QObject(table) {
-}
+ColumnList::ColumnList(DatabaseTable *table)
+: QObject(table)
+{}
 
-int ColumnList::insertColumn(int index, Column *column) {
+int ColumnList::insertColumn(int index, Column *column)
+{
 	Q_ASSERT(m_columns.contains(column) == false);
 	column->setParent(this);
 	connect(column, SIGNAL(propertyChanged(const QString &, const QVariant &)), this, SLOT(updateColumn(const QString &, const QVariant &)));
@@ -32,17 +34,20 @@ int ColumnList::insertColumn(int index, Column *column) {
 	return index;
 }
 
-int ColumnList::appendColumn(Column *column) {
+int ColumnList::appendColumn(Column *column)
+{
 	return insertColumn(columnCount(), column);
 }
 
-int ColumnList::removeColumn(Column *column) {
+int ColumnList::removeColumn(Column *column)
+{
 	int index = m_columns.indexOf(column);
 	removeColumn(index);
 	return index;
 }
 
-Column *ColumnList::removeColumn(int index) {
+Column *ColumnList::removeColumn(int index)
+{
 	emit columnAboutToBeRemoved(index);
 	Column *column = m_columns.takeAt(index);
 	emit columnRemoved(index);
@@ -51,13 +56,15 @@ Column *ColumnList::removeColumn(int index) {
 	return column;
 }
 
-void ColumnList::swapColumns(int oldIndex, int newIndex) {
+void ColumnList::swapColumns(int oldIndex, int newIndex)
+{
 	m_columns.move(oldIndex, newIndex);
 	emit columnChanged(oldIndex);
 	emit columnChanged(newIndex);
 }
 
-void ColumnList::updateColumn(const QString &, const QVariant &) {
+void ColumnList::updateColumn(const QString &, const QVariant &)
+{
 	Column *column = qobject_cast<Column *>(sender());
 	int index = m_columns.indexOf(column);
 	Q_ASSERT(index != -1);

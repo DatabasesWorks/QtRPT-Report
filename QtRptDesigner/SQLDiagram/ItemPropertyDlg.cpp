@@ -3,11 +3,14 @@
 
 #include <QDebug>
 
-ItemPropertyDlg::ItemPropertyDlg(QWidget *parent) : QDialog(parent), ui(new Ui::ItemPropertyDlg) {
+ItemPropertyDlg::ItemPropertyDlg(QWidget *parent)
+: QDialog(parent), ui(new Ui::ItemPropertyDlg)
+{
     ui->setupUi(this);
 }
 
-void ItemPropertyDlg::showThis(DiagramItem *item) {
+void ItemPropertyDlg::showThis(DiagramItem *item)
+{
     if (item->type() == DiagramItem::Table) {
         ui->stackedWidget->setCurrentIndex(0);
         DatabaseTable *table = static_cast<DatabaseTable *>(item);
@@ -77,6 +80,7 @@ void ItemPropertyDlg::showThis(DiagramItem *item) {
     }
 }
 
-ItemPropertyDlg::~ItemPropertyDlg() {
+ItemPropertyDlg::~ItemPropertyDlg()
+{
     delete ui;
 }

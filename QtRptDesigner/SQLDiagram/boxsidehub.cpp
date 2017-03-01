@@ -24,8 +24,7 @@
 
 BoxSideHub::BoxSideHub(DiagramObject *owner)
 : Hub(owner)
-{
-}
+{}
 
 enum Side {
 	Top,
@@ -34,7 +33,8 @@ enum Side {
 	Left
 };
 
-static int cmpAngle(qreal a, qreal b) {
+static int cmpAngle(qreal a, qreal b)
+{
 	qreal d = a - b;
 	if (d > 180)
 		d = d - 360;
@@ -45,7 +45,8 @@ static int cmpAngle(qreal a, qreal b) {
 
 typedef QPair<Connector *, qreal> ConnectorRealPair;
 
-static bool itemLessThan(const ConnectorRealPair &a, const ConnectorRealPair &b) {
+static bool itemLessThan(const ConnectorRealPair &a, const ConnectorRealPair &b)
+{
 	int r = cmpAngle(a.second, b.second);
 	if (r == 0) {
         //return a.first->owner() < b.first->owner();
@@ -60,10 +61,12 @@ static bool itemLessThan(const ConnectorRealPair &a, const ConnectorRealPair &b)
 //    180+cA    |   360-cA
 //              |
 
-void BoxSideHub::update() {
+void BoxSideHub::update()
+{
 	QHash<Side, QList<ConnectorRealPair> > sides;
     DiagramObject *item = owner();
 	QRectF rect = item->boundingRect().translated(item->pos());
+
     for (Connector *connector : connectors()) {
 		Line *connection = connector->owner();
 		Connector *connector1 = connection->connector(0);
@@ -93,10 +96,11 @@ void BoxSideHub::update() {
 		}
 		sides[side].append(qMakePair(connector, angle));
     }
-    for(Side side : sides.keys()) {
+
+    for (Side side : sides.keys()) {
 		QPointF p, dp;
 		QList<ConnectorRealPair> c = sides[side];
-		qSort(c.begin(), c.end(), itemLessThan);
+        std::sort(c.begin(), c.end(), itemLessThan);
 		qreal angle;
 		switch (side) {
 		case Top:
@@ -120,7 +124,7 @@ void BoxSideHub::update() {
 			angle = 180;
 			break;
 		}
-        for(ConnectorRealPair item : c) {
+        for (ConnectorRealPair item : c) {
 			p += dp;
 			item.first->setAngle(angle);
 			item.first->setPos(p);

@@ -19,18 +19,22 @@
 #include "hub.h"
 #include "line.h"
 
-Connector::Connector(Line *owner) : m_owner(owner), m_hub(nullptr) {
-}
+Connector::Connector(Line *owner)
+: m_owner(owner), m_hub(nullptr)
+{}
 
-Line *Connector::owner() const {
+Line *Connector::owner() const
+{
 	return m_owner;
 }
 
-QPointF Connector::pos() const {
+QPointF Connector::pos() const
+{
 	return m_pos;
 }
 
-void Connector::setPos(const QPointF &pos) {
+void Connector::setPos(const QPointF &pos)
+{
 	if (m_pos != pos) {
 		m_pos = pos;
 		if (m_owner->document())
@@ -38,11 +42,13 @@ void Connector::setPos(const QPointF &pos) {
 	}
 }
 
-qreal Connector::angle() const {
+qreal Connector::angle() const
+{
 	return m_angle;
 }
 
-void Connector::setAngle(qreal angle) {
+void Connector::setAngle(qreal angle)
+{
 	if (m_angle != angle) {
 		m_angle = angle;
 		if (m_owner->document())
@@ -50,42 +56,47 @@ void Connector::setAngle(qreal angle) {
 	}
 }
 
-Hub *Connector::hub() const {
+Hub *Connector::hub() const
+{
 	return m_hub;
 }
 
-void Connector::setHub(Hub *hub) {
+void Connector::setHub(Hub *hub)
+{
 	removeFromHub();
 	m_hub = hub;
 	addToHub();
 }
 
-bool Connector::isConnected() const {
+bool Connector::isConnected() const
+{
 	return m_hub;
 }
 
-DiagramObject *Connector::connectedObject() const {
+DiagramObject *Connector::connectedObject() const
+{
     if (isConnected())
         return hub()->owner();
     return nullptr;
 }
 
-Connector *Connector::otherEnd() const {
+Connector *Connector::otherEnd() const
+{
 	Line *conn = owner();
-	if (conn->connector(0) == this) {
+    if (conn->connector(0) == this)
 		return conn->connector(1);
-	}
-	else {
+    else
 		return conn->connector(0);
-	}
 }
 
-void Connector::addToHub() {
+void Connector::addToHub()
+{
 	if (m_hub)
 		m_hub->addConnector(this);
 }
 
-void Connector::removeFromHub() {
+void Connector::removeFromHub()
+{
 	if (m_hub)
 		m_hub->removeConnector(this);
 }

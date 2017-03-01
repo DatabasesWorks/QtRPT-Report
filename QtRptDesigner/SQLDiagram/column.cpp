@@ -19,39 +19,45 @@
 #include "hub.h"
 #include "databaserelationship.h"
 
-Column::Column(ColumnList *columnList) : QObject(columnList), m_primaryKey(false), m_required(false) {
-}
+Column::Column(ColumnList *columnList)
+: QObject(columnList), m_primaryKey(false), m_required(false)
+{}
 
-void Column::setName(const QString &name) {
+void Column::setName(const QString &name)
+{
 	if (m_name != name) {
 		m_name = name;
 		emit propertyChanged("name", name);
 	}
 }
 
-void Column::setDataType(const QString &dataType) {
+void Column::setDataType(const QString &dataType)
+{
 	if (m_dataType != dataType) {
 		m_dataType = dataType;
 		emit propertyChanged("dataType", dataType);
 	}
 }
 
-void Column::setPrimaryKey(bool primaryKey) {
+void Column::setPrimaryKey(bool primaryKey)
+{
 	if (m_primaryKey != primaryKey) {
 		m_primaryKey = primaryKey;
 		emit propertyChanged("primaryKey", primaryKey);
 	}
 }
 
-void Column::setRequired(bool required) {
+void Column::setRequired(bool required)
+{
 	if (m_required != required) {
 		m_required = required;
 		emit propertyChanged("required", required);
 	}
 }
 
-bool Column::isForeignKey() const {
-    for(Line *line : columnList()->table()->hub()->outgoingLines()) {
+bool Column::isForeignKey() const
+{
+    for (Line *line : columnList()->table()->hub()->outgoingLines()) {
 		DatabaseRelationship *rel = (DatabaseRelationship *)line;
 		if (rel->childColumn() == this) {
 			return true;

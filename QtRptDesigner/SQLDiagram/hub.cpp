@@ -20,37 +20,41 @@
 #include "connector.h"
 #include "line.h"
 
-Hub::Hub(DiagramObject *owner) : m_owner(owner) {
-}
+Hub::Hub(DiagramObject *owner)
+: m_owner(owner)
+{}
 
-DiagramObject *Hub::owner() const {
+DiagramObject *Hub::owner() const
+{
 	return m_owner;
 }
 
-void Hub::addConnector(Connector *connector) {
+void Hub::addConnector(Connector *connector)
+{
 	m_connectors.insert(connector);
-	if (m_owner->document()) {
+    if (m_owner->document())
 		m_owner->document()->updatePositions(m_owner);
-	}
 }
 
-void Hub::removeConnector(Connector *connector) {
+void Hub::removeConnector(Connector *connector)
+{
 	m_connectors.remove(connector);
-	if (m_owner->document()) {
+    if (m_owner->document())
 		m_owner->document()->updatePositions(m_owner);
-	}
 }
 
-QSet<Connector *> Hub::connectors() const {
+QSet<Connector *> Hub::connectors() const
+{
 	return m_connectors;
 }
 
-void Hub::update() {
-}
+void Hub::update()
+{}
 
-QList<Line *> Hub::outgoingLines() const {
+QList<Line *> Hub::outgoingLines() const
+{
     QList<Line *> result;
-    for(Connector *connector : m_connectors) {
+    for (Connector *connector : m_connectors) {
 		Line *line = connector->owner();
 		if (connector == line->connector(0)) {
 			result << line;
@@ -59,9 +63,10 @@ QList<Line *> Hub::outgoingLines() const {
 	return result;
 }
 
-QList<Line *> Hub::incomingLines() const {
+QList<Line *> Hub::incomingLines() const
+{
     QList<Line *> result;
-    for(Connector *connector : m_connectors) {
+    for (Connector *connector : m_connectors) {
         Line *line = connector->owner();
         if (connector == line->connector(1)) {
             result << line;

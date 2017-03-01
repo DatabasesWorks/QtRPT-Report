@@ -21,27 +21,32 @@
 #include "diagramobject.h"
 #include "connector.h"
 
-Line::Line(DiagramItem *parent) : DiagramItem(parent), m_fillStartArrow(false), m_fillEndArrow(false), m_dirty(false) {
+Line::Line(DiagramItem *parent)
+: DiagramItem(parent), m_fillStartArrow(false), m_fillEndArrow(false), m_dirty(false)
+{
 	m_connectors[0] = new Connector(this);
 	m_connectors[1] = new Connector(this);
 	setZValue(1.0);
 }
 
-Line::~Line() {
+Line::~Line()
+{
 	delete m_connectors[0];
 	delete m_connectors[1];
 }
 
-Connector *Line::connector(int index) const {
+Connector *Line::connector(int index) const
+{
 	Q_ASSERT(index == 0 || index == 1);
 	return m_connectors[index];
 }
 
-void Line::updateLayout() {
-}
+void Line::updateLayout()
+{}
 
 
-void Line::loadFromXml(QDomElement element, DiagramDocument *document) {
+void Line::loadFromXml(QDomElement element, DiagramDocument *document)
+{
     DiagramItem::loadFromXml(element, document);
     QDomElement connectorElement = element.firstChildElement("connector");
 	int i = 0;
@@ -61,7 +66,8 @@ void Line::loadFromXml(QDomElement element, DiagramDocument *document) {
     }
 }
 
-void Line::saveToXml(QDomElement element, QDomDocument doc) {
+void Line::saveToXml(QDomElement element, QDomDocument doc)
+{
     DiagramItem::saveToXml(element,doc);
 	for (int i = 0; i < 2; i++) {
 		Connector *connector = m_connectors[i];
@@ -76,11 +82,13 @@ void Line::saveToXml(QDomElement element, QDomDocument doc) {
     }
 }
 
-QPolygonF Line::linePoints() const {
+QPolygonF Line::linePoints() const
+{
 	return m_linePoints;
 }
 
-void Line::setLinePoints(const QPolygonF& points) {
+void Line::setLinePoints(const QPolygonF& points)
+{
 	if (m_linePoints != points) {
 		prepareGeometryChange();
 		m_linePoints = points;
@@ -88,11 +96,13 @@ void Line::setLinePoints(const QPolygonF& points) {
 	}
 }
 
-Qt::PenStyle Line::lineStyle() const {
+Qt::PenStyle Line::lineStyle() const
+{
 	return m_lineStyle;
 }
 
-void Line::setLineStyle(Qt::PenStyle style) {
+void Line::setLineStyle(Qt::PenStyle style)
+{
 	if (m_lineStyle != style) {
 		// prepareGeometryChange();
 		m_lineStyle = style;
@@ -100,11 +110,13 @@ void Line::setLineStyle(Qt::PenStyle style) {
 	}
 }
 
-QPainterPath Line::startArrow() const {
+QPainterPath Line::startArrow() const
+{
 	return m_startArrow;
 }
 
-void Line::setStartArrow(const QPainterPath& path) {
+void Line::setStartArrow(const QPainterPath& path)
+{
 	if (m_startArrow != path) {
 		prepareGeometryChange();
 		m_startArrow = path;
@@ -112,22 +124,26 @@ void Line::setStartArrow(const QPainterPath& path) {
 	}
 }
 
-bool Line::fillStartArrow() const {
+bool Line::fillStartArrow() const
+{
 	return m_fillStartArrow;
 }
 
-void Line::setFillStartArrow(bool fill) {
+void Line::setFillStartArrow(bool fill)
+{
 	if (m_fillStartArrow != fill) {
 		m_fillStartArrow = fill;
 		m_dirty = true;
 	}
 }
 
-QPainterPath Line::endArrow() const {
+QPainterPath Line::endArrow() const
+{
 	return m_endArrow;
 }
 
-void Line::setEndArrow(const QPainterPath& path) {
+void Line::setEndArrow(const QPainterPath& path)
+{
 	if (m_endArrow != path) {
 		prepareGeometryChange();
 		m_endArrow = path;
@@ -135,18 +151,21 @@ void Line::setEndArrow(const QPainterPath& path) {
 	}
 }
 
-bool Line::fillEndArrow() const {
+bool Line::fillEndArrow() const
+{
 	return m_fillEndArrow;
 }
 
-void Line::setFillEndArrow(bool fill) {
+void Line::setFillEndArrow(bool fill)
+{
 	if (m_fillEndArrow != fill) {
 		m_fillEndArrow = fill;
 		m_dirty = true;
 	}
 }
 
-void Line::updateCache() {
+void Line::updateCache()
+{
 	m_dirty = false;
 
 	QPainterPath path;
@@ -192,18 +211,21 @@ void Line::updateCache() {
 	m_shape = ps.createStroke(path);
 }
 
-QRectF Line::boundingRect() const {
+QRectF Line::boundingRect() const
+{
 	return shape().controlPointRect();
 }
 
-QPainterPath Line::shape() const {
+QPainterPath Line::shape() const
+{
 	if (m_dirty)
 		const_cast<Line *>(this)->updateCache();
 
 	return m_shape;
 }
 
-void Line::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
+void Line::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+{
 	if (m_dirty)
 		updateCache();
 

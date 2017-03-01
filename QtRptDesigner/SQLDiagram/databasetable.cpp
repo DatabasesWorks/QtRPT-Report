@@ -23,7 +23,9 @@
 #include "columnlist.h"
 #include "boxsidehub.h"
 
-DatabaseTable::DatabaseTable(DiagramItem *parent) : DiagramObject(parent) {
+DatabaseTable::DatabaseTable(DiagramItem *parent)
+: DiagramObject(parent)
+{
 	setFlag(ItemIsMovable);
 	setFlag(ItemIsSelectable);
 #if QT_VERSION >= 0x040600
@@ -39,11 +41,13 @@ DatabaseTable::DatabaseTable(DiagramItem *parent) : DiagramObject(parent) {
     connect(m_columnList, SIGNAL(columnChanged(int)), this, SLOT(updateLayout()));
 }
 
-QRectF DatabaseTable::boundingRect() const {
+QRectF DatabaseTable::boundingRect() const
+{
 	return m_outerRect;
 }
 
-QList<Column *> DatabaseTable::primaryKeys() const {
+QList<Column *> DatabaseTable::primaryKeys() const
+{
 	QList<Column *> result;
     for(Column *column : m_columnList->columns())
 		if (column->isPrimaryKey())
@@ -51,7 +55,8 @@ QList<Column *> DatabaseTable::primaryKeys() const {
 	return result;
 }
 
-void DatabaseTable::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void DatabaseTable::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 
@@ -113,23 +118,27 @@ void DatabaseTable::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 	painter->drawRect(m_outerRect);
 }
 
-void DatabaseTable::setName(const QString &name) {
+void DatabaseTable::setName(const QString &name)
+{
 	m_name = name;
 	updateLayout();
 	emit propertyChanged("name", name);
 }
 
-void DatabaseTable::setColor(const QColor &color) {
+void DatabaseTable::setColor(const QColor &color)
+{
 	m_color = color;
 	updateLayout();
 	emit propertyChanged("color", color);
 }
 
-void DatabaseTable::setInitialName(int counter) {
+void DatabaseTable::setInitialName(int counter)
+{
 	setName(counter > 1 ? QString("table_%1").arg(counter) : "table");
 }
 
-QVariant DatabaseTable::itemChange(GraphicsItemChange change, const QVariant &value) {
+QVariant DatabaseTable::itemChange(GraphicsItemChange change, const QVariant &value)
+{
 	if (change == ItemSceneHasChanged) {
 		updateLayout();
 	}
@@ -147,7 +156,8 @@ QVariant DatabaseTable::itemChange(GraphicsItemChange change, const QVariant &va
 	return QGraphicsItem::itemChange(change, value);
 }
 
-void DatabaseTable::updateLayout() {
+void DatabaseTable::updateLayout()
+{
 	if (!scene())
 		return;
 
@@ -208,16 +218,17 @@ void DatabaseTable::updateLayout() {
 	update();
 }
 
-void DatabaseTable::setColumns(ColumnList *columnList) {
-    while (m_columnList->columnCount() >0 ) {
+void DatabaseTable::setColumns(ColumnList *columnList)
+{
+    while (m_columnList->columnCount() >0 )
         m_columnList->removeColumn(0);
-    }
-    for (int i=0; i<columnList->columnCount(); i++) {
+
+    for (int i=0; i<columnList->columnCount(); i++)
         m_columnList->appendColumn(columnList->column(i));
-    }
 }
 
-void DatabaseTable::loadFromXml(QDomElement element, DiagramDocument *document) {
+void DatabaseTable::loadFromXml(QDomElement element, DiagramDocument *document)
+{
     Q_UNUSED(document);
     DiagramItem::loadFromXml(element);
     setName(element.attribute("name"));
@@ -234,7 +245,8 @@ void DatabaseTable::loadFromXml(QDomElement element, DiagramDocument *document) 
     }
 }
 
-void DatabaseTable::saveToXml(QDomElement element, QDomDocument doc) {
+void DatabaseTable::saveToXml(QDomElement element, QDomDocument doc)
+{
     DiagramItem::saveToXml(element, doc);
     element.setAttribute("name", name());
 
@@ -248,7 +260,8 @@ void DatabaseTable::saveToXml(QDomElement element, QDomDocument doc) {
     }
 }
 
-void DatabaseTable::getSelectedColumns(QString &value) {
+void DatabaseTable::getSelectedColumns(QString &value)
+{
     int selectedCount = 0;
     QString str;
     for (int i=0; i < columnList()->columns().count(); i++) {
@@ -259,6 +272,7 @@ void DatabaseTable::getSelectedColumns(QString &value) {
             str = str + name()+"."+columnList()->column(i)->name();
         }
     }
+
     if (columnList()->columns().count() == selectedCount)
         str = name()+".*";
 

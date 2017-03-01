@@ -789,7 +789,7 @@ void MainWindow::reportPageChanged(int index)
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(index));
     auto allReportBand = repPage->getReportBands();
     if (!allReportBand.isEmpty())
-        qSort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) { return p1->bandType < p2->bandType; });
+        std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) { return p1->bandType < p2->bandType; });
 
     for (auto band : allReportBand) {
         rootItem->addChild(band->itemInTree);

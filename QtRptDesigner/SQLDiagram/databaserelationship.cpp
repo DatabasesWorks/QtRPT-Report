@@ -32,7 +32,7 @@ public:
 		onDeleteAction(NoAction),
 		childColumn(0),
 		parentColumn(0)
-	{
+{
 		if (!pathsInitialized) {
 			pathsInitialized = true;
 
@@ -93,19 +93,23 @@ public:
 bool DatabaseRelationship::PrivateData::pathsInitialized = false;
 QPainterPath DatabaseRelationship::PrivateData::paths[5];
 
-DatabaseRelationship::DatabaseRelationship(DiagramItem *parent) : Line(parent), d(new PrivateData) {
+DatabaseRelationship::DatabaseRelationship(DiagramItem *parent) : Line(parent), d(new PrivateData)
+{
 	setFlag(ItemIsSelectable);
 }
 
-DatabaseRelationship::~DatabaseRelationship() {
+DatabaseRelationship::~DatabaseRelationship()
+{
 	delete d;
 }
 
-Column *DatabaseRelationship::childColumn() const {
+Column *DatabaseRelationship::childColumn() const
+{
 	return d->childColumn;
 }
 
-void DatabaseRelationship::setChildColumn(Column *column) {
+void DatabaseRelationship::setChildColumn(Column *column)
+{
 	if (d->childColumn != column) {
 		d->childColumn = column;
         emit propertyChanged("childColumn", qVariantFromValue<Column*>(column));
@@ -115,11 +119,13 @@ void DatabaseRelationship::setChildColumn(Column *column) {
 	}
 }
 
-Column *DatabaseRelationship::parentColumn() const {
+Column *DatabaseRelationship::parentColumn() const
+{
 	return d->parentColumn;
 }
 
-void DatabaseRelationship::setParentColumn(Column *column) {
+void DatabaseRelationship::setParentColumn(Column *column)
+{
 	if (d->parentColumn != column) {
 		d->parentColumn = column;
         emit propertyChanged("parentColumn", qVariantFromValue<Column*>(column));
@@ -128,7 +134,8 @@ void DatabaseRelationship::setParentColumn(Column *column) {
 	}
 }
 
-bool DatabaseRelationship::isIdentifying() const {
+bool DatabaseRelationship::isIdentifying() const
+{
 	DatabaseTable *table = childTable();
 	if (table) {
 		Column *column = childColumn();
@@ -139,14 +146,16 @@ bool DatabaseRelationship::isIdentifying() const {
 	return false;
 }
 
-QVariant DatabaseRelationship::itemChange(GraphicsItemChange change, const QVariant &value) {
-	if (change == ItemSceneHasChanged) {
+QVariant DatabaseRelationship::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemSceneHasChanged)
 		updateLayout();
-	}
+
 	return QGraphicsItem::itemChange(change, value);
 }
 
-void DatabaseRelationship::updateEnds() {
+void DatabaseRelationship::updateEnds()
+{
 	if (!document())
 		return;
 
@@ -157,7 +166,8 @@ void DatabaseRelationship::updateEnds() {
     setLineStyle(Qt::SolidLine);
 }
 
-void DatabaseRelationship::updateLayout() {
+void DatabaseRelationship::updateLayout()
+{
 	prepareGeometryChange();
 
     Connector *connector1 = connector(0);
@@ -209,7 +219,8 @@ void DatabaseRelationship::updateLayout() {
 	updateEnds();
 }
 
-void DatabaseRelationship::loadFromXml(QDomElement element, DiagramDocument *document) {
+void DatabaseRelationship::loadFromXml(QDomElement element, DiagramDocument *document)
+{
     Line::loadFromXml(element, document);
 
     if (element.hasAttribute("columns_child") &&
@@ -222,7 +233,8 @@ void DatabaseRelationship::loadFromXml(QDomElement element, DiagramDocument *doc
     }
 }
 
-void DatabaseRelationship::saveToXml(QDomElement element, QDomDocument doc) {
+void DatabaseRelationship::saveToXml(QDomElement element, QDomDocument doc)
+{
     Line::saveToXml(element,doc);
 
     if (d->childColumn)
