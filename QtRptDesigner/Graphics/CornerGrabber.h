@@ -38,7 +38,7 @@ public:
     void setCursorToResize(bool on);
 
 private:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE; // must be re-implemented here to pain the box on the paint-event
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE; // must be re-implemented to handle mouse hover enter events
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE; // must be re-implemented to handle mouse hover leave events
 
@@ -64,5 +64,7 @@ private:
     int m_mouseButtonState;
 
 };
+
+using SPtrCorner = QSharedPointer<CornerGrabber>;
 
 #endif // CORNERGRABBER_H

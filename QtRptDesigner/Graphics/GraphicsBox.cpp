@@ -351,36 +351,36 @@ void GraphicsBox::createCorners()
 
     if (type() != ItemType::GBand) {
         if (m_corners[0] == nullptr) {
-            m_corners[0] = new CornerGrabber(this,0);
+            m_corners[0] = SPtrCorner(new CornerGrabber(this,0));
             m_corners[0]->installSceneEventFilter(this);
         }
         if (m_corners[1] == nullptr) {
-            m_corners[1] = new CornerGrabber(this,1);
+            m_corners[1] = SPtrCorner(new CornerGrabber(this,1));
             m_corners[1]->installSceneEventFilter(this);
         }
         if (m_corners[5] == nullptr) {  //top-center
-            m_corners[5] = new CornerGrabber(this,5);
+            m_corners[5] = SPtrCorner(new CornerGrabber(this,5));
             m_corners[5]->installSceneEventFilter(this);
         }
         if (m_corners[6] == nullptr) {  //left-center
-            m_corners[6] = new CornerGrabber(this,6);
+            m_corners[6] = SPtrCorner(new CornerGrabber(this,6));
             m_corners[6]->installSceneEventFilter(this);
         }
         if (m_corners[7] == nullptr) {  //rigth-center
-            m_corners[7] = new CornerGrabber(this,7);
+            m_corners[7] = SPtrCorner(new CornerGrabber(this,7));
             m_corners[7]->installSceneEventFilter(this);
         }
     }
     if (m_corners[2] == nullptr) {
-        m_corners[2] = new CornerGrabber(this,2);
+        m_corners[2] = SPtrCorner(new CornerGrabber(this,2));
         m_corners[2]->installSceneEventFilter(this);
     }
     if (m_corners[3] == nullptr) {
-        m_corners[3] = new CornerGrabber(this,3);
+        m_corners[3] = SPtrCorner(new CornerGrabber(this,3));
         m_corners[3]->installSceneEventFilter(this);
     }
     if (m_corners[4] == nullptr) {  //bottom-center
-        m_corners[4] = new CornerGrabber(this,4);
+        m_corners[4] = SPtrCorner(new CornerGrabber(this,4));
         m_corners[4]->installSceneEventFilter(this);
     }
     setCornerPositions();

@@ -32,7 +32,7 @@ m_cornerGrabbed(false)
 void GraphicsLine::initPolygon()
 {
     QPolygonF selectRegion;
-    for (int p=0; p<m_pointList.size(); p++) {
+    for (int p = 0; p < m_pointList.size(); p++) {
         QPointF p1  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
         QPointF p2  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() - m_YcornerGrabBuffer);
 
@@ -42,13 +42,13 @@ void GraphicsLine::initPolygon()
         selectRegion << p1 << p2 << p3 << p4 << p1 << p2;
     }
 
-    for (int p=m_pointList.size()-1; p>-1; p--) {
+    for (int p = m_pointList.size()-1; p > -1; p--) {
         QPointF p3  (m_pointList[p].x() + m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
         QPointF p4  (m_pointList[p].x() - m_XcornerGrabBuffer, m_pointList[p].y() + m_YcornerGrabBuffer);
         selectRegion << p3 << p4;
     }
 
-    QPointF p1  (m_pointList[0].x() - m_XcornerGrabBuffer, m_pointList[0].y() - m_YcornerGrabBuffer);
+    QPointF p1(m_pointList[0].x() - m_XcornerGrabBuffer, m_pointList[0].y() - m_YcornerGrabBuffer);
     selectRegion << p1;
 
     this->setPolygon(selectRegion);
@@ -143,8 +143,8 @@ void GraphicsLine::createCustomPath(QPointF mouseLocation, CornerGrabber* corner
 
     // which corner needs to get moved?
     int idx = -1;
-    for (int p=0; p<m_pointList.size(); p++) {
-        if ( corner == m_corners[p]) {
+    for (int p = 0; p < m_pointList.size(); p++) {
+        if (corner == m_corners[p]) {
             idx = p;
             m_pointList[p] = mapFromScene(scenePosition);
         }
@@ -227,9 +227,9 @@ void GraphicsLine::createCorners()
 {
     m_outterborderColor = m_borderColor;
 
-    for (int p=0; p<m_pointList.size(); p++) {
+    for (int p = 0; p < m_pointList.size(); p++) {
         if (m_corners[p] == nullptr) {
-            m_corners[p] = new CornerGrabber(this, p);
+            m_corners[p] = SPtrCorner(new CornerGrabber(this, p));
             m_corners[p]->installSceneEventFilter(this);
         }
     }
@@ -242,11 +242,12 @@ void GraphicsLine::setCornerPositions()
     if (m_corners[0] == nullptr || m_corners[1] == nullptr)
         return;
     int cornerWidth = (m_corners[0]->boundingRect().width())/2;
-    int cornerHeight = ( m_corners[0]->boundingRect().height())/2;
+    int cornerHeight = (m_corners[0]->boundingRect().height())/2;
 
-    for (int p=0; p<m_pointList.size(); p++)
+    for (int p = 0; p < m_pointList.size(); p++) {
         if (m_corners[p] != nullptr)
             m_corners[p]->setPos(m_pointList[p].x() - cornerWidth, m_pointList[p].y() - cornerHeight );
+    }
 }
 
 #if 0
@@ -255,7 +256,7 @@ QRectF Transistion::boundingRect() const {
 }
 #endif
 
-void GraphicsLine::paint (QPainter *painter, const QStyleOptionGraphicsItem *i, QWidget *w)
+void GraphicsLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *i, QWidget *w)
 {
     Q_UNUSED(i);
     Q_UNUSED(w);

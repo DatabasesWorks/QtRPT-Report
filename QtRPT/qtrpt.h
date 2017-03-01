@@ -224,7 +224,6 @@ private slots:
 
 };
 
-using SPtrQtRPT = QSharedPointer<QtRPT>;
 
 #ifdef QTRPT_LIBRARY
     extern "C" QTRPTSHARED_EXPORT QtRPT* createQtRPT();

@@ -353,8 +353,7 @@ void GraphicsHelperClass::destroyCorners()
     for (auto &corner : m_corners) {
         if (corner != nullptr) {
             corner->setParentItem(nullptr);
-            delete corner;
-            corner = nullptr;
+            corner.reset();
         }
     }
 }

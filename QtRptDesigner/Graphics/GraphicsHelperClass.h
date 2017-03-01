@@ -78,7 +78,7 @@ protected:
     QColor m_borderColor;
     QColor m_backgroundColor;
     QColor m_fontColor;
-    QVector<CornerGrabber*> m_corners;
+    QVector<SPtrCorner> m_corners;
     QMenu* m_menu;
     QtRptName::FieldType m_type;
     QString setPenStyle(Qt::PenStyle style);
