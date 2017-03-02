@@ -219,7 +219,7 @@ bool QtRPT::loadReport(QString fileName)
 
     if (!xmlDoc.setContent(&file)) {
         file.close();
-        qWarning()<<"Report file not found";
+        qWarning() << "Report file not found";
         return false;
     }
 
@@ -462,10 +462,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
 
     emit setField(*fieldObject);
 
-    int left_   = fieldObject->rect.x()*koefRes_w;
-    int width_  = (fieldObject->rect.width()-1)*koefRes_w;
-    int height_ = fieldObject->rect.height()*koefRes_h;
-    int top_    = (bandTop+fieldObject->rect.y())*koefRes_h;
+    int left_   = fieldObject->rect.x() * koefRes_w;
+    int width_  = (fieldObject->rect.width()-1) * koefRes_w;
+    int height_ = fieldObject->rect.height() * koefRes_h;
+    int top_    = (bandTop+fieldObject->rect.y()) * koefRes_h;
 
     fieldObject->setTop(top_/koefRes_h);
 
@@ -481,12 +481,12 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             && fieldType != Barcode
             && fieldType != Image
             && fieldType != CrossTab) {
-            //Fill background
+            // Fill background
             if ( fieldObject->backgroundColor  != QColor(255,255,255,0)) {
                 if (painter->isActive())
                     painter->fillRect(left_+1, top_+1, width_-2, height_-2, fieldObject->backgroundColor);
             }
-            //Draw frame
+            // Draw frame
             if (fieldObject->borderTop != QColor(255,255,255,0) ) {
                 pen.setColor(fieldObject->borderTop);
                 if (painter->isActive()) {
@@ -751,7 +751,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 //qDebug()<<QString(txt+" col-%1 row-%2").arg(col).arg(row);
                 if (col == 0) col = 1;
                 if (row == 0) row = 1;
-                /*m_xlsx->write(row,col, txt);
+                /*m_xlsx->write(row, col, txt);
 
                 for (int col=1; col<100; ++col) {
                     bool fnd = false;
@@ -771,9 +771,9 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         } else {
             QRect boundRect = painter->boundingRect(left_+10,top_,width_-15,height_, flags, txt);
             if (boundRect.height() > height_ && fieldObject->autoHeight == 1) {
-                /*To correct adjust and display a height of the band we use a param 'realHeight'.
-                 Currently this param used only to correct a MasterBand. If will be needed, possible
-                 correct also another bands.
+                /* To correct adjust and display a height of the band we use a param 'realHeight'.
+                   Currently this param used only to correct a MasterBand. If will be needed, possible
+                   correct also another bands.
                 */
                 fieldObject->parentBand->realHeight = qRound(boundRect.height()/koefRes_h);
             }
@@ -804,7 +804,6 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
 
                 int y = fieldObject->crossTab->rowHeight() * tmpRowN;
 
-                //if (y > ph - mb - mt - fieldObject->rect.y() - fieldObject->crossTab->rowHeight() )
                 if (y > /*fieldObject->rect.y() +*/ fieldObject->rect.height() - fieldObject->crossTab->rowHeight() ) {
                     // we create a new page only for the particular types of the bands.
                     // And only if No new page will be created from other places
@@ -1382,7 +1381,7 @@ QString QtRPT::getFormattedValue(QString value, QString formatString)
 
 void QtRPT::fillListOfValue(RptBandObject *bandObject)
 {
-    for (auto field : bandObject->fieldList)
+    for (const auto &field : bandObject->fieldList)
         if (field->fieldType == Text && isFieldVisible(field))
             QString txt = sectionField(bandObject, field->value, false, true);
 }
@@ -1532,7 +1531,7 @@ void QtRPT::printXLSX(const QString &filePath, bool open)
 
     crossTab = new RptCrossTabObject();
     m_printMode = QtRPT::Xlsx;
-    //if (m_xlsx != 0) delete m_xlsx;
+    //if (m_xlsx != nullptr) delete m_xlsx;
     //m_xlsx = new QXlsx::Document(this);
 
     QFile file(filePath);

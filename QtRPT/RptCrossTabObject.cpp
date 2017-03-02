@@ -30,13 +30,12 @@ RptCrossTabObject::RptCrossTabObject()
     rect.setY(0);
     rect.setWidth(500);
     rect.setHeight(500);
-	stTotal = QObject::tr("Total");
     m_rowHeight = 20;
     m_rowCount = 3;
     m_colCount = 3;
     m_processedCount = 0;
 
-    qRegisterMetaType<RptCrossTabObject>( "RptCrossTabObject" );
+    qRegisterMetaType<RptCrossTabObject>("RptCrossTabObject");
 }
 
 int RptCrossTabObject::rowHeight()
@@ -102,7 +101,7 @@ void RptCrossTabObject::buildMatrix()
             h1->rect.setHeight(fieldheight);
             h1->rect.setWidth(fieldWidth);
             h1->aligment = Qt::AlignCenter;
-            addField(h1);  //Append field
+            addField(h1);
         }
     }
 }
@@ -177,7 +176,8 @@ QDebug operator<<(QDebug dbg, const RptCrossTabObject *obj)
     This function is only required when RptCrossTabObject is used when
     carry out report export to Excel.
 */
-void RptCrossTabObject::addElement(RptTabElement element) {
+void RptCrossTabObject::addElement(RptTabElement element)
+{
 //    int correlation = 50;
 //    int tmpCol = 0, tmpRow = 0;
 
@@ -232,7 +232,8 @@ void RptCrossTabObject::addElement(RptTabElement element) {
 
     \sa RptTabElement element
 */
-void RptCrossTabObject::resortMatrix() {
+void RptCrossTabObject::resortMatrix()
+{
     //resort rows
 //    int n = m_rowHeader.size();
 //    for (int i=0; i<n; ++i)

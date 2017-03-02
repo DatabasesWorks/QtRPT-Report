@@ -77,11 +77,6 @@ private:
     unsigned m_rowHeight;
     unsigned m_processedCount;
 
-    bool colTotalExists;
-    bool rowTotalExists;
-
-	QString	stTotal;
-
     void addField(RptFieldObject *field);
 
 };
