@@ -41,7 +41,7 @@ PageSettingDlg::PageSettingDlg(QWidget *parent)
     ui->spnBorderWidth->setValue(1);
     ui->lblBorderColor->setStyleSheet("QLabel {background-color: black}");
     
-    for (unsigned i=1; i < 7; i++) {
+    for (unsigned i = 1; i < 7; i++) {
         QIcon icon;
         icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/fs%1.png").arg(i)), QIcon::Normal, QIcon::On);
         ui->cmbBorderStyle->addItem(icon,"", i);
@@ -113,22 +113,22 @@ void PageSettingDlg::showThis(PageSetting pageSetting)
 void PageSettingDlg::pageSizeChanged(int index)
 {
     switch(index) {
-        case 0: //A3
-            ui->edtWidth->setText(QString::number(w_A3/koef,'f',2));
-            ui->edtHeight->setText(QString::number(h_A3/koef,'f',2));
-            break;
-        case 1: //A4
-            ui->edtWidth->setText(QString::number(w_A4/koef,'f',2));
-            ui->edtHeight->setText(QString::number(h_A4/koef,'f',2));
-            break;
-        case 2: //A5
-            ui->edtWidth->setText(QString::number(w_A5/koef,'f',2));
-            ui->edtHeight->setText(QString::number(h_A5/koef,'f',2));
-            break;
-        case 3: //Letter
-            ui->edtWidth->setText(QString::number(w_Lt/koef,'f',2));
-            ui->edtHeight->setText(QString::number(h_Lt/koef,'f',2));
-            break;
+    case 0: //A3
+        ui->edtWidth->setText(QString::number(w_A3/koef,'f',2));
+        ui->edtHeight->setText(QString::number(h_A3/koef,'f',2));
+        break;
+    case 1: //A4
+        ui->edtWidth->setText(QString::number(w_A4/koef,'f',2));
+        ui->edtHeight->setText(QString::number(h_A4/koef,'f',2));
+        break;
+    case 2: //A5
+        ui->edtWidth->setText(QString::number(w_A5/koef,'f',2));
+        ui->edtHeight->setText(QString::number(h_A5/koef,'f',2));
+        break;
+    case 3: //Letter
+        ui->edtWidth->setText(QString::number(w_Lt/koef,'f',2));
+        ui->edtHeight->setText(QString::number(h_Lt/koef,'f',2));
+        break;
     }
 }
 
@@ -161,25 +161,25 @@ void PageSettingDlg::saveSettings()
         pageSetting.pageOrientation = 0;
 
     switch(ui->cmbBorderStyle->currentIndex()) {
-        case 0:
-            pageSetting.borderStyle = "solid";
-            break;
-        case 1:
-            pageSetting.borderStyle = "dashed";
-            break;
-        case 2:
-            pageSetting.borderStyle = "dotted";
-            break;
-        case 3:
-            pageSetting.borderStyle = "dot-dash";
-            break;
-        case 4:
-            pageSetting.borderStyle = "dot-dot-dash";
-            break;
-        case 5:
-            pageSetting.borderStyle = "double";
-            break;
-        default: break;
+    case 0:
+        pageSetting.borderStyle = "solid";
+        break;
+    case 1:
+        pageSetting.borderStyle = "dashed";
+        break;
+    case 2:
+        pageSetting.borderStyle = "dotted";
+        break;
+    case 3:
+        pageSetting.borderStyle = "dot-dash";
+        break;
+    case 4:
+        pageSetting.borderStyle = "dot-dot-dash";
+        break;
+    case 5:
+        pageSetting.borderStyle = "double";
+        break;
+    default: break;
     }
 }
 

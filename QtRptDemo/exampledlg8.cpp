@@ -199,12 +199,12 @@ void ExampleDlg8::print()
     #endif
 
     QString fileName = dir.absolutePath()+"/examples_report/example8.xml";
-    report = new QtRPT(this);
+    auto report = QtRPT::createSPtr(this);
     report->recordCount << ui->tableWidget->rowCount();
-    if (report->loadReport(fileName) == false) {
+    if (report->loadReport(fileName) == false)
         qDebug()<<"Report file not found";
-    }
-    QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+
+    QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
     report->printExec();
 }

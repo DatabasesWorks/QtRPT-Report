@@ -32,7 +32,7 @@ ExampleDlg14::ExampleDlg14(QWidget *parent)
 
 void ExampleDlg14::print()
 {
-    QtRPT *report = new QtRPT(this);
+    auto report = QtRPT::createSPtr(this);
 
     //Make a page of report
     RptPageObject *page = new RptPageObject();
@@ -192,7 +192,7 @@ void ExampleDlg14::print()
     band4->addField(pf);  //Append field to the PageFooterBand
 
     report->recordCount << 4;
-    QObject::connect(report, SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
+    QObject::connect(report.data(), SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
 
     report->printExec();
 }

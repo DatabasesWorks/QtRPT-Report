@@ -1275,7 +1275,7 @@ void MainWindow::setGroupingField()
         }
     }
 
-    for (auto item : repPage->scene->items()) {
+    for (auto &item : repPage->scene->items()) {
         if (item->type() == ItemType::GLine || item->type() == ItemType::GBox) {
             auto helper = gItemToHelper(item);
 

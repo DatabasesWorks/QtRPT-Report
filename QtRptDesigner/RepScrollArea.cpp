@@ -396,9 +396,10 @@ bool RepScrollArea::eventFilter(QObject *obj, QEvent *e)
 QList<ReportBand *> RepScrollArea::getReportBands()
 {
     QList<ReportBand*> allReportBand;
-    for (auto item : scene->items())
+    for (const auto &item : scene->items())
         if (item->type() == ItemType::GBand)
-            allReportBand << static_cast<ReportBand*>(item);
+            allReportBand << qgraphicsitem_cast<ReportBand*>(item);
+
     return allReportBand;
 }
 

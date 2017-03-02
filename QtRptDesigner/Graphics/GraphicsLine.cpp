@@ -219,6 +219,7 @@ bool GraphicsLine::isSelected()
 {
     if (itemInTree != nullptr)
         return itemInTree->isSelected();
+
     return false;
 }
 

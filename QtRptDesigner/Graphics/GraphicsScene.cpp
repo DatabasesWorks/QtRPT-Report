@@ -143,7 +143,7 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         }
     }
 
-    for (auto itm : m_movedItems) {
+    for (auto &itm : m_movedItems) {
         if (itm.item->type() == ItemType::GBox) {
             auto box = static_cast<GraphicsBox*>(itm.item);
             itm.newHeight = box->getHeight();
@@ -171,7 +171,7 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    for (auto item : this->items()) {
+    for (auto &item : this->items()) {
         bool isSelected = false;
         GraphicsBox *box = nullptr;
         if (item->type() == ItemType::GBox || item->type() == ItemType::GBand) {

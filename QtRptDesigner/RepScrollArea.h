@@ -52,7 +52,7 @@ public:
     qreal getScale();
     GraphicsScene* scene;
     void setScale(const QString &scale);
-    QList<ReportBand *> getReportBands();
+    QList<ReportBand*> getReportBands();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *e);

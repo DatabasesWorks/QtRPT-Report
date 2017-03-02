@@ -291,6 +291,7 @@ void GraphicsBox::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (this->type() == ItemType::GBand)
         return;
+
     QGraphicsItem::mouseMoveEvent(event); // move the item...
     auto m_scene = qobject_cast<GraphicsScene *>(scene());
 
@@ -899,8 +900,6 @@ void GraphicsBox::setFieldType(FieldType value)
             m_chart->setVisible(false);
             m_chart->setAttribute(Qt::WA_TransparentForMouseEvents, true);
             m_chart->resize(m_width, m_height);
-            //if (xmlDoc != 0)
-            //    m_chart->loadXML(xmlDoc->createElement("TContainerField"));
             break;
         }
         case Barcode: {
@@ -977,7 +976,7 @@ void GraphicsBox::setMenu(QMenu *menu)
     QObject::connect(actContMoveBack, SIGNAL(triggered()), this, SLOT(moveBack()));
 
     m_menu->clear();
-    m_menu->insertActions(0, menu->actions());
+    m_menu->insertActions(nullptr, menu->actions());
     m_menu->addAction(actContEdit);
     m_menu->addAction(actContDel);
     m_menu->addSeparator();

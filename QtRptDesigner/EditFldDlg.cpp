@@ -208,18 +208,18 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
         ui->btnTextDirection->click();
 
     switch (cont->getFieldType()) {
-        case TextImage:
-            ui->radioButtonTextImage->setChecked(true);
-            boolImage = true;
-            break;
-        case DatabaseImage:
-            ui->radioButtonDatabaseImage->setChecked(true);
-            boolImage = true;
-            break;
-        default:
-            ui->radioButtonText->setChecked(true);
-            boolImage = false;
-            break;
+    case TextImage:
+        ui->radioButtonTextImage->setChecked(true);
+        boolImage = true;
+        break;
+    case DatabaseImage:
+        ui->radioButtonDatabaseImage->setChecked(true);
+        boolImage = true;
+        break;
+    default:
+        ui->radioButtonText->setChecked(true);
+        boolImage = false;
+        break;
     }
 
     ui->lblAttention->setVisible(boolImage);
@@ -253,15 +253,16 @@ int EditFldDlg::showText(QGraphicsItem *gItem)
                 plainTextEditContents.clear();
                 //Remove last empty lines
                 int i = lines.count()-1;
-                while (i>0) {
+                while (i > 0) {
                     if (lines.last().trimmed().isEmpty() && i==lines.count()-1)
                         lines.removeAt(lines.count()-1);
-                    else i--;
+                    else
+                        i--;
                 }
                 //join all in one string
                 for (int i = 0; i < lines.size(); ++i) {
                     plainTextEditContents += lines.at(i);
-                    if (i!=lines.size()-1)
+                    if (i != lines.size()-1)
                         plainTextEditContents += "\n";
                 }
             }
@@ -315,7 +316,7 @@ int EditFldDlg::showTextRich(QGraphicsItem *gItem)
                 plainTextEditContents.clear();
                 // Remove last empty lines
                 int i = lines.count()-1;
-                while (i>0) {
+                while (i > 0) {
                     if (lines.last().trimmed().isEmpty() && i==lines.count()-1)
                         lines.removeAt(lines.count()-1);
                     else
@@ -325,7 +326,7 @@ int EditFldDlg::showTextRich(QGraphicsItem *gItem)
                 // join all in one string
                 for (int i = 0; i < lines.size(); ++i) {
                     plainTextEditContents += lines.at(i);
-                    if (i!=lines.size()-1)
+                    if (i != lines.size()-1)
                         plainTextEditContents += "\n";
                 }
             }
@@ -372,15 +373,17 @@ int EditFldDlg::showBarcode(QGraphicsItem *gItem)
     ui->edtValue->setText(cont->getText());
 
     BarCode::BarcodeTypePairList list1 = BarCode::getTypeList();
-    for (int i=0; i < list1.size(); i++) {
+    for (int i = 0; i < list1.size(); i++) {
         ui->bstyle->addItem(list1.at(i).second,list1.at(i).first);
+
         if (list1.at(i).first == cont->getBarcodeType() )
             ui->bstyle->setCurrentIndex(i);
     }
 
     BarCode::FrameTypePairList list2 = BarCode::getFrameTypeList();
-    for (int i=0; i < list2.size(); i++) {
+    for (int i = 0; i < list2.size(); i++) {
         ui->cbFrameType->addItem(list2.at(i).second,list2.at(i).first);
+
         if (list2.at(i).first == cont->getBarcodeFrameType() )
             ui->cbFrameType->setCurrentIndex(i);
     }
@@ -393,8 +396,9 @@ int EditFldDlg::showBarcode(QGraphicsItem *gItem)
         cont->setBarcodeHeight(ui->spnHeight->value());
 
         return QDialog::Accepted;
-    } else
+    } else {
         return QDialog::Rejected;
+    }
 }
 
 int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
@@ -624,7 +628,8 @@ void EditFldDlg::saveImage()
                                                     tr("Images (*.png)"));
     if (!fileName.isEmpty()) {
         QPixmap p = QPixmap(*ui->label->pixmap());
-        if (p.isNull()) return;
+        if (p.isNull())
+            return;
         p.save(fileName, m_imgFormat.toLatin1().data());
     }
 }

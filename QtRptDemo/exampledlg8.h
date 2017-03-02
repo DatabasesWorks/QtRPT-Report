@@ -40,7 +40,6 @@ public:
 
 private:
     Ui::ExampleDlg8 *ui;
-    QtRPT *report;
 
 private slots:
     void print();

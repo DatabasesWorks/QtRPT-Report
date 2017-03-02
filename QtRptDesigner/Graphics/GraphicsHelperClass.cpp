@@ -360,7 +360,7 @@ void GraphicsHelperClass::destroyCorners()
 
 QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj)
 {
-    for (int i=0; i<obj.metaObject()->propertyCount(); ++i)
+    for (int i = 0; i < obj.metaObject()->propertyCount(); ++i)
         if (obj.metaObject()->property(i).isStored(&obj))
             stream << obj.metaObject()->property(i).read(&obj);
 
@@ -388,7 +388,7 @@ QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj)
 QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj)
 {
     QVariant var;
-    for (int i=0; i<obj.metaObject()->propertyCount(); ++i) {
+    for (int i = 0; i < obj.metaObject()->propertyCount(); ++i) {
         if (obj.metaObject()->property(i).isStored(&obj)) {
             stream >> var;
             if (!var.isNull())

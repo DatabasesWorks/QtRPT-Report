@@ -150,7 +150,7 @@ void SettingDlg::showThis()
                 case 13://Tamil
                     settings.setValue("language", "ta_IN");
                     break;
-                case 14://ukraine
+                case 14://Ukraine
                     settings.setValue("language", "uk_UA");
                     break;
             }

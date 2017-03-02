@@ -114,7 +114,7 @@ void MainWindow::showReport()
     else if (ui->rBtn16->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/example16.xml";
-        QtRPT *report = new QtRPT(this);
+        auto report = new QtRPT(this);
         if (report->loadReport(fileName) == false)
             qDebug()<<"Report file not found";
 
@@ -128,7 +128,7 @@ void MainWindow::showReport()
     }
     else if (ui->rBtn17->isChecked())
     {
-        for (int i=0; i<15; i++)
+        for (int i = 0; i < 15; i++)
             doubleVector.append(32767 * (float)qrand() / RAND_MAX);
         QString fileName = dir.absolutePath()+"/examples_report/example17.xml";
         auto report = new QtRPT(this);
