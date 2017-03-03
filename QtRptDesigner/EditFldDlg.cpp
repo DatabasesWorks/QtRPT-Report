@@ -413,22 +413,15 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
     ui->spnColCount->setValue(m_crossTab->colCount());
     ui->spnRowHeight->setValue(m_crossTab->rowHeight());
 
-//    ui->chkRowTotal->setChecked(m_crossTab->isRowTotalVisible());
-//    ui->chkColTotal->setChecked(m_crossTab->isColTotalVisible());
-
     QObject::connect(ui->spnRowCount, SIGNAL(valueChanged(int)), SLOT(setCrossTabRowCount(int)));
     QObject::connect(ui->spnColCount, SIGNAL(valueChanged(int)), SLOT(setCrossTabColCount(int)));
 
     if (this->exec()) {
-//        m_crossTab->setRowTotalVisible(ui->chkRowTotal->isChecked());
-//        m_crossTab->setColTotalVisible(ui->chkColTotal->isChecked());
-
         m_crossTab->setRowCount(ui->spnRowCount->value());
         m_crossTab->setColCount(ui->spnColCount->value());
         m_crossTab->setRowHeight(ui->spnRowHeight->value());
 
-//        m_crossTab->clear();
-//        m_crossTab->initMatrix();
+
         return QDialog::Accepted;
     } else {
         return QDialog::Rejected;

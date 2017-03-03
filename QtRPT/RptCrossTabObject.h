@@ -79,6 +79,9 @@ private:
 
     void addField(RptFieldObject *field);
 
+    QVector<unsigned> colVector;
+    QVector<unsigned> rowVector;
+
 };
 
 using SPtrCrossTab = QSharedPointer<RptCrossTabObject>;
