@@ -1,8 +1,8 @@
-QT       += core
+QT      += core
+
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
-    #DEFINES += QXLSX_LIBRARY
 }
 
 TARGET = QtXlsx
@@ -19,7 +19,8 @@ unix{
     CONFIG += plugin
 }
 
-QMAKE_CXXFLAGS += -std=c++0x
+CONFIG += c++14
+QMAKE_CXXFLAGS += -std=c++11
 
 include($$PWD/../../QtRPT/config.pri)  #Loading config file to get path where place ready library
 !exists($$PWD/../../QtRPT/config.pri) {

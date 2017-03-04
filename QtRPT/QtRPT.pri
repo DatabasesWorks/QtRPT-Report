@@ -1,16 +1,14 @@
 QT       += gui xml script sql
 
-greaterThan(QT_MAJOR_VERSION, 4){
+greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets printsupport
     DEFINES += HAVE_QT5
 }
 
-#DEFINES += NO_BARCODE
+
 include(../CommonFiles/CommonFiles_QtRpt.pri)
 
 INCLUDEPATH += $$PWD
-#INCLUDEPATH += $$PWD/../3rdparty/QtXlsx
-#LIBS += -L$${DEST_DIRECTORY}/lib -lQtXlsx
 
 SOURCES += $$PWD/qtrpt.cpp \
            $$PWD/RptSql.cpp \

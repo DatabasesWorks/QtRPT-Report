@@ -1,5 +1,5 @@
-#Use this pro files only if you want to build QtRPT library
-#and use it in your project
+# Use this pro files only if you want to build QtRPT library
+# and use it in your project
 
 TARGET = QtRPT
 TEMPLATE = lib
@@ -16,6 +16,7 @@ macx{
 linux{
     CONFIG += plugin
 }
+
 CONFIG -= debug_and_release debug_and_release_target
 
 HEADERS += \
@@ -28,7 +29,7 @@ DLLDESTDIR = $${DEST_DIRECTORY}
 DESTDIR    = $${DEST_DIRECTORY}/lib
 
 QMAKE_TARGET_COMPANY = "QtRPT"
-QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2012-2015 Aleksey Osipov <aliks-os@ukr.net>"
+QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2012-2017 Aleksey Osipov <aliks-os@ukr.net>"
 QMAKE_TARGET_DESCRIPTION = "Qt Print report library"
 
 win32 {

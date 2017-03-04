@@ -13,13 +13,13 @@ greaterThan(QT_MAJOR_VERSION, 4){
 TARGET = QtRptDemo
 TEMPLATE = app
 
+include(../QtRPT/QtRPT.pri)
+DESTDIR = $${DEST_DIRECTORY}
+
 contains(DEFINES,QTRPT_LIBRARY) {
     INCLUDEPATH += $$PWD/../QtRPT/
     LIBS += -L$${DEST_DIRECTORY}/lib -lQtRPT
 }
-
-include(../QtRPT/QtRPT.pri)
-DESTDIR = $${DEST_DIRECTORY}
 
 SOURCES += main.cpp\
     mainwindow.cpp \

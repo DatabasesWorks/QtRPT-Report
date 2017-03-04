@@ -33,7 +33,6 @@ SOURCES += main.cpp\
     RepScrollArea.cpp \
     SettingDlg.cpp \
     SqlDesigner.cpp \
-#    TContainerField.cpp \
     XmlViewModel.cpp
 
 HEADERS  += mainwindow.h \
@@ -45,7 +44,6 @@ HEADERS  += mainwindow.h \
     RepScrollArea.h \
     SettingDlg.h \
     SqlDesigner.h \
-#    TContainerField.h \
     XmlViewModel.h
 
 FORMS    += mainwindow.ui \
@@ -96,7 +94,9 @@ unix {
     RCC_DIR = tmp-lin64
 }
 
-CONFIG += c++11
+CONFIG += c++14
+QMAKE_CXXFLAGS += -std=c++11
+
 CONFIG += app_bundle
 CONFIG -= debug_and_release debug_and_release_target
 
@@ -104,7 +104,6 @@ CONFIG -= debug_and_release debug_and_release_target
 all.depends = locale
 #QMAKE_EXTRA_TARGETS += all
 
-QMAKE_CXXFLAGS += -std=c++0x
 
 TRANSLATION_TARGETS = $$replace(TRANSLATIONS, "\.ts", ".qm")
 locale.depends = $$TRANSLATION_TARGETS
@@ -115,3 +114,7 @@ QMAKE_EXTRA_TARGETS += locale
 QMAKE_EXTRA_TARGETS += "%.qm"
 
 PRE_TARGETDEPS += locale
+
+QMAKE_TARGET_COMPANY = "QtRPT"
+QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2012-2017 Aleksey Osipov <aliks-os@ukr.net>"
+QMAKE_TARGET_DESCRIPTION = "QtRPT and QtRptDesigner"
