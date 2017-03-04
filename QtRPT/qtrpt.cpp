@@ -190,7 +190,9 @@ QtRPT::QtRPT(QObject *parent)
     m_resolution = QPrinter::HighResolution;
     painter = nullptr;
     printer = nullptr;
-    //m_xlsx = 0;
+    #ifdef QXLSX_LIBRARY
+        m_xlsx = nullptr;
+    #endif
 }
 
 /*!
@@ -1531,12 +1533,16 @@ void QtRPT::printXLSX(const QString &filePath, bool open)
 
     crossTab = new RptCrossTabObject();
     m_printMode = QtRPT::Xlsx;
-    //if (m_xlsx != nullptr) delete m_xlsx;
-    //m_xlsx = new QXlsx::Document(this);
+
+    #ifdef QXLSX_LIBRARY
+        if (m_xlsx != nullptr)
+            delete m_xlsx;
+        m_xlsx = new QXlsx::Document(this);
+    #endif
 
     QFile file(filePath);
-    //if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    //    return;
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
 
     if (printer == nullptr)
         printer = new QPrinter(m_resolution);
