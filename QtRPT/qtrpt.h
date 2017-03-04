@@ -129,6 +129,9 @@ public:
     void setUserSqlConnection(int pageReport, QString dsName, QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QString sql, QString dbCoding = "UTF8", QString charsetCoding = "UTF8");
     void activateUserSqlConnection(int pageReport, bool bActive);
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *e);
+
 private:
     QPixmap *m_backgroundImage;
     QPrinter *printer;
@@ -192,8 +195,11 @@ private:
     QVector <RptSqlConnection> userSqlConnection;
     QString m_sqlQuery;
     QString m_HTML;
-    //QXlsx::Document *m_xlsx;
     RptCrossTabObject *crossTab;
+
+    #ifdef QXLSX_LIBRARY
+        QXlsx::Document *m_xlsx;
+    #endif
 
     void makeReportObjectStructure();
     enum PrintMode
@@ -205,9 +211,6 @@ private:
     };
     PrintMode m_printMode;
     QPrinter::PrinterMode m_resolution;
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *e);
 
 signals:
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
