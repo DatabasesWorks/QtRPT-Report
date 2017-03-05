@@ -65,8 +65,8 @@ void XYZDownloadManager::downloadFinished(QNetworkReply *data)
         QStringList fl;
         fl << sdata;
         fileList = fl.at(0).split("\n");        
-        //qDebug()<<fl;
-        //qDebug()<<fileList;
+        //qDebug() << fl;
+        //qDebug() << fileList;
 
         if (QApplication::applicationVersion().replace(".","") < fileList[0].replace(".","").simplified()) {
             fileList.removeAt(0);

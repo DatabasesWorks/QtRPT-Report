@@ -28,6 +28,12 @@ limitations under the License.
 #include <QMetaType>
 #include <RptFieldObject.h>
 
+#if QT_VERSION >= 0x50000
+    #ifdef QXLSX_LIBRARY
+        #include "xlsxdocument.h"
+    #endif
+#endif
+
 using namespace QtRptName;
 
 class RptFieldObject;
@@ -40,11 +46,9 @@ struct RptTabElement
     unsigned top;
     unsigned height;
     unsigned width;
-    unsigned corrLeft;
-    unsigned corrTop;
+    unsigned col;
+    unsigned row;
 };
-
-typedef QVector<RptTabElement> VectorRptTabElement;
 
 class RptCrossTabObject
 {
@@ -61,15 +65,17 @@ public:
     void setRowHeight(int height);
     int processedCount();
     void setProcessedCount(int value);
-    int fieldRow(RptFieldObject* field);
-    int fieldCol(RptFieldObject* field);
+    int fieldRow(RptFieldObject *field);
+    int fieldCol(RptFieldObject *field);
 
     void buildMatrix();
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
 
     void addElement(RptTabElement element);
-    void resortMatrix();
+    #ifdef QXLSX_LIBRARY
+        void buildXlsx(QXlsx::Document *xlsx);
+    #endif
 
 private:
     unsigned m_colCount;
@@ -79,8 +85,7 @@ private:
 
     void addField(RptFieldObject *field);
 
-    QVector<unsigned> colVector;
-    QVector<unsigned> rowVector;
+    QVector<RptTabElement> m_elements;
 
 };
 

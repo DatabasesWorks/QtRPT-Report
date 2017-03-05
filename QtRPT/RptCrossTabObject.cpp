@@ -80,6 +80,10 @@ void RptCrossTabObject::setProcessedCount(int value)
 
 void RptCrossTabObject::buildMatrix()
 {
+    qDeleteAll(fieldList);
+    fieldList.clear();
+    m_processedCount = 0;
+
     float fieldWidth = rect.width();
     float fieldheight = rect.height();
     if (m_colCount == 0)
@@ -90,8 +94,8 @@ void RptCrossTabObject::buildMatrix()
     fieldWidth  = rect.width()/colCount();
     fieldheight = rowHeight();
 
-    for (unsigned row=0; row < m_rowCount; row++) {
-        for (unsigned col=0; col < m_colCount; col++) {
+    for (unsigned row = 0; row < m_rowCount; row++) {
+        for (unsigned col = 0; col < m_colCount; col++) {
             auto h1 = new RptFieldObject();
             h1->parentCrossTab = this;
             h1->name = QString("f%1%2").arg(col).arg(row);
@@ -112,7 +116,7 @@ void RptCrossTabObject::buildMatrix()
 
     \sa fieldCol
 */
-int RptCrossTabObject::fieldRow(RptFieldObject* field)
+int RptCrossTabObject::fieldRow(RptFieldObject *field)
 {
     int index = fieldList.indexOf(field);
     if (index != -1)
@@ -127,7 +131,7 @@ int RptCrossTabObject::fieldRow(RptFieldObject* field)
 
     \sa fieldRow
 */
-int RptCrossTabObject::fieldCol(RptFieldObject* field)
+int RptCrossTabObject::fieldCol(RptFieldObject *field)
 {
     int index = fieldList.indexOf(field);
     if (index != -1) {
@@ -178,46 +182,7 @@ QDebug operator<<(QDebug dbg, const RptCrossTabObject *obj)
 */
 void RptCrossTabObject::addElement(RptTabElement element)
 {
-    int correlation = 50;
-    int tmpCol = 0, tmpRow = 0;
-
-    bool fnd = false;
-    for (int col=0; col < colVector.size(); col++) {
-        if (element.left <= colVector.at(col)+correlation &&
-            element.left >= colVector.at(col)-correlation )
-        {
-            fnd = true;
-            element.corrLeft = colVector.at(col);
-            tmpCol = col;
-            break;
-        }
-    }
-
-    if (!fnd) {
-        colVector.append(element.left);
-//        tmpCol = appendColumn(QString("%1").arg(element.left));
-    }
-
-    fnd = false;
-    for (int row=0; row < rowVector.size(); row++) {
-        if (element.top <= rowVector.at(row)+correlation &&
-            element.top >= rowVector.at(row)-correlation )
-        {
-            fnd = true;
-            //qDebug()<< element.top << rowVector.at(row)+correlation << rowVector.at(row)-correlation;
-            element.corrTop = rowVector.at(row);
-            tmpRow = row;
-            break;
-        }
-    }
-
-    if (!fnd) {
-        rowVector.append(element.top);
-//        tmpRow = appendRow(QString("%1").arg(element.top));
-    }
-
-//    initMatrix();
-//    setMatrixElement(tmpCol,tmpRow,element);
+    m_elements.append(element);
 }
 
 /*!
@@ -231,26 +196,34 @@ void RptCrossTabObject::addElement(RptTabElement element)
 
     \sa RptTabElement element
 */
-void RptCrossTabObject::resortMatrix()
+#ifdef QXLSX_LIBRARY
+void RptCrossTabObject::buildXlsx(QXlsx::Document *xlsx)
 {
-    //resort rows
-//    int n = m_rowHeader.size();
-//    for (int i=0; i<n; ++i)
-//        for(int j=i+1; j<n; ++j)
-//            if (QString(m_rowHeader[j]).toInt() < QString(m_rowHeader[i]).toInt()) {
-//                qSwap(m_rowHeader[i], m_rowHeader[j]);
-//                qSwap(valuesArray[i], valuesArray[j]);
-//            }
+    std::sort(m_elements.begin(), m_elements.end(), [](RptTabElement e1, RptTabElement e2) {return e1.top < e2.top; });
 
-//    //resort columns
-//    n = m_colHeader.size();
-//    for(int i=0; i<n; ++i)
-//        for(int j=i+1; j<n; ++j)
-//            if(QString(m_colHeader[j]).toInt() < QString(m_colHeader[i]).toInt()) {
-//                qSwap(m_colHeader[i], m_colHeader[j]);
-//                for (int row=0; row<m_rowHeader.size(); row++) {
-//                    qSwap(valuesArray[row][i], valuesArray[row][j]);
-//                }
-//            }
+    int row = 0;
+    int prevTop = INT_MIN;
+    for (auto &element : m_elements) {
+        if ((int)(element.top - 40) > prevTop) {
+            row += 1;
+            prevTop = element.top;
+        }
+        element.row = row;
+    }
+
+    std::sort(m_elements.begin(), m_elements.end(), [](RptTabElement e1, RptTabElement e2) {return e1.left < e2.left; });
+
+    int col = 0;
+    int prevLeft = INT_MIN;
+    for (auto &element : m_elements) {
+        if ((int)(element.left - 200) > prevLeft) {
+            col += 1;
+            prevLeft = element.left;
+        }
+        element.col = col;
+    }
+
+    for (auto &element : m_elements)
+        xlsx->write(element.row, element.col, element.value);
 }
-
+#endif

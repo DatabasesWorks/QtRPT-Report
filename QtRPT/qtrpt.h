@@ -205,9 +205,9 @@ private:
     enum PrintMode
     {
         Printer = 0,
-        Pdf = 1,
-        Html = 2,
-        Xlsx = 3
+        Pdf     = 1,
+        Html    = 2,
+        Xlsx    = 3
     };
     PrintMode m_printMode;
     QPrinter::PrinterMode m_resolution;

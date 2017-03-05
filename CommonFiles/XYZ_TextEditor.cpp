@@ -59,8 +59,8 @@ XYZTextEditor::XYZTextEditor(QWidget *parent)
 //    }
 //    cursor.setBlockFormat(blockFmt);
 
-//    qDebug()<<m_ui->textEdit->document()->defaultTextOption().textDirection();
-//    qDebug()<<m_ui->textEdit->toHtml();
+//    qDebug() << m_ui->textEdit->document()->defaultTextOption().textDirection();
+//    qDebug() << m_ui->textEdit->toHtml();
 }
 
 void XYZTextEditor::textDirection()

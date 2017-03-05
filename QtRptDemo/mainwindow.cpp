@@ -61,7 +61,7 @@ void MainWindow::showReport()
         QString fileName = dir.absolutePath()+"/examples_report/example9.xml";
         auto report = new QtRPT(this);
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         report->printExec();
     }
@@ -70,7 +70,7 @@ void MainWindow::showReport()
         QString fileName = dir.absolutePath()+"/examples_report/example10.xml";
         auto report = new QtRPT(this);
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         report->printExec();
     }
@@ -82,7 +82,7 @@ void MainWindow::showReport()
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         report->printExec();
     }
@@ -94,7 +94,7 @@ void MainWindow::showReport()
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         report->printExec();
     }
@@ -107,7 +107,7 @@ void MainWindow::showReport()
         QString fileName = dir.absolutePath()+"/examples_report/example9.xml";
         auto report = new QtRPT(this);
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         report->printPDF(dir.absolutePath()+"/example9.pdf",true);
     }
@@ -116,7 +116,7 @@ void MainWindow::showReport()
         QString fileName = dir.absolutePath()+"/examples_report/example16.xml";
         auto report = new QtRPT(this);
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         QString strSQL =
                 "SELECT *\n"
@@ -136,7 +136,7 @@ void MainWindow::showReport()
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         report->printExec();
     }
@@ -149,7 +149,7 @@ void MainWindow::showReport()
         QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
-            qDebug()<<"Report file not found";
+            qDebug() << "Report file not found";
 
         report->printExec();
     }

@@ -1233,7 +1233,7 @@ Command MainWindow::getCommand(QObject *widget)
 void MainWindow::undo()
 {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    qDebug()<<tr("Going to make undo: ")<<repPage->scene->m_undoStack->undoText();
+    qDebug() << tr("Going to make undo: ")<<repPage->scene->m_undoStack->undoText();
     repPage->scene->m_undoStack->undo();
     showParamState();
 }
@@ -1241,7 +1241,7 @@ void MainWindow::undo()
 void MainWindow::redo()
 {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    qDebug()<<tr("Going to make redo: ")<<repPage->scene->m_undoStack->undoText();
+    qDebug() << tr("Going to make redo: ")<<repPage->scene->m_undoStack->undoText();
     repPage->scene->m_undoStack->redo();
     showParamState();
 }

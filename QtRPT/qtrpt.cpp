@@ -735,7 +735,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             flags = flags | Qt::TextWordWrap;
         if (draw) {
             if (painter->isActive())
-                painter->drawText(left_+10,top_,width_-15,height_, flags, txt);
+                painter->drawText(left_+10, top_, width_-15, height_, flags, txt);
 
             if (m_printMode == QtRPT::Html)
                 m_HTML.append("<div "+fieldObject->getHTMLStyle()+">"+txt+"</div>\n");
@@ -743,35 +743,13 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             if (m_printMode == QtRPT::Xlsx) {
                 RptTabElement element;
                 element.fieldObject = fieldObject;
-                element.top = top_;
+                element.top = top_ * curPage;
                 element.left = left_;
                 element.value = txt;
                 crossTab->addElement(element);
-                //qDebug()<<QString("left %1 top %2").arg(left_).arg(top_);
-                int col = left_/200;
-                int row = top_/200;
-                //qDebug()<<QString(txt+" col-%1 row-%2").arg(col).arg(row);
-                if (col == 0) col = 1;
-                if (row == 0) row = 1;
-                /*m_xlsx->write(row, col, txt);
-
-                for (int col=1; col<100; ++col) {
-                    bool fnd = false;
-                    for (int row=1; row<100; ++row) {
-                        if (QXlsx::Cell *cell=m_xlsx->cellAt(row, col))
-                            if (!cell->value().toString().isEmpty())
-                            {
-                                fnd = true;
-                                break;
-                            }
-                    }
-                    m_xlsx->setColumnHidden(col,!fnd);
-                    if (fnd)
-                        m_xlsx->setColumnWidth(col,10);
-                }*/
             }
         } else {
-            QRect boundRect = painter->boundingRect(left_+10,top_,width_-15,height_, flags, txt);
+            QRect boundRect = painter->boundingRect(left_+10, top_, width_-15, height_, flags, txt);
             if (boundRect.height() > height_ && fieldObject->autoHeight == 1) {
                 /* To correct adjust and display a height of the band we use a param 'realHeight'.
                    Currently this param used only to correct a MasterBand. If will be needed, possible
@@ -885,18 +863,18 @@ void QtRPT::drawBandRow(RptBandObject *band, int bandTop, bool allowDraw)
 {
     band->realHeight = band->height; //set a 'realHeight' to default value
     /*First pass used to determine a max height of the band*/
-    for (auto field : band->fieldList)
+    for (auto &field : band->fieldList)
         if (field->fieldType != Line && isFieldVisible(field))
-            drawFields(field,bandTop,false);
+            drawFields(field, bandTop, false);
 
     /*Second pass used for drawing*/
     if (allowDraw) {
-        for (auto field : band->fieldList) {
+        for (auto &field : band->fieldList) {
             if (isFieldVisible(field)) {
                 if (field->fieldType != Line)
-                    drawFields(field,bandTop,true);
+                    drawFields(field, bandTop, true);
                 else
-                    drawLines(field,bandTop);
+                    drawLines(field, bandTop);
             }
         }
     }
@@ -975,14 +953,14 @@ QVariant QtRPT::processHighligthing(RptFieldObject *field, HiType type)
                 exp.remove("backgroundColor=");
                 QString formulaStr = exp.insert(1,"'");
                 formulaStr = exp.insert(0,cond);
-                //qDebug()<<field->name;
-                //qDebug()<<colorToString(field->backgroundColor);
+                //qDebug() << field->name;
+                //qDebug() << colorToString(field->backgroundColor);
                 formulaStr = sectionField(field->parentBand,formulaStr,true)+"':'"+colorToString(field->m_backgroundColor)+"'";
                 //formulaStr = sectionField(field->parentBand,formulaStr,true)+"':'rgba(255,0,255,255)'";
                 QScriptEngine myEngine;
-                //qDebug()<<formulaStr;
-                //qDebug()<<myEngine.evaluate(formulaStr).toString();
-                //qDebug()<<"---";
+                //qDebug() << formulaStr;
+                //qDebug() << myEngine.evaluate(formulaStr).toString();
+                //qDebug() << "---";
                 return myEngine.evaluate(formulaStr).toString();
             }
         }
@@ -998,7 +976,7 @@ bool QtRPT::isFieldVisible(RptFieldObject *fieldObject)
         formulaStr = sectionField(fieldObject->parentBand,fieldObject->printing,true);
         QScriptEngine myEngine;
         //myEngine.globalObject().setProperty("quant1","3");
-        //qDebug()<<myEngine.evaluate("quant1;").toString();
+        //qDebug() << myEngine.evaluate("quant1;").toString();
         visible = myEngine.evaluate(formulaStr).toInteger();
 
         //QScriptValue fun = myEngine.evaluate("(function(a, b) { return a == b; })");
@@ -1006,7 +984,7 @@ bool QtRPT::isFieldVisible(RptFieldObject *fieldObject)
         //QScriptValueList args;
         /*args << "k" << "k";
         QScriptValue threeAgain = fun.call(QScriptValue(), args);
-        qDebug()<<threeAgain.toString();*/
+        qDebug() << threeAgain.toString();*/
 
     } else {
         visible = formulaStr.toInt();
@@ -1295,9 +1273,9 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                                 fieldName.replace("]","");
                                 fieldName.replace(rtpSqlVector[m_pageReport]->objectName()+".","");
                                 QString tmp = rtpSqlVector[m_pageReport]->getFieldValue(fieldName, m_recNo);
-                                qDebug()<<"value from DB: "<<tmp;
+                                qDebug() << "value from DB: "<<tmp;
                                 formulaStr.replace(tl.at(j), tmp);
-                                qDebug()<<"formula with value: "<<formulaStr;
+                                qDebug() << "formula with value: "<<formulaStr;
                             }
                         } else {
                             formulaStr.replace(tl.at(j), sectionValue(tl.at(j)));
@@ -1532,6 +1510,7 @@ void QtRPT::printXLSX(const QString &filePath, bool open)
     Q_UNUSED(open);
 
     crossTab = new RptCrossTabObject();
+    crossTab->name = "XLSX_CrosTab";
     m_printMode = QtRPT::Xlsx;
 
     #ifdef QXLSX_LIBRARY
@@ -1553,15 +1532,13 @@ void QtRPT::printXLSX(const QString &filePath, bool open)
 
     printPreview(printer);
 
-    crossTab->resortMatrix();
-    qDebug()<<crossTab;
+    crossTab->buildXlsx(m_xlsx);
 
-    //m_xlsx->write("A1", "Hello Qt!");
-    //m_xlsx->saveAs(filePath);
+    m_xlsx->saveAs(filePath);
 
     file.close();
-    //if (open)
-    //    QDesktopServices::openUrl(QUrl("file:"+filePath));
+    if (open)
+        QDesktopServices::openUrl(QUrl("file:"+filePath));
 #endif
 }
 
@@ -2337,7 +2314,7 @@ void QtRPT::setSqlQuery(QString sqlString)
   \endlist
 */
 
-void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection & SqlConnection)
+void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection &SqlConnection)
 {
     if (userSqlConnection.count() <= pageReport) {
         // If page does not exist, add new connection for this page
@@ -2349,7 +2326,7 @@ void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection & SqlCon
     }
 }
 
-void QtRPT::getUserSqlConnection(int pageReport, RptSqlConnection & SqlConnection)
+void QtRPT::getUserSqlConnection(int pageReport, RptSqlConnection &SqlConnection)
 {
     if (userSqlConnection.count() <= pageReport)  // Return inactive connection
         SqlConnection.reset();

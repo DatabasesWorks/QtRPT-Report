@@ -65,7 +65,7 @@ bool RptSql::openQuery(QString sql, QString dbCoding, QString charsetCoding)
     }
 
     if (!query->exec(sql)) {
-        qDebug()<<query->lastError().text();
+        qDebug() << query->lastError().text();
         return false;
     }
 

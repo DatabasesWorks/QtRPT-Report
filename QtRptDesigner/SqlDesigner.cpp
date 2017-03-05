@@ -256,7 +256,7 @@ bool SqlDesigner::eventFilter(QObject *obj, QEvent *e)
     }
     if (obj == ui->xmlFieldsTable->viewport()) {
         if (e->type() == QEvent::Drop) {
-            qDebug()<<"DROP";
+            qDebug() << "DROP";
             auto de = static_cast<QDropEvent*>(e);
             const QMimeData *mimeData = de->mimeData();
             QByteArray encoded = mimeData->data("application/x-qabstractitemmodeldatalist");
@@ -266,7 +266,7 @@ bool SqlDesigner::eventFilter(QObject *obj, QEvent *e)
                 QMap<int,  QVariant> roleDataMap;
                 stream >> row >> col >> roleDataMap;
                 //for (int i=0; i<roleDataMap.size(); i++)
-                //    qDebug()<<roleDataMap[i].toString();
+                //    qDebug() << roleDataMap[i].toString();
                 ui->xmlFieldsTable->setRowCount(ui->xmlFieldsTable->rowCount()+1);
 
                 QString fieldName = roleDataMap[0].toString().replace("("+roleDataMap[3].toString()+")","");
