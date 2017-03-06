@@ -1,0 +1,2633 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="it_IT">
+<context>
+    <name>AboutDlg</name>
+    <message>
+        <location filename="../aboutDlg.cpp" line="27"/>
+        <source>About QtRptDesigner</source>
+        <translation>About QtRptDesigner</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="44"/>
+        <source>Version: </source>
+        <translation>Versione:</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="45"/>
+        <source>Programmer: Aleksey Osipov</source>
+        <translation>Autore: Aleksey Osipov</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="46"/>
+        <source>Web Site: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="47"/>
+        <source>E-mail: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="49"/>
+        <source>2012-2016 years</source>
+        <translation>Dal 2012 al 2016</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="50"/>
+        <source>Thanks for donation:</source>
+        <translation>Ringraziamenti per le donazioni:</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="52"/>
+        <source>Sailendram</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="54"/>
+        <source>Thanks for project developing:</source>
+        <translation>Ringraziamenti per lo sviluppo del progetto:</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="56"/>
+        <source>Lukas Lalinsky for DBmodel</source>
+        <translation>Lukas Lalinsky per DBmodel</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="57"/>
+        <source>Norbert Schlia for help in developing</source>
+        <translation>Norbert Schlia per l&apos;aiuto nello sviluppo</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="58"/>
+        <source>Muhamad Bashir Al-Noimi for Arabic translation</source>
+        <translation>Muhamad Bashir Al-Noimi per la traduzione in Arabo</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="59"/>
+        <source>Luis Brochado for Portuguese translation</source>
+        <translation>Luis Brochado per la traduzione in Portoghese</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="60"/>
+        <source>Li Wei for Chinese translation</source>
+        <translation>Li Wei per la traduzione in Cinese</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="61"/>
+        <source>Laurent Guilbert for French translation</source>
+        <translation>Laurent Guilbert per la traduzione in Francese</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="62"/>
+        <source>David Heremans for Dutch translation</source>
+        <translation>David Heremans per la traduzione in Olandese</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="63"/>
+        <source>Mirko Marx for German translation</source>
+        <translation>Mirko Marx per la traduzione in Tedesco</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="64"/>
+        <source>Manuel Soriano for Spanish translation</source>
+        <translation>Manuel Soriano per la traduzione in Spagnolo</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="65"/>
+        <source>Bagavathikumar for Tamil translation</source>
+        <translation type="unfinished">Bagavathikumar per la traduzione in Tamil</translation>
+    </message>
+</context>
+<context>
+    <name>EditFldDlg</name>
+    <message>
+        <location filename="../EditFldDlg.ui" line="14"/>
+        <source>Field editor</source>
+        <translation>Editor di campo</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="61"/>
+        <location filename="../EditFldDlg.ui" line="176"/>
+        <source>Text</source>
+        <translation>Testo</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="100"/>
+        <source>Add variable</source>
+        <translation>Aggiungi variabile</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="103"/>
+        <location filename="../EditFldDlg.ui" line="123"/>
+        <location filename="../EditFldDlg.ui" line="143"/>
+        <location filename="../EditFldDlg.ui" line="466"/>
+        <location filename="../EditFldDlg.ui" line="483"/>
+        <location filename="../EditFldDlg.ui" line="714"/>
+        <location filename="../EditFldDlg.ui" line="728"/>
+        <location filename="../EditFldDlg.ui" line="742"/>
+        <location filename="../EditFldDlg.ui" line="756"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="120"/>
+        <source>Add function</source>
+        <translation>Aggiungi funzione</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="140"/>
+        <source>Add formatting</source>
+        <translation>Aggiungi formattazione</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="160"/>
+        <source>Text direction</source>
+        <translation>Direzione del testo</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="163"/>
+        <source>&lt;-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proccess as Image</source>
+        <translation type="vanished">Processa come immagine</translation>
+    </message>
+    <message>
+        <source>Attention! You may enter just ONE varibale and not any text.</source>
+        <translation type="vanished">Attenzione! Puoi aggiungere al massimo UNA variabile e nessun testo.</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="227"/>
+        <source>Condtion</source>
+        <translation>Condizione</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="235"/>
+        <source>Printing</source>
+        <translation>Stampa</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="248"/>
+        <source>Hightlighting</source>
+        <translation>In evidenza</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="260"/>
+        <source>Condition</source>
+        <translation>Condizione</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="277"/>
+        <source>Font</source>
+        <translation>Carattere</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="283"/>
+        <source>Bold</source>
+        <translation>Grassetto</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="290"/>
+        <source>Italic</source>
+        <translation>Corsivo</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="297"/>
+        <source>Underline</source>
+        <translation>Sottolineato</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="304"/>
+        <source>Strikeout</source>
+        <translation>Barrato</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="339"/>
+        <location filename="../EditFldDlg.ui" line="405"/>
+        <source>Color...</source>
+        <translation>Colore...</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="354"/>
+        <source>Background</source>
+        <translation>Sfondo</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="360"/>
+        <source>Transparent</source>
+        <translation>Trasparente</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="370"/>
+        <source>Other</source>
+        <translation>Altro</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="480"/>
+        <source>Save As</source>
+        <translation>Salva Come</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="497"/>
+        <source>Ignore aspect ratio</source>
+        <translation>Ignora proporzioni</translation>
+    </message>
+    <message>
+        <source>Diagram&apos;s property</source>
+        <translation type="vanished">Proprietà del diagramma</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="599"/>
+        <source>Diagram</source>
+        <translation>Diagramma</translation>
+    </message>
+    <message>
+        <source>Chart&apos;s caption</source>
+        <translation type="vanished">Titolo del grafico</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="619"/>
+        <source>Show caption</source>
+        <translation>Mostra titolo</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="626"/>
+        <source>Show grid</source>
+        <translation>Mostra griglia</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="633"/>
+        <source>Show legend</source>
+        <translation>Mostra legenda</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="640"/>
+        <source>Set the params of the graphs</source>
+        <translation>Imposta i parametri del grafico</translation>
+    </message>
+    <message>
+        <source>Show graph&apos;s caption</source>
+        <translation type="vanished">Mostra titolo del grafico</translation>
+    </message>
+    <message>
+        <source>Graph&apos;s caption</source>
+        <translation type="vanished">Titolo del grafico</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="663"/>
+        <source>Real values</source>
+        <translation>Valori reali</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="673"/>
+        <source>Percent values</source>
+        <translation>Valori percentuali</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="700"/>
+        <source>Graphs</source>
+        <translation>Grafico</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="711"/>
+        <source>Add row</source>
+        <translation>Aggiungi linea</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="725"/>
+        <source>Remove row</source>
+        <translation>Rimuovi linea</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="739"/>
+        <source>Up</source>
+        <translation>Su</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="753"/>
+        <source>Down</source>
+        <translation>Giù</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="807"/>
+        <source>Caption</source>
+        <translation>Titolo</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="812"/>
+        <source>Value</source>
+        <translation>Valore</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="817"/>
+        <source>Color</source>
+        <translation>Colore</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="833"/>
+        <source>Barcode type</source>
+        <translation>Tipo di codice a barre</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="857"/>
+        <source>Frame type</source>
+        <translation>Tipo di cornice</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="845"/>
+        <source>Value:</source>
+        <translation>Valore:</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="183"/>
+        <source>Process as image</source>
+        <translation>Processa come immagine</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="190"/>
+        <source>Image from database</source>
+        <translation>Immagine da database</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="219"/>
+        <source>Attention! You may enter just ONE variable and not any text.</source>
+        <translation>Attenzione! Puoi aggiungere al massimo UNA variabile e nessun testo.</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="593"/>
+        <source>Diagram property</source>
+        <translation>Proprietà del diagramma</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="607"/>
+        <source>Chart caption</source>
+        <translation>Didascalia del grafico</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="647"/>
+        <source>Show graph caption</source>
+        <translation>Mostra il titolo del grafico</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="657"/>
+        <source>Graph caption</source>
+        <translation>Titolo del grafico</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="877"/>
+        <source>Height</source>
+        <translation>Altezza</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="884"/>
+        <source>X</source>
+        <translation>X</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="935"/>
+        <source>Dimensions</source>
+        <translation>Dimensioni</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="941"/>
+        <source>Rows</source>
+        <translation>Righe</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="951"/>
+        <source>Columns</source>
+        <translation>Colonne</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="964"/>
+        <source>Parameters</source>
+        <translation>Parametri</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="970"/>
+        <source>Show row header</source>
+        <translation>Mostra intestazione di riga</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="977"/>
+        <source>Show column header</source>
+        <translation>Mostra intestazione della colonna</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="984"/>
+        <source>Show column Total by row</source>
+        <translation>Mostra la colonna Totale per riga</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="991"/>
+        <source>Show row Total by column</source>
+        <translation>Mostra la riga Totale per colonna</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1003"/>
+        <source>Row headers</source>
+        <translation>Intestazione delle righe</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1023"/>
+        <source>Row header</source>
+        <translation>Intestazione di riga</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1035"/>
+        <source>Column headers</source>
+        <translation>Intestazione delle colonne</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1055"/>
+        <source>Column header</source>
+        <translation>Intestazione di colonna</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1084"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1091"/>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.cpp" line="234"/>
+        <location filename="../EditFldDlg.cpp" line="292"/>
+        <source>Empty line</source>
+        <translation>Linea vuota</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.cpp" line="234"/>
+        <location filename="../EditFldDlg.cpp" line="292"/>
+        <source>The field contains empty line at the end.
+Remove it?</source>
+        <translation>Il campo contiene una riga vuota alla fine.
+Eliminarla?</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.cpp" line="596"/>
+        <source>Save Image As</source>
+        <translation>Salva Immagine Come</translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.cpp" line="598"/>
+        <source>Images (*.png)</source>
+        <translation>Immagini (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>EditorDelegate</name>
+    <message>
+        <location filename="../mainwindow.cpp" line="54"/>
+        <source>Left</source>
+        <translation>Sinistra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="55"/>
+        <location filename="../mainwindow.cpp" line="65"/>
+        <source>Center</source>
+        <translation>Centro</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="56"/>
+        <source>Right</source>
+        <translation>Destra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="57"/>
+        <source>Justify</source>
+        <translation>Giustifica</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="64"/>
+        <source>Top</source>
+        <translation>Alto</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="66"/>
+        <source>Bottom</source>
+        <translation>Basso</translation>
+    </message>
+</context>
+<context>
+    <name>FldPropertyDlg</name>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="14"/>
+        <source>Expression editor</source>
+        <translation>Editor di espressioni</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="66"/>
+        <source>Data filed grouping</source>
+        <translation>Campo di raggruppamento</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="78"/>
+        <source>Start line numeration for each group</source>
+        <translation>Inizia numerazione di linea per ogni gruppo</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="88"/>
+        <source>Start new page for each group</source>
+        <translation>Inizia una nuova pagina per ogni gruppo</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="114"/>
+        <source>Category</source>
+        <translation>Categoria</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="121"/>
+        <source>Number</source>
+        <translation>Numero</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="132"/>
+        <source>Format</source>
+        <translation>Formato</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="146"/>
+        <source>Other</source>
+        <translation>Altro</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="167"/>
+        <source>Precision</source>
+        <translation>Precisione</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="198"/>
+        <source>Format string</source>
+        <translation>Formmatta stringa</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="212"/>
+        <source>Clear</source>
+        <translation>Pulisci</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="243"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.ui" line="250"/>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="54"/>
+        <location filename="../FldPropertyDlg.cpp" line="93"/>
+        <source>Variables</source>
+        <translation>Variabili</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="55"/>
+        <source>System variables</source>
+        <translation>Variabili di sistema</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="97"/>
+        <location filename="../FldPropertyDlg.cpp" line="219"/>
+        <source>Functions</source>
+        <translation>Funzioni</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="100"/>
+        <source>Aggregate functions</source>
+        <translation>Funzioni di aggregazione</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="135"/>
+        <source>Text functions</source>
+        <translation>Funzioni di testo</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="141"/>
+        <source>English</source>
+        <translation>Inglese</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="148"/>
+        <source>German</source>
+        <translation>Tedesco</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="155"/>
+        <source>Ukrainian</source>
+        <translation>Ucraniano</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="162"/>
+        <source>Spanish</source>
+        <translation>Spagnolo</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="169"/>
+        <source>French</source>
+        <translation>Francese</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="176"/>
+        <source>French(BE)</source>
+        <translation>Francese(BE)</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="183"/>
+        <source>French(CH)</source>
+        <translation>Francese(CH)</translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="191"/>
+        <source>Math functions</source>
+        <translation>Funzioni matematiche</translation>
+    </message>
+</context>
+<context>
+    <name>GraphicsBox</name>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="61"/>
+        <source>New Label</source>
+        <translation type="unfinished">Nuova Label</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="590"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="616"/>
+        <source>Total</source>
+        <translation>Totale</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="926"/>
+        <source>New image</source>
+        <translation>Nuova immagine</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="932"/>
+        <source>New diagram</source>
+        <translation type="unfinished">Nuovo diagramma</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="1008"/>
+        <source>Edit</source>
+        <translation>Modifica</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="1012"/>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="1018"/>
+        <source>Move forward</source>
+        <translation>Sposta sopra</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsBox.cpp" line="1024"/>
+        <source>Move back</source>
+        <translation>Sposta sotto</translation>
+    </message>
+</context>
+<context>
+    <name>GraphicsLine</name>
+    <message>
+        <location filename="../Graphics/GraphicsLine.cpp" line="432"/>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsLine.cpp" line="438"/>
+        <source>Move forward</source>
+        <translation>Sposta sopra</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/GraphicsLine.cpp" line="444"/>
+        <source>Move back</source>
+        <translation>Sposta sotto</translation>
+    </message>
+</context>
+<context>
+    <name>ItemPropertyDlg</name>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="14"/>
+        <source>Object property</source>
+        <translation>Proprietà dell&apos;oggetto</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="44"/>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="78"/>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="105"/>
+        <source>Relation property</source>
+        <translation>Proprietà della relazione</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="128"/>
+        <source>Parent table</source>
+        <translation>Tabella madre</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="145"/>
+        <source>Columns:</source>
+        <translation>Colonne:</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="159"/>
+        <source>reference</source>
+        <translation>riferimento</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="166"/>
+        <source>Child table</source>
+        <translation>Tabella figlia</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="208"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../SQLDiagram/ItemPropertyDlg.ui" line="215"/>
+        <source>Close</source>
+        <translation>Annulla</translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <location filename="../mainwindow.ui" line="14"/>
+        <source>QtRPT Designer</source>
+        <translation>QtRPT Designer</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="152"/>
+        <location filename="../mainwindow.cpp" line="2080"/>
+        <location filename="../mainwindow.cpp" line="2240"/>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="157"/>
+        <source>Value</source>
+        <translation>Valore</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="181"/>
+        <source>File</source>
+        <translation>File</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="195"/>
+        <location filename="../mainwindow.cpp" line="311"/>
+        <source>Report</source>
+        <translation>Report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="201"/>
+        <source>Edit</source>
+        <translation>Modifica</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="212"/>
+        <source>Help</source>
+        <translation>Aiuto</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="220"/>
+        <source>Service</source>
+        <translation>Strumenti</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="275"/>
+        <source>toolBar</source>
+        <translation>Barra degli strumenti</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="313"/>
+        <source>toolBar_2</source>
+        <translation>Barra degli strumenti 2</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="324"/>
+        <source>toolBar_3</source>
+        <translation>Barra degli strumenti 3</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="346"/>
+        <location filename="../mainwindow.ui" line="349"/>
+        <source>Exit</source>
+        <translation>Esci</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="358"/>
+        <source>Page settings</source>
+        <translation>Imposta pagina</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="370"/>
+        <location filename="../mainwindow.ui" line="373"/>
+        <source>Select tool</source>
+        <translation>Strumento di selezione</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="385"/>
+        <location filename="../mainwindow.ui" line="388"/>
+        <source>Align left</source>
+        <translation>Allinea a sinistra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="400"/>
+        <location filename="../mainwindow.ui" line="403"/>
+        <source>Align center</source>
+        <translation>Centra orizzontalmente</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="415"/>
+        <location filename="../mainwindow.ui" line="418"/>
+        <source>Align right</source>
+        <translation>Allinea a destra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="430"/>
+        <location filename="../mainwindow.ui" line="433"/>
+        <location filename="../mainwindow.cpp" line="2105"/>
+        <source>Justify</source>
+        <translation>Giustifica</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="445"/>
+        <location filename="../mainwindow.ui" line="448"/>
+        <location filename="../mainwindow.cpp" line="2261"/>
+        <source>Bold</source>
+        <translation>Grassetto</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="460"/>
+        <location filename="../mainwindow.ui" line="463"/>
+        <location filename="../mainwindow.cpp" line="2271"/>
+        <source>Italic</source>
+        <translation>Corsivo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="475"/>
+        <location filename="../mainwindow.ui" line="478"/>
+        <location filename="../mainwindow.cpp" line="2281"/>
+        <source>Underline</source>
+        <translation>Sottolineato</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="490"/>
+        <location filename="../mainwindow.ui" line="493"/>
+        <source>Top line</source>
+        <translation>Bordo superiore</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="505"/>
+        <location filename="../mainwindow.ui" line="508"/>
+        <source>Bottom line</source>
+        <translation>Bordo inferiore</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="520"/>
+        <location filename="../mainwindow.ui" line="523"/>
+        <source>Left line</source>
+        <translation>Bordo sinistro</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="535"/>
+        <location filename="../mainwindow.ui" line="538"/>
+        <source>Right line</source>
+        <translation>Bordo destro</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="550"/>
+        <location filename="../mainwindow.ui" line="553"/>
+        <source>All frame line</source>
+        <translation>Riquadro</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="565"/>
+        <location filename="../mainwindow.ui" line="568"/>
+        <source>No frame</source>
+        <translation>Nessun bordo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="580"/>
+        <location filename="../mainwindow.ui" line="583"/>
+        <source>Insert band</source>
+        <translation>Inserisci banda</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="598"/>
+        <source>Add Fleld</source>
+        <translation>Aggiungi campo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="601"/>
+        <source>Add field</source>
+        <translation>Aggiungi campo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="610"/>
+        <location filename="../mainwindow.ui" line="613"/>
+        <source>New report</source>
+        <translation>Nuovo report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="622"/>
+        <location filename="../mainwindow.ui" line="625"/>
+        <source>Open report</source>
+        <translation>Apri report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="628"/>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="640"/>
+        <location filename="../mainwindow.ui" line="643"/>
+        <source>Save report</source>
+        <translation>Salva report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="646"/>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="658"/>
+        <location filename="../mainwindow.ui" line="661"/>
+        <source>Align top</source>
+        <translation>Allinea in alto</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="673"/>
+        <location filename="../mainwindow.ui" line="676"/>
+        <source>Align V center</source>
+        <translation>Centra verticalmente</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="688"/>
+        <location filename="../mainwindow.ui" line="691"/>
+        <source>Align bottom</source>
+        <translation>Allinea in basso</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="700"/>
+        <location filename="../mainwindow.ui" line="703"/>
+        <source>Copy</source>
+        <translation>Copia</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="706"/>
+        <source>Ctrl+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="715"/>
+        <location filename="../mainwindow.ui" line="718"/>
+        <source>Cut</source>
+        <translation>Taglia</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="721"/>
+        <source>Ctrl+X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="733"/>
+        <location filename="../mainwindow.ui" line="736"/>
+        <source>Paste</source>
+        <translation>Incolla</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="739"/>
+        <source>Ctrl+V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="748"/>
+        <location filename="../mainwindow.ui" line="751"/>
+        <source>Save as</source>
+        <translation>Salva come</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="760"/>
+        <location filename="../mainwindow.ui" line="763"/>
+        <source>Font color</source>
+        <translation>Colore carattere</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="772"/>
+        <location filename="../mainwindow.ui" line="775"/>
+        <source>Background color</source>
+        <translation>Sfondo carattere</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="784"/>
+        <location filename="../mainwindow.ui" line="787"/>
+        <source>Border color</source>
+        <translation>Colore bordo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="796"/>
+        <source>About QtRptDesigner</source>
+        <translation>Informazioni su QtRptDesigner</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="808"/>
+        <source>Show Grid</source>
+        <translation>Mostra Griglia</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="811"/>
+        <source>Show/Hide grid</source>
+        <translation>Mostra/Nascondi griglia</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="826"/>
+        <source>Add picture</source>
+        <translation>Aggiungi immagine</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="835"/>
+        <location filename="../mainwindow.ui" line="838"/>
+        <source>Frame style</source>
+        <translation>Stile bordo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="847"/>
+        <location filename="../mainwindow.ui" line="850"/>
+        <source>New Report Page</source>
+        <translation>Nuova Pagina di Report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="859"/>
+        <location filename="../mainwindow.ui" line="862"/>
+        <source>Delete Report Page</source>
+        <translation>Elimina Pagina del Report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="871"/>
+        <location filename="../mainwindow.ui" line="874"/>
+        <source>Align Field Left</source>
+        <translation>Allinea Campo a Sinistra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="883"/>
+        <location filename="../mainwindow.ui" line="886"/>
+        <source>Align Field Middle</source>
+        <translation>Centra Campo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="895"/>
+        <location filename="../mainwindow.ui" line="898"/>
+        <source>Align Field Right</source>
+        <translation>Allinea Campo a Destra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="907"/>
+        <location filename="../mainwindow.ui" line="910"/>
+        <source>Align Field Top</source>
+        <translation>Allinea Campo in Alto</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="919"/>
+        <location filename="../mainwindow.ui" line="922"/>
+        <source>Align Field Center</source>
+        <translation>Centra Campo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="931"/>
+        <location filename="../mainwindow.ui" line="934"/>
+        <source>Align Field Bottom</source>
+        <translation>Allinea Campo in Basso</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="943"/>
+        <location filename="../mainwindow.ui" line="946"/>
+        <source>Field Same Width</source>
+        <translation>Campi alla Stessa Larghezza</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="955"/>
+        <location filename="../mainwindow.ui" line="958"/>
+        <source>Field Same Height</source>
+        <translation>Campi alla Stessa Altezza</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="967"/>
+        <location filename="../mainwindow.ui" line="970"/>
+        <source>Settings</source>
+        <translation>Impostazioni</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="982"/>
+        <location filename="../mainwindow.ui" line="985"/>
+        <source>Magnifying glass</source>
+        <translation>Lente d&apos;ingrandimento</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="997"/>
+        <location filename="../mainwindow.ui" line="1000"/>
+        <location filename="../mainwindow.cpp" line="2291"/>
+        <source>Strikeout</source>
+        <translation>Barrato</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1009"/>
+        <location filename="../mainwindow.ui" line="1012"/>
+        <source>Group property</source>
+        <translation>Proprietà del gruppo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1021"/>
+        <location filename="../mainwindow.ui" line="1024"/>
+        <source>Check updates</source>
+        <translation>Verifica aggiornamenti</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1039"/>
+        <location filename="../mainwindow.ui" line="1042"/>
+        <source>Add Diagram</source>
+        <translation>Aggiungi Diagramma</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1057"/>
+        <location filename="../mainwindow.ui" line="1060"/>
+        <source>Add Drawing</source>
+        <translation>Aggiungi Disegno</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1072"/>
+        <location filename="../mainwindow.ui" line="1075"/>
+        <source>Preview</source>
+        <translation>Anteprima</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1087"/>
+        <location filename="../mainwindow.ui" line="1090"/>
+        <source>Data Source</source>
+        <translation>Fonte dei dati</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1102"/>
+        <location filename="../mainwindow.ui" line="1105"/>
+        <source>Undo</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1108"/>
+        <source>Ctrl+Z</source>
+        <translation type="unfinished">Ctrl+Z</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1120"/>
+        <location filename="../mainwindow.ui" line="1123"/>
+        <source>Redo</source>
+        <translation>Ripristina</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1126"/>
+        <source>Ctrl+Y</source>
+        <translation type="unfinished">Ctrl+Y</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1141"/>
+        <location filename="../mainwindow.ui" line="1144"/>
+        <source>Add Barcode</source>
+        <translation>Aggiungi codice a barre</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1153"/>
+        <location filename="../mainwindow.ui" line="1156"/>
+        <source>Readme</source>
+        <translation>Readme</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1171"/>
+        <location filename="../mainwindow.ui" line="1174"/>
+        <source>Add Rich Text</source>
+        <translation>Aggiungi &quot;Rich Text&quot;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1183"/>
+        <location filename="../mainwindow.ui" line="1186"/>
+        <source>To group</source>
+        <translation>Raggruppa</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1195"/>
+        <location filename="../mainwindow.ui" line="1198"/>
+        <source>To ungroup</source>
+        <translation>Dividi</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1213"/>
+        <location filename="../mainwindow.ui" line="1216"/>
+        <source>Add CrossTab object</source>
+        <translation>Aggiungi oggetto CrossTab</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1231"/>
+        <location filename="../mainwindow.ui" line="1234"/>
+        <source>Add CrossTabBD object</source>
+        <translation>Aggiungi oggetto CrossTabBD</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="238"/>
+        <source>Font name</source>
+        <translation>Nome carattere</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="241"/>
+        <source>Font size</source>
+        <translation>Dimensione carattere</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="266"/>
+        <source>Zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="280"/>
+        <source>Frame width</source>
+        <translation>Spessore Bordo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="420"/>
+        <source>Report Title</source>
+        <translation>Titolo Report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="426"/>
+        <source>Report Summary</source>
+        <translation>Resoconto del Report</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="432"/>
+        <source>Page Header</source>
+        <translation>Intestazione di Pagina</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="438"/>
+        <source>Page Footer</source>
+        <translation>Piè di Pagina</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="444"/>
+        <source>Master Data</source>
+        <translation>Master Data</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="450"/>
+        <source>Data Grouping Header</source>
+        <translation>Intestazione Dati Raggruppati</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="457"/>
+        <source>Data Grouping Footer</source>
+        <translation>Piè Dati Raggruppati</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="464"/>
+        <source>Master Header</source>
+        <translation>Intestazione Principale</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="470"/>
+        <source>Master Footer</source>
+        <translation>Piè Principale</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="495"/>
+        <source>Line</source>
+        <translation>Linea</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="501"/>
+        <source>Line with arrow at the end</source>
+        <translation>Linea con freccia finale</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="507"/>
+        <source>Line with arrow at the start</source>
+        <translation>Linea con freccia iniziale</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="513"/>
+        <source>Line with arrows at both side</source>
+        <translation>Linea con doppia freccia</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="519"/>
+        <source>Rectangle</source>
+        <translation>Rettangolo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="525"/>
+        <source>Rounded rectangle</source>
+        <translation>Rettangolo Arrotondato</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="531"/>
+        <source>Ellipse</source>
+        <translation>Ellisse</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="537"/>
+        <source>Triangle</source>
+        <translation>Triangolo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="543"/>
+        <source>Rhombus</source>
+        <translation>Rombo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="645"/>
+        <source>&amp;%1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="813"/>
+        <location filename="../mainwindow.cpp" line="1081"/>
+        <source>Page %1</source>
+        <translation>Pagina %1</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1008"/>
+        <location filename="../mainwindow.cpp" line="1020"/>
+        <location filename="../mainwindow.cpp" line="1772"/>
+        <location filename="../mainwindow.cpp" line="2601"/>
+        <source>Saving</source>
+        <translation>Salvataggio</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1008"/>
+        <location filename="../mainwindow.cpp" line="1020"/>
+        <location filename="../mainwindow.cpp" line="1772"/>
+        <location filename="../mainwindow.cpp" line="2601"/>
+        <source>The report was changed.
+Save the report?</source>
+        <translation>Il report è stato modificato.
+Salvarlo?</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1035"/>
+        <source>Select File</source>
+        <translation>Seleziona file</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1262"/>
+        <source>Going to make undo: </source>
+        <translation>Annullando:</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1269"/>
+        <source>Going to make redo: </source>
+        <translation>Ripristinando:</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1453"/>
+        <source>Save File</source>
+        <translation>Salva File</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1453"/>
+        <source>XML Files (*.xml)</source>
+        <translation>Files XML (*.xml)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1467"/>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1694"/>
+        <source>Font</source>
+        <translation>Carattere</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1702"/>
+        <source>Frame</source>
+        <translation>Bordo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2086"/>
+        <source>Aligment hor</source>
+        <translation>Allineamento orz.</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2090"/>
+        <location filename="../mainwindow.cpp" line="2149"/>
+        <location filename="../mainwindow.cpp" line="2176"/>
+        <source>Left</source>
+        <translation>Sinistra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2095"/>
+        <location filename="../mainwindow.cpp" line="2123"/>
+        <source>Center</source>
+        <translation>Centro</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2100"/>
+        <location filename="../mainwindow.cpp" line="2186"/>
+        <source>Right</source>
+        <translation>Destra</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2114"/>
+        <source>Aligment ver</source>
+        <translation>Allineamento vrt.</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2118"/>
+        <location filename="../mainwindow.cpp" line="2161"/>
+        <location filename="../mainwindow.cpp" line="2196"/>
+        <source>Top</source>
+        <translation>Superiore</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2128"/>
+        <location filename="../mainwindow.cpp" line="2206"/>
+        <source>Bottom</source>
+        <translation>Inferiore</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2137"/>
+        <source>Height</source>
+        <translation>Altezza</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2143"/>
+        <source>Width</source>
+        <translation>Larghezza</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2155"/>
+        <source>Length</source>
+        <translation>Lunghezza</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2230"/>
+        <source>FrameWidth</source>
+        <translation>Spessore Bordo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2250"/>
+        <source>Size</source>
+        <translation>Dimensione</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2298"/>
+        <source>Printing</source>
+        <translation>Stampa</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2304"/>
+        <source>Start New Numeration</source>
+        <translation>Inizia Nuova Numerazione</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2310"/>
+        <source>Show In Group</source>
+        <translation>Mostra Raggruppati</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2316"/>
+        <source>Start New Page</source>
+        <translation>Inizia Nuova Pagina</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2322"/>
+        <source>AutoHeight</source>
+        <translation>Auto-Altezza</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2328"/>
+        <source>IgnoreRatioAspect</source>
+        <translation>Ignora Proporzioni</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2334"/>
+        <source>ArrowStart</source>
+        <translation>Freccia Iniziale</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2340"/>
+        <source>ArrowEnd</source>
+        <translation>Freccia Finale</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2346"/>
+        <source>TextWrap</source>
+        <translation>Adatta al Contenuto</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2352"/>
+        <source>BackgroundColor</source>
+        <translation>Colore Sfondo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2358"/>
+        <source>BorderColor</source>
+        <translation>Colore Bordo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2367"/>
+        <source>FontColor</source>
+        <translation>Colore Carattere</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2373"/>
+        <source>BarcodeType</source>
+        <translation>Tipo Codice A Barre</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2379"/>
+        <source>BarcodeFrameType</source>
+        <translation>Bordo Codice a Barre</translation>
+    </message>
+    <message>
+        <source>Report title</source>
+        <translation type="vanished">Titolo Report</translation>
+    </message>
+    <message>
+        <source>Report summary</source>
+        <translation type="vanished">Sommario Report</translation>
+    </message>
+    <message>
+        <source>Page header</source>
+        <translation type="vanished">Intestazione</translation>
+    </message>
+    <message>
+        <source>Page footer</source>
+        <translation type="vanished">Piè de pagina</translation>
+    </message>
+    <message>
+        <source>Master data</source>
+        <translation type="vanished">Master Data</translation>
+    </message>
+    <message>
+        <source>Data Group Header</source>
+        <translation type="vanished">Intestazione Gruppo</translation>
+    </message>
+    <message>
+        <source>Data Group Footer</source>
+        <translation type="vanished">Piè di Gruppo</translation>
+    </message>
+    <message>
+        <source>This object %1 can&apos;t be a parent for %2</source>
+        <translation type="vanished">L&apos;oggetto %1 non può essere genitore di %2</translation>
+    </message>
+</context>
+<context>
+    <name>PageSettingDlg</name>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="32"/>
+        <source>Page settings</source>
+        <translation>Imposta Pagina</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="42"/>
+        <source>Size</source>
+        <translation>Dimensioni</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="51"/>
+        <source>A3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="56"/>
+        <source>A4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="61"/>
+        <source>A5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="66"/>
+        <source>Letter</source>
+        <translation type="unfinished">Lettera</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="74"/>
+        <source>Width</source>
+        <translation>Larghezza</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="84"/>
+        <location filename="../PageSettingDlg.ui" line="101"/>
+        <location filename="../PageSettingDlg.ui" line="189"/>
+        <location filename="../PageSettingDlg.ui" line="209"/>
+        <location filename="../PageSettingDlg.ui" line="243"/>
+        <location filename="../PageSettingDlg.ui" line="250"/>
+        <source>cm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="91"/>
+        <source>Height</source>
+        <translation>Altezza</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="138"/>
+        <source>Orientation</source>
+        <translation>Orientazione</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="146"/>
+        <source>Portrait</source>
+        <translation>Verticale</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="166"/>
+        <source>Landscape</source>
+        <translation>Orizzontale</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="178"/>
+        <source>Margins</source>
+        <translation>Margini</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="216"/>
+        <source>Left</source>
+        <translation>Sinistra</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="223"/>
+        <source>Right</source>
+        <translation>Destra</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="257"/>
+        <source>Top</source>
+        <translation>Superiore</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="272"/>
+        <source>Page border</source>
+        <translation>Bordo della pagina</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="236"/>
+        <source>Bottom</source>
+        <translation>Inferiore</translation>
+    </message>
+    <message>
+        <source>Page&apos;s border</source>
+        <translation type="vanished">Bordo della pagina</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="280"/>
+        <source>Draw border</source>
+        <translation>Disegna Bordo</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="287"/>
+        <source>Border color</source>
+        <translation>Colore Bordo</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="310"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="317"/>
+        <source>Border width</source>
+        <translation>Spssore Bordo</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="327"/>
+        <source>Border style</source>
+        <translation>Stile Bordo</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="364"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.ui" line="371"/>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.cpp" line="57"/>
+        <source>Cm</source>
+        <translation>Cm</translation>
+    </message>
+    <message>
+        <location filename="../PageSettingDlg.cpp" line="60"/>
+        <source>Inch</source>
+        <translation>Inch</translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../main.cpp" line="29"/>
+        <source>QtRptDesigner</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Changing Container&apos;s geometry</source>
+        <translation type="vanished">Cambia Geometria del Contenitore</translation>
+    </message>
+    <message>
+        <source>Adding Container</source>
+        <translation type="vanished">Aggiungi Contenitore</translation>
+    </message>
+    <message>
+        <source>Deleting Container</source>
+        <translation type="vanished">Elimina Contenitore</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="30"/>
+        <source>Moving box</source>
+        <translation>Sposta Contenitore</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="53"/>
+        <source>Moving line</source>
+        <translation>Muovi Linea</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="93"/>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="131"/>
+        <source>Add</source>
+        <translation>Aggiungi</translation>
+    </message>
+    <message>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="163"/>
+        <source>Changing Container&apos;s parameters</source>
+        <translation>Cambia Parametri Contenitore</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/RptCrossTabObject.cpp" line="36"/>
+        <source>Total</source>
+        <translation>Totale</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/RptCrossTabObject.cpp" line="265"/>
+        <source>R-Total</source>
+        <translation>R-Totale</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="44"/>
+        <source>Report title</source>
+        <translation>Titolo Report</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="49"/>
+        <source>Report summary</source>
+        <translation>Sommario Report</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="54"/>
+        <source>Page header</source>
+        <translation>Intestazione Pagina</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="59"/>
+        <source>Page footer</source>
+        <translation>Piè di pagina</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="64"/>
+        <source>Master band</source>
+        <translation>Banda Principale</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="69"/>
+        <source>Master footer</source>
+        <translation>Piè Principale</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="74"/>
+        <source>Master header</source>
+        <translation>Intestazione Principale</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="79"/>
+        <source>Data Group Header</source>
+        <translation>Intestazione Gruppo</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="84"/>
+        <source>Data Group Footer</source>
+        <translation>Piè di Gruppo</translation>
+    </message>
+</context>
+<context>
+    <name>QTextEditEx</name>
+    <message>
+        <source>Cut</source>
+        <translation type="vanished">Taglia</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="vanished">Copia</translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="vanished">Incolla</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="vanished">Grassetto</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="vanished">Corsivo</translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation type="vanished">Sottolineato</translation>
+    </message>
+    <message>
+        <source>Align left</source>
+        <translation type="vanished">Allinea a Sinistra</translation>
+    </message>
+    <message>
+        <source>Align center</source>
+        <translation type="vanished">Centra</translation>
+    </message>
+    <message>
+        <source>Align right</source>
+        <translation type="vanished">Allinea a Destra</translation>
+    </message>
+    <message>
+        <source>Align jusify</source>
+        <translation type="vanished">Giustifica</translation>
+    </message>
+    <message>
+        <source>List</source>
+        <translation type="vanished">Elenco</translation>
+    </message>
+    <message>
+        <source>Font color</source>
+        <translation type="vanished">Colore Carattere</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation type="vanished">Carattere</translation>
+    </message>
+    <message>
+        <source>Font size</source>
+        <translation type="vanished">Dimensione Carattere</translation>
+    </message>
+    <message>
+        <source>TextDirection</source>
+        <translation type="vanished">Direzione Testo</translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation type="vanished">Standard</translation>
+    </message>
+    <message>
+        <source>Bullet List (Disc)</source>
+        <translation type="vanished">Lista Puntata(Disco)</translation>
+    </message>
+    <message>
+        <source>Bullet List (Circle)</source>
+        <translation type="vanished">Lista Puntata (Cerchio)</translation>
+    </message>
+    <message>
+        <source>Bullet List (Square)</source>
+        <translation type="vanished">Lista Puntata (Quadrato)</translation>
+    </message>
+    <message>
+        <source>Ordered List (Decimal)</source>
+        <translation type="vanished">Lista Ordinata (Decimali)</translation>
+    </message>
+    <message>
+        <source>Ordered List (Alpha lower)</source>
+        <translation type="vanished">Lista Ordinata (Lettere Minuscole)</translation>
+    </message>
+    <message>
+        <source>Ordered List (Alpha upper)</source>
+        <translation type="vanished">Lista Ordinata (Lettere Maiuscole)</translation>
+    </message>
+</context>
+<context>
+    <name>QtRPT</name>
+    <message>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1515"/>
+        <source>Save as PDF</source>
+        <translation>Salva in PDF</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1520"/>
+        <source>Save as HTML</source>
+        <translation>Salva in HTML</translation>
+    </message>
+    <message>
+        <source>Save as ODT</source>
+        <translation type="vanished">Salva come ODT</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1526"/>
+        <source>Save as XLSX</source>
+        <translation>Salva come XLSX</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1547"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1552"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1557"/>
+        <source>Save File</source>
+        <translation>Salva File</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1547"/>
+        <source>PDF Files (*.pdf)</source>
+        <translation>Files PDF (*.pdf)</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1552"/>
+        <source>HTML Files (*.html)</source>
+        <translation>Files HTML (*.html)</translation>
+    </message>
+    <message>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1557"/>
+        <source>XLSX Files (*.xlsx)</source>
+        <translation>Files XLSX (*.xlsx)</translation>
+    </message>
+    <message>
+        <source>ODT Files (*.odt)</source>
+        <translation type="vanished">Files ODT (*.odt)</translation>
+    </message>
+</context>
+<context>
+    <name>RepScrollArea</name>
+    <message>
+        <location filename="../RepScrollArea.cpp" line="114"/>
+        <source>%</source>
+        <translation>%</translation>
+    </message>
+</context>
+<context>
+    <name>ReportBand</name>
+    <message>
+        <source>Report title</source>
+        <translation type="vanished">Titolo Report</translation>
+    </message>
+    <message>
+        <source>Report summary</source>
+        <translation type="vanished">Sommario Report</translation>
+    </message>
+    <message>
+        <source>Page header</source>
+        <translation type="vanished">Intestazione di Pagina</translation>
+    </message>
+    <message>
+        <source>Page footer</source>
+        <translation type="vanished">Piè di pagina</translation>
+    </message>
+    <message>
+        <source>Master band</source>
+        <translation type="vanished">Banda Principale</translation>
+    </message>
+    <message>
+        <source>Master footer</source>
+        <translation type="vanished">Piè Principale</translation>
+    </message>
+    <message>
+        <source>Master header</source>
+        <translation type="vanished">Intestazione Principale</translation>
+    </message>
+    <message>
+        <source>Data Group Header</source>
+        <translation type="vanished">Intestazione Gruppo</translation>
+    </message>
+    <message>
+        <source>Data Group Footer</source>
+        <translation type="vanished">Piè di Gruppo</translation>
+    </message>
+    <message>
+        <location filename="../ReportBand.cpp" line="91"/>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+</context>
+<context>
+    <name>SettingDlg</name>
+    <message>
+        <location filename="../SettingDlg.ui" line="14"/>
+        <source>Settings</source>
+        <translation>Impostazioni</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="24"/>
+        <source>Grid</source>
+        <translation>Griglia</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="32"/>
+        <source>Measurement&apos;s unit</source>
+        <translation>Unità di Misura</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="42"/>
+        <source>Cm</source>
+        <translation>Cm</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="55"/>
+        <source>Inch</source>
+        <translation>Inch</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="66"/>
+        <source>Grid&apos;s step</source>
+        <translation>Dimensione Griglia</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="85"/>
+        <source>Show grid</source>
+        <translation>Mostra Griglia</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="95"/>
+        <source>Internationalization</source>
+        <translation>Internazionalizazione</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="103"/>
+        <source>Language:</source>
+        <translation>Lingua:</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="111"/>
+        <source>System Default</source>
+        <translation>Del Sistema</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="116"/>
+        <source>Arabic عربي</source>
+        <translation>Arabo عربي</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="121"/>
+        <source>American English</source>
+        <translation>Inglese Americano</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="126"/>
+        <source>Chinese</source>
+        <translation>Cinese</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="131"/>
+        <source>Dutch</source>
+        <translation>Olandese</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="136"/>
+        <source>French</source>
+        <translation>Francese</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="141"/>
+        <source>Georgian ქართული</source>
+        <translation>Georgiano ქართული</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="146"/>
+        <source>German</source>
+        <translation>Tedesco</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="151"/>
+        <source>Portuguese</source>
+        <translation>Portoghese</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="156"/>
+        <source>Russian Русский</source>
+        <translation>Russo Русский</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="161"/>
+        <source>Serbian</source>
+        <translation>Serbo</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="166"/>
+        <source>Serbian Latin</source>
+        <translation>Serbo Latino</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="171"/>
+        <source>Spanish</source>
+        <translation>Spagnolo</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="176"/>
+        <source>Tamil தமிழ்</source>
+        <translation>Tamil</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="181"/>
+        <source>Ukraine Український</source>
+        <translation>Ucraino Український</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="194"/>
+        <source>Check updates during start application</source>
+        <translation>Controlla all&apos;avvio dell&apos;applicazione</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="216"/>
+        <source>Save</source>
+        <translation>Salva</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="223"/>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.cpp" line="155"/>
+        <source>Message QtRptDesigner</source>
+        <translation>Messaggio QtRptDesigner</translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.cpp" line="155"/>
+        <source>The language for this application has been changed.
+The change will take effect the next time the application is started.
+Restart application?</source>
+        <translation>La lingua dell&apos;applicazione è stata cambiata.
+Il cambiamento avrà effetto al prossimo avvio dell'&apos;applicazione.
+Riavviarla ora?</translation>
+    </message>
+</context>
+<context>
+    <name>SqlDesigner</name>
+    <message>
+        <location filename="../SqlDesigner.ui" line="34"/>
+        <source>Custom DS</source>
+        <translation>DS Personalizzato</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="44"/>
+        <source>SQL DS</source>
+        <translation>DS con SQL</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="51"/>
+        <source>XML DS</source>
+        <translation>DS con XML</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="88"/>
+        <source>Close</source>
+        <translation>Chiudi</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="105"/>
+        <source>Connection&apos;s parameters</source>
+        <translation>Parametri di Connesione</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="114"/>
+        <source>Driver</source>
+        <translation>Driver</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="121"/>
+        <location filename="../SqlDesigner.ui" line="189"/>
+        <source>UTF8</source>
+        <translation>UTF8</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="134"/>
+        <source>Charset coding</source>
+        <translation>Codifica</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="144"/>
+        <source>Password</source>
+        <translation>Password</translation>
+    </message>
+    <message>
+        <source>QSQLITE</source>
+        <translation type="vanished">QSQLITE</translation>
+    </message>
+    <message>
+        <source>QMYSQL</source>
+        <translation type="vanished">QMYSQL</translation>
+    </message>
+    <message>
+        <source>QMYSQL3</source>
+        <translation type="vanished">QMYSQL3</translation>
+    </message>
+    <message>
+        <source>QODBC</source>
+        <translation type="vanished">QODBC</translation>
+    </message>
+    <message>
+        <source>QODBC3</source>
+        <translation type="vanished">QODBC3</translation>
+    </message>
+    <message>
+        <source>QPSQL</source>
+        <translation type="vanished">QPSQL</translation>
+    </message>
+    <message>
+        <source>QPSQL7</source>
+        <translation type="vanished">QPSQL7</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="154"/>
+        <source>Check</source>
+        <translation>Verifica</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="161"/>
+        <source>Connection</source>
+        <translation>Connessione</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="168"/>
+        <source>User name</source>
+        <translation>Nome Utente</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="175"/>
+        <source>Connection coding</source>
+        <translation>Codifica Connessione</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="182"/>
+        <source>Host name</source>
+        <translation>HostName</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="196"/>
+        <source>DB name</source>
+        <translation>Nome Database</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="203"/>
+        <source>Connection name</source>
+        <translation>Nome Connessione</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="210"/>
+        <source>Port</source>
+        <translation>Porta</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="288"/>
+        <source>SQL query</source>
+        <translation>Query SQL</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="324"/>
+        <source>Select XML</source>
+        <translation>Select XML</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="388"/>
+        <source>Field name</source>
+        <translation>Nome Campo</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="393"/>
+        <source>Description</source>
+        <translation>Descrizione</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="404"/>
+        <source>Preview data</source>
+        <translation>Anteprima Dati</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="441"/>
+        <location filename="../SqlDesigner.ui" line="444"/>
+        <source>Clear diagram</source>
+        <translation>Pulisci Diagramma</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="459"/>
+        <location filename="../SqlDesigner.ui" line="462"/>
+        <source>Select</source>
+        <translation>Seleziona</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="471"/>
+        <location filename="../SqlDesigner.ui" line="474"/>
+        <source>Redo</source>
+        <translation>Ripristina</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="477"/>
+        <source>Ctrl+Y</source>
+        <translation>Ctrl+Y</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="486"/>
+        <location filename="../SqlDesigner.ui" line="489"/>
+        <source>Undo</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="492"/>
+        <source>Ctrl+Z</source>
+        <translation>Ctrl+Z</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="504"/>
+        <location filename="../SqlDesigner.ui" line="507"/>
+        <source>Add relationship</source>
+        <translation>Aggiungi Relazione</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="516"/>
+        <location filename="../SqlDesigner.ui" line="519"/>
+        <source>Delete</source>
+        <translation>Elimina</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.ui" line="522"/>
+        <source>Del</source>
+        <translation>Canc</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.cpp" line="85"/>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.cpp" line="88"/>
+        <source>Info</source>
+        <translation>Info</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.cpp" line="88"/>
+        <source>Connected</source>
+        <translation>Connesso</translation>
+    </message>
+    <message>
+        <location filename="../SqlDesigner.cpp" line="156"/>
+        <source>Select File</source>
+        <translation>Seleziona File</translation>
+    </message>
+</context>
+<context>
+    <name>TContainerField</name>
+    <message>
+        <source>New Label</source>
+        <translation type="vanished">Nuova Etichetta</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="vanished">Modifica</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="vanished">Elimina</translation>
+    </message>
+    <message>
+        <source>Move forward</source>
+        <translation type="vanished">Sposta Davanti</translation>
+    </message>
+    <message>
+        <source>Move back</source>
+        <translation type="vanished">Sposta Dietro</translation>
+    </message>
+    <message>
+        <source>New image</source>
+        <translation type="vanished">Nuova Immagine</translation>
+    </message>
+    <message>
+        <source>New diagram</source>
+        <translation type="vanished">Nuovo Diagramma</translation>
+    </message>
+</context>
+<context>
+    <name>TContainerLine</name>
+    <message>
+        <source>Delete</source>
+        <translation type="vanished">Elimina</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateDlg</name>
+    <message>
+        <source>Updating</source>
+        <translation type="vanished">Aggionamento</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="vanished">Progresso</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation type="vanished">Aggiorna</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Annulla</translation>
+    </message>
+    <message>
+        <source>Open Directory</source>
+        <translation type="vanished">Apri Cartella</translation>
+    </message>
+    <message>
+        <source>Downloading %0. ..</source>
+        <translation type="vanished">Scaricamento in corso %0</translation>
+    </message>
+</context>
+<context>
+    <name>XYZTextEditor</name>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="43"/>
+        <source>Cut</source>
+        <translation type="unfinished">Taglia</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="46"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="63"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="80"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="113"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="133"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="153"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="189"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="209"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="229"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="249"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="308"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="60"/>
+        <source>Copy</source>
+        <translation>Copia</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="77"/>
+        <source>Paste</source>
+        <translation>Incolla</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="110"/>
+        <source>Bold</source>
+        <translation>Grassetto</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="130"/>
+        <source>Italic</source>
+        <translation>Corsivo</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="150"/>
+        <source>Underline</source>
+        <translation>Sottilineato</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="186"/>
+        <source>Align left</source>
+        <translation>Allinea a Sinistra</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="206"/>
+        <source>Align center</source>
+        <translation>Centra</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="226"/>
+        <source>Align right</source>
+        <translation>Allinea a Destra</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="246"/>
+        <source>Align jusify</source>
+        <translation>Giustifica</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="282"/>
+        <source>List</source>
+        <translation>Elenca</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="305"/>
+        <source>Font color</source>
+        <translation>Colore Carattere</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="322"/>
+        <source>Font</source>
+        <translation>Carattere</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="332"/>
+        <source>Font size</source>
+        <translation>Dimensioni Caratteri</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="438"/>
+        <source>TextDirection</source>
+        <translation>Direzione Testo</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.ui" line="441"/>
+        <source>&lt;-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="93"/>
+        <source>Standard</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="94"/>
+        <source>Bullet List (Disc)</source>
+        <translation>Elenco Puntato (Disco)</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="95"/>
+        <source>Bullet List (Circle)</source>
+        <translation>Elenco Puntato (Cerchio)</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="96"/>
+        <source>Bullet List (Square)</source>
+        <translation>Elenco Puntato (Quadrato)</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="97"/>
+        <source>Ordered List (Decimal)</source>
+        <translation>Lista Ordinata (Decimale)</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="98"/>
+        <source>Ordered List (Alpha lower)</source>
+        <translation>Lista Ordinata (Lettere Minuscole)</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="99"/>
+        <source>Ordered List (Alpha upper)</source>
+        <translation>Lista Ordinata (Lettere Maiuscole)</translation>
+    </message>
+</context>
+<context>
+    <name>XYZUpdateDlg</name>
+    <message>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.ui" line="14"/>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.ui" line="38"/>
+        <source>Updating</source>
+        <translation type="unfinished">Aggiornamento</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.ui" line="33"/>
+        <source>Progress</source>
+        <translation type="unfinished">Progresso</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.ui" line="82"/>
+        <source>Update</source>
+        <translation type="unfinished">Aggiorna</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.ui" line="89"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annulla</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="51"/>
+        <source>Open Directory</source>
+        <translation type="unfinished">Apri Cartella</translation>
+    </message>
+    <message>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="74"/>
+        <source>Downloading %0. ..</source>
+        <translation type="unfinished">Scaricamento in corso %0</translation>
+    </message>
+</context>
+</TS>

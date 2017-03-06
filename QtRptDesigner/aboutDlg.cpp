@@ -65,10 +65,11 @@ AboutDlg::AboutDlg(QWidget *parent)
                   "<li>"+tr("Mirko Marx for German translation")+"</li>"+
                   "<li>"+tr("Manuel Soriano for Spanish translation")+"</li>"+
                   "<li>"+tr("Bagavathikumar for Tamil translation")+"</li>"+
+                  "<li>"+tr("Giulio Macchieraldo for Italian translation")+"</li>"+
                   "</ul>";
     auto lab1 = new QLabel(lbl1, this);
     auto lab2 = new QLabel(lbl2, this);
-    QObject::connect(lab1, QLabel::linkActivated, [=](const QString url) { QDesktopServices::openUrl(QUrl(url)); });
+    QObject::connect(lab1, &QLabel::linkActivated, [=](const QString url) { QDesktopServices::openUrl(QUrl(url)); });
 
     auto hLayout2 = new QHBoxLayout;
     hLayout2->addWidget(labImg);

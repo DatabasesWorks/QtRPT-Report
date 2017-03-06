@@ -6,7 +6,7 @@
 
 QT       += core gui xml network
 
-greaterThan(QT_MAJOR_VERSION, 4){
+greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
     DEFINES += HAVE_QT5
 }
@@ -72,7 +72,8 @@ TRANSLATIONS +=  \
     $$PWD/i18n/QtRprtDesigner_fr_FR.ts \
     $$PWD/i18n/QtRprtDesigner_de_DE.ts \
     $$PWD/i18n/QtRprtDesigner_nl_BE.ts \
-    $$PWD/i18n/QtRprtDesigner_ta_IN.ts
+    $$PWD/i18n/QtRprtDesigner_ta_IN.ts \
+    $$PWD/i18n/QtRprtDesigner_it_IT.ts
 
 OTHER_FILES += $$TRANSLATIONS
 

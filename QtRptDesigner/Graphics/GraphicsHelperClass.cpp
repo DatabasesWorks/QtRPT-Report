@@ -119,7 +119,7 @@ bool GraphicsHelperClass::borderIsCheck(Command command)
     if (command == FrameBottom)
         color = m_borderBottomColor;
 
-    if (color.red() != 255 && color.green() != 255 & color.blue() != 255)
+    if (color.red() != 255 && color.green() != 255 && color.blue() != 255)
         return true;
     else
         return false;

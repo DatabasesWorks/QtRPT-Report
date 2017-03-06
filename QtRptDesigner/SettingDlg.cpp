@@ -39,50 +39,39 @@ SettingDlg::SettingDlg(QWidget *parent)
     settings.beginGroup("language");
 
     QString language = settings.value("language").toString();
-    if (language == "") //default system language
+    if (language == "")  // Default system language
         ui->cmbLanguage->setCurrentIndex(0);
-
     else if (language == "Arabic")
         ui->cmbLanguage->setCurrentIndex(1);
-
-    else if (language == "en_US")//english united states
+    else if (language == "en_US")  // English United states
         ui->cmbLanguage->setCurrentIndex(2);
-
-    else if (language == "zh_CN")//Chinese
+    else if (language == "zh_CN")  // Chinese
         ui->cmbLanguage->setCurrentIndex(3);
-
-    else if (language == "nl_BE")//Dutch
+    else if (language == "nl_BE")  // Dutch
         ui->cmbLanguage->setCurrentIndex(4);
-
-    else if (language == "fr_FR")//French
+    else if (language == "fr_FR")  // French
         ui->cmbLanguage->setCurrentIndex(5);
-
-    else if (language == "ka_GE")//georgian
+    else if (language == "ka_GE")  // Georgian
         ui->cmbLanguage->setCurrentIndex(6);
-
-    else if (language == "de_DE")//german
+    else if (language == "de_DE")  // German
         ui->cmbLanguage->setCurrentIndex(7);
-
-    else if (language == "pt_PT")//portuguese
+    else if (language == "it_IT")  // Italian
         ui->cmbLanguage->setCurrentIndex(8);
-
-    else if (language == "ru_RU")//russian
+    else if (language == "pt_PT")  // Portuguese
         ui->cmbLanguage->setCurrentIndex(9);
-
-    else if (language == "sr_RS")//serbian cyrilic
+    else if (language == "ru_RU")  // russian
         ui->cmbLanguage->setCurrentIndex(10);
-
-    else if (language == "sr_RS@latin")
+    else if (language == "sr_RS")  // serbian cyrilic
         ui->cmbLanguage->setCurrentIndex(11);
-
-    else if (language == "es_ES")
+    else if (language == "sr_RS@latin")
         ui->cmbLanguage->setCurrentIndex(12);
-	
-    else if (language == "ta_IN")
+    else if (language == "es_ES")
         ui->cmbLanguage->setCurrentIndex(13);
-
-    else if (language == "uk_UA")
+    else if (language == "ta_IN")
         ui->cmbLanguage->setCurrentIndex(14);
+    else if (language == "uk_UA")
+        ui->cmbLanguage->setCurrentIndex(15);
+
 
     langIndex = ui->cmbLanguage->currentIndex();
 
@@ -108,49 +97,52 @@ void SettingDlg::showThis()
         settings.beginGroup("language");
         if (ui->cmbLanguage->currentIndex() != langIndex) {
             switch(ui->cmbLanguage->currentIndex()) {
-                case 0://system default
+                case 0:  // system default
                     settings.setValue("language", "");
                     break;
-                case 1://Arabic
+                case 1:  // Arabic
                     settings.setValue("language", "ar");
                     break;
-                case 2://american english
+                case 2:  // American english
                     settings.setValue("language", "en_US");
                     break;
-                case 3://Chinese
+                case 3:  // Chinese
                     settings.setValue("language", "zh_CN");
                     break;
-                case 4://Dutch
+                case 4:  // Dutch
                     settings.setValue("language", "nl_BE");
                     break;
-                case 5://French
+                case 5:  // French
                     settings.setValue("language", "fr_FR");
                     break;
-                case 6://georgian
+                case 6:  // Georgian
                     settings.setValue("language", "ka_GE");
                     break;
-                case 7://german
+                case 7:  // German
                     settings.setValue("language", "de_DE");
                     break;
-                case 8://portuguese
+                case 8:  // Italian
+                    settings.setValue("language", "it_IT");
+                    break;
+                case 9:  // Portuguese
                     settings.setValue("language", "pt_PT");
                     break;
-                case 9://russian
+                case 10:  // russian
                     settings.setValue("language", "ru_RU");
                     break;
-                case 10://serbian
+                case 11:  // serbian
                     settings.setValue("language", "sr_RS");
                     break;
-                case 11://serbian latin
+                case 12:  // serbian latin
                     settings.setValue("language", "sr_RS@latin");
                     break;
-                case 12://spanish
+                case 13:  // Sspanish
                     settings.setValue("language", "es_ES");
                     break;
-                case 13://Tamil
+                case 14:  // Tamil
                     settings.setValue("language", "ta_IN");
                     break;
-                case 14://Ukraine
+                case 15:  // Ukraine
                     settings.setValue("language", "uk_UA");
                     break;
             }
