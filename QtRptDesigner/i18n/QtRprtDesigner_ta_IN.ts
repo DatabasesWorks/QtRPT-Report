@@ -4,98 +4,103 @@
 <context>
     <name>AboutDlg</name>
     <message>
-        <location filename="../aboutDlg.cpp" line="27"/>
+        <location filename="../aboutDlg.cpp" line="29"/>
         <source>About QtRptDesigner</source>
         <translation>QtRptDesigner பற்றி</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="44"/>
+        <location filename="../aboutDlg.cpp" line="46"/>
         <source>Version: </source>
         <translation>பதிப்பு: </translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="45"/>
+        <location filename="../aboutDlg.cpp" line="47"/>
         <source>Programmer: Aleksey Osipov</source>
         <translation>புரோகிராமர்: Aleksey Osipov</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="46"/>
+        <location filename="../aboutDlg.cpp" line="48"/>
         <source>Web Site: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="47"/>
+        <location filename="../aboutDlg.cpp" line="49"/>
         <source>E-mail: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="49"/>
+        <location filename="../aboutDlg.cpp" line="51"/>
         <source>2012-2016 years</source>
         <translation>2012-2016 ஆண்டுகள்</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="50"/>
+        <location filename="../aboutDlg.cpp" line="52"/>
         <source>Thanks for donation:</source>
         <translation>நன்கொடைக்கு நன்றி :</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="52"/>
+        <location filename="../aboutDlg.cpp" line="54"/>
         <source>Sailendram</source>
         <translation>Sailendram</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="54"/>
+        <location filename="../aboutDlg.cpp" line="56"/>
         <source>Thanks for project developing:</source>
         <translation>திட்டத்தை உருவாக்கியதற்கு நன்றி :</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="56"/>
+        <location filename="../aboutDlg.cpp" line="58"/>
         <source>Lukas Lalinsky for DBmodel</source>
         <translation>Lukas Lalinsky for DBmodel</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="57"/>
+        <location filename="../aboutDlg.cpp" line="59"/>
         <source>Norbert Schlia for help in developing</source>
         <translation>Norbert Schlia for help in developing</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="58"/>
+        <location filename="../aboutDlg.cpp" line="60"/>
         <source>Muhamad Bashir Al-Noimi for Arabic translation</source>
         <translation>Muhamad Bashir Al-Noimi for Arabic translation</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="59"/>
+        <location filename="../aboutDlg.cpp" line="61"/>
         <source>Luis Brochado for Portuguese translation</source>
         <translation>Luis Brochado for Portuguese translation</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="60"/>
+        <location filename="../aboutDlg.cpp" line="62"/>
         <source>Li Wei for Chinese translation</source>
         <translation>Li Wei for Chinese translation</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="61"/>
+        <location filename="../aboutDlg.cpp" line="63"/>
         <source>Laurent Guilbert for French translation</source>
         <translation>Laurent Guilbert for French translation</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="62"/>
+        <location filename="../aboutDlg.cpp" line="64"/>
         <source>David Heremans for Dutch translation</source>
         <translation>David Heremans for Dutch translation</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="63"/>
+        <location filename="../aboutDlg.cpp" line="65"/>
         <source>Mirko Marx for German translation</source>
         <translation>Mirko Marx for German translation</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="64"/>
+        <location filename="../aboutDlg.cpp" line="66"/>
         <source>Manuel Soriano for Spanish translation</source>
         <translation>Manuel Soriano for Spanish translation</translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="65"/>
+        <location filename="../aboutDlg.cpp" line="67"/>
         <source>Bagavathikumar for Tamil translation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="68"/>
+        <source>Giulio Macchieraldo for Italian translation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -377,27 +382,30 @@
         <translation>பத்திகள்</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="964"/>
+        <location filename="../EditFldDlg.ui" line="961"/>
+        <source>Row height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="974"/>
         <source>Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="970"/>
         <source>Show row header</source>
-        <translation>வரிசைத் தலைப்பை காட்டு</translation>
+        <translation type="vanished">வரிசைத் தலைப்பை காட்டு</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="977"/>
         <source>Show column header</source>
-        <translation>பத்தி தலைப்பை காண்பி</translation>
+        <translation type="vanished">பத்தி தலைப்பை காண்பி</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="984"/>
+        <location filename="../EditFldDlg.ui" line="980"/>
         <source>Show column Total by row</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="991"/>
+        <location filename="../EditFldDlg.ui" line="987"/>
         <source>Show row Total by column</source>
         <translation type="unfinished"></translation>
     </message>
@@ -410,55 +418,51 @@
         <translation type="vanished">பத்தி மொத்தத்தை காண்பி</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1003"/>
         <source>Row headers</source>
-        <translation>வரிசைத் தலைப்புக்கள்</translation>
+        <translation type="vanished">வரிசைத் தலைப்புக்கள்</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1023"/>
         <source>Row header</source>
-        <translation>வரிசைத் தலைப்பு</translation>
+        <translation type="vanished">வரிசைத் தலைப்பு</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1035"/>
         <source>Column headers</source>
-        <translation>பத்தி தலைப்புகள்</translation>
+        <translation type="vanished">பத்தி தலைப்புகள்</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1055"/>
         <source>Column header</source>
-        <translation>பத்தி தலைப்பு</translation>
+        <translation type="vanished">பத்தி தலைப்பு</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1084"/>
+        <location filename="../EditFldDlg.ui" line="1029"/>
         <source>OK</source>
         <translation>சரி</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1091"/>
+        <location filename="../EditFldDlg.ui" line="1036"/>
         <source>Cancel</source>
         <translation>ரத்து</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="234"/>
-        <location filename="../EditFldDlg.cpp" line="292"/>
+        <location filename="../EditFldDlg.cpp" line="250"/>
+        <location filename="../EditFldDlg.cpp" line="313"/>
         <source>Empty line</source>
         <translation>வெற்று வரி</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="234"/>
-        <location filename="../EditFldDlg.cpp" line="292"/>
+        <location filename="../EditFldDlg.cpp" line="250"/>
+        <location filename="../EditFldDlg.cpp" line="313"/>
         <source>The field contains empty line at the end.
 Remove it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="596"/>
+        <location filename="../EditFldDlg.cpp" line="619"/>
         <source>Save Image As</source>
         <translation>Image ஆக சேமி</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="598"/>
+        <location filename="../EditFldDlg.cpp" line="621"/>
         <source>Images (*.png)</source>
         <translation>படங்கள் (*.png)</translation>
     </message>
@@ -466,33 +470,33 @@ Remove it?</source>
 <context>
     <name>EditorDelegate</name>
     <message>
-        <location filename="../mainwindow.cpp" line="54"/>
+        <location filename="../mainwindow.cpp" line="59"/>
         <source>Left</source>
         <translation>இடப்பக்கம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="55"/>
-        <location filename="../mainwindow.cpp" line="65"/>
+        <location filename="../mainwindow.cpp" line="60"/>
+        <location filename="../mainwindow.cpp" line="70"/>
         <source>Center</source>
         <translation>மையம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="56"/>
+        <location filename="../mainwindow.cpp" line="61"/>
         <source>Right</source>
         <translation>வலப்பக்கம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="57"/>
+        <location filename="../mainwindow.cpp" line="62"/>
         <source>Justify</source>
         <translation>சரிப்படுத்து</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="64"/>
+        <location filename="../mainwindow.cpp" line="69"/>
         <source>Top</source>
         <translation>மேல்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="66"/>
+        <location filename="../mainwindow.cpp" line="71"/>
         <source>Bottom</source>
         <translation>கீழே</translation>
     </message>
@@ -565,69 +569,79 @@ Remove it?</source>
         <translation>ரத்து</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="54"/>
-        <location filename="../FldPropertyDlg.cpp" line="93"/>
+        <location filename="../FldPropertyDlg.cpp" line="58"/>
+        <location filename="../FldPropertyDlg.cpp" line="97"/>
         <source>Variables</source>
         <translation>மாறிகள்</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="55"/>
+        <location filename="../FldPropertyDlg.cpp" line="59"/>
         <source>System variables</source>
         <translation>கணினி மாறிகள்</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="97"/>
-        <location filename="../FldPropertyDlg.cpp" line="219"/>
+        <location filename="../FldPropertyDlg.cpp" line="101"/>
+        <location filename="../FldPropertyDlg.cpp" line="237"/>
         <source>Functions</source>
         <translation>செயல்பாடுகள்</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="100"/>
+        <location filename="../FldPropertyDlg.cpp" line="104"/>
         <source>Aggregate functions</source>
         <translation>மதிப்பீட்டு செயல்பாடுகள்</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="135"/>
+        <location filename="../FldPropertyDlg.cpp" line="139"/>
         <source>Text functions</source>
         <translation>உரை செயல்பாடுகள்</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="141"/>
+        <location filename="../FldPropertyDlg.cpp" line="145"/>
+        <source>To upper case</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="152"/>
+        <source>To lower case</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="159"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="148"/>
+        <location filename="../FldPropertyDlg.cpp" line="166"/>
         <source>German</source>
         <translation>German</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="155"/>
+        <location filename="../FldPropertyDlg.cpp" line="173"/>
         <source>Ukrainian</source>
         <translation>Ukrainian</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="162"/>
+        <location filename="../FldPropertyDlg.cpp" line="180"/>
         <source>Spanish</source>
         <translation>Spanish</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="169"/>
+        <location filename="../FldPropertyDlg.cpp" line="187"/>
         <source>French</source>
         <translation>French</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="176"/>
+        <location filename="../FldPropertyDlg.cpp" line="194"/>
         <source>French(BE)</source>
         <translation>French(BE)</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="183"/>
+        <location filename="../FldPropertyDlg.cpp" line="201"/>
         <source>French(CH)</source>
         <translation>French(CH)</translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="191"/>
+        <location filename="../FldPropertyDlg.cpp" line="209"/>
         <source>Math functions</source>
         <translation>கணித செயல்பாடுகள்</translation>
     </message>
@@ -635,43 +649,41 @@ Remove it?</source>
 <context>
     <name>GraphicsBox</name>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="61"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="58"/>
         <source>New Label</source>
         <translation type="unfinished">புதிய லேபிள்</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="590"/>
-        <location filename="../Graphics/GraphicsBox.cpp" line="616"/>
         <source>Total</source>
-        <translation type="unfinished">மொத்தம்</translation>
+        <translation type="obsolete">மொத்தம்</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="926"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="885"/>
         <source>New image</source>
         <translation type="unfinished">புதிய படம்</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="932"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="891"/>
         <source>New diagram</source>
         <translation type="unfinished">புதிய வரைபடம்</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="1008"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="956"/>
         <source>Edit</source>
         <translation type="unfinished">தொகு</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="1012"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="960"/>
         <source>Delete</source>
         <translation type="unfinished">நீக்கு</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="1018"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="966"/>
         <source>Move forward</source>
         <translation type="unfinished">முன்னோக்கி நகர்</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="1024"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="972"/>
         <source>Move back</source>
         <translation type="unfinished">பின்னோக்கி நகர்</translation>
     </message>
@@ -679,17 +691,17 @@ Remove it?</source>
 <context>
     <name>GraphicsLine</name>
     <message>
-        <location filename="../Graphics/GraphicsLine.cpp" line="432"/>
+        <location filename="../Graphics/GraphicsLine.cpp" line="434"/>
         <source>Delete</source>
         <translation type="unfinished">நீக்கு</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsLine.cpp" line="438"/>
+        <location filename="../Graphics/GraphicsLine.cpp" line="440"/>
         <source>Move forward</source>
         <translation type="unfinished">முன்னோக்கி நகர்</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsLine.cpp" line="444"/>
+        <location filename="../Graphics/GraphicsLine.cpp" line="446"/>
         <source>Move back</source>
         <translation type="unfinished">பின்னோக்கி நகர்</translation>
     </message>
@@ -752,8 +764,8 @@ Remove it?</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="152"/>
-        <location filename="../mainwindow.cpp" line="2080"/>
-        <location filename="../mainwindow.cpp" line="2240"/>
+        <location filename="../mainwindow.cpp" line="2050"/>
+        <location filename="../mainwindow.cpp" line="2210"/>
         <source>Name</source>
         <translation>பெயர்</translation>
     </message>
@@ -769,7 +781,7 @@ Remove it?</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="195"/>
-        <location filename="../mainwindow.cpp" line="311"/>
+        <location filename="../mainwindow.cpp" line="324"/>
         <source>Report</source>
         <translation>அறிக்கை</translation>
     </message>
@@ -841,28 +853,28 @@ Remove it?</source>
     <message>
         <location filename="../mainwindow.ui" line="430"/>
         <location filename="../mainwindow.ui" line="433"/>
-        <location filename="../mainwindow.cpp" line="2105"/>
+        <location filename="../mainwindow.cpp" line="2075"/>
         <source>Justify</source>
         <translation>சரிப்படுத்து</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="445"/>
         <location filename="../mainwindow.ui" line="448"/>
-        <location filename="../mainwindow.cpp" line="2261"/>
+        <location filename="../mainwindow.cpp" line="2231"/>
         <source>Bold</source>
         <translation>போல்ட்</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="460"/>
         <location filename="../mainwindow.ui" line="463"/>
-        <location filename="../mainwindow.cpp" line="2271"/>
+        <location filename="../mainwindow.cpp" line="2241"/>
         <source>Italic</source>
         <translation>சாய்ந்த</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="475"/>
         <location filename="../mainwindow.ui" line="478"/>
-        <location filename="../mainwindow.cpp" line="2281"/>
+        <location filename="../mainwindow.cpp" line="2251"/>
         <source>Underline</source>
         <translation>அடிக்கோடு</translation>
     </message>
@@ -1122,7 +1134,7 @@ Remove it?</source>
     <message>
         <location filename="../mainwindow.ui" line="997"/>
         <location filename="../mainwindow.ui" line="1000"/>
-        <location filename="../mainwindow.cpp" line="2291"/>
+        <location filename="../mainwindow.cpp" line="2261"/>
         <source>Strikeout</source>
         <translation>அடித்தம்</translation>
     </message>
@@ -1227,317 +1239,318 @@ Remove it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="238"/>
+        <location filename="../mainwindow.cpp" line="251"/>
         <source>Font name</source>
         <translation>எழுத்துரு பெயர்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="241"/>
+        <location filename="../mainwindow.cpp" line="254"/>
         <source>Font size</source>
         <translation>எழுத்துரு அளவு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="266"/>
+        <location filename="../mainwindow.cpp" line="279"/>
         <source>Zoom</source>
         <translation>ஜூம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="280"/>
+        <location filename="../mainwindow.cpp" line="293"/>
         <source>Frame width</source>
         <translation>சட்ட அகலம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="420"/>
+        <location filename="../mainwindow.cpp" line="432"/>
         <source>Report Title</source>
         <translation>அறிக்கையின் தலைப்பு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="426"/>
+        <location filename="../mainwindow.cpp" line="438"/>
         <source>Report Summary</source>
         <translation>அறிக்கையின் சுருக்கம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="432"/>
+        <location filename="../mainwindow.cpp" line="444"/>
         <source>Page Header</source>
         <translation>பக்கத்தின் தலைப்பு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="438"/>
+        <location filename="../mainwindow.cpp" line="450"/>
         <source>Page Footer</source>
         <translation>பக்கத்தின் அடிப்பாகம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="444"/>
+        <location filename="../mainwindow.cpp" line="456"/>
         <source>Master Data</source>
         <translation>முதன்மைத் தரவு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="450"/>
+        <location filename="../mainwindow.cpp" line="462"/>
         <source>Data Grouping Header</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="457"/>
+        <location filename="../mainwindow.cpp" line="469"/>
         <source>Data Grouping Footer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="464"/>
+        <location filename="../mainwindow.cpp" line="476"/>
         <source>Master Header</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="470"/>
+        <location filename="../mainwindow.cpp" line="482"/>
         <source>Master Footer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="495"/>
+        <location filename="../mainwindow.cpp" line="507"/>
         <source>Line</source>
         <translation>வரி</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="501"/>
+        <location filename="../mainwindow.cpp" line="513"/>
         <source>Line with arrow at the end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="507"/>
+        <location filename="../mainwindow.cpp" line="519"/>
         <source>Line with arrow at the start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="513"/>
+        <location filename="../mainwindow.cpp" line="525"/>
         <source>Line with arrows at both side</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="519"/>
+        <location filename="../mainwindow.cpp" line="531"/>
         <source>Rectangle</source>
         <translation>செவ்வகம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="525"/>
+        <location filename="../mainwindow.cpp" line="537"/>
         <source>Rounded rectangle</source>
         <translation>வட்டமான செவ்வகம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="531"/>
+        <location filename="../mainwindow.cpp" line="543"/>
         <source>Ellipse</source>
         <translation>நீள்வட்டம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="537"/>
+        <location filename="../mainwindow.cpp" line="549"/>
         <source>Triangle</source>
         <translation>முக்கோணம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="543"/>
+        <location filename="../mainwindow.cpp" line="555"/>
         <source>Rhombus</source>
         <translation>நாற்கரம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="645"/>
+        <location filename="../mainwindow.cpp" line="658"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="813"/>
-        <location filename="../mainwindow.cpp" line="1081"/>
+        <location filename="../mainwindow.cpp" line="824"/>
+        <location filename="../mainwindow.cpp" line="1050"/>
         <source>Page %1</source>
         <translation>பக்கம் %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1008"/>
-        <location filename="../mainwindow.cpp" line="1020"/>
-        <location filename="../mainwindow.cpp" line="1772"/>
-        <location filename="../mainwindow.cpp" line="2601"/>
+        <location filename="../mainwindow.cpp" line="977"/>
+        <location filename="../mainwindow.cpp" line="990"/>
+        <location filename="../mainwindow.cpp" line="1748"/>
+        <location filename="../mainwindow.cpp" line="2537"/>
         <source>Saving</source>
         <translation>சேமிப்பு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1008"/>
-        <location filename="../mainwindow.cpp" line="1020"/>
-        <location filename="../mainwindow.cpp" line="1772"/>
-        <location filename="../mainwindow.cpp" line="2601"/>
+        <location filename="../mainwindow.cpp" line="977"/>
+        <location filename="../mainwindow.cpp" line="990"/>
+        <location filename="../mainwindow.cpp" line="1748"/>
+        <location filename="../mainwindow.cpp" line="2537"/>
         <source>The report was changed.
 Save the report?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1035"/>
+        <location filename="../mainwindow.cpp" line="1005"/>
         <source>Select File</source>
         <translation>கோப்பை தேர்ந்தெடு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1262"/>
+        <location filename="../mainwindow.cpp" line="1236"/>
         <source>Going to make undo: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1269"/>
+        <location filename="../mainwindow.cpp" line="1244"/>
         <source>Going to make redo: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1453"/>
+        <location filename="../mainwindow.cpp" line="1419"/>
         <source>Save File</source>
         <translation>கோப்பை சேமி</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1453"/>
+        <location filename="../mainwindow.cpp" line="1419"/>
         <source>XML Files (*.xml)</source>
         <translation>XML கோப்புகள் (*.xml)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1467"/>
+        <location filename="../mainwindow.cpp" line="1433"/>
         <source>Error</source>
         <translation>பிழை</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1694"/>
+        <location filename="../mainwindow.cpp" line="1668"/>
         <source>Font</source>
         <translation>எழுத்துரு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1702"/>
+        <location filename="../mainwindow.cpp" line="1637"/>
+        <location filename="../mainwindow.cpp" line="1676"/>
         <source>Frame</source>
         <translation>சட்டம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2086"/>
+        <location filename="../mainwindow.cpp" line="2056"/>
         <source>Aligment hor</source>
         <translation>கிடைமட்டமாக சீரமை</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2090"/>
-        <location filename="../mainwindow.cpp" line="2149"/>
-        <location filename="../mainwindow.cpp" line="2176"/>
+        <location filename="../mainwindow.cpp" line="2060"/>
+        <location filename="../mainwindow.cpp" line="2119"/>
+        <location filename="../mainwindow.cpp" line="2146"/>
         <source>Left</source>
         <translation>இடப்பக்கம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2095"/>
-        <location filename="../mainwindow.cpp" line="2123"/>
+        <location filename="../mainwindow.cpp" line="2065"/>
+        <location filename="../mainwindow.cpp" line="2093"/>
         <source>Center</source>
         <translation>மையம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2100"/>
-        <location filename="../mainwindow.cpp" line="2186"/>
+        <location filename="../mainwindow.cpp" line="2070"/>
+        <location filename="../mainwindow.cpp" line="2156"/>
         <source>Right</source>
         <translation>வலப்பக்கம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2114"/>
+        <location filename="../mainwindow.cpp" line="2084"/>
         <source>Aligment ver</source>
         <translation>செங்குத்தாக சீரமைப்பு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2118"/>
-        <location filename="../mainwindow.cpp" line="2161"/>
-        <location filename="../mainwindow.cpp" line="2196"/>
+        <location filename="../mainwindow.cpp" line="2088"/>
+        <location filename="../mainwindow.cpp" line="2131"/>
+        <location filename="../mainwindow.cpp" line="2166"/>
         <source>Top</source>
         <translation>மேல்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2128"/>
-        <location filename="../mainwindow.cpp" line="2206"/>
+        <location filename="../mainwindow.cpp" line="2098"/>
+        <location filename="../mainwindow.cpp" line="2176"/>
         <source>Bottom</source>
         <translation>கீழே</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2137"/>
+        <location filename="../mainwindow.cpp" line="2107"/>
         <source>Height</source>
         <translation>உயரம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2143"/>
+        <location filename="../mainwindow.cpp" line="2113"/>
         <source>Width</source>
         <translation>அகலம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2155"/>
+        <location filename="../mainwindow.cpp" line="2125"/>
         <source>Length</source>
         <translation>நீளம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2230"/>
+        <location filename="../mainwindow.cpp" line="2200"/>
         <source>FrameWidth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2250"/>
+        <location filename="../mainwindow.cpp" line="2220"/>
         <source>Size</source>
         <translation>அளவு</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2298"/>
+        <location filename="../mainwindow.cpp" line="2268"/>
         <source>Printing</source>
         <translation>அச்சிடுதல்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2304"/>
+        <location filename="../mainwindow.cpp" line="2274"/>
         <source>Start New Numeration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2310"/>
+        <location filename="../mainwindow.cpp" line="2280"/>
         <source>Show In Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2316"/>
+        <location filename="../mainwindow.cpp" line="2286"/>
         <source>Start New Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2322"/>
+        <location filename="../mainwindow.cpp" line="2292"/>
         <source>AutoHeight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2328"/>
+        <location filename="../mainwindow.cpp" line="2298"/>
         <source>IgnoreRatioAspect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2334"/>
+        <location filename="../mainwindow.cpp" line="2304"/>
         <source>ArrowStart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2340"/>
+        <location filename="../mainwindow.cpp" line="2310"/>
         <source>ArrowEnd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2346"/>
+        <location filename="../mainwindow.cpp" line="2316"/>
         <source>TextWrap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2352"/>
+        <location filename="../mainwindow.cpp" line="2322"/>
         <source>BackgroundColor</source>
         <translation>பின்புலநிறம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2358"/>
+        <location filename="../mainwindow.cpp" line="2328"/>
         <source>BorderColor</source>
         <translation>பார்டர்நிறம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2367"/>
+        <location filename="../mainwindow.cpp" line="2337"/>
         <source>FontColor</source>
         <translation>எழுத்துருநிறம்</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2373"/>
+        <location filename="../mainwindow.cpp" line="2343"/>
         <source>BarcodeType</source>
         <translation>பார்கோடுவகை</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2379"/>
+        <location filename="../mainwindow.cpp" line="2349"/>
         <source>BarcodeFrameType</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1695,12 +1708,12 @@ Save the report?</source>
         <translation>ரத்து</translation>
     </message>
     <message>
-        <location filename="../PageSettingDlg.cpp" line="57"/>
+        <location filename="../PageSettingDlg.cpp" line="61"/>
         <source>Cm</source>
         <translation>Cm</translation>
     </message>
     <message>
-        <location filename="../PageSettingDlg.cpp" line="60"/>
+        <location filename="../PageSettingDlg.cpp" line="64"/>
         <source>Inch</source>
         <translation>அங்குலம்</translation>
     </message>
@@ -1716,14 +1729,8 @@ Save the report?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../QtRPT/RptCrossTabObject.cpp" line="36"/>
         <source>Total</source>
-        <translation>மொத்தம்</translation>
-    </message>
-    <message>
-        <location filename="../../QtRPT/RptCrossTabObject.cpp" line="265"/>
-        <source>R-Total</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">மொத்தம்</translation>
     </message>
     <message>
         <location filename="../Graphics/UndoRedoCommands.cpp" line="30"/>
@@ -1731,67 +1738,67 @@ Save the report?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Graphics/UndoRedoCommands.cpp" line="53"/>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="55"/>
         <source>Moving line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Graphics/UndoRedoCommands.cpp" line="93"/>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="99"/>
         <source>Delete</source>
         <translation type="unfinished">நீக்கு</translation>
     </message>
     <message>
-        <location filename="../Graphics/UndoRedoCommands.cpp" line="131"/>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="142"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Graphics/UndoRedoCommands.cpp" line="163"/>
+        <location filename="../Graphics/UndoRedoCommands.cpp" line="179"/>
         <source>Changing Container&apos;s parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="44"/>
+        <location filename="../ReportBand.cpp" line="45"/>
         <source>Report title</source>
         <translation type="unfinished">அறிக்கையின் தலைப்பு</translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="49"/>
+        <location filename="../ReportBand.cpp" line="50"/>
         <source>Report summary</source>
         <translation type="unfinished">அறிக்கையின் சுருக்கம்</translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="54"/>
+        <location filename="../ReportBand.cpp" line="55"/>
         <source>Page header</source>
         <translation type="unfinished">பக்கத்தின் தலைப்பு</translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="59"/>
+        <location filename="../ReportBand.cpp" line="60"/>
         <source>Page footer</source>
         <translation type="unfinished">பக்கத்தின் அடிப்பாகம்</translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="64"/>
+        <location filename="../ReportBand.cpp" line="65"/>
         <source>Master band</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="69"/>
+        <location filename="../ReportBand.cpp" line="70"/>
         <source>Master footer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="74"/>
+        <location filename="../ReportBand.cpp" line="75"/>
         <source>Master header</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="79"/>
+        <location filename="../ReportBand.cpp" line="80"/>
         <source>Data Group Header</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="84"/>
+        <location filename="../ReportBand.cpp" line="85"/>
         <source>Data Group Footer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1799,39 +1806,39 @@ Save the report?</source>
 <context>
     <name>QtRPT</name>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1515"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1603"/>
         <source>Save as PDF</source>
         <translation>PDF ஆக சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1520"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1608"/>
         <source>Save as HTML</source>
         <translation>HTML ஆக சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1526"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1614"/>
         <source>Save as XLSX</source>
         <translation>XLSX ஆக சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1547"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1552"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1557"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
         <source>Save File</source>
         <translation>கோப்பை சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1547"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
         <source>PDF Files (*.pdf)</source>
         <translation>PDF கோப்புகள் (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1552"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
         <source>HTML Files (*.html)</source>
         <translation>HTML கோப்புகள் (*.html)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1557"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
         <source>XLSX Files (*.xlsx)</source>
         <translation>XLSX கோப்புகள் (*.xlsx)</translation>
     </message>
@@ -1839,7 +1846,7 @@ Save the report?</source>
 <context>
     <name>RepScrollArea</name>
     <message>
-        <location filename="../RepScrollArea.cpp" line="114"/>
+        <location filename="../RepScrollArea.cpp" line="144"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1863,7 +1870,7 @@ Save the report?</source>
         <translation type="vanished">பக்கத்தின் அடிப்பாகம்</translation>
     </message>
     <message>
-        <location filename="../ReportBand.cpp" line="91"/>
+        <location filename="../ReportBand.cpp" line="95"/>
         <source>Delete</source>
         <translation>நீக்கு</translation>
     </message>
@@ -1957,61 +1964,66 @@ Save the report?</source>
     </message>
     <message>
         <location filename="../SettingDlg.ui" line="151"/>
+        <source>Italian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SettingDlg.ui" line="156"/>
         <source>Portuguese</source>
         <translation>Portuguese</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="156"/>
+        <location filename="../SettingDlg.ui" line="161"/>
         <source>Russian Русский</source>
         <translation>Russian Русский</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="161"/>
+        <location filename="../SettingDlg.ui" line="166"/>
         <source>Serbian</source>
         <translation>Serbian</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="166"/>
+        <location filename="../SettingDlg.ui" line="171"/>
         <source>Serbian Latin</source>
         <translation>Serbian Latin</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="171"/>
+        <location filename="../SettingDlg.ui" line="176"/>
         <source>Spanish</source>
         <translation>Spanish</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="176"/>
+        <location filename="../SettingDlg.ui" line="181"/>
         <source>Tamil தமிழ்</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="181"/>
+        <location filename="../SettingDlg.ui" line="186"/>
         <source>Ukraine Український</source>
         <translation>Ukraine Український</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="194"/>
+        <location filename="../SettingDlg.ui" line="199"/>
         <source>Check updates during start application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="216"/>
+        <location filename="../SettingDlg.ui" line="221"/>
         <source>Save</source>
         <translation>சேமி</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.ui" line="223"/>
+        <location filename="../SettingDlg.ui" line="228"/>
         <source>Cancel</source>
         <translation>ரத்து</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.cpp" line="155"/>
+        <location filename="../SettingDlg.cpp" line="150"/>
         <source>Message QtRptDesigner</source>
         <translation>QtRptDesigner செய்தி</translation>
     </message>
     <message>
-        <location filename="../SettingDlg.cpp" line="155"/>
+        <location filename="../SettingDlg.cpp" line="151"/>
         <source>The language for this application has been changed.
 The change will take effect the next time the application is started.
 Restart application?</source>
@@ -2183,22 +2195,22 @@ Restart application?</source>
         <translation>நீக்கு</translation>
     </message>
     <message>
-        <location filename="../SqlDesigner.cpp" line="85"/>
+        <location filename="../SqlDesigner.cpp" line="88"/>
         <source>Error</source>
         <translation>பிழை</translation>
     </message>
     <message>
-        <location filename="../SqlDesigner.cpp" line="88"/>
+        <location filename="../SqlDesigner.cpp" line="91"/>
         <source>Info</source>
         <translation>தகவல்</translation>
     </message>
     <message>
-        <location filename="../SqlDesigner.cpp" line="88"/>
+        <location filename="../SqlDesigner.cpp" line="91"/>
         <source>Connected</source>
         <translation>இணைக்கப்பட்ட</translation>
     </message>
     <message>
-        <location filename="../SqlDesigner.cpp" line="156"/>
+        <location filename="../SqlDesigner.cpp" line="162"/>
         <source>Select File</source>
         <translation>கோப்பை தேர்ந்தெடு</translation>
     </message>
@@ -2343,37 +2355,37 @@ Restart application?</source>
         <translation>&lt;-</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="93"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="99"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="94"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="100"/>
         <source>Bullet List (Disc)</source>
         <translation>புல்லட் பட்டியல் (Disc)</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="95"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="101"/>
         <source>Bullet List (Circle)</source>
         <translation>புல்லட் பட்டியல் (Circle)</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="96"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="102"/>
         <source>Bullet List (Square)</source>
         <translation>புல்லட் பட்டியல் (Square)</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="97"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="103"/>
         <source>Ordered List (Decimal)</source>
         <translation>உத்தரவிட்டார் பட்டியல் (Decimal)</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="98"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="104"/>
         <source>Ordered List (Alpha lower)</source>
         <translation>உத்தரவிட்டார் பட்டியல் (Alpha lower)</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="99"/>
+        <location filename="../../CommonFiles/XYZ_TextEditor.cpp" line="105"/>
         <source>Ordered List (Alpha upper)</source>
         <translation>உத்தரவிட்டார் பட்டியல் (Alpha upper)</translation>
     </message>
@@ -2402,12 +2414,12 @@ Restart application?</source>
         <translation>ரத்து</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="51"/>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="55"/>
         <source>Open Directory</source>
         <translation>ஆவணத்தை திற</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="74"/>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="77"/>
         <source>Downloading %0. ..</source>
         <translation>பதிவிறக்குகிறது %0. ..</translation>
     </message>

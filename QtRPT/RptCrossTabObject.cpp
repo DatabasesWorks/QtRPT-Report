@@ -223,7 +223,7 @@ void RptCrossTabObject::buildXlsx(QXlsx::Document *xlsx)
         element.col = col;
     }
 
-    for (auto &element : m_elements)
+    for (const auto &element : m_elements)
         xlsx->write(element.row, element.col, element.value);
 }
 #endif

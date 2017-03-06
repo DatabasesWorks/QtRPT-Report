@@ -316,7 +316,7 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
         t_item->setSelected(true);
         m_rootItem->setExpanded(true);
 
-        for (auto child : gBand->childItems())
+        for (auto &child : gBand->childItems())
             newFieldTreeItem(child);
     }
     if (gItem != nullptr) {
@@ -371,7 +371,7 @@ void RepScrollArea::correctBandGeom(ReportBand *rep)
     if (!allReportBand.isEmpty())
         std::sort(allReportBand.begin(), allReportBand.end(), [](ReportBand* p1, ReportBand* p2) { return p1->bandType < p2->bandType; });
 
-    for (auto band : allReportBand) {
+    for (auto &band : allReportBand) {
         if (band == rep)
             continue;
         band->setPos( QPointF(band->pos().x(), top_) );

@@ -329,7 +329,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->splitter->setSizes(lst);
 
     cloneContList = new QList<QGraphicsItem*>();
-    for (auto widget : ui->toolBar->findChildren<QWidget*>())
+    for (auto &widget : ui->toolBar->findChildren<QWidget*>())
         widget->installEventFilter(this);
 
     auto alignmentHGroup = new QActionGroup(this);
@@ -740,24 +740,24 @@ void MainWindow::setFrameStyle(QListWidgetItem * item) {
     setReportChanged();
 
     switch (item->data(Qt::UserRole).toInt()) {
-        case 1:
-            field->setBorder(FrameStyle,Solid);
-            break;
-        case 2:
-            field->setBorder(FrameStyle,Dashed);
-            break;
-        case 3:
-            field->setBorder(FrameStyle,Dotted);
-            break;
-        case 4:
-            field->setBorder(FrameStyle,Dot_dash);
-            break;
-        case 5:
-            field->setBorder(FrameStyle,Dot_dot_dash);
-            break;
-        case 6:
-            field->setBorder(FrameStyle,Double);
-            break;
+    case 1:
+        field->setBorder(FrameStyle,Solid);
+        break;
+    case 2:
+        field->setBorder(FrameStyle,Dashed);
+        break;
+    case 3:
+        field->setBorder(FrameStyle,Dotted);
+        break;
+    case 4:
+        field->setBorder(FrameStyle,Dot_dash);
+        break;
+    case 5:
+        field->setBorder(FrameStyle,Dot_dot_dash);
+        break;
+    case 6:
+        field->setBorder(FrameStyle,Double);
+        break;
     }
 }
 
@@ -789,9 +789,9 @@ void MainWindow::reportPageChanged(int index)
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(index));
     auto allReportBand = repPage->getReportBands();
     if (!allReportBand.isEmpty())
-        std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) { return p1->bandType < p2->bandType; });
+        std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) {return p1->bandType < p2->bandType;});
 
-    for (auto band : allReportBand) {
+    for (auto &band : allReportBand) {
         rootItem->addChild(band->itemInTree);
         band->itemInTree->setExpanded(true);
         band->setFocus();
@@ -886,19 +886,12 @@ void MainWindow::generateName(QGraphicsItem *mItem)
     while (!good) {
         bool fnd = false;
 
-        for (int t=0; t<ui->tabWidget->count(); t++) {
+        for (int t = 0; t < ui->tabWidget->count(); t++) {
             auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget( t ));
-            for (auto item : repPage->scene->items()) {
-                if (item->type() == ItemType::GBox || item->type() == ItemType::GBand) {
-                    auto gItem = static_cast<GraphicsBox *>(item);
-                    if (gItem->objectName() == QString(contName).arg(cf)) {
-                        fnd = true;
-                        break;
-                    }
-                }
-                if (item->type() == ItemType::GLine) {
-                    auto gItem = static_cast<GraphicsLine *>(item);
-                    if (gItem->objectName() == QString(contName).arg(cf)) {
+            for (auto &item : repPage->scene->items()) {
+                auto helper = dynamic_cast<GraphicsHelperClass*>(item);
+                if (helper != nullptr) {
+                    if (helper->objectName() == QString(contName).arg(cf)) {
                         fnd = true;
                         break;
                     }
@@ -982,7 +975,7 @@ void MainWindow::closeProgram()
     this->close();
 }
 
-//Open file
+// Open file
 void MainWindow::openFile()
 {
     if (ui->actSaveReport->isEnabled()) {
@@ -1192,8 +1185,8 @@ Command MainWindow::getCommand(QObject *widget)
 {
     if (widget == nullptr)
         return None;
-    auto action = qobject_cast<QAction *>(widget);
-    auto cmb = qobject_cast<QComboBox *>(widget);
+    auto action = qobject_cast<QAction*>(widget);
+    auto cmb = qobject_cast<QComboBox*>(widget);
     if (action != nullptr) {
         if (action == ui->actionBold) return Bold;
         else if (action == ui->actionItalic) return Italic;
@@ -1256,7 +1249,7 @@ void MainWindow::setGroupingField()
         int cf = 1;
         while (!good) {
             bool fnd = false;
-            for (auto item : repPage->scene->items()) {
+            for (auto &item : repPage->scene->items()) {
                 if (item->type() == ItemType::GLine || item->type() == ItemType::GBox) {
                     auto helper = gItemToHelper(item);
                     if (helper->getGroupName() == QString(groupName).arg(cf)) {
@@ -1317,7 +1310,7 @@ void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item)
     auto calling_helper = dynamic_cast<GraphicsHelperClass*>(item);
 
     if (QApplication::keyboardModifiers() != Qt::ControlModifier) {
-        for (auto m_item : scene->items()) {
+        for (auto &m_item : scene->items()) {
             if (item != m_item) {
                 if (m_item->type() == ItemType::GLine || m_item->type() == ItemType::GBox || m_item->type() == ItemType::GBand) {
                      auto helper = dynamic_cast<GraphicsHelperClass*>(m_item);
@@ -1344,7 +1337,7 @@ void MainWindow::alignFields()
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     auto etalon = qgraphicsitem_cast<GraphicsBox*>(selectedGItem());
 
-    for (auto item : repPage->scene->items()) {
+    for (auto &item : repPage->scene->items()) {
         if (item->type() == ItemType::GBox) {
             auto box = qgraphicsitem_cast<GraphicsBox*>(item);
             if (box->isSelected() && box != etalon) {
@@ -1387,7 +1380,7 @@ void MainWindow::saveReport()
         n = docElem.firstChild();
     }
 
-    for (int rp=0; rp<ui->tabWidget->count(); rp++) {
+    for (int rp = 0; rp < ui->tabWidget->count(); rp++) {
         auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(rp));
         QDomElement repElem = xmlDoc->createElement("Report");
         repElem.setAttribute("pageNo",QString::number(rp+1));
@@ -1404,11 +1397,11 @@ void MainWindow::saveReport()
         repElem.setAttribute("borderStyle",repPage->pageSetting.borderStyle);
         docElem.appendChild(repElem);
 
-        for (auto gItem : repPage->scene->items(Qt::AscendingOrder))
+        for (auto &gItem : repPage->scene->items(Qt::AscendingOrder))
             if (gItem->type() == ItemType::GBand)
                 setXMLProperty(&repElem, gItem, 1);
 
-        for (auto gItem : repPage->scene->items(Qt::AscendingOrder))
+        for (auto &gItem : repPage->scene->items(Qt::AscendingOrder))
             if (gItem->type() == ItemType::GBox || gItem->type() == ItemType::GLine)
                 setXMLProperty(&repElem, gItem, 1);
 
@@ -2391,7 +2384,7 @@ void MainWindow::selTree(QTreeWidgetItem *tItem, int)
 {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     repPage->scene->unselectAll();
-    for (auto item : repPage->scene->items()) {
+    for (auto &item : repPage->scene->items()) {
         if (item == nullptr) {
             continue;
         } else {
@@ -2693,7 +2686,7 @@ void MainWindow::clipBoard()
     if (sender() == ui->actCopy) {
         pasteCopy = true;
         cloneContList->clear();
-        for (auto item : repPage->scene->items()) {
+        for (auto &item : repPage->scene->items()) {
             if (item->type() == ItemType::GLine || item->type() == ItemType::GBox) {
                 auto helper = gItemToHelper(item);
                 if (helper->helperIsSelected())
@@ -2705,7 +2698,7 @@ void MainWindow::clipBoard()
     if (sender() == ui->actCut) {
         pasteCopy = false;
         cloneContList->clear();
-        for (auto item : repPage->scene->items()) {
+        for (auto &item : repPage->scene->items()) {
             if (item->type() == ItemType::GLine || item->type() == ItemType::GBox) {
                 auto helper = gItemToHelper(item);
                 if (helper->helperIsSelected()) {
@@ -2729,7 +2722,7 @@ void MainWindow::clipBoard()
         }
         if (band == nullptr) return;
 
-        for (auto item : *cloneContList) {
+        for (auto &item : *cloneContList) {
             item->setSelected(false);
             if (item->type() == ItemType::GBox) {
                 auto box = static_cast<GraphicsBox *>(item);
