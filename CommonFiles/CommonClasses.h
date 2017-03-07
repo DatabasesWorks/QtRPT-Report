@@ -44,6 +44,7 @@ QString double2MoneyFrench(int number, int language);
 QString double2MoneyFrenchBE(double number, bool bAdditional /*= false*/);
 QString double2MoneyFrenchFR(double number, bool bAdditional /*= false*/);
 QString double2MoneyFrenchCH(double number, bool bAdditional /*= false*/);
+QString double2MoneyITA(double n);
 
 QString double2Money(double n, QString lang);
 QString colorToString(QColor color);

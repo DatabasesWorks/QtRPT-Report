@@ -448,9 +448,9 @@ QString QtRPT::getFieldTypeName(FieldType type)
     \li Reactangle
  \endlist
  */
-QList<FieldType> QtRPT::getDrawingFields()
+QSet<FieldType> QtRPT::getDrawingFields()
 {
-    QList<FieldType> set;
+    QSet<FieldType> set;
     set << Circle << Triangle << Rhombus << RoundedReactangle << Reactangle;
     return set;
 }
@@ -811,8 +811,8 @@ void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop)
     int startX = fieldObject->lineStartX * koefRes_w;
     int endX = fieldObject->lineEndX * koefRes_w;
 
-    int startY = (bandTop+fieldObject->lineStartY)*koefRes_h;
-    int endY = (bandTop+fieldObject->lineEndY)*koefRes_h;
+    int startY = (bandTop + fieldObject->lineStartY) * koefRes_h;
+    int endY = (bandTop + fieldObject->lineEndY) * koefRes_h;
 
     FieldType fieldType = fieldObject->fieldType;
     QPen pen = getPen(fieldObject);
@@ -1076,7 +1076,7 @@ QScriptValue funcNumberToWords(QScriptContext *context, QScriptEngine *engine)
     Q_UNUSED(engine);
     QString paramLanguage = context->argument(0).toString();
     double value = context->argument(1).toString().toDouble();
-    return double2Money(value,paramLanguage);
+    return double2Money(value, paramLanguage);
 }
 
 QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine)
@@ -1386,7 +1386,7 @@ QVariant QtRPT::processFunctions(QString value)
     }
     if (value.contains("LineCount")) {
         int maxLnNo = 0;
-        for (auto &pair : listOfPair)
+        for (const auto &pair : listOfPair)
             if (pair.pageReport == m_pageReport && pair.lnNo > maxLnNo)
                 maxLnNo = pair.lnNo;
 
@@ -2176,9 +2176,9 @@ void QtRPT::openDataSource(int pageReport)
         QDomNode n = docElem.firstChild();
         QDomElement dsElement;
 
-        while(!n.isNull()) {
+        while (!n.isNull()) {
             QDomElement e = n.toElement();
-            if ((!e.isNull()) && (e.tagName() == "DataSource"))
+            if (!e.isNull() && e.tagName() == "DataSource")
                 dsElement = e;
 
             n = n.nextSibling();

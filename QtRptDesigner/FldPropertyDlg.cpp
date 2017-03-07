@@ -54,7 +54,7 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
             rootItem->addChild(f1);
 
             QTreeWidgetItem *item;
-            if (index == 0) {   //Variables
+            if (index == 0) {   // Variables
                 rootItem->setText(0,tr("Variables"));
                 f1->setText(0,tr("System variables"));
 
@@ -97,7 +97,7 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
                 this->setWindowTitle(tr("Variables"));
                 this->setWindowIcon(iconVariable);
             }
-            if (index == 3) {   //Functions
+            if (index == 3) {   // Functions
                 rootItem->setText(0,tr("Functions"));
 
                 //------------------Aggregate functions----------------------
@@ -203,6 +203,13 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
                 item->setData(0,Qt::UserRole,"<NumberToWords('FR_CH', )>");
                 f1->addChild(item);
 
+                item = new QTreeWidgetItem(f1);
+                item->setIcon(0,iconFunction);
+                item->setToolTip(0,tr("Italian"));
+                item->setText(0,"NumberToWords (ITA)");
+                item->setData(0,Qt::UserRole,"<NumberToWords('ITA', )>");
+                f1->addChild(item);
+
                 //------------------Math functions----------------------
                 f1 = new QTreeWidgetItem(rootItem);
                 f1->setIcon(0,iconFolder);
@@ -240,7 +247,7 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
             break;
         }
         case 1: {
-            this->setWindowTitle("Data Group property");
+            this->setWindowTitle(tr("Data Group property"));
             ReportBand *band = static_cast<ReportBand *>(widget);
             ui->edtFiledGrouping->setText(band->getGroupingField());
             ui->chkStartLineNum->setChecked(band->getStartNewNumertaion());
@@ -248,7 +255,7 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
             break;
         }
         case 2: {
-            this->setWindowTitle("Formatting");
+            this->setWindowTitle(tr("Formatting"));
             QObject::connect(ui->lstCategory, SIGNAL(currentRowChanged(int)), this, SLOT(changeCategory(int)));
             QObject::connect(ui->lstFormat, SIGNAL(currentRowChanged(int)), this, SLOT(changeFormat(int)));
 

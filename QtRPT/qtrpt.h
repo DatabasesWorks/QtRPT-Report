@@ -120,7 +120,7 @@ public:
     void setSqlQuery(QString sqlString);
     static FieldType getFieldType(QDomElement e);
     static QString getFieldTypeName(FieldType type);
-    static QList<FieldType> getDrawingFields();
+    static QSet<FieldType> getDrawingFields();
     static Qt::PenStyle getPenStyle(QString value);
     QList<RptPageObject*> pageList;    
     QList<int> recordCount;

@@ -976,6 +976,111 @@ QString double2MoneyFrench(int number, int language)
     return output;
 }
 
+QString double2MoneyITA(double n)
+{
+    static QMap<double, QString> numbers;
+
+    //Only initialize once
+    if (numbers.isEmpty()) {
+        numbers[0] = "zero";
+        numbers[1] = "uno";
+        numbers[2] = "due";
+        numbers[3] = "tre";
+        numbers[4] = "quattro";
+        numbers[5] = "cinque";
+        numbers[6] = "sei";
+        numbers[7] = "sette";
+        numbers[8] = "otto";
+        numbers[9] = "nove";
+        numbers[10] = "dieci";
+        numbers[11] = "undici";
+        numbers[12] = "dodici";
+        numbers[13] = "tredici";
+        numbers[14] = "quattordici";
+        numbers[15] = "quindici";
+        numbers[16] = "sedici";
+        numbers[17] = "diciasette";
+        numbers[18] = "diciotto";
+        numbers[19] = "diciannove";
+        numbers[20] = "venti";
+        numbers[30] = "trenta";
+        numbers[40] = "quaranta";
+        numbers[50] = "cinquanta";
+        numbers[60] = "sessanta";
+        numbers[70] = "settanta";
+        numbers[80] = "ottanta";
+        numbers[90] = "novanta";
+        numbers[1000]= "mille";
+    }
+
+    static QMap<uint, QString> powers;
+
+    //Only initialize once
+    if (powers.isEmpty()) {
+        powers[2] = "cento";
+        powers[3] = "mila ";
+        powers[6] = " milioni ";
+        powers[9] = " miliardi ";
+    }
+
+    QString output="";
+
+    if (n < 21) {//Number from the QMap
+        output = numbers[n];
+    } else if (n < 100) {
+        output = numbers[10 * qFloor(n / 10)];
+        int remainder = (long long)n % 10;
+
+        if (remainder > 0){
+            if(remainder==1 || remainder==8)
+                output.chop(1);
+            output = output + double2MoneyITA(remainder);
+        }
+    } else {
+        uint power = 2;
+        uint place = 0;
+        QString powerString;
+
+        //QMap::keys is ordered
+        foreach (uint pow, powers.keys()) {
+            uint place_value = qPow(10, pow);
+            uint tmp_place = qFloor(n / place_value);
+            if (tmp_place < 1)
+                break;
+
+            place = tmp_place;
+            power = pow;
+
+            if (pow ==3 && n < 2E3) {//1000 is "mille"
+                powerString = "mille";
+            }
+            else if (pow == 6 && n < 2E6) {// 1 000 000 in "un milione"
+                powerString = "un milione ";
+            }
+            else if (pow == 9 && n < 2E9) {//1 000 000 000 is "un miliardo"
+                powerString = "un miliardo ";
+            }
+            else {
+                powerString = powers[pow];
+            }
+        }
+
+        if (power > 0) {
+            QString notOne="";
+            if (place!=1) notOne= double2MoneyITA(place);//If place is 1 then powerString contains the right value
+            output = notOne + powerString;
+            double remainder = (long long)n % (long long)double(qPow(10, power));
+
+            if (remainder > 0)
+                output += double2MoneyITA(remainder);
+        }
+    }
+
+    return output;
+}
+
+
+
 QString double2Money(double n, QString lang)
 {
     if (lang == "UKR")
@@ -994,6 +1099,8 @@ QString double2Money(double n, QString lang)
         return double2MoneyFrench(n,1);
     else if (lang == "FR_CH")
         return double2MoneyFrench(n,2);
+    else if (lang == "ITA")
+        return double2MoneyITA(n);
     else
         return double2MoneyENG(n);
 }
@@ -1040,5 +1147,3 @@ QString eventType(QEvent *ev)
     else
         return (QString)ev->type();
 }
-
-

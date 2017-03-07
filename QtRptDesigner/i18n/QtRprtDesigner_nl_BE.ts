@@ -29,9 +29,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutDlg.cpp" line="51"/>
         <source>2012-2016 years</source>
-        <translation>jaar 2012-2016</translation>
+        <translation type="vanished">jaar 2012-2016</translation>
+    </message>
+    <message>
+        <location filename="../aboutDlg.cpp" line="51"/>
+        <source>2012-2017 years</source>
+        <translation type="unfinished">jaar 2012-2016 {2012-2017 ?}</translation>
     </message>
     <message>
         <location filename="../aboutDlg.cpp" line="52"/>
@@ -574,7 +578,7 @@ Wil je deze verwijderen?</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="101"/>
-        <location filename="../FldPropertyDlg.cpp" line="237"/>
+        <location filename="../FldPropertyDlg.cpp" line="244"/>
         <source>Functions</source>
         <translation>Functies</translation>
     </message>
@@ -634,8 +638,23 @@ Wil je deze verwijderen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../FldPropertyDlg.cpp" line="209"/>
+        <location filename="../FldPropertyDlg.cpp" line="208"/>
+        <source>Italian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="216"/>
         <source>Math functions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="250"/>
+        <source>Data Group property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../FldPropertyDlg.cpp" line="258"/>
+        <source>Formatting</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -753,8 +772,8 @@ Wil je deze verwijderen?</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="152"/>
-        <location filename="../mainwindow.cpp" line="2050"/>
-        <location filename="../mainwindow.cpp" line="2210"/>
+        <location filename="../mainwindow.cpp" line="2043"/>
+        <location filename="../mainwindow.cpp" line="2203"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
@@ -843,28 +862,28 @@ Wil je deze verwijderen?</translation>
     <message>
         <location filename="../mainwindow.ui" line="430"/>
         <location filename="../mainwindow.ui" line="433"/>
-        <location filename="../mainwindow.cpp" line="2075"/>
+        <location filename="../mainwindow.cpp" line="2068"/>
         <source>Justify</source>
         <translation>Uitvullen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="445"/>
         <location filename="../mainwindow.ui" line="448"/>
-        <location filename="../mainwindow.cpp" line="2231"/>
+        <location filename="../mainwindow.cpp" line="2224"/>
         <source>Bold</source>
         <translation>Vet</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="460"/>
         <location filename="../mainwindow.ui" line="463"/>
-        <location filename="../mainwindow.cpp" line="2241"/>
+        <location filename="../mainwindow.cpp" line="2234"/>
         <source>Italic</source>
         <translation>Schuin</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="475"/>
         <location filename="../mainwindow.ui" line="478"/>
-        <location filename="../mainwindow.cpp" line="2251"/>
+        <location filename="../mainwindow.cpp" line="2244"/>
         <source>Underline</source>
         <translation>Onderlijnt</translation>
     </message>
@@ -1124,7 +1143,7 @@ Wil je deze verwijderen?</translation>
     <message>
         <location filename="../mainwindow.ui" line="997"/>
         <location filename="../mainwindow.ui" line="1000"/>
-        <location filename="../mainwindow.cpp" line="2261"/>
+        <location filename="../mainwindow.cpp" line="2254"/>
         <source>Strikeout</source>
         <translation>Doorstrepen</translation>
     </message>
@@ -1345,203 +1364,203 @@ Wil je deze verwijderen?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="824"/>
-        <location filename="../mainwindow.cpp" line="1050"/>
+        <location filename="../mainwindow.cpp" line="1043"/>
         <source>Page %1</source>
         <translation>Bladzijde %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="977"/>
-        <location filename="../mainwindow.cpp" line="990"/>
-        <location filename="../mainwindow.cpp" line="1748"/>
-        <location filename="../mainwindow.cpp" line="2537"/>
+        <location filename="../mainwindow.cpp" line="970"/>
+        <location filename="../mainwindow.cpp" line="983"/>
+        <location filename="../mainwindow.cpp" line="1741"/>
+        <location filename="../mainwindow.cpp" line="2530"/>
         <source>Saving</source>
         <translation>Bewaren</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="977"/>
-        <location filename="../mainwindow.cpp" line="990"/>
-        <location filename="../mainwindow.cpp" line="1748"/>
-        <location filename="../mainwindow.cpp" line="2537"/>
+        <location filename="../mainwindow.cpp" line="970"/>
+        <location filename="../mainwindow.cpp" line="983"/>
+        <location filename="../mainwindow.cpp" line="1741"/>
+        <location filename="../mainwindow.cpp" line="2530"/>
         <source>The report was changed.
 Save the report?</source>
         <translation>Het rapport is gewijzigd.
 Bewaar het rapport?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1005"/>
+        <location filename="../mainwindow.cpp" line="998"/>
         <source>Select File</source>
         <translation>Kies bestand</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1236"/>
+        <location filename="../mainwindow.cpp" line="1229"/>
         <source>Going to make undo: </source>
         <translation>Bezig met ongedaan te maken</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1244"/>
+        <location filename="../mainwindow.cpp" line="1237"/>
         <source>Going to make redo: </source>
         <translation>Bezig metopnieuw te doen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1419"/>
+        <location filename="../mainwindow.cpp" line="1412"/>
         <source>Save File</source>
         <translation>Bewaar bestand</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1419"/>
+        <location filename="../mainwindow.cpp" line="1412"/>
         <source>XML Files (*.xml)</source>
         <translation>XML Bestanden (*.xml)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1433"/>
+        <location filename="../mainwindow.cpp" line="1426"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1668"/>
+        <location filename="../mainwindow.cpp" line="1661"/>
         <source>Font</source>
         <translation>Lettertype</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1637"/>
-        <location filename="../mainwindow.cpp" line="1676"/>
+        <location filename="../mainwindow.cpp" line="1630"/>
+        <location filename="../mainwindow.cpp" line="1669"/>
         <source>Frame</source>
         <translation>Omlijsting</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2056"/>
+        <location filename="../mainwindow.cpp" line="2049"/>
         <source>Aligment hor</source>
         <translation>Horizontale uitlijning</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2060"/>
-        <location filename="../mainwindow.cpp" line="2119"/>
-        <location filename="../mainwindow.cpp" line="2146"/>
+        <location filename="../mainwindow.cpp" line="2053"/>
+        <location filename="../mainwindow.cpp" line="2112"/>
+        <location filename="../mainwindow.cpp" line="2139"/>
         <source>Left</source>
         <translation>Links</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2065"/>
-        <location filename="../mainwindow.cpp" line="2093"/>
+        <location filename="../mainwindow.cpp" line="2058"/>
+        <location filename="../mainwindow.cpp" line="2086"/>
         <source>Center</source>
         <translation>Centreren</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2070"/>
-        <location filename="../mainwindow.cpp" line="2156"/>
+        <location filename="../mainwindow.cpp" line="2063"/>
+        <location filename="../mainwindow.cpp" line="2149"/>
         <source>Right</source>
         <translation>Rechts</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2084"/>
+        <location filename="../mainwindow.cpp" line="2077"/>
         <source>Aligment ver</source>
         <translation>Verticale uitlijning</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2088"/>
-        <location filename="../mainwindow.cpp" line="2131"/>
-        <location filename="../mainwindow.cpp" line="2166"/>
+        <location filename="../mainwindow.cpp" line="2081"/>
+        <location filename="../mainwindow.cpp" line="2124"/>
+        <location filename="../mainwindow.cpp" line="2159"/>
         <source>Top</source>
         <translation>Bovenaan</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2098"/>
-        <location filename="../mainwindow.cpp" line="2176"/>
+        <location filename="../mainwindow.cpp" line="2091"/>
+        <location filename="../mainwindow.cpp" line="2169"/>
         <source>Bottom</source>
         <translation>Onderaan</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2107"/>
+        <location filename="../mainwindow.cpp" line="2100"/>
         <source>Height</source>
         <translation>Hoogte</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2113"/>
+        <location filename="../mainwindow.cpp" line="2106"/>
         <source>Width</source>
         <translation>Breedte</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2125"/>
+        <location filename="../mainwindow.cpp" line="2118"/>
         <source>Length</source>
         <translation>Lengte</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2200"/>
+        <location filename="../mainwindow.cpp" line="2193"/>
         <source>FrameWidth</source>
         <translation>Omlijstingsbreedte</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2220"/>
+        <location filename="../mainwindow.cpp" line="2213"/>
         <source>Size</source>
         <translation>Grootte</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2268"/>
+        <location filename="../mainwindow.cpp" line="2261"/>
         <source>Printing</source>
         <translation>Afdrukken</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2274"/>
+        <location filename="../mainwindow.cpp" line="2267"/>
         <source>Start New Numeration</source>
         <translation>Start nieuwe opsomming</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2280"/>
+        <location filename="../mainwindow.cpp" line="2273"/>
         <source>Show In Group</source>
         <translation>Toon in groep</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2286"/>
+        <location filename="../mainwindow.cpp" line="2279"/>
         <source>Start New Page</source>
         <translation>Start nieuwe pagina</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2292"/>
+        <location filename="../mainwindow.cpp" line="2285"/>
         <source>AutoHeight</source>
         <translation>Automatische hoogte</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2298"/>
+        <location filename="../mainwindow.cpp" line="2291"/>
         <source>IgnoreRatioAspect</source>
         <translation>Negeer beeldverhouding</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2304"/>
+        <location filename="../mainwindow.cpp" line="2297"/>
         <source>ArrowStart</source>
         <translation>Pijl start</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2310"/>
+        <location filename="../mainwindow.cpp" line="2303"/>
         <source>ArrowEnd</source>
         <translation>Pijl einde</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2316"/>
+        <location filename="../mainwindow.cpp" line="2309"/>
         <source>TextWrap</source>
         <translation>Tekstomloop</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2322"/>
+        <location filename="../mainwindow.cpp" line="2315"/>
         <source>BackgroundColor</source>
         <translation>Achtergrondkleur</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2328"/>
+        <location filename="../mainwindow.cpp" line="2321"/>
         <source>BorderColor</source>
         <translation>Randkleur</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2337"/>
+        <location filename="../mainwindow.cpp" line="2330"/>
         <source>FontColor</source>
         <translation>Letterkleur</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2343"/>
+        <location filename="../mainwindow.cpp" line="2336"/>
         <source>BarcodeType</source>
         <translation>Barcode type</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2349"/>
+        <location filename="../mainwindow.cpp" line="2342"/>
         <source>BarcodeFrameType</source>
         <translation>Barcode omlijsting</translation>
     </message>

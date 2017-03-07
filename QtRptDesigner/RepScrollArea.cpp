@@ -108,9 +108,9 @@ double RepScrollArea::setPaperSize(qreal scale)
             if (m_scale < 0.5) return -1;
         } else {  //Change zoom from wheel or click mouse
             if (scale>0)
-                m_scale+=0.25;
+                m_scale += 0.25;
             else
-                m_scale+=-0.25;
+                m_scale += -0.25;
         }
 
         if (m_scale < 0.5) {  //Not allow zoom less than 50%
@@ -165,7 +165,7 @@ void RepScrollArea::clearReport()
 
 bool RepScrollArea::allowField()
 {
-    for (auto item : scene->items())
+    for (const auto &item : scene->items())
         if (item->type() == ItemType::GBand)
             return true;
 
@@ -316,7 +316,7 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
         t_item->setSelected(true);
         m_rootItem->setExpanded(true);
 
-        for (auto &child : gBand->childItems())
+        for (const auto &child : gBand->childItems())
             newFieldTreeItem(child);
     }
     if (gItem != nullptr) {
@@ -393,7 +393,7 @@ bool RepScrollArea::eventFilter(QObject *obj, QEvent *e)
     return QWidget::eventFilter(obj,e);
 }
 
-QList<ReportBand *> RepScrollArea::getReportBands()
+QList<ReportBand*> RepScrollArea::getReportBands()
 {
     QList<ReportBand*> allReportBand;
     for (const auto &item : scene->items())

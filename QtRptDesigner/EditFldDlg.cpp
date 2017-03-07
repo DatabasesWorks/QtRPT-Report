@@ -86,10 +86,10 @@ void EditFldDlg::conditionalToggled(bool value)
     ui->grpBackground->setEnabled(!value);
     ui->grpFont->setEnabled(!value);
 
-    if (value) {  //Show printting condition
+    if (value) {  // Show printting condition
         encodeHighLightingString();
         ui->edtCondition->setText(m_cond_printing);
-    } else {  //Show highlighting condtion
+    } else {  // Show highlighting condtion
         m_cond_printing = ui->edtCondition->text();
         decodeHighLightingString();
         ui->edtCondition->setText(m_cond_higlighting.section(";",0,0));
@@ -170,11 +170,11 @@ void EditFldDlg::openProperty()
     QScopedPointer<FldPropertyDlg> dlg(new FldPropertyDlg(this));
 
     if (sender() == ui->btnAddVariable) {
-        QString str = dlg->showThis(0,0,"");
+        QString str = dlg->showThis(0, 0, "");
         ui->textEdit->insertPlainText(str);
     }
     if (sender() == ui->btnAddFunction) {
-        QString str = dlg->showThis(3,0,"");
+        QString str = dlg->showThis(3, 0, "");
         ui->textEdit->insertPlainText(str);
     }
     if (sender() == ui->btnFormatting) {
@@ -195,7 +195,7 @@ void EditFldDlg::textDirection()
 
 int EditFldDlg::showText(QGraphicsItem *gItem)
 {
-    auto cont = static_cast<GraphicsBox*>(gItem);
+    auto cont = qgraphicsitem_cast<GraphicsBox*>(gItem);
     ui->textEdit->setPlainText(cont->getText());
     ui->stackedWidget->setCurrentIndex(0);
     ui->textEdit->setFocus();
@@ -489,7 +489,7 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
     if (this->exec()) {
         //saving graphs to XML nodes
         cont->getChart()->clearData();
-        for (int i=0; i<ui->tableWidget->rowCount(); i++) {
+        for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
             GraphParam param;
             auto sc = qobject_cast<SelectColor *>(ui->tableWidget->cellWidget(i,2));
             param.color = colorFromString(sc->getBackGroundColor());
