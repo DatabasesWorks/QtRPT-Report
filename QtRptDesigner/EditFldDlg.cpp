@@ -413,14 +413,10 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
     ui->spnColCount->setValue(m_crossTab->colCount());
     ui->spnRowHeight->setValue(m_crossTab->rowHeight());
 
-    QObject::connect(ui->spnRowCount, SIGNAL(valueChanged(int)), SLOT(setCrossTabRowCount(int)));
-    QObject::connect(ui->spnColCount, SIGNAL(valueChanged(int)), SLOT(setCrossTabColCount(int)));
-
     if (this->exec()) {
         m_crossTab->setRowCount(ui->spnRowCount->value());
         m_crossTab->setColCount(ui->spnColCount->value());
         m_crossTab->setRowHeight(ui->spnRowHeight->value());
-
 
         return QDialog::Accepted;
     } else {
@@ -466,7 +462,7 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
     QObject::connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChanged()));
 
     QTableWidgetItem *newItem;
-    unsigned i = 0;
+    quint32 i = 0;
     ui->tableWidget->setRowCount( cont->getChart()->getGraphParamList().size() );
     for (const auto &graphParam : cont->getChart()->getGraphParamList()) {
         newItem = new QTableWidgetItem( graphParam.caption );
@@ -522,7 +518,7 @@ void EditFldDlg::addRow()
 {
     ui->tableWidget->insertRow(ui->tableWidget->rowCount());
     ui->tableWidget->setCurrentCell(ui->tableWidget->rowCount()-1,0);
-    QTableWidgetItem* newItem = nullptr;
+    QTableWidgetItem *newItem = nullptr;
 
     newItem = new QTableWidgetItem("New graph");
     ui->tableWidget->setItem(ui->tableWidget->rowCount()-1,0,newItem);

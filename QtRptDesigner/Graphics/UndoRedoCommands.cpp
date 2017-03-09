@@ -103,7 +103,7 @@ void DelItemCommand::undo()
 {
     auto area = qobject_cast<RepScrollArea*>(myGraphicsScene->parent());
 
-    unsigned i = 0;
+    quint32 i = 0;
     for (auto &item : itemList) {
         myGraphicsScene->addItem(item);
         if (item->type() == ItemType::GBox || item->type() == ItemType::GLine) {

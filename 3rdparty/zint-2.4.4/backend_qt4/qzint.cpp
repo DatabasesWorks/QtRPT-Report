@@ -26,24 +26,24 @@ Zint::QZint* createWidget()
 namespace Zint
 {
 
-static const qreal maxi_diagonal=11;
-static const qreal maxi_width=1.73205807568877*maxi_diagonal/2;
-static const char* fontstyle="Arial";
-static const int fontPixelSizeSmall=6;
-static const int fontPixelSizeLarge=8;
+static const qreal maxi_diagonal = 11;
+static const qreal maxi_width = 1.73205807568877*maxi_diagonal/2;
+static const char* fontstyle = "Arial";
+static const int fontPixelSizeSmall = 6;
+static const int fontPixelSizeLarge = 8;
 
 QZint::QZint()
 {
-	m_symbol=BARCODE_CODE128;
-	m_height=50;
-	m_border=NO_BORDER;
-	m_borderWidth=1;
-	m_securityLevel=-1;
-	m_pdf417CodeWords=928;
-	m_fgColor=Qt::black;
-	m_bgColor=Qt::white;
-	m_zintSymbol=0;
-	m_error=0;
+    m_symbol = BARCODE_CODE128;
+    m_height = 50;
+    m_border = NO_BORDER;
+    m_borderWidth = 1;
+    m_securityLevel = -1;
+    m_pdf417CodeWords = 928;
+    m_fgColor = Qt::black;
+    m_bgColor = Qt::white;
+    m_zintSymbol = 0;
+    m_error = 0;
 	m_input_mode = UNICODE_MODE;
 	m_scale = 1.0;
 	m_option_3 = 0;

@@ -41,7 +41,7 @@ PageSettingDlg::PageSettingDlg(QWidget *parent)
     ui->spnBorderWidth->setValue(1);
     ui->lblBorderColor->setStyleSheet("QLabel {background-color: black}");
     
-    for (unsigned i = 1; i < 7; i++) {
+    for (quint32 i = 1; i < 7; i++) {
         QIcon icon;
         icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/fs%1.png").arg(i)), QIcon::Normal, QIcon::On);
         ui->cmbBorderStyle->addItem(icon,"", i);

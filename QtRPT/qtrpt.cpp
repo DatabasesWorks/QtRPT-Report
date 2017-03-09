@@ -770,10 +770,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             bool isPageHeader = fieldObject->parentBand->type == BandType::PageHeader;
             bool isPageFooter = fieldObject->parentBand->type == BandType::PageFooter;
 
-            unsigned startFrom = fieldObject->crossTab->processedCount();
-            unsigned fieldsCount = fieldObject->crossTab->fieldList.size();
+            quint32 startFrom = fieldObject->crossTab->processedCount();
+            quint32 fieldsCount = fieldObject->crossTab->fieldList.size();
 
-            for (unsigned nmr = startFrom; nmr < fieldsCount; nmr++) {
+            for (quint32 nmr = startFrom; nmr < fieldsCount; nmr++) {
                 auto field = fieldObject->crossTab->fieldList[nmr];
                 int row = fieldObject->crossTab->fieldRow(field);
 
@@ -784,7 +784,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
 
                 int y = fieldObject->crossTab->rowHeight() * tmpRowN;
 
-                if (y > /*fieldObject->rect.y() +*/ fieldObject->rect.height() - fieldObject->crossTab->rowHeight() ) {
+                if (tmpRowN > fieldObject->crossTab->visibleRowCount()-1) {
                     // we create a new page only for the particular types of the bands.
                     // And only if No new page will be created from other places
                     if ((isPageHeader || isPageFooter) && curPage >= totalPage) {
@@ -796,7 +796,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     }
                 }
 
-                field->rect.setTop(fieldObject->rect.y() + y );
+                field->rect.setTop(fieldObject->rect.y() + y);
                 field->rect.setHeight(fieldObject->crossTab->rowHeight());
                 drawFields(field, bandTop, true);
 
@@ -1010,7 +1010,7 @@ QScriptValue funcAggregate(QScriptContext *context, QScriptEngine *engine)
     for (const auto &aggValues : listOfPair) {
         if (aggValues.paramName == paramName) {
             if (!listIdxOfGroup.isEmpty() && self.property("showInGroup").toBool() == true) {
-                for (auto grpIdx : listIdxOfGroup) {
+                for (auto &grpIdx : listIdxOfGroup) {
                     if (grpIdx == aggValues.lnNo) {
                         total += aggValues.paramValue.toDouble();
                         count += 1;

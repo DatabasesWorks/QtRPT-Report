@@ -143,6 +143,17 @@ int RptCrossTabObject::fieldCol(RptFieldObject *field)
 }
 
 /*!
+ \fn RptCrossTabObject::visibleRowCount()
+    return the visible count of rows on one page.
+
+    \sa rowCount();
+*/
+int RptCrossTabObject::visibleRowCount()
+{
+    return (int)(parentField->rect.height() / rowHeight());
+}
+
+/*!
  \fn void RptCrossTabObject::addField(RptFieldObject *field)
     Add \a field to current RptCrossTabObject object.
 

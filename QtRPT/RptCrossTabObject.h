@@ -67,6 +67,7 @@ public:
     void setProcessedCount(int value);
     int fieldRow(RptFieldObject *field);
     int fieldCol(RptFieldObject *field);
+    int visibleRowCount();
 
     void buildMatrix();
     QList<RptFieldObject*> fieldList;
