@@ -225,7 +225,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_status1 = new QLabel("Left", this);
     m_status1->setText(QString("X: %1 Y: %2").arg(0).arg(0));
-    m_status1->setFixedWidth(100);
+    m_status1->setFixedWidth(150);
     m_status1->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     m_status2 = new QLabel("Middle", this);
     m_status2->setFrameStyle(QFrame::Panel | QFrame::Sunken);

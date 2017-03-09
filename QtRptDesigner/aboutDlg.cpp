@@ -27,8 +27,8 @@ AboutDlg::AboutDlg(QWidget *parent)
 : QDialog(parent)
 {
     this->setWindowTitle(tr("About QtRptDesigner"));
-    QSize MaxSize(420, 450);
-    QSize MinSize(420, 450);
+    QSize MaxSize(450, 550);
+    QSize MinSize(450, 550);
     setMaximumSize(MaxSize);
     setMinimumSize(MinSize);
 
