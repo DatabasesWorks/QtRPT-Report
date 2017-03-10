@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.0
+Version: 2.0.1
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2016 Aleksey Osipov
+Copyright 2012-2017 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -34,6 +34,9 @@ RptCrossTabObject::RptCrossTabObject()
     m_rowCount = 3;
     m_colCount = 3;
     m_processedCount = 0;
+    m_totalByRowVisible = false;
+    m_totalByColumnVisible = false;
+    m_subTotalVisible = false;
 
     qRegisterMetaType<RptCrossTabObject>("RptCrossTabObject");
 }
@@ -68,6 +71,36 @@ void RptCrossTabObject::setRowCount(int value)
     m_rowCount = value;
 }
 
+bool RptCrossTabObject::isTotalByRowVisible()
+{
+    return m_totalByRowVisible;
+}
+
+void RptCrossTabObject::setTotalByRowVisible(bool value)
+{
+    m_totalByRowVisible = value;
+}
+
+bool RptCrossTabObject::isTotalByColumnVisible()
+{
+    return m_totalByColumnVisible;
+}
+
+void RptCrossTabObject::setTotalByColumnVisible(bool value)
+{
+    m_totalByColumnVisible = value;
+}
+
+bool RptCrossTabObject::isSubTotalVisible()
+{
+    return m_subTotalVisible;
+}
+
+void RptCrossTabObject::setSubTotalVisible(bool value)
+{
+    m_subTotalVisible = value;
+}
+
 int RptCrossTabObject::processedCount()
 {
     return m_processedCount;
@@ -100,8 +133,8 @@ void RptCrossTabObject::buildMatrix()
             h1->parentCrossTab = this;
             h1->name = QString("f%1%2").arg(col).arg(row);
             h1->fieldType = Text;
-            h1->rect.setTop(rect.top() + fieldheight*row);
-            h1->rect.setLeft(rect.left() + fieldWidth*col);
+            h1->rect.setTop(rect.top() + fieldheight * row);
+            h1->rect.setLeft(rect.left() + fieldWidth * col);
             h1->rect.setHeight(fieldheight);
             h1->rect.setWidth(fieldWidth);
             h1->aligment = Qt::AlignCenter;

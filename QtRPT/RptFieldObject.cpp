@@ -437,27 +437,9 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
         crossTab->rect = this->rect;
         crossTab->parentField = this;
 
-        QDomNode g = e.firstChild();
-        while(!g.isNull()) {
-            QDomElement ge = g.toElement();
-//            if (!ge.isNull() && ge.tagName() == "row")
-//                crossTab->addRow(ge.attribute("caption"));
-//            if (!ge.isNull() && ge.tagName() == "col")
-//                crossTab->addCol(ge.attribute("caption"));
-
-            g = g.nextSibling();
-        }
-
-//        crossTab->setColHeaderVisible(e.attribute("crossTabColHeaderVisible").toInt());
-//        crossTab->setRowHeaderVisible(e.attribute("crossTabRowHeaderVisible").toInt());
-//        crossTab->setColTotalVisible(e.attribute("crossTabColTotalVisible").toInt());
-//        crossTab->setRowTotalVisible(e.attribute("crossTabRowTotalVisible").toInt());
-
-        //Fill values into matrix
-//		for (int siRow=1; siRow <= crossTab->rowCount()-1; siRow++)
-//            for (int siCol=1; siCol <= crossTab->colCount()-1; siCol++)
-//                crossTab->setMatrixValue(QString("C%1").arg(siCol),
-//					QString("R%1").arg(siRow), QString("%1%2").arg(siCol).arg(siRow).toDouble());
+        crossTab->setTotalByColumnVisible(e.attribute("totalByRowVisible").toInt());
+        crossTab->setTotalByRowVisible(e.attribute("totalByColVisible").toInt());
+        crossTab->setSubTotalVisible(e.attribute("subtotalIsVisible").toInt());
     }
 }
 

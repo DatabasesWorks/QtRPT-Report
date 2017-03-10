@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.0
+Version: 2.0.1
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2016 Aleksey Osipov
+Copyright 2012-2017 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -68,6 +68,12 @@ public:
     int fieldRow(RptFieldObject *field);
     int fieldCol(RptFieldObject *field);
     int visibleRowCount();
+    bool isTotalByRowVisible();
+    void setTotalByRowVisible(bool value);
+    bool isTotalByColumnVisible();
+    void setTotalByColumnVisible(bool value);
+    bool isSubTotalVisible();
+    void setSubTotalVisible(bool value);
 
     void buildMatrix();
     QList<RptFieldObject*> fieldList;
@@ -83,6 +89,9 @@ private:
     unsigned m_rowCount;
     unsigned m_rowHeight;
     unsigned m_processedCount;
+    bool m_totalByRowVisible;
+    bool m_totalByColumnVisible;
+    bool m_subTotalVisible;
 
     void addField(RptFieldObject *field);
 

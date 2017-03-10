@@ -702,9 +702,9 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
         setBarcodeHeight(e.attribute("barcodeHeight","50").toInt() );
     } else if (this->m_type == CrossTab) {
         m_crossTab->setRowHeight(e.attribute("rowHeight","20").toInt());
-
-//        m_crossTab->setColTotalVisible(e.attribute("crossTabColTotalVisible","1").toInt());
-//        m_crossTab->setRowTotalVisible(e.attribute("crossTabRowTotalVisible","1").toInt());
+        m_crossTab->setTotalByColumnVisible(e.attribute("totalByRowVisible","1").toInt());
+        m_crossTab->setTotalByRowVisible(e.attribute("totalByColVisible","1").toInt());
+        m_crossTab->setSubTotalVisible(e.attribute("subtotalIsVisible").toInt());
     }
     m_text = e.attribute("value");
 
@@ -727,25 +727,16 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
     this->m_autoHeight = e.attribute("autoHeight","0").toInt();
 
     Qt::Alignment hAl, vAl;
-    if (e.attribute("aligmentH")== "hLeft")
-        hAl = Qt::AlignLeft;
-    else if (e.attribute("aligmentH")== "hRight")
-        hAl = Qt::AlignRight;
-    else if (e.attribute("aligmentH")== "hCenter")
-        hAl = Qt::AlignHCenter;
-    else if (e.attribute("aligmentH") == "hJustify")
-        hAl = Qt::AlignJustify;
-    else
-        hAl = Qt::AlignLeft;
+    if (e.attribute("aligmentH")== "hLeft")          hAl = Qt::AlignLeft;
+    else if (e.attribute("aligmentH")== "hRight")    hAl = Qt::AlignRight;
+    else if (e.attribute("aligmentH")== "hCenter")   hAl = Qt::AlignHCenter;
+    else if (e.attribute("aligmentH") == "hJustify") hAl = Qt::AlignJustify;
+    else                                             hAl = Qt::AlignLeft;
 
-    if (e.attribute("aligmentV") == "vTop")
-        vAl = Qt::AlignTop;
-    else if (e.attribute("aligmentV") == "vBottom")
-        vAl = Qt::AlignBottom;
-    else if (e.attribute("aligmentV") == "vCenter")
-        vAl = Qt::AlignVCenter;
-    else
-        vAl = Qt::AlignVCenter;
+    if (e.attribute("aligmentV") == "vTop")          vAl = Qt::AlignTop;
+    else if (e.attribute("aligmentV") == "vBottom")  vAl = Qt::AlignBottom;
+    else if (e.attribute("aligmentV") == "vCenter")  vAl = Qt::AlignVCenter;
+    else                                             vAl = Qt::AlignVCenter;
 
     m_alignment = hAl | vAl;
 }
@@ -807,31 +798,22 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
     }
     if (this->m_type == CrossTab) {
         elem.setAttribute("rowHeight",m_crossTab->rowHeight());
-
-//        elem.setAttribute("crossTabColTotalVisible",m_crossTab->isColTotalVisible());
-//        elem.setAttribute("crossTabRowTotalVisible",m_crossTab->isRowTotalVisible());
+        elem.setAttribute("totalByRowVisible", m_crossTab->isTotalByColumnVisible());
+        elem.setAttribute("totalByColVisible", m_crossTab->isTotalByRowVisible());
+        elem.setAttribute("subtotalIsVisible", m_crossTab->isSubTotalVisible());
     }
 
     QString hAl, vAl;
-    if (getAlignment() & Qt::AlignLeft)
-        hAl = "hLeft";
-    else if (getAlignment() & Qt::AlignRight)
-        hAl = "hRight";
-    else if (getAlignment() & Qt::AlignHCenter)
-        hAl = "hCenter";
-    else if (getAlignment() & Qt::AlignJustify)
-        hAl = "hJustify";
-    else
-        hAl = "hLeft";
+    if (getAlignment() & Qt::AlignLeft)         hAl = "hLeft";
+    else if (getAlignment() & Qt::AlignRight)   hAl = "hRight";
+    else if (getAlignment() & Qt::AlignHCenter) hAl = "hCenter";
+    else if (getAlignment() & Qt::AlignJustify) hAl = "hJustify";
+    else                                        hAl = "hLeft";
 
-    if (getAlignment() & Qt::AlignTop)
-        vAl = "vTop";
-    else if (getAlignment() & Qt::AlignBottom)
-        vAl = "vBottom";
-    else if (getAlignment() & Qt::AlignVCenter)
-        vAl = "vCenter";
-    else
-        vAl = "vCenter";
+    if (getAlignment() & Qt::AlignTop)          vAl = "vTop";
+    else if (getAlignment() & Qt::AlignBottom)  vAl = "vBottom";
+    else if (getAlignment() & Qt::AlignVCenter) vAl = "vCenter";
+    else                                        vAl = "vCenter";
 
     elem.setAttribute("aligmentH",hAl);
     elem.setAttribute("aligmentV",vAl);

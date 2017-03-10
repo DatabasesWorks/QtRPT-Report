@@ -977,14 +977,21 @@
           <item>
            <widget class="QCheckBox" name="chkRowTotal">
             <property name="text">
-             <string>Show column Total by row</string>
+             <string>Show Total column, by row</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QCheckBox" name="chkColTotal">
             <property name="text">
-             <string>Show row Total by column</string>
+             <string>Show Total row, by column</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chkColSubTotal">
+            <property name="text">
+             <string>Show Sub Total row, by column</string>
             </property>
            </widget>
           </item>
