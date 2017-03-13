@@ -52,6 +52,9 @@ struct RptTabElement
 
 class RptCrossTabObject
 {
+    friend class QtRPT;
+    friend class RptFieldObject;
+
 public:
     RptCrossTabObject();
     ~RptCrossTabObject();
@@ -65,7 +68,7 @@ public:
     void setRowHeight(int height);
     int processedCount();
     void setProcessedCount(int value);
-    int fieldRow(RptFieldObject *field);
+    int fieldRow(RptFieldObject *field, bool realNr = false);
     int fieldCol(RptFieldObject *field);
     int visibleRowCount();
     bool isTotalByRowVisible();
@@ -92,6 +95,7 @@ private:
     bool m_totalByRowVisible;
     bool m_totalByColumnVisible;
     bool m_subTotalVisible;
+    bool isTotalField(RptFieldObject *field);
 
     void addField(RptFieldObject *field);
 

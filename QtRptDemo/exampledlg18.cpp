@@ -62,7 +62,7 @@ void ExampleDlg18::setField(RptFieldObject &fieldObject)
     // set the row and column count of the CrossTab
     if (fieldObject.fieldType == FieldType::CrossTab) {
         fieldObject.crossTab->setColCount(3);
-        fieldObject.crossTab->setRowCount(50);
+        fieldObject.crossTab->setRowCount(48);
     }
     // requiest the data for cell of the CrossTab
     if (fieldObject.parentCrossTab != nullptr) {

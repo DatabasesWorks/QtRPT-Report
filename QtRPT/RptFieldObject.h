@@ -98,6 +98,7 @@ public:
 
     QString getHTMLStyle();
     RptCrossTabObject *crossTab;
+    bool isCrossTabChild();
 
 private:
     QColor m_fontColor;

@@ -462,7 +462,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     if (draw)
         fieldObject->updateHighlightingParam();
 
-    emit setField(*fieldObject);
+    if (!fieldObject->isCrossTabChild())
+        emit setField(*fieldObject);
+    if (fieldObject->isCrossTabChild() && fieldObject->parentCrossTab->isTotalField(fieldObject) == false)
+        emit setField(*fieldObject);
 
     int left_   = fieldObject->rect.x() * koefRes_w;
     int width_  = (fieldObject->rect.width()-1) * koefRes_w;
@@ -764,8 +767,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             if (curPage == 1)
                 fieldObject->crossTab->buildMatrix();
 
-            int tmpRowN = 0;  //fact row number
-            int prevRow = 0;  //previous row number
+            int tmpRowN = -1;  // fact row number
+            int prevRow = -1;  // previous row number
 
             bool isPageHeader = fieldObject->parentBand->type == BandType::PageHeader;
             bool isPageFooter = fieldObject->parentBand->type == BandType::PageFooter;
@@ -775,20 +778,17 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
 
             for (quint32 nmr = startFrom; nmr < fieldsCount; nmr++) {
                 auto field = fieldObject->crossTab->fieldList[nmr];
-                int row = fieldObject->crossTab->fieldRow(field);
+                int row = fieldObject->crossTab->fieldRow(field, true);
 
                 if (prevRow != row) {
                     tmpRowN += 1;
                     prevRow = row;
                 }
 
-                int y = fieldObject->crossTab->rowHeight() * tmpRowN;
-
                 if (tmpRowN > fieldObject->crossTab->visibleRowCount()-1) {
                     // we create a new page only for the particular types of the bands.
                     // And only if No new page will be created from other places
                     if ((isPageHeader || isPageFooter) && curPage >= totalPage) {
-                        tmpRowN = 0;
                         newPage(printer, bandTop, draw);
                         return;
                     } else {
@@ -796,8 +796,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     }
                 }
 
+                int y = fieldObject->crossTab->rowHeight() * tmpRowN;
                 field->rect.setTop(fieldObject->rect.y() + y);
                 field->rect.setHeight(fieldObject->crossTab->rowHeight());
+
                 drawFields(field, bandTop, true);
 
                 fieldObject->crossTab->setProcessedCount(nmr+1);

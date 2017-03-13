@@ -465,6 +465,15 @@ void RptFieldObject::updateDiagramValue()
 }
 
 /*!
+ \fn RptFieldObject::isCrossTabChild()
+    Return true if the field is a part of CrossTabObject.
+*/
+bool RptFieldObject::isCrossTabChild()
+{
+    return this->parentCrossTab != nullptr;
+}
+
+/*!
  \fn void RptFieldObject::setTop(int top)
     Sets \a top of field.
 

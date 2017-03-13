@@ -83,7 +83,7 @@ void RptCrossTabObject::setRowCount(int value)
     m_rowCount = value;
 
     if (m_subTotalVisible)
-        m_rowCount = m_rowCount + qCeil(value/visibleRowCount());
+        m_rowCount = m_rowCount + qCeil((double)value/visibleRowCount());
     if (m_totalByColumnVisible)
         m_rowCount = m_rowCount+1;
 }
@@ -144,8 +144,8 @@ void RptCrossTabObject::buildMatrix()
     fieldWidth  = rect.width()/colCount();
     fieldheight = rowHeight();
 
-    for (unsigned row = 0; row < m_rowCount; row++) {
-        for (unsigned col = 0; col < m_colCount; col++) {
+    for (quint32 row = 0; row < m_rowCount; row++) {
+        for (quint32 col = 0; col < m_colCount; col++) {
             auto h1 = new RptFieldObject();
             h1->parentCrossTab = this;
             h1->name = QString("f%1%2").arg(col).arg(row);
@@ -160,24 +160,67 @@ void RptCrossTabObject::buildMatrix()
     }
 }
 
+bool RptCrossTabObject::isTotalField(RptFieldObject *field)
+{
+    quint32 col = fieldCol(field);
+    quint32 row = fieldRow(field, true);
+    quint32 page = (int)row/visibleRowCount();
+    quint32 visibleRow = row - page * visibleRowCount();
+
+    bool totalByRow = false;
+    if (m_totalByRowVisible && col+1 == m_colCount)
+        totalByRow = true;
+
+    bool totalByCol = false;
+    if (m_totalByColumnVisible && row+1 == m_rowCount)
+        totalByCol = true;
+
+    bool sub_totalByCol = false;
+    if (m_subTotalVisible) {
+        if (visibleRow+1 == (quint32)visibleRowCount())
+            sub_totalByCol = true;
+
+        if (m_totalByColumnVisible) {
+            if (row+2 == m_rowCount)
+                sub_totalByCol = true;
+        } else {
+            if (row+1 == m_rowCount)
+                sub_totalByCol = true;
+        }
+    }
+
+    return totalByRow || sub_totalByCol || totalByCol;
+}
+
 /*!
- \fn int RptCrossTabObject::fieldRow(RptFieldObject* field)
-    Define the row of the \a field RptCrossTabObject object.
+ \fn int RptCrossTabObject::fieldRow(RptFieldObject* field, bool realNr = false)
+    Return the row number of the \a field RptCrossTabObject object.
+    If \a realNr is a true, returns field row incliding all Total and Sub Total
+    rows. By default the realNr is false, so we dont take in account the
+    Total rows.
 
     \sa fieldCol
 */
-int RptCrossTabObject::fieldRow(RptFieldObject *field)
+int RptCrossTabObject::fieldRow(RptFieldObject *field, bool realNr)
 {
     int index = fieldList.indexOf(field);
     if (index != -1)
-        index = unsigned(index / m_colCount);
+        index = quint32(index / m_colCount);
 
-    return index;
+    if (realNr) {
+        // the row number, including all Totals
+        return index;
+    } else {
+        // the row number, not including Total
+        quint32 row = index;
+        quint32 page = (int)row/visibleRowCount();
+        return row - page;
+    }
 }
 
 /*!
  \fn int RptCrossTabObject::fieldCol(RptFieldObject* field)
-    Define the column of the \a field RptCrossTabObject object.
+    Retun the column number of the \a field RptCrossTabObject object.
 
     \sa fieldRow
 */
@@ -185,15 +228,15 @@ int RptCrossTabObject::fieldCol(RptFieldObject *field)
 {
     int index = fieldList.indexOf(field);
     if (index != -1) {
-        unsigned row = unsigned(index / m_colCount);
-        unsigned column = index - row * m_colCount;
+        quint32 row = quint32(index / m_colCount);
+        quint32 column = index - row * m_colCount;
         index = column;
     }
     return index;
 }
 
 /*!
- \fn RptCrossTabObject::visibleRowCount()
+ \fn int RptCrossTabObject::visibleRowCount()
     return the visible count of rows on one page.
 
     \sa rowCount();
@@ -225,7 +268,11 @@ RptCrossTabObject::~RptCrossTabObject()
 
 QDebug operator<<(QDebug dbg, const RptCrossTabObject &obj)
 {
-    dbg << obj.name << "\n";
+    const RptCrossTabObject *tmp = &obj;
+    if (tmp != nullptr)
+        dbg << obj.name << "\n";
+    else
+        dbg << nullptr;
     return dbg;
 }
 
