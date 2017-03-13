@@ -432,6 +432,7 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
             }
         }
     }
+
     if (fieldType == CrossTab) {
         crossTab = new RptCrossTabObject();
         crossTab->rect = this->rect;

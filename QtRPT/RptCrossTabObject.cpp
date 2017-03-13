@@ -41,11 +41,23 @@ RptCrossTabObject::RptCrossTabObject()
     qRegisterMetaType<RptCrossTabObject>("RptCrossTabObject");
 }
 
+/*!
+ \fn int RptCrossTabObject::rowHeight()
+    Gets height of the row.
+
+    \sa setRowHeight
+*/
 int RptCrossTabObject::rowHeight()
 {
     return m_rowHeight;
 }
 
+/*!
+ \fn void RptCrossTabObject::setRowHeight(int height)
+    Sets \a height of the row.
+
+    \sa rect
+*/
 void RptCrossTabObject::setRowHeight(int height)
 {
     m_rowHeight = height;
@@ -58,7 +70,7 @@ int RptCrossTabObject::colCount() const
 
 void RptCrossTabObject::setColCount(int value)
 {
-    m_colCount = value;
+    m_colCount = m_totalByRowVisible ? value+1 : value;
 }
 
 int RptCrossTabObject::rowCount() const
@@ -69,6 +81,11 @@ int RptCrossTabObject::rowCount() const
 void RptCrossTabObject::setRowCount(int value)
 {
     m_rowCount = value;
+
+    if (m_subTotalVisible)
+        m_rowCount = m_rowCount + qCeil(value/visibleRowCount());
+    if (m_totalByColumnVisible)
+        m_rowCount = m_rowCount+1;
 }
 
 bool RptCrossTabObject::isTotalByRowVisible()
