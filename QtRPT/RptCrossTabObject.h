@@ -96,6 +96,7 @@ private:
     bool m_totalByColumnVisible;
     bool m_subTotalVisible;
     bool isTotalField(RptFieldObject *field);
+    void total(RptFieldObject *field);
 
     void addField(RptFieldObject *field);
 

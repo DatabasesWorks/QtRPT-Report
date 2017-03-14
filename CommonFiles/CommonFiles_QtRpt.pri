@@ -24,5 +24,3 @@ HEADERS += $$PWD/CommonClasses.h \
            $$PWD/chart.h \
            $$PWD/Barcode.h
 
-
-

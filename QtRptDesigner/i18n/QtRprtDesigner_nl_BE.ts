@@ -1935,39 +1935,39 @@ Bewaar het rapport?</translation>
 <context>
     <name>QtRPT</name>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1603"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1613"/>
         <source>Save as PDF</source>
         <translation>Bewaar als PDF</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1608"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1618"/>
         <source>Save as HTML</source>
         <translation>Bewaar als HTML</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1614"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1624"/>
         <source>Save as XLSX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
         <source>Save File</source>
         <translation>Bewaar bestand</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
         <source>PDF Files (*.pdf)</source>
         <translation>PDF bestanden (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
         <source>HTML Files (*.html)</source>
         <translation>HTML bestanden (*.html)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
         <source>XLSX Files (*.xlsx)</source>
         <translation type="unfinished"></translation>
     </message>

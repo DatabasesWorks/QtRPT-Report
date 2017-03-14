@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.0
+Version: 2.0.1
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2016 Aleksey Osipov
+Copyright 2012-2017 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -462,10 +462,18 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     if (draw)
         fieldObject->updateHighlightingParam();
 
+    // we request data if it is a not child of the CrossTab
     if (!fieldObject->isCrossTabChild())
         emit setField(*fieldObject);
-    if (fieldObject->isCrossTabChild() && fieldObject->parentCrossTab->isTotalField(fieldObject) == false)
-        emit setField(*fieldObject);
+
+    if (fieldObject->isCrossTabChild()) {
+        if (fieldObject->parentCrossTab->isTotalField(fieldObject) == false)
+            // we request data if it is a child of the CrossTab, but it is a not Total field
+            emit setField(*fieldObject);
+        else
+            // if it is a Total field, we a calculate Total
+            fieldObject->parentCrossTab->total(fieldObject);
+    }
 
     int left_   = fieldObject->rect.x() * koefRes_w;
     int width_  = (fieldObject->rect.width()-1) * koefRes_w;

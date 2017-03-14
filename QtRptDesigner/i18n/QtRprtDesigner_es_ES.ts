@@ -1978,12 +1978,12 @@ Save the report?</source>
 <context>
     <name>QtRPT</name>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1603"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1613"/>
         <source>Save as PDF</source>
         <translation>Salvar en PDF</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1608"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1618"/>
         <source>Save as HTML</source>
         <translation>Salvar en HTML</translation>
     </message>
@@ -1992,29 +1992,29 @@ Save the report?</source>
         <translation type="vanished">Salvar como ODT</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1614"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1624"/>
         <source>Save as XLSX</source>
         <translation>Slavar como XLSX</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
         <source>Save File</source>
         <translation>Salvar fichero</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
         <source>PDF Files (*.pdf)</source>
         <translation>Ficheros PDF (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
         <source>HTML Files (*.html)</source>
         <translation>Fichero HTML (*.html)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
         <source>XLSX Files (*.xlsx)</source>
         <translation>Ficheros XLSX (*.xlsx)</translation>
     </message>

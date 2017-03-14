@@ -1829,39 +1829,39 @@ Save the report?</source>
 <context>
     <name>QtRPT</name>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1603"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1613"/>
         <source>Save as PDF</source>
         <translation>PDF ஆக சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1608"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1618"/>
         <source>Save as HTML</source>
         <translation>HTML ஆக சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1614"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1624"/>
         <source>Save as XLSX</source>
         <translation>XLSX ஆக சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
         <source>Save File</source>
         <translation>கோப்பை சேமி</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1639"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
         <source>PDF Files (*.pdf)</source>
         <translation>PDF கோப்புகள் (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1645"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
         <source>HTML Files (*.html)</source>
         <translation>HTML கோப்புகள் (*.html)</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1651"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
         <source>XLSX Files (*.xlsx)</source>
         <translation>XLSX கோப்புகள் (*.xlsx)</translation>
     </message>

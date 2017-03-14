@@ -192,6 +192,11 @@ bool RptCrossTabObject::isTotalField(RptFieldObject *field)
     return totalByRow || sub_totalByCol || totalByCol;
 }
 
+void RptCrossTabObject::total(RptFieldObject *field)
+{
+    field->value = "Its a total";
+}
+
 /*!
  \fn int RptCrossTabObject::fieldRow(RptFieldObject* field, bool realNr = false)
     Return the row number of the \a field RptCrossTabObject object.
