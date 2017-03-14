@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     a.setApplicationName(QApplication::tr("QtRptDesigner"));
     a.setOrganizationName("Aleksey Osipov");
     a.setOrganizationDomain("https://sourceforge.net/projects/qtrpt/");  //projects web page
-    a.setApplicationVersion("2.0.0");
+    a.setApplicationVersion("2.0.1");
 
     QTextCodec *codec = QTextCodec::codecForName("UTF8");
     QTextCodec::setCodecForLocale(codec);

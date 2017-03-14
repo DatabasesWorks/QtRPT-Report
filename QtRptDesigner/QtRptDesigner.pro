@@ -12,7 +12,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 }
 
 TARGET = QtRptDesigner
-VERSION = 2.0.0
+VERSION = 2.0.1
 DEFINES += VERSION=\\\"$$VERSION\\\"
 TEMPLATE = app
 
@@ -102,20 +102,13 @@ CONFIG += app_bundle
 CONFIG -= debug_and_release debug_and_release_target
 
 # Automatically build required translation files (*.qm)
-all.depends = locale
-#QMAKE_EXTRA_TARGETS += all
-
-
-TRANSLATION_TARGETS = $$replace(TRANSLATIONS, "\.ts", ".qm")
-locale.depends = $$TRANSLATION_TARGETS
-QMAKE_EXTRA_TARGETS += locale
-
-"%.qm".commands = lrelease -qm $@ $<
-"%.qm".depends = "%.ts"
-QMAKE_EXTRA_TARGETS += "%.qm"
-
-PRE_TARGETDEPS += locale
-
-QMAKE_TARGET_COMPANY = "QtRPT"
-QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2012-2017 Aleksey Osipov <aliks-os@ukr.net>"
-QMAKE_TARGET_DESCRIPTION = "QtRPT and QtRptDesigner"
+isEmpty(QMAKE_LRELEASE) {
+    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+    else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
+updateqm.input = TRANSLATIONS
+updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+updateqm.CONFIG += no_link
+QMAKE_EXTRA_COMPILERS += updateqm
+PRE_TARGETDEPS += compiler_updateqm_make_all
