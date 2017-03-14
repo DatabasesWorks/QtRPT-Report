@@ -88,10 +88,10 @@ public:
     #endif
 
 private:
-    unsigned m_colCount;
-    unsigned m_rowCount;
-    unsigned m_rowHeight;
-    unsigned m_processedCount;
+    quint32 m_colCount;
+    quint32 m_rowCount;
+    quint32 m_rowHeight;
+    quint32 m_processedCount;
     bool m_totalByRowVisible;
     bool m_totalByColumnVisible;
     bool m_subTotalVisible;

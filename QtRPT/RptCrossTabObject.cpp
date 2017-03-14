@@ -194,7 +194,37 @@ bool RptCrossTabObject::isTotalField(RptFieldObject *field)
 
 void RptCrossTabObject::total(RptFieldObject *field)
 {
-    field->value = "Its a total";
+    quint32 col = fieldCol(field);
+    quint32 row = fieldRow(field, true);
+    quint32 page = (int)row/visibleRowCount();
+    bool grandTotal = row+1 == m_rowCount ? true : false;
+
+    double total = 0;
+
+    for (const auto &m_field : fieldList) {
+        quint32 m_col = fieldCol(m_field);
+        quint32 m_row = fieldRow(m_field, true);
+
+        if (col+1 == m_colCount) {
+            // total by row
+            if (/*!isTotalField(m_field) &&*/ m_field != field && m_row == row)
+                total += m_field->value.toDouble();
+        } else {
+            // total by column
+            quint32 m_page = (int)m_row/visibleRowCount();
+
+            if (!isTotalField(m_field) && m_col == col) {
+                if (!grandTotal) {
+                    if (m_page == page)
+                        total += m_field->value.toDouble();
+                } else {
+                    total += m_field->value.toDouble();
+                }
+            }
+        }
+    }
+
+    field->value = QString::number(total);
 }
 
 /*!

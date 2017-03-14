@@ -69,7 +69,8 @@ void ExampleDlg18::setField(RptFieldObject &fieldObject)
     if (fieldObject.parentCrossTab != nullptr) {
         int row = fieldObject.parentCrossTab->fieldRow(&fieldObject);
         int col = fieldObject.parentCrossTab->fieldCol(&fieldObject);
-        fieldObject.value = QString("f%1-%2").arg(col).arg(row);
+        fieldObject.value =QString::number(col+row);
+        //fieldObject.value = QString("f%1-%2").arg(col).arg(row);
     }
 }
 
