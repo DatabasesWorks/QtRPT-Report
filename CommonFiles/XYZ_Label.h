@@ -24,6 +24,7 @@ limitations under the License.
 #define XYZ_LABEL_H
 
 #include <QLabel>
+#include <QBasicTimer>
 
 class XYZLabel : public QLabel
 {
@@ -33,12 +34,18 @@ public:
     XYZLabel(const QString &Text, QWidget *parent = 0);
     ~XYZLabel();
     void setHoverText(bool bHover);
+
 private:
+	QBasicTimer timer;
     bool m_bHover;
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+	void timerEvent(QTimerEvent *);
+
 signals:
     void clicked();
+	void doubleClicked();
+
 };
 #endif

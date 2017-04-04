@@ -22,6 +22,7 @@ limitations under the License.
 */
 
 #include "XYZ_Label.h"
+#include <QDebug>
 
 XYZLabel::XYZLabel(QWidget *parent)
 : QLabel(parent)
@@ -65,5 +66,21 @@ void XYZLabel::leaveEvent(QEvent *)
 
 void XYZLabel::mouseReleaseEvent(QMouseEvent *)
 {
-    emit clicked();
+    if (timer.isActive())
+    {
+        timer.stop();
+        emit doubleClicked();
+        qDebug() << "double click";
+    }
+    else
+    {	
+        timer.start(300, this);
+    }
+}
+
+void XYZLabel::timerEvent(QTimerEvent *)
+{
+    timer.stop();
+	emit clicked();
+    qDebug() << "single click";
 }
