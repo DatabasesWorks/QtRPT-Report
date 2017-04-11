@@ -113,8 +113,6 @@ void GraphicsBox::adjustSize(int x, int y)
 
 bool GraphicsBox::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 {
-    //qDebug() << " QEvent == " + QString::number(event->type());
-
     CornerGrabber *corner = dynamic_cast<CornerGrabber *>(watched);
     if (corner == nullptr) return false; // not expected to get here
 
@@ -705,6 +703,8 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
         m_crossTab->setTotalByColumnVisible(e.attribute("totalByRowVisible","1").toInt());
         m_crossTab->setTotalByRowVisible(e.attribute("totalByColVisible","1").toInt());
         m_crossTab->setSubTotalVisible(e.attribute("subtotalIsVisible").toInt());
+        m_crossTab->totalBackgroundColor  = colorFromString(e.attribute("totalBackgroundColor","rgba(255,255,255,255)"));
+        m_crossTab->headerBackgroundColor = colorFromString(e.attribute("headerBackgroundColor","rgba(255,255,255,255)"));
     }
     m_text = e.attribute("value");
 
@@ -801,6 +801,12 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
         elem.setAttribute("totalByRowVisible", m_crossTab->isTotalByColumnVisible());
         elem.setAttribute("totalByColVisible", m_crossTab->isTotalByRowVisible());
         elem.setAttribute("subtotalIsVisible", m_crossTab->isSubTotalVisible());
+
+        QString totalBackgroundColor = colorToString(m_crossTab->totalBackgroundColor);
+        elem.setAttribute("totalBackgroundColor",totalBackgroundColor);
+
+        QString headerBackgroundColor = colorToString(m_crossTab->headerBackgroundColor);
+        elem.setAttribute("headerBackgroundColor",headerBackgroundColor);
     }
 
     QString hAl, vAl;

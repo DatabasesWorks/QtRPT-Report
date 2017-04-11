@@ -1619,18 +1619,21 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName)
         actExpToHtml->setObjectName("actExpToHtml");
         connect(actExpToHtml, SIGNAL(triggered()), SLOT(exportTo()));
 
-        QIcon icon1;
-        icon1.addPixmap(QPixmap(QString::fromUtf8(":/excel.png")), QIcon::Normal, QIcon::On);
-        auto actExpToXlsx = new QAction(icon1,tr("Save as XLSX"),this);
-        actExpToXlsx->setObjectName("actExpToXlsx");
-        connect(actExpToXlsx, SIGNAL(triggered()), SLOT(exportTo()));
+        #ifdef QXLSX_LIBRARY
+            QIcon icon1;
+            icon1.addPixmap(QPixmap(QString::fromUtf8(":/excel.png")), QIcon::Normal, QIcon::On);
+            auto actExpToXlsx = new QAction(icon1,tr("Save as XLSX"),this);
+            actExpToXlsx->setObjectName("actExpToXlsx");
+            connect(actExpToXlsx, SIGNAL(triggered()), SLOT(exportTo()));
+        #endif
 
         QList<QToolBar*> l1 = preview.findChildren<QToolBar*>();
         l1.at(0)->addAction(actExpToPdf);
         l1.at(0)->addAction(actExpToHtml);
-        l1.at(0)->addAction(actExpToXlsx);
+        #ifdef QXLSX_LIBRARY
+            l1.at(0)->addAction(actExpToXlsx);
+        #endif
 
-        //preview.addActions(lst);
         pr->installEventFilter(this);
         //curPage = 1;
         preview.exec();

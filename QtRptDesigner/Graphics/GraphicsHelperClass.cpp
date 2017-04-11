@@ -268,7 +268,7 @@ void GraphicsHelperClass::edit()
             QList<PairCont> lst = ParamCommand::compoundArrays(oldList,newList);
 
             auto scene = qobject_cast<GraphicsScene*>(graphicsItem->scene());
-            scene->m_undoStack->push( new ParamCommand( lst, scene ) );
+            scene->m_undoStack->push(new ParamCommand(lst, scene));
         }
     }
 }

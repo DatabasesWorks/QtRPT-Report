@@ -82,6 +82,9 @@ public:
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
 
+    QColor totalBackgroundColor;
+    QColor headerBackgroundColor;
+
     void addElement(RptTabElement element);
     #ifdef QXLSX_LIBRARY
         void buildXlsx(QXlsx::Document *xlsx);

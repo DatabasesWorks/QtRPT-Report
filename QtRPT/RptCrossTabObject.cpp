@@ -25,6 +25,8 @@ limitations under the License.
 
 RptCrossTabObject::RptCrossTabObject()
 {
+    totalBackgroundColor = Qt::white;
+    headerBackgroundColor = Qt::white;
     name = "RptCrossTabObject_DEMO";
     rect.setX(0);
     rect.setY(0);

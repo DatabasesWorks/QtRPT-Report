@@ -42,6 +42,8 @@ EditFldDlg::EditFldDlg(QWidget *parent)
     QObject::connect(ui->edtCondition, SIGNAL(textEdited(const QString&)), this, SLOT(conditionChanged(const QString&)));
     QObject::connect(ui->btnColorB, SIGNAL(clicked()), this, SLOT(chooseColor()));
     QObject::connect(ui->btnColorF, SIGNAL(clicked()), this, SLOT(chooseColor()));
+    QObject::connect(ui->btnColorTotal, SIGNAL(clicked()), this, SLOT(chooseColor()));
+    QObject::connect(ui->btnColorHeader, SIGNAL(clicked()), this, SLOT(chooseColor()));
     QObject::connect(ui->chkBold, SIGNAL(clicked()), this, SLOT(encodeHighLightingString()));
     QObject::connect(ui->chkItalic, SIGNAL(clicked()), this, SLOT(encodeHighLightingString()));
     QObject::connect(ui->chkUnderline, SIGNAL(clicked()), this, SLOT(encodeHighLightingString()));
@@ -52,10 +54,20 @@ EditFldDlg::EditFldDlg(QWidget *parent)
 void EditFldDlg::chooseColor()
 {
     QColor color;
+    QLabel *label = nullptr;
+
     if (sender() == ui->btnColorF)
-        color = colorFromString(ui->lblColorF->styleSheet());
+        label = ui->lblColorF;
     if (sender() == ui->btnColorB)
-        color = colorFromString(ui->lblColorB->styleSheet());
+        label = ui->lblColorB;
+    if (sender() == ui->btnColorTotal)
+        label = ui->lblColorTotal;
+    if (sender() == ui->btnColorHeader)
+        label = ui->lblColorHeader;
+
+    if (label != nullptr)
+        color = colorFromString(label->styleSheet());
+
 
     QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
     if (dlg->exec() == QDialog::Accepted)
@@ -64,10 +76,8 @@ void EditFldDlg::chooseColor()
         return;
 
     QString strColor = colorToString(color);
-    if (sender() == ui->btnColorB)
-        ui->lblColorB->setStyleSheet("QLabel {background-color: "+strColor+"}");
-    if (sender() == ui->btnColorF)
-        ui->lblColorF->setStyleSheet("QLabel {background-color: "+strColor+"}");
+    if (label != nullptr)
+        label->setStyleSheet("QLabel {background-color: "+strColor+"}");
 
     encodeHighLightingString();
 }
@@ -409,20 +419,38 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
         return QDialog::Rejected;
 
     ui->stackedWidget->setCurrentIndex(5);
-    ui->spnRowCount->setValue(m_crossTab->rowCount());
     ui->spnColCount->setValue(m_crossTab->colCount());
     ui->spnRowHeight->setValue(m_crossTab->rowHeight());
     ui->chkRowTotal->setChecked(m_crossTab->isTotalByRowVisible());
     ui->chkColTotal->setChecked(m_crossTab->isTotalByColumnVisible());
     ui->chkColSubTotal->setChecked(m_crossTab->isSubTotalVisible());
 
+    QColor colorTotal = m_crossTab->totalBackgroundColor;
+    QColor colorHeader = m_crossTab->headerBackgroundColor;
+    QString strColorTotal = colorToString(colorTotal);
+    QString strColorHeader = colorToString(colorHeader);
+
+    ui->lblColorHeader->setStyleSheet("QLabel {background-color: "+strColorTotal+"}");
+    ui->lblColorTotal->setStyleSheet("QLabel {background-color: "+strColorHeader+"}");
+
     if (this->exec()) {
-        m_crossTab->setRowCount(ui->spnRowCount->value());
+
         m_crossTab->setColCount(ui->spnColCount->value());
         m_crossTab->setRowHeight(ui->spnRowHeight->value());
         m_crossTab->setTotalByRowVisible(ui->chkRowTotal->isChecked());
         m_crossTab->setTotalByColumnVisible(ui->chkColTotal->isChecked());
         m_crossTab->setSubTotalVisible(ui->chkColSubTotal->isChecked());
+
+        int startT = ui->lblColorTotal->styleSheet().indexOf("rgba(",0,Qt::CaseInsensitive);
+        int endT = ui->lblColorTotal->styleSheet().indexOf(")",Qt::CaseInsensitive)+1;
+        int startH = ui->lblColorHeader->styleSheet().indexOf("rgba(",0,Qt::CaseInsensitive);
+        int endH = ui->lblColorHeader->styleSheet().indexOf(")",Qt::CaseInsensitive)+1;
+
+        QString strColorT = ui->lblColorTotal->styleSheet().mid(startT,endT-startT);
+        QString strColorH = ui->lblColorHeader->styleSheet().mid(startH,endH-startH);
+
+        m_crossTab->totalBackgroundColor = colorFromString(strColorT);
+        m_crossTab->headerBackgroundColor = colorFromString(strColorH);
 
         return QDialog::Accepted;
     } else {
