@@ -107,13 +107,13 @@ limitations under the License.
 RptPageObject::RptPageObject(QtRPT *qtrpt)
 {
 	this->m_qtrpt = qtrpt;
-    this->orientation=0;
-    this->ph=1188;
-    this->pw=840;
-    this->ml=40;
-    this->mr=40;
-    this->mt=40;
-    this->mb=40;
+    this->orientation = 0;
+    this->ph = 1188;
+    this->pw = 840;
+    this->ml = 40;
+    this->mr = 40;
+    this->mt = 40;
+    this->mb = 40;
     this->border = false;
     this->borderWidth = 1;
     this->borderColor = Qt::black;
@@ -170,7 +170,7 @@ void RptPageObject::addBand(RptBandObject *band)
 */
 RptBandObject *RptPageObject::getBand(BandType type)
 {
-    for (auto band : bandList)
+    for (auto &band : bandList)
         if (band->type == type)
             return band;
     return nullptr;

@@ -965,6 +965,13 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_16">
           <item>
+           <widget class="QCheckBox" name="chckHeader">
+            <property name="text">
+             <string>Show Header</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="chkRowTotal">
             <property name="text">
              <string>Show Total column, by row</string>

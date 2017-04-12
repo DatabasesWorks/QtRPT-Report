@@ -285,7 +285,6 @@ limitations under the License.
  \note For type Diagram only.
 */
 
-
 /*!
  \fn int RptFieldObject::recNo()
     \c Return a current record number.
@@ -437,10 +436,7 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
         crossTab = new RptCrossTabObject();
         crossTab->rect = this->rect;
         crossTab->parentField = this;
-
-        crossTab->setTotalByColumnVisible(e.attribute("totalByRowVisible").toInt());
-        crossTab->setTotalByRowVisible(e.attribute("totalByColVisible").toInt());
-        crossTab->setSubTotalVisible(e.attribute("subtotalIsVisible").toInt());
+        crossTab->loadParamFromXML(e);
     }
 }
 

@@ -42,12 +42,12 @@ struct RptTabElement
 {
     RptFieldObject *fieldObject;
     QVariant value;
-    unsigned left;
-    unsigned top;
-    unsigned height;
-    unsigned width;
-    unsigned col;
-    unsigned row;
+    quint32 left;
+    quint32 top;
+    quint32 height;
+    quint32 width;
+    quint32 col;
+    quint32 row;
 };
 
 class RptCrossTabObject
@@ -77,6 +77,10 @@ public:
     void setTotalByColumnVisible(bool value);
     bool isSubTotalVisible();
     void setSubTotalVisible(bool value);
+    bool isHeaderVisible();
+    void setHeaderVisible(bool value);
+    void loadParamFromXML(QDomElement e);
+    void saveParamToXML(QDomElement &e);
 
     void buildMatrix();
     QList<RptFieldObject*> fieldList;
@@ -98,8 +102,10 @@ private:
     bool m_totalByRowVisible;
     bool m_totalByColumnVisible;
     bool m_subTotalVisible;
+    bool m_headerVisible;
     bool isTotalField(RptFieldObject *field);
     void total(RptFieldObject *field);
+    bool isHeaderField(RptFieldObject *field);
 
     void addField(RptFieldObject *field);
 

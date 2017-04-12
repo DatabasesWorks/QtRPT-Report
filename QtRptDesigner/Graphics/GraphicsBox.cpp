@@ -699,12 +699,7 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
         setBarcodeFrameType( (BarCode::FrameTypes)e.attribute("barcodeFrameType","0").toInt() );
         setBarcodeHeight(e.attribute("barcodeHeight","50").toInt() );
     } else if (this->m_type == CrossTab) {
-        m_crossTab->setRowHeight(e.attribute("rowHeight","20").toInt());
-        m_crossTab->setTotalByColumnVisible(e.attribute("totalByRowVisible","1").toInt());
-        m_crossTab->setTotalByRowVisible(e.attribute("totalByColVisible","1").toInt());
-        m_crossTab->setSubTotalVisible(e.attribute("subtotalIsVisible").toInt());
-        m_crossTab->totalBackgroundColor  = colorFromString(e.attribute("totalBackgroundColor","rgba(255,255,255,255)"));
-        m_crossTab->headerBackgroundColor = colorFromString(e.attribute("headerBackgroundColor","rgba(255,255,255,255)"));
+        m_crossTab->loadParamFromXML(e);
     }
     m_text = e.attribute("value");
 
@@ -797,16 +792,7 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
         elem.setAttribute("barcodeHeight",m_barcode->getHeight());
     }
     if (this->m_type == CrossTab) {
-        elem.setAttribute("rowHeight",m_crossTab->rowHeight());
-        elem.setAttribute("totalByRowVisible", m_crossTab->isTotalByColumnVisible());
-        elem.setAttribute("totalByColVisible", m_crossTab->isTotalByRowVisible());
-        elem.setAttribute("subtotalIsVisible", m_crossTab->isSubTotalVisible());
-
-        QString totalBackgroundColor = colorToString(m_crossTab->totalBackgroundColor);
-        elem.setAttribute("totalBackgroundColor",totalBackgroundColor);
-
-        QString headerBackgroundColor = colorToString(m_crossTab->headerBackgroundColor);
-        elem.setAttribute("headerBackgroundColor",headerBackgroundColor);
+        m_crossTab->saveParamToXML(elem);
     }
 
     QString hAl, vAl;
@@ -829,10 +815,12 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
     elem.setAttribute("fontItalic",m_font.italic());
     elem.setAttribute("fontUnderline",m_font.underline());
     elem.setAttribute("fontStrikeout",m_font.strikeOut());
+
     if (m_font.family().isEmpty())
         elem.setAttribute("fontFamily","Arial");
     else
         elem.setAttribute("fontFamily",m_font.family());
+
     elem.setAttribute("fontSize",m_font.pointSize());
 
     QString fontColor = colorToString(getColorValue(FontColor));

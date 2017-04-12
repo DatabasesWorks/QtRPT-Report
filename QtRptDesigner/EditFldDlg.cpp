@@ -415,31 +415,37 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
 {
     auto cont = qgraphicsitem_cast<GraphicsBox*>(gItem);
     auto m_crossTab = cont->getCrossTab();
+
     if (m_crossTab == nullptr)
         return QDialog::Rejected;
 
     ui->stackedWidget->setCurrentIndex(5);
-    ui->spnColCount->setValue(m_crossTab->colCount());
+    if (m_crossTab->isTotalByRowVisible())
+        ui->spnColCount->setValue(m_crossTab->colCount()-1);
+    else
+        ui->spnColCount->setValue(m_crossTab->colCount());
+
     ui->spnRowHeight->setValue(m_crossTab->rowHeight());
     ui->chkRowTotal->setChecked(m_crossTab->isTotalByRowVisible());
     ui->chkColTotal->setChecked(m_crossTab->isTotalByColumnVisible());
     ui->chkColSubTotal->setChecked(m_crossTab->isSubTotalVisible());
+    ui->chckHeader->setChecked(m_crossTab->isHeaderVisible());
 
     QColor colorTotal = m_crossTab->totalBackgroundColor;
     QColor colorHeader = m_crossTab->headerBackgroundColor;
     QString strColorTotal = colorToString(colorTotal);
     QString strColorHeader = colorToString(colorHeader);
 
-    ui->lblColorHeader->setStyleSheet("QLabel {background-color: "+strColorTotal+"}");
-    ui->lblColorTotal->setStyleSheet("QLabel {background-color: "+strColorHeader+"}");
+    ui->lblColorHeader->setStyleSheet("QLabel {background-color: "+strColorHeader+"}");
+    ui->lblColorTotal->setStyleSheet("QLabel {background-color: "+strColorTotal+"}");
 
     if (this->exec()) {
-
-        m_crossTab->setColCount(ui->spnColCount->value());
         m_crossTab->setRowHeight(ui->spnRowHeight->value());
         m_crossTab->setTotalByRowVisible(ui->chkRowTotal->isChecked());
         m_crossTab->setTotalByColumnVisible(ui->chkColTotal->isChecked());
         m_crossTab->setSubTotalVisible(ui->chkColSubTotal->isChecked());
+        m_crossTab->setHeaderVisible(ui->chckHeader->isChecked());
+        m_crossTab->setColCount(ui->spnColCount->value());
 
         int startT = ui->lblColorTotal->styleSheet().indexOf("rgba(",0,Qt::CaseInsensitive);
         int endT = ui->lblColorTotal->styleSheet().indexOf(")",Qt::CaseInsensitive)+1;
@@ -573,11 +579,13 @@ void EditFldDlg::itemSelectionChanged()
         ui->btnDown->setEnabled(false);
         ui->btnRemoveRow->setEnabled(false);
     }
+
     int row = ui->tableWidget->currentRow();
     if (row == 0 || ui->tableWidget->rowCount() == 1)
         ui->btnUp->setEnabled(false);
     else
         ui->btnUp->setEnabled(true);
+
     if (row == ui->tableWidget->rowCount()-1 || ui->tableWidget->rowCount() == 1)
         ui->btnDown->setEnabled(false);
     else

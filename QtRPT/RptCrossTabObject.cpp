@@ -27,7 +27,6 @@ RptCrossTabObject::RptCrossTabObject()
 {
     totalBackgroundColor = Qt::white;
     headerBackgroundColor = Qt::white;
-    name = "RptCrossTabObject_DEMO";
     rect.setX(0);
     rect.setY(0);
     rect.setWidth(500);
@@ -39,6 +38,7 @@ RptCrossTabObject::RptCrossTabObject()
     m_totalByRowVisible = false;
     m_totalByColumnVisible = false;
     m_subTotalVisible = false;
+    m_headerVisible = false;
 
     qRegisterMetaType<RptCrossTabObject>("RptCrossTabObject");
 }
@@ -86,6 +86,10 @@ void RptCrossTabObject::setRowCount(int value)
 
     if (m_subTotalVisible)
         m_rowCount = m_rowCount + qCeil((double)value/visibleRowCount());
+
+    if (m_headerVisible)
+        m_rowCount = m_rowCount + qCeil((double)value/visibleRowCount());
+
     if (m_totalByColumnVisible)
         m_rowCount = m_rowCount+1;
 }
@@ -120,6 +124,16 @@ void RptCrossTabObject::setSubTotalVisible(bool value)
     m_subTotalVisible = value;
 }
 
+bool RptCrossTabObject::isHeaderVisible()
+{
+    return m_headerVisible;
+}
+
+void RptCrossTabObject::setHeaderVisible(bool value)
+{
+    m_headerVisible = value;
+}
+
 int RptCrossTabObject::processedCount()
 {
     return m_processedCount;
@@ -138,6 +152,7 @@ void RptCrossTabObject::buildMatrix()
 
     float fieldWidth = rect.width();
     float fieldheight = rect.height();
+
     if (m_colCount == 0)
         return;
     if (m_rowCount == 0)
@@ -157,7 +172,14 @@ void RptCrossTabObject::buildMatrix()
             h1->rect.setHeight(fieldheight);
             h1->rect.setWidth(fieldWidth);
             h1->aligment = Qt::AlignCenter;
+
             addField(h1);
+
+            if (isTotalField(h1))
+                h1->setDefaultBackgroundColor(this->totalBackgroundColor);
+
+            if (isHeaderField(h1))
+                h1->setDefaultBackgroundColor(this->headerBackgroundColor);
         }
     }
 }
@@ -229,6 +251,51 @@ void RptCrossTabObject::total(RptFieldObject *field)
     field->value = QString::number(total);
 }
 
+bool RptCrossTabObject::isHeaderField(RptFieldObject *field)
+{
+    quint32 row = fieldRow(field, true);
+    quint32 page = (int)row/visibleRowCount();
+    quint32 visibleRow = row - page * visibleRowCount();
+
+    if (m_headerVisible)
+        if (visibleRow == 0)
+            return true;
+
+    return false;
+}
+
+/*!
+ \fn void RptCrossTabObject::loadParamFromXML(QDomElement e)
+    Load data from XML file
+*/
+void RptCrossTabObject::loadParamFromXML(QDomElement e)
+{
+    m_rowHeight            = e.attribute("rowHeight","20").toInt();
+    m_colCount             = e.attribute("colCount","3").toInt();
+    m_totalByColumnVisible = e.attribute("totalByColVisible","1").toInt();
+    m_totalByRowVisible    = e.attribute("totalByRowVisible","1").toInt();
+    m_subTotalVisible      = e.attribute("subtotalIsVisible").toInt();
+    m_headerVisible        = e.attribute("headerIsVisible").toInt();
+    totalBackgroundColor   = colorFromString(e.attribute("totalBackgroundColor","rgba(255,255,255,255)"));
+    headerBackgroundColor  = colorFromString(e.attribute("headerBackgroundColor","rgba(255,255,255,255)"));
+}
+
+void RptCrossTabObject::saveParamToXML(QDomElement &e)
+{
+    e.setAttribute("rowHeight", m_rowHeight);
+    e.setAttribute("colCount", m_colCount);
+    e.setAttribute("totalByColVisible", m_totalByColumnVisible);
+    e.setAttribute("totalByRowVisible", m_totalByRowVisible);
+    e.setAttribute("subtotalIsVisible", m_subTotalVisible);
+    e.setAttribute("headerIsVisible", m_headerVisible);
+
+    QString totalBackgroundColor = colorToString(this->totalBackgroundColor);
+    e.setAttribute("totalBackgroundColor", totalBackgroundColor);
+
+    QString headerBackgroundColor = colorToString(this->headerBackgroundColor);
+    e.setAttribute("headerBackgroundColor", headerBackgroundColor);
+}
+
 /*!
  \fn int RptCrossTabObject::fieldRow(RptFieldObject* field, bool realNr = false)
     Return the row number of the \a field RptCrossTabObject object.
@@ -251,7 +318,11 @@ int RptCrossTabObject::fieldRow(RptFieldObject *field, bool realNr)
         // the row number, not including Total
         quint32 row = index;
         quint32 page = (int)row/visibleRowCount();
-        return row - page;
+
+        if (m_headerVisible)
+            return row - page - (page+1);
+        else
+            return row - page;
     }
 }
 

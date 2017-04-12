@@ -227,6 +227,7 @@ bool QtRPT::loadReport(QString fileName)
 
     file.close();
     makeReportObjectStructure();
+
     return true;
 }
 
@@ -467,10 +468,13 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         emit setField(*fieldObject);
 
     if (fieldObject->isCrossTabChild()) {
-        if (fieldObject->parentCrossTab->isTotalField(fieldObject) == false)
+        bool isTotalField = fieldObject->parentCrossTab->isTotalField(fieldObject);
+        bool isHeaderField = fieldObject->parentCrossTab->isHeaderField(fieldObject);
+
+        if (isTotalField == false && isHeaderField == false)
             // we request data if it is a child of the CrossTab, but it is a not Total field
             emit setField(*fieldObject);
-        else
+         else if (isTotalField == true)
             // if it is a Total field, we a calculate Total
             fieldObject->parentCrossTab->total(fieldObject);
     }
@@ -796,6 +800,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 if (tmpRowN > fieldObject->crossTab->visibleRowCount()-1) {
                     // we create a new page only for the particular types of the bands.
                     // And only if No new page will be created from other places
+
                     if ((isPageHeader || isPageFooter) && curPage >= totalPage) {
                         newPage(printer, bandTop, draw);
                         return;
