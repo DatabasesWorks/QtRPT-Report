@@ -446,6 +446,13 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
     }
     if (type() == ItemType::GBox) {
         QRectF rc (QPointF(0,0), QPointF(getWidth(), getHeight()));
+
+        // draw box outline
+        painter->save();
+        painter->setPen(QPen(Qt::lightGray, 1, Qt::DashLine));
+        painter->drawRect(rc);
+        painter->restore();
+
         switch(this->getFieldType()) {
             case Text:
             case TextImage: {
