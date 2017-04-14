@@ -16,7 +16,7 @@ m_cornerGrabbed(false)
 
     m_corners.resize(2);
     for (auto &corner : m_corners)
-        corner = nullptr;
+        corner = (SPtrCorner)nullptr;
 
     setFlag(QGraphicsItem::ItemIsSelectable,true);
     setFlag(ItemSendsGeometryChanges,true);

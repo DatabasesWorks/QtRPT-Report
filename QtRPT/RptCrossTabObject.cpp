@@ -393,7 +393,7 @@ QDebug operator<<(QDebug dbg, const RptCrossTabObject &obj)
     if (tmp != nullptr)
         dbg << obj.name << "\n";
     else
-        dbg << nullptr;
+        dbg << (void*)nullptr;
     return dbg;
 }
 

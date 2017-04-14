@@ -45,7 +45,7 @@ GraphicsBox::GraphicsBox()
 
     m_corners.resize(8);
     for (auto &corner : m_corners)
-        corner = nullptr;
+        corner = (SPtrCorner)nullptr;
 
     setFlag(QGraphicsItem::ItemIsSelectable,true);
     setFlag(QGraphicsItem::ItemIsMovable,true);
@@ -57,9 +57,9 @@ GraphicsBox::GraphicsBox()
     m_formatString = "";
     m_text = tr("New Label");
     m_radius = 6;
-    m_barcode = nullptr;
-    m_crossTab = nullptr;
-    m_chart = nullptr;
+    m_barcode = (SPtrBarCode)nullptr;
+    m_crossTab = (SPtrCrossTab)nullptr;
+    m_chart = (SPtrChart)nullptr;
     m_outterborderPen.setWidth(1);
     m_outterborderPen.setColor(m_outterborderColor);
 
