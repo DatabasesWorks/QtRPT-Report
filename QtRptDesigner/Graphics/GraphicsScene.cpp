@@ -132,14 +132,11 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     setMode(Mode::SelectObject);
     QApplication::restoreOverrideCursor();
 
-    if (sceneMode == Mode::SelectObject) {
-        if (QApplication::keyboardModifiers() != Qt::ControlModifier) {
-//            GraphicsBox *b = static_cast<GraphicsBox*>(itemAt(event->scenePos(), this->views().at(0)->transform()));
-//            if (b == 0 or b->type() == 7) {  //Make image transparent for mouse clicking
-//                QApplication::restoreOverrideCursor();
-//                this->clearSelection();
-//                emit itemSelected(0);
-//            }
+    if (sceneMode == Mode::SelectObject && QApplication::keyboardModifiers() != Qt::ControlModifier) {
+        if (!itemAt(event->scenePos(), this->views().at(0)->transform())) {
+            this->clearSelection();
+            emit itemSelected(0);
+            return;
         }
     }
 

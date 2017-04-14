@@ -1300,12 +1300,29 @@ GraphicsHelperClass *MainWindow::gItemToHelper(QGraphicsItem *item)
 //Container's selection
 void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item)
 {
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
+    auto scene = repPage->scene;
+
+    if (!item) {
+        // unselect all
+        scene->blockSignals(true);
+        for (auto &m_item : scene->items()) {
+            if (m_item->type() == ItemType::GLine || m_item->type() == ItemType::GBox || m_item->type() == ItemType::GBand) {
+                 auto helper = dynamic_cast<GraphicsHelperClass*>(m_item);
+                 helper->helperSelect(false);
+            }
+        }
+        ui->treeParams->clear();
+        showParamState();
+        scene->blockSignals(false);
+        return;
+    }
+
     if (item->type() != ItemType::GLine &&
         item->type() != ItemType::GBox &&
         item->type() != ItemType::GBand
         ) return;
-    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    auto scene = repPage->scene;
+
     scene->blockSignals(true);
 
     auto calling_helper = dynamic_cast<GraphicsHelperClass*>(item);
