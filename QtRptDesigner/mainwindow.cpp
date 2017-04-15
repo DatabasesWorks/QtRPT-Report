@@ -2375,8 +2375,9 @@ void MainWindow::setParamTree(Command command, QVariant value, bool child)
     }
 
     GraphicsBox *box = nullptr;
-    if (selectedGItem()->type() == ItemType::GBox)
-        box = static_cast<GraphicsBox *>(selectedGItem());
+    auto selItem = selectedGItem();
+    if (selItem && selItem->type() == ItemType::GBox)
+        box = static_cast<GraphicsBox *>(selItem);
 
     if (box != nullptr) {
         bool top = box->borderIsCheck(FrameTop);
