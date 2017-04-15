@@ -1132,20 +1132,23 @@ void MainWindow::openFile()
 //Select color from dialog and set param
 void MainWindow::chooseColor()
 {
-    auto ed = qobject_cast<EditorDelegate*>(sender());
-    if (selectedGItem() == nullptr) return;
-    QColor color;
-    QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
-    if (dlg->exec() == QDialog::Accepted) {
-        color = dlg->selectedColor();
-        ui->actSaveReport->setEnabled(true);
-    } else return;
+    auto item = selectedGItem();
+    if (item == nullptr) return;
 
+    auto ed = qobject_cast<EditorDelegate*>(sender());
     Command command;
     if (ed != nullptr)
         command = (Command)ui->treeParams->currentItem()->data(1,Qt::UserRole).toInt();
     else
         command = getCommand(sender());
+
+    auto helper = gItemToHelper(item);
+    QColor color = helper->getColorValue(command);
+    QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
+    if (dlg->exec() == QDialog::Accepted) {
+        color = dlg->selectedColor();
+        ui->actSaveReport->setEnabled(true);
+    } else return;
 
     execButtonCommand(command,color);
 }
