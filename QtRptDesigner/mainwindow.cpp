@@ -988,10 +988,12 @@ void MainWindow::closeProgram()
 {
     if (ui->actSaveReport->isEnabled()) {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, tr("Saving"), tr("The report was changed.\nSave the report?"),
-                                      QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::question(this, tr("Saving"),tr("The report was changed.\nSave the report?"),
+                                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         if (reply == QMessageBox::Yes)
             saveReport();
+        else if (reply == QMessageBox::Cancel)
+            return;
     }
     this->close();
 }
@@ -1002,9 +1004,11 @@ void MainWindow::openFile()
     if (ui->actSaveReport->isEnabled()) {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, tr("Saving"),tr("The report was changed.\nSave the report?"),
-                                         QMessageBox::Yes | QMessageBox::No);
+                                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         if (reply == QMessageBox::Yes)
             saveReport();
+        else if (reply == QMessageBox::Cancel)
+            return;
     }
     ui->actSaveReport->setEnabled(false);
 
@@ -1789,9 +1793,11 @@ void MainWindow::newReport()
     if (ui->actSaveReport->isEnabled()) {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, tr("Saving"),tr("The report was changed.\nSave the report?"),
-                                         QMessageBox::Yes | QMessageBox::No);
+                                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         if (reply == QMessageBox::Yes)
             saveReport();
+        else if (reply == QMessageBox::Cancel)
+            return;
     }
     while (ui->tabWidget->count() > 1)
         ui->tabWidget->removeTab(ui->tabWidget->count()-1);
@@ -2576,9 +2582,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (ui->actSaveReport->isEnabled()) {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, tr("Saving"),tr("The report was changed.\nSave the report?"),
-                                         QMessageBox::Yes | QMessageBox::No);
+                                         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         if (reply == QMessageBox::Yes)
             saveReport();
+        else if (reply == QMessageBox::Cancel)
+            event->ignore();
     }
 }
 
