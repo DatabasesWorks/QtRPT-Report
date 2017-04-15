@@ -641,10 +641,15 @@ GraphicsBox* GraphicsBox::clone()
     newPos.setX(newPos.x()+5);
 
     auto newContField  = new GraphicsBox();
+    newContField->setColorValue(BackgroundColor, this->getColorValue(BackgroundColor));
+    newContField->setColorValue(BorderColor, this->getColorValue(BorderColor));
+    newContField->setColorValue(FontColor, this->getColorValue(FontColor));
     newContField->setColorValue(FrameTop, this->getColorValue(FrameTop));
     newContField->setColorValue(FrameBottom, this->getColorValue(FrameBottom));
     newContField->setColorValue(FrameLeft, this->getColorValue(FrameLeft));
     newContField->setColorValue(FrameRight, this->getColorValue(FrameRight));
+    newContField->setBorderWidth(this->getBorderWidth());
+    newContField->setBorderStyle(this->borderStyle());
     newContField->setFieldType(this->getFieldType());
     newContField->setText(this->getText());
     newContField->setFont(this->getFont());

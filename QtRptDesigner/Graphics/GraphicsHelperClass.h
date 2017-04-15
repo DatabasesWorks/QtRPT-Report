@@ -63,6 +63,7 @@ public:
     bool borderIsCheck(Command command);
     void setBorder(Command command, QVariant values, bool yesFrame = false);
     Qt::PenStyle borderStyle() {return m_borderStyle;}
+    void setBorderStyle(Qt::PenStyle value) {m_borderStyle = value;}
     virtual void loadParamFromXML(QDomElement e);
     virtual QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc);
     QString getGroupName() {return m_groupName;}
