@@ -235,13 +235,17 @@ void GraphicsScene::keyPressEvent(QKeyEvent *event)
                             box->setHeight(box->getHeight()+1);
                     }
                 }
-
-                auto mw = MainWindow::instance();
-                mw->setReportChanged();
             }
         }
-        if(event->key() == Qt::Key_Left || event->key() == Qt::Key_Up || event->key() == Qt::Key_Right || event->key() == Qt::Key_Down)
+
+        if (isSelected
+            && (QApplication::keyboardModifiers() == Qt::ControlModifier || QApplication::keyboardModifiers() == Qt::ShiftModifier)
+            && (event->key() == Qt::Key_Left || event->key() == Qt::Key_Up || event->key() == Qt::Key_Right || event->key() == Qt::Key_Down))
+        {
             emit itemResized(item);
+            auto mw = MainWindow::instance();
+            mw->setReportChanged();
+        }
     }
 }
 
