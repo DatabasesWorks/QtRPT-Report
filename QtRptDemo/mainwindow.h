@@ -42,7 +42,6 @@ limitations under the License.
 #include "exampledlg8.h"
 #include "exampledlg13.h"
 #include "exampledlg14.h"
-#include "exampledlg18.h"
 
 namespace Ui {
     class MainWindow;
@@ -66,6 +65,7 @@ private:
 private slots:
     void showReport();
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
+    void setField(RptFieldObject &);
 
 };
 

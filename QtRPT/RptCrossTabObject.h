@@ -85,6 +85,7 @@ public:
     void buildMatrix();
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
+    QList<QString> headers;
 
     QColor totalBackgroundColor;
     QColor headerBackgroundColor;
@@ -106,6 +107,7 @@ private:
     bool isTotalField(RptFieldObject *field);
     void total(RptFieldObject *field);
     bool isHeaderField(RptFieldObject *field);
+    void header(RptFieldObject *field);
 
     void addField(RptFieldObject *field);
 

@@ -30,7 +30,6 @@ limitations under the License.
     #include <QtGui>
 #endif
 #include <QDialog>
-#include "qtrpt.h"
 
 namespace Ui {
     class ExampleDlg1;
@@ -46,7 +45,6 @@ public:
     
 private:
     Ui::ExampleDlg1 *ui;
-    QtRPT *report;
 
 private slots:
     void print();

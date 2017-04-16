@@ -23,6 +23,7 @@ limitations under the License.
 
 #include "exampledlg1.h"
 #include "ui_exampledlg1.h"
+#include "qtrpt.h"
 #include <QDebug>
 
 ExampleDlg1::ExampleDlg1(QWidget *parent)
@@ -102,7 +103,7 @@ void ExampleDlg1::print()
     #endif
 
     QString fileName = dir.absolutePath()+"/examples_report/example1.xml";
-    report = new QtRPT(this);
+    auto report = new QtRPT(this);
     report->setBackgroundImage(QPixmap(dir.absolutePath()+"/examples_report/qt_background_portrait.png"));
     report->recordCount << ui->tableWidget->rowCount();
     report->loadReport(fileName);

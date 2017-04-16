@@ -179,7 +179,10 @@ void RptCrossTabObject::buildMatrix()
                 h1->setDefaultBackgroundColor(this->totalBackgroundColor);
 
             if (isHeaderField(h1))
+            {
                 h1->setDefaultBackgroundColor(this->headerBackgroundColor);
+                header(h1);
+            }
         }
     }
 }
@@ -218,6 +221,9 @@ bool RptCrossTabObject::isTotalField(RptFieldObject *field)
 
 void RptCrossTabObject::total(RptFieldObject *field)
 {
+    if (isHeaderField(field))
+        return;
+
     quint32 col = fieldCol(field);
     quint32 row = fieldRow(field, true);
     quint32 page = (int)row/visibleRowCount();
@@ -249,6 +255,13 @@ void RptCrossTabObject::total(RptFieldObject *field)
     }
 
     field->value = QString::number(total);
+}
+
+void RptCrossTabObject::header(RptFieldObject *field)
+{
+    quint16 col = fieldCol(field);
+    if (col < headers.size())
+        field->value = headers.at(col);
 }
 
 bool RptCrossTabObject::isHeaderField(RptFieldObject *field)

@@ -190,6 +190,7 @@ QtRPT::QtRPT(QObject *parent)
     m_resolution = QPrinter::HighResolution;
     painter = nullptr;
     printer = nullptr;
+    crossTab = nullptr;
     #ifdef QXLSX_LIBRARY
         m_xlsx = nullptr;
     #endif
@@ -474,7 +475,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         if (isTotalField == false && isHeaderField == false)
             // we request data if it is a child of the CrossTab, but it is a not Total field
             emit setField(*fieldObject);
-         else if (isTotalField == true)
+        else if (isTotalField == true)
             // if it is a Total field, we a calculate Total
             fieldObject->parentCrossTab->total(fieldObject);
     }
@@ -504,28 +505,28 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     painter->fillRect(left_+1, top_+1, width_-2, height_-2, fieldObject->backgroundColor);
             }
             // Draw frame
-            if (fieldObject->borderTop != QColor(255,255,255,0) ) {
+            if (fieldObject->borderTop != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderTop);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_ + width_, top_);
                 }
             }
-            if (fieldObject->borderBottom != QColor(255,255,255,0) ) {
+            if (fieldObject->borderBottom != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderBottom);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_ + height_, left_ + width_, top_ + height_);
                 }
             }
-            if (fieldObject->borderLeft != QColor(255,255,255,0) ) {
+            if (fieldObject->borderLeft != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderLeft);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_, top_ + height_);
                 }
             }
-            if (fieldObject->borderRight != QColor(255,255,255,0) ) {
+            if (fieldObject->borderRight != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderRight);
                 if (painter->isActive()) {
                     painter->setPen(pen);
@@ -616,7 +617,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             QImage image = (fieldType == TextImage) ? sectionValueImage(fieldObject->value) : sectionFieldImage(fieldObject->value);
 
             if (!image.isNull()) {
-                QImage scaledImage = image.scaled(QSize(width_,height_),Qt::KeepAspectRatio);
+                QImage scaledImage = image.scaled(QSize(width_,height_), Qt::KeepAspectRatio);
                 QPoint point(left_, top_);
                 Qt::Alignment alignment = fieldObject->aligment;
                 // Horizontal Center
@@ -802,6 +803,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     // And only if No new page will be created from other places
 
                     if ((isPageHeader || isPageFooter) && curPage >= totalPage) {
+                        // Processing other (below) bands before creating a new Page
+                        if (isPageHeader)
+                            processPFooter(draw);
+
                         newPage(printer, bandTop, draw);
                         return;
                     } else {
@@ -1524,36 +1529,39 @@ void QtRPT::printXLSX(const QString &filePath, bool open)
 #ifndef QT_NO_PRINTER
     Q_UNUSED(open);
 
-    crossTab = new RptCrossTabObject();
-    crossTab->name = "XLSX_CrosTab";
-    m_printMode = QtRPT::Xlsx;
-
     #ifdef QXLSX_LIBRARY
+        if (crossTab != nullptr)
+            delete crossTab;
+        crossTab = new RptCrossTabObject();
+        crossTab->name = "XLSX_CrosTab";
+        m_printMode = QtRPT::Xlsx;
+
         if (m_xlsx != nullptr)
             delete m_xlsx;
         m_xlsx = new QXlsx::Document(this);
+
+        QFile file(filePath);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+            return;
+
+        if (printer == nullptr)
+            printer = new QPrinter(m_resolution);
+
+        printer->setOutputFormat(QPrinter::PdfFormat);
+        if (painter == nullptr)
+            painter = new QPainter();
+
+        printPreview(printer);
+
+        crossTab->buildXlsx(m_xlsx);
+
+        m_xlsx->saveAs(filePath);
+
+        file.close();
+        if (open)
+            QDesktopServices::openUrl(QUrl("file:"+filePath));
+
     #endif
-
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
-
-    if (printer == nullptr)
-        printer = new QPrinter(m_resolution);
-
-    printer->setOutputFormat(QPrinter::PdfFormat);
-    if (painter == nullptr)
-        painter = new QPainter();
-
-    printPreview(printer);
-
-    crossTab->buildXlsx(m_xlsx);
-
-    m_xlsx->saveAs(filePath);
-
-    file.close();
-    if (open)
-        QDesktopServices::openUrl(QUrl("file:"+filePath));
 #endif
 }
 

@@ -60,7 +60,7 @@ void MainWindow::showReport()
     else if (ui->rBtn9->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/example9.xml";
-        auto report = new QtRPT(this);
+        auto report = QtRPT::createSPtr(this);
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
 
@@ -69,7 +69,7 @@ void MainWindow::showReport()
     else if (ui->rBtn10->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/example10.xml";
-        auto report = new QtRPT(this);
+        auto report = QtRPT::createSPtr(this);
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
 
@@ -78,9 +78,9 @@ void MainWindow::showReport()
     else if (ui->rBtn11->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/example11.xml";
-        auto report = new QtRPT(this);
+        auto report = QtRPT::createSPtr(this);
         report->recordCount << 10;
-        QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+        QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
@@ -90,9 +90,9 @@ void MainWindow::showReport()
     else if (ui->rBtn12->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/example12.xml";
-        auto report = new QtRPT(this);
+        auto report = QtRPT::createSPtr(this);
         report->recordCount << 3;
-        QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+        QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
@@ -106,7 +106,7 @@ void MainWindow::showReport()
     else if (ui->rBtn15->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/example9.xml";
-        auto report = new QtRPT(this);
+        auto report = QtRPT::createSPtr(this);
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
 
@@ -115,7 +115,7 @@ void MainWindow::showReport()
     else if (ui->rBtn16->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/example16.xml";
-        auto report = new QtRPT(this);
+        auto report = QtRPT::createSPtr(this);
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
 
@@ -129,12 +129,12 @@ void MainWindow::showReport()
     }
     else if (ui->rBtn17->isChecked())
     {
-        for (int i = 0; i < 15; i++)
+        for (quint16 i = 0; i < 15; i++)
             doubleVector.append(32767 * (float)qrand() / RAND_MAX);
         QString fileName = dir.absolutePath()+"/examples_report/example17.xml";
-        auto report = new QtRPT(this);
+        auto report = QtRPT::createSPtr(this);
         report->recordCount << doubleVector.size();
-        QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+        QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
@@ -142,12 +142,22 @@ void MainWindow::showReport()
         report->printExec();
     }
     else if (ui->rBtn18->isChecked())
-        dlg = new ExampleDlg18(this);
+    {
+        QString fileName = dir.absolutePath()+"/examples_report/example18.xml";
+        auto report = QtRPT::createSPtr(this);
+
+        if (report->loadReport(fileName) == false)
+            qDebug()<<"Report file not found";
+
+        QObject::connect(report.data(), SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
+
+        report->printExec(true);
+    }
     else if (ui->rBtnRussian->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/RussianInvaders.xml";
-        auto report = new QtRPT(this);
-        QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+        auto report = QtRPT::createSPtr(this);
+        QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
             qDebug() << "Report file not found";
@@ -209,6 +219,31 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
         if (paramName == "number")
             paramValue = QString::number(doubleVector.at(recNo)/100,'f',2);
     }
+}
+
+void MainWindow::setField(RptFieldObject &fieldObject)
+{
+    // ---Example 18---
+    // set the row and column count of the CrossTab
+    if (fieldObject.fieldType == FieldType::CrossTab) {
+        int colCount = 3;
+
+        fieldObject.crossTab->setColCount(colCount);
+        fieldObject.crossTab->setRowCount(48);
+
+        fieldObject.crossTab->headers << "Header1";
+        fieldObject.crossTab->headers << "Header2";
+        fieldObject.crossTab->headers << "Header3";
+        fieldObject.crossTab->headers << "Header4";
+
+    }
+    // requiest the data for cell of the CrossTab
+    if (fieldObject.parentCrossTab != nullptr) {
+        int row = fieldObject.parentCrossTab->fieldRow(&fieldObject);
+        int col = fieldObject.parentCrossTab->fieldCol(&fieldObject);
+        fieldObject.value = QString::number(col+row);
+    }
+    // ---Example 18---
 }
 
 MainWindow::~MainWindow()

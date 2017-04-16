@@ -223,6 +223,8 @@
     <message>
         <location filename="../EditFldDlg.ui" line="339"/>
         <location filename="../EditFldDlg.ui" line="405"/>
+        <location filename="../EditFldDlg.ui" line="1020"/>
+        <location filename="../EditFldDlg.ui" line="1051"/>
         <source>Color...</source>
         <translation>Колір...</translation>
     </message>
@@ -257,7 +259,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="961"/>
+        <location filename="../EditFldDlg.ui" line="951"/>
         <source>Row height</source>
         <translation type="unfinished"></translation>
     </message>
@@ -406,64 +408,74 @@
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="941"/>
-        <source>Rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../EditFldDlg.ui" line="951"/>
         <source>Columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="974"/>
+        <location filename="../EditFldDlg.ui" line="964"/>
         <source>Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="980"/>
+        <location filename="../EditFldDlg.ui" line="970"/>
+        <source>Show Header</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="977"/>
         <source>Show Total column, by row</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="987"/>
+        <location filename="../EditFldDlg.ui" line="984"/>
         <source>Show Total row, by column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="994"/>
+        <location filename="../EditFldDlg.ui" line="991"/>
         <source>Show Sub Total row, by column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1036"/>
+        <location filename="../EditFldDlg.ui" line="998"/>
+        <source>Background color of Header</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1029"/>
+        <source>Background color of Totals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../EditFldDlg.ui" line="1095"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.ui" line="1043"/>
+        <location filename="../EditFldDlg.ui" line="1102"/>
         <source>Cancel</source>
         <translation>Відміна</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="250"/>
-        <location filename="../EditFldDlg.cpp" line="313"/>
+        <location filename="../EditFldDlg.cpp" line="260"/>
+        <location filename="../EditFldDlg.cpp" line="323"/>
         <source>Empty line</source>
         <translation>Порожній рядок</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="250"/>
-        <location filename="../EditFldDlg.cpp" line="313"/>
+        <location filename="../EditFldDlg.cpp" line="260"/>
+        <location filename="../EditFldDlg.cpp" line="323"/>
         <source>The field contains empty line at the end.
 Remove it?</source>
         <translation>Поле в кінці містить порожню рядок. Видалити її?</translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="621"/>
+        <location filename="../EditFldDlg.cpp" line="657"/>
         <source>Save Image As</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../EditFldDlg.cpp" line="623"/>
+        <location filename="../EditFldDlg.cpp" line="659"/>
         <source>Images (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -674,32 +686,32 @@ Remove it?</source>
         <translation type="obsolete">Разом</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="867"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="861"/>
         <source>New image</source>
         <translation type="unfinished">Нова картинка</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="873"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="867"/>
         <source>New diagram</source>
         <translation type="unfinished">Нова діаграма</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="938"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="932"/>
         <source>Edit</source>
         <translation type="unfinished">Редагувати</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="942"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="936"/>
         <source>Delete</source>
         <translation type="unfinished">Видалити</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="948"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="942"/>
         <source>Move forward</source>
         <translation type="unfinished">Перемістити вперед</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="954"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="948"/>
         <source>Move back</source>
         <translation type="unfinished">Перемістити назад</translation>
     </message>
@@ -1892,39 +1904,39 @@ Save the report?</source>
 <context>
     <name>QtRPT</name>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1613"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1626"/>
         <source>Save as PDF</source>
         <translation>Зберегти як PDF</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1618"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1631"/>
         <source>Save as HTML</source>
         <translation>Зберегти як HTML</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1624"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1638"/>
         <source>Save as XLSX</source>
         <translation>Зберегти як XLSX</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1665"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1671"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1677"/>
         <source>Save File</source>
         <translation>Зберегти файл</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1649"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1665"/>
         <source>PDF Files (*.pdf)</source>
         <translation>PFD файли</translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1655"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1671"/>
         <source>HTML Files (*.html)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../QtRPT/qtrpt.cpp" line="1661"/>
+        <location filename="../../QtRPT/qtrpt.cpp" line="1677"/>
         <source>XLSX Files (*.xlsx)</source>
         <translation type="unfinished"></translation>
     </message>
