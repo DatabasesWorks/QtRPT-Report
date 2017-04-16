@@ -43,7 +43,7 @@
     <message>
         <location filename="../aboutDlg.cpp" line="51"/>
         <source>2012-2017 years</source>
-        <translation type="unfinished">عام 2012-2016 {2012-2017 ?}</translation>
+        <translation>عام 2012-2017</translation>
     </message>
     <message>
         <location filename="../aboutDlg.cpp" line="52"/>
@@ -113,7 +113,7 @@
     <message>
         <location filename="../aboutDlg.cpp" line="68"/>
         <source>Giulio Macchieraldo for Italian translation</source>
-        <translation type="unfinished"></translation>
+        <translation>الترجمة الإيطالية Giulio Macchieraldo</translation>
     </message>
 </context>
 <context>
@@ -256,32 +256,32 @@
     <message>
         <location filename="../EditFldDlg.ui" line="970"/>
         <source>Show Header</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض الترويسة</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="977"/>
         <source>Show Total column, by row</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض عمود المجموع حسب الصف</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="984"/>
         <source>Show Total row, by column</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض صف المجموع حسب العمود</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="991"/>
         <source>Show Sub Total row, by column</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض صف المجموع الجزئي حسب العمود</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="998"/>
         <source>Background color of Header</source>
-        <translation type="unfinished"></translation>
+        <translation>لون خلفية الترويسة</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="1029"/>
         <source>Background color of Totals</source>
-        <translation type="unfinished"></translation>
+        <translation>لون خلفية المجاميع</translation>
     </message>
     <message>
         <source>Diagram&apos;s property</source>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../EditFldDlg.ui" line="951"/>
         <source>Row height</source>
-        <translation type="unfinished"></translation>
+        <translation>إرتفاع الصف</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="964"/>
@@ -671,12 +671,12 @@ Remove it?</source>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="145"/>
         <source>To upper case</source>
-        <translation type="unfinished"></translation>
+        <translation>أحرف كبيرة</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="152"/>
         <source>To lower case</source>
-        <translation type="unfinished"></translation>
+        <translation>أحرف صغيرة</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="159"/>
@@ -716,7 +716,7 @@ Remove it?</source>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="208"/>
         <source>Italian</source>
-        <translation type="unfinished"></translation>
+        <translation>Italian</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="216"/>
@@ -726,12 +726,12 @@ Remove it?</source>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="250"/>
         <source>Data Group property</source>
-        <translation type="unfinished"></translation>
+        <translation>خاصية مجموعة البيانات</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="258"/>
         <source>Formatting</source>
-        <translation type="unfinished"></translation>
+        <translation>تنسيق</translation>
     </message>
 </context>
 <context>
@@ -2216,7 +2216,7 @@ Save the report?</source>
     <message>
         <location filename="../SettingDlg.ui" line="151"/>
         <source>Italian</source>
-        <translation type="unfinished"></translation>
+        <translation>Italian</translation>
     </message>
     <message>
         <location filename="../SettingDlg.ui" line="156"/>
