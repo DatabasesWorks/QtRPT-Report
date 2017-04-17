@@ -35,7 +35,7 @@
     <message>
         <location filename="../aboutDlg.cpp" line="51"/>
         <source>2012-2017 years</source>
-        <translation type="unfinished">2012-2017</translation>
+        <translation>2012-2017</translation>
     </message>
     <message>
         <location filename="../aboutDlg.cpp" line="52"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../aboutDlg.cpp" line="68"/>
         <source>Giulio Macchieraldo for Italian translation</source>
-        <translation type="unfinished"></translation>
+        <translation>Giulio Maccieraldo für die italienische Übersetzung</translation>
     </message>
 </context>
 <context>
@@ -249,22 +249,22 @@
     <message>
         <location filename="../EditFldDlg.ui" line="970"/>
         <source>Show Header</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeiger Header</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="977"/>
         <source>Show Total column, by row</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige die Anzahl der Spalten, bei Zeile</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="984"/>
         <source>Show Total row, by column</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige die Anzahl der Zeilen, bei Spalte</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="991"/>
         <source>Show Sub Total row, by column</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige die Anzahl der Unterzeilen, bei Spalte</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="998"/>
@@ -656,12 +656,12 @@ Remove it?</source>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="145"/>
         <source>To upper case</source>
-        <translation type="unfinished"></translation>
+        <translation>In Großbuchstaben umwandeln</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="152"/>
         <source>To lower case</source>
-        <translation type="unfinished"></translation>
+        <translation>In Kleinbuchstaben umwandeln</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="159"/>
@@ -701,7 +701,7 @@ Remove it?</source>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="208"/>
         <source>Italian</source>
-        <translation type="unfinished"></translation>
+        <translation>Italienisch</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="216"/>
@@ -711,12 +711,14 @@ Remove it?</source>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="250"/>
         <source>Data Group property</source>
+        <translatorcomment>?</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="258"/>
         <source>Formatting</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Formatierung</translatorcomment>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2188,7 +2190,7 @@ Save the report?</source>
     <message>
         <location filename="../SettingDlg.ui" line="151"/>
         <source>Italian</source>
-        <translation type="unfinished"></translation>
+        <translation>Italienisch</translation>
     </message>
     <message>
         <location filename="../SettingDlg.ui" line="156"/>

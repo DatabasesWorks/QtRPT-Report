@@ -374,7 +374,7 @@ int EditFldDlg::showImage(QGraphicsItem *gItem)
 
 int EditFldDlg::showBarcode(QGraphicsItem *gItem)
 {
-    auto cont = static_cast<GraphicsBox*>(gItem);
+    auto cont = qgraphicsitem_cast<GraphicsBox*>(gItem);
     ui->stackedWidget->setCurrentIndex(3);
     QObject::connect(ui->edtValue, SIGNAL(textChanged(QString)), ui->wBarcode, SLOT(setValue(QString)));
     QObject::connect(ui->bstyle, SIGNAL(activated(int)), SLOT(update_preview()));
@@ -502,7 +502,7 @@ int EditFldDlg::showDiagram(QGraphicsItem *gItem)
     QObject::connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChanged()));
 
     QTableWidgetItem *newItem;
-    quint32 i = 0;
+    quint16 i = 0;
     ui->tableWidget->setRowCount( cont->getChart()->getGraphParamList().size() );
     for (const auto &graphParam : cont->getChart()->getGraphParamList()) {
         newItem = new QTableWidgetItem( graphParam.caption );

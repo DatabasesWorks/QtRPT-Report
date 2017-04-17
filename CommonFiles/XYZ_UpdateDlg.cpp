@@ -39,6 +39,7 @@ void XYZUpdateDlg::showThis(QStringList list)
     ui->tableWidget->setColumnWidth(0,0);
     ui->tableWidget->setColumnWidth(1,300);
     ui->tableWidget->setRowCount(list.size());
+
     QTableWidgetItem *newItem;
     for (int i = 0; i < list.size(); ++i) {
         newItem = new QTableWidgetItem(list.at(i));
