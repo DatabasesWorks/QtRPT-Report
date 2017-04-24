@@ -623,7 +623,7 @@ void MainWindow::checkUpdates()
 {
     XYZDownloadManager dl(this);
     dl.setParent(this);
-    QString urlVersion = "http://garr.dl.sourceforge.net/project/qtrpt/version.txt";
+    QString urlVersion = "http://netix.dl.sourceforge.net/project/qtrpt/version.txt";
     dl.setTarget(urlVersion);
     dl.download(true);
 
@@ -967,8 +967,8 @@ void MainWindow::closeProgram()
 {
     if (ui->actSaveReport->isEnabled()) {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, tr("Saving"),tr("The report was changed.\nSave the report?"),
-                                         QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::question(this, tr("Saving"), tr("The report was changed.\nSave the report?"),
+                                      QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
             saveReport();
     }
@@ -1018,7 +1018,7 @@ void MainWindow::openFile()
 
     sqlDesigner->clearAll();
 
-    for (int t=0; t<docElem.childNodes().count(); t++) {
+    for (int t = 0; t < docElem.childNodes().count(); t++) {
         if (docElem.tagName() == "Reports" )  //Делаем проверку для совместимости со старыми версиями
             repElem = docElem.childNodes().at(t).toElement();
         else
@@ -1124,7 +1124,8 @@ void MainWindow::openFile()
     ui->actSaveReport->setEnabled(false);
     this->setWindowTitle("QtRPT Designer "+fileName);
     enableAdding();
-    RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(0));
+
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(0));
     repPage->scene->m_undoStack->clear();
 }
 
@@ -1312,7 +1313,11 @@ void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item)
     if (QApplication::keyboardModifiers() != Qt::ControlModifier) {
         for (auto &m_item : scene->items()) {
             if (item != m_item) {
-                if (m_item->type() == ItemType::GLine || m_item->type() == ItemType::GBox || m_item->type() == ItemType::GBand) {
+                bool isLine = m_item->type() == ItemType::GLine;
+                bool isBox = m_item->type() == ItemType::GBox;
+                bool isBand = m_item->type() == ItemType::GBand;
+
+                if (isLine || isBox || isBand) {
                      auto helper = dynamic_cast<GraphicsHelperClass*>(m_item);
 
                      if (!helper->getGroupName().isEmpty() && helper->getGroupName() == calling_helper->getGroupName())
@@ -1380,7 +1385,7 @@ void MainWindow::saveReport()
         n = docElem.firstChild();
     }
 
-    for (int rp = 0; rp < ui->tabWidget->count(); rp++) {
+    for (quint16 rp = 0; rp < ui->tabWidget->count(); rp++) {
         auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(rp));
         QDomElement repElem = xmlDoc->createElement("Report");
         repElem.setAttribute("pageNo",QString::number(rp+1));
@@ -1482,13 +1487,13 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
         repElem->appendChild(elem);
     }
     if (gItem != nullptr && (gItem->type() == ItemType::GBox || gItem->type() == ItemType::GLine)) {
-        GraphicsBox *item = static_cast<GraphicsBox *>(gItem);
-        GraphicsLine *line = static_cast<GraphicsLine *>(gItem);
+        auto item = static_cast<GraphicsBox *>(gItem);
+        auto line = static_cast<GraphicsLine *>(gItem);
+        auto band = static_cast<GraphicsBox *>(gItem->parentItem());
 
-        GraphicsBox *band = static_cast<GraphicsBox *>(gItem->parentItem());
         QString parent = band->objectName();
         QDomNodeList nodelist = repElem->elementsByTagName("ReportBand");
-        for (int i=0; i != nodelist.count(); i++) {
+        for (quint16 i = 0; i != nodelist.count(); i++) {
             QDomNode prn = nodelist.item(i).toElement();
             if (prn.toElement().attribute("name") == parent) {
                 if (gItem->type() == ItemType::GBox)
@@ -1562,8 +1567,8 @@ void MainWindow::showParamState()
         }
     }
     if (repPage->scene->selectedItems().at(0)->type() == ItemType::GBox) {
-        GraphicsBox *field = static_cast<GraphicsBox *>(repPage->scene->selectedItems().at(0));
-        ReportBand *band = static_cast<ReportBand *>(field->parentItem());
+        auto field = static_cast<GraphicsBox *>(repPage->scene->selectedItems().at(0));
+        auto band = static_cast<ReportBand *>(field->parentItem());
         enbl1 = true;
         enbl2 = true;
 
@@ -1694,7 +1699,7 @@ void MainWindow::showParamState()
     if (repPage->scene->selectedItems().at(0)->type() == ItemType::GLine) {
         this->cbFrameWidth->setEnabled(true);
 
-        GraphicsLine *line = static_cast<GraphicsLine *>(repPage->scene->selectedItems().at(0));
+        auto line = static_cast<GraphicsLine *>(repPage->scene->selectedItems().at(0));
         selectItemInTree(line->itemInTree);
         setParamTree(BorderColor, line->getColorValue(BorderColor));
         setParamTree(FrameWidth, line->getBorderWidth());
@@ -1757,7 +1762,7 @@ void MainWindow::newReport()
     fileName = "";
     this->setWindowTitle("QtRPT Designer "+fileName);
 
-    for(auto action : ui->actionInsert_band->menu()->actions())
+    for(auto &action : ui->actionInsert_band->menu()->actions())
         action->setEnabled(true);
 
     sqlDesigner->clearAll();
@@ -1780,7 +1785,7 @@ QGraphicsItemList MainWindow::getSelectedItems()
 {
     QGraphicsItemList list;
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    for (auto item : repPage->scene->items())
+    for (auto &item : repPage->scene->items())
         if (item->type() == ItemType::GBox || item->type() == ItemType::GBand || item->type() == ItemType::GLine)
             if (gItemToHelper(item)->helperIsSelected())
                 list.append(item);
@@ -1791,7 +1796,7 @@ GraphicsHelperList MainWindow::getSelectedHelperItems()
 {
     GraphicsHelperList list;
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    for (auto item : repPage->scene->items())
+    for (auto &item : repPage->scene->items())
         if (item->type() == ItemType::GBox || item->type() == ItemType::GBand || item->type() == ItemType::GLine)
             if (gItemToHelper(item)->helperIsSelected())
                 list.append(gItemToHelper(item));
@@ -1803,7 +1808,7 @@ void MainWindow::execButtonCommand(Command command, QVariant value)
     if (command == None) return;
     if (selectedGItem() == nullptr) return;
 
-    RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
 
     //before changing params gets params
     BArrayList oldList = ParamCommand::getBArrayFromContList(getSelectedHelperItems());
@@ -1952,7 +1957,7 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
             break;
         }
         case Top: {
-            ReportBand *band = static_cast<ReportBand *>(box->parentItem());
+            auto band = static_cast<ReportBand *>(box->parentItem());
             QPointF r = box->pos();
             r.setY(value.toInt()+band->titleHeight);
             box->setPos(r);
@@ -2558,7 +2563,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *e)
         QWheelEvent *m = static_cast< QWheelEvent * >( e );
         if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
             qreal scale;
-            RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
+            auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
             if (m->delta() > 0 ) scale = repPage->getScale()+0.25;
             else scale = repPage->getScale()-0.25;
             cbZoom->setEditText(QString::number(scale*100)+"%");

@@ -2320,7 +2320,7 @@ void QtRPT::setSqlQuery(QString sqlString)
   \page qtrptproject.html
   \title QtRptProject
   \list
-  \li Version 2.0.0
+  \li Version 2.0.1
   \li Programmer: Aleksey Osipov
   \li Web-site: \l {http://www.aliks-os.tk} {http://www.aliks-os.tk}
   \li Email: \l {mailto:aliks-os@ukr.net} {aliks-os@ukr.net}
