@@ -1,15 +1,15 @@
-Thank you Manuel Soriano for this instraction
+Thank you Manuel Soriano for this instruction
 
 Compile Zint:
 
-cd QtRptProject/zint-2.4.4/backend_qt4
+cd 3rdparty/zint-2.4.4/backend_qt4
 
 qmake -o Makefile Zint.pro
 make
 
 Compile designer and library:
 
-cd ../../QtRptDesigner
+cd ../../../QtRptDesigner
 
 qmake
 make clean
