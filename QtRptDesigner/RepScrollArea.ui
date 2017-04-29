@@ -21,8 +21,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>980</width>
-     <height>1321</height>
+     <width>978</width>
+     <height>1319</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -325,6 +325,12 @@
           </property>
           <property name="autoFillBackground">
            <bool>true</bool>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
          </widget>
         </item>

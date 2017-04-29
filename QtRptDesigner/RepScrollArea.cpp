@@ -124,8 +124,11 @@ double RepScrollArea::setPaperSize(qreal scale)
                       pageSetting.marginsTop,
                       pageSetting.marginsBottom);
 
+    scene->setSceneRect(0, 0, pageSetting.pageWidth, pageSetting.pageHeight);
+
     ui->graphicsView->setMinimumWidth(pageSetting.pageWidth*m_scale);
     ui->graphicsView->setMinimumHeight(pageSetting.pageHeight*m_scale);
+    ui->graphicsView->resize(pageSetting.pageWidth*m_scale, pageSetting.pageHeight*m_scale);
     ui->leftMarginsSpacer->changeSize(pageSetting.marginsLeft*m_scale+26,
                                       ui->leftMarginsSpacer->sizeHint().height(),
                                       QSizePolicy::Fixed,

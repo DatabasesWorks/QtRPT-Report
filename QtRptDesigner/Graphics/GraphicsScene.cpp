@@ -370,23 +370,21 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
     QColor c(200,200,255,125);
     painter->setPen(c);
     const int gridSize = m_koef*m_gridStep;
-    QRectF rectView = this->views().at(0)->rect();
+    QRectF rectView = this->sceneRect();
 
-    qreal left = /*rect.left() +*/ -19 + m_leftM;
-    qreal top = /*rect.top() +*/ -193 + m_topM;
-    qreal bottom = rectView.height()-m_topM-m_bottomM+top;
+    qreal left = rectView.left() + m_leftM;
+    qreal top = rectView.top() + m_topM;
+    qreal bottom = rectView.height() - m_bottomM;
+    qreal right = rectView.width() - m_rightM;
 
     QVarLengthArray<QLineF, 100> lines;
-    painter->drawRect(left, top,
-                     rectView.width()-m_rightM-m_leftM,
-                     rectView.height()-m_topM-m_bottomM);
 
     //vertical lines
-    for (qreal x = left; x <= rect.right()-m_rightM; x += gridSize)
+    for (qreal x = left; x <= right; x += gridSize)
         lines.append(QLineF(x, top, x, bottom));
     //horizontal lines
-    for (qreal y = top; y <= rect.bottom()-m_bottomM; y += gridSize)
-        lines.append(QLineF(rect.left()+m_leftM, y, rect.right()-m_rightM, y));
+    for (qreal y = top; y <= bottom; y += gridSize)
+        lines.append(QLineF(left, y, right, y));
 
     painter->drawLines(lines.data(), lines.size());
 }

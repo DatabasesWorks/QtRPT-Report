@@ -787,6 +787,7 @@ void MainWindow::reportPageChanged(int index)
         ui->actDeleteReportPage->setEnabled(true);
 
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(index));
+    repPage->setScale(cbZoom->currentText());
     auto allReportBand = repPage->getReportBands();
     if (!allReportBand.isEmpty())
         std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) {return p1->bandType < p2->bandType;});
