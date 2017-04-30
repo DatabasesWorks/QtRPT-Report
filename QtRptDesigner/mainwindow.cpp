@@ -48,6 +48,19 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
     if (index.column() == 1) {
         int command = index.model()->data(index, Qt::UserRole).toInt();
         switch(command) {
+            case Left:
+            case Top:
+            case Width:
+            case Height:
+            case FontSize:
+            case Length:
+            case FrameWidth: {
+                auto editor = new QSpinBox(parent);
+                editor->setRange(0, 999999);
+                connect(editor, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
+                return editor;
+                break;
+            }
             case FontName: {
                 auto editor = new QFontComboBox(parent);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
