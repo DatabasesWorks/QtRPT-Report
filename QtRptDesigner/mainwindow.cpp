@@ -1018,6 +1018,8 @@ void MainWindow::openFile()
     }
     file.close();
 
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
     QDomElement docElem = xmlDoc->documentElement();  //get root element
     QDomElement repElem;
 
@@ -1108,7 +1110,7 @@ void MainWindow::openFile()
                             repPage->newFieldTreeItem(contLine);
                         }
 
-                        QCoreApplication::processEvents();
+                        //QCoreApplication::processEvents();
                     }
                     c = c.nextSibling();
                 }
@@ -1121,7 +1123,7 @@ void MainWindow::openFile()
         sqlDesigner->loadDiagramDocument(t, dsElement);
 
         repPage->setUpdatesEnabled(true);
-        QCoreApplication::processEvents();
+        //QCoreApplication::processEvents();
     }
 
     ui->treeWidget->clearSelection();
@@ -1135,6 +1137,8 @@ void MainWindow::openFile()
 
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(0));
     repPage->scene->m_undoStack->clear();
+
+    QApplication::restoreOverrideCursor();
 }
 
 //Select color from dialog and set param
