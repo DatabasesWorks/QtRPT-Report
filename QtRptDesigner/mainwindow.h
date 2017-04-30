@@ -185,6 +185,7 @@ private slots:
     void redo();
     void mousePos(QPointF pos);
     void sceneClick();
+    void sceneItemAdded(QGraphicsItem *mItem);
     void generateName(QGraphicsItem *mItem);
 };
 

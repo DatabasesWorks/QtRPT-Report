@@ -835,6 +835,13 @@ void MainWindow::deleteReportPage()
     enableAdding();
 }
 
+void MainWindow::sceneItemAdded(QGraphicsItem *mItem)
+{
+    generateName(mItem);
+    ui->actSelect_tool->setChecked(true);
+    ui->actSaveReport->setEnabled(true);
+}
+
 void MainWindow::generateName(QGraphicsItem *mItem)
 {
     auto cont = gItemToHelper(mItem);
@@ -2487,8 +2494,6 @@ void MainWindow::addField(FieldType type)
     repPage->scene->newFieldType(type);
     repPage->scene->newFieldMenu(contMenu);
     repPage->scene->setMode(GraphicsScene::Mode::DrawContainer);
-    ui->actSelect_tool->setChecked(true);
-    ui->actSaveReport->setEnabled(true);
 }
 
 void MainWindow::addDraw()
@@ -2534,7 +2539,6 @@ void MainWindow::addDraw()
         }
     }
 
-    ui->actSelect_tool->setChecked(true);
 }
 
 void MainWindow::showPreview()

@@ -40,7 +40,7 @@ RepScrollArea::RepScrollArea(QTreeWidgetItem* rootItem, QWidget *parent)
     scene = new GraphicsScene(this);
     scene->setSceneRect(0,0,800,800);
     QObject::connect(scene, SIGNAL(sceneClick()), m_mainWindow, SLOT(sceneClick()));
-    QObject::connect(scene, SIGNAL(itemAdded(QGraphicsItem *)), m_mainWindow, SLOT(generateName(QGraphicsItem *)));
+    QObject::connect(scene, SIGNAL(itemAdded(QGraphicsItem *)), m_mainWindow, SLOT(sceneItemAdded(QGraphicsItem *)));
     QObject::connect(scene, SIGNAL(itemSelected(QGraphicsItem *)), m_mainWindow, SLOT(sceneItemSelectionChanged(QGraphicsItem *)));
 
     QObject::connect(scene, SIGNAL(itemResized(QGraphicsItem *)), m_mainWindow, SLOT(itemResizing(QGraphicsItem *)));
