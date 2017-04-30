@@ -126,6 +126,8 @@ double RepScrollArea::setPaperSize(qreal scale)
 
     scene->setSceneRect(0, 0, pageSetting.pageWidth, pageSetting.pageHeight);
 
+    correctBandGeom();
+
     ui->graphicsView->setMinimumWidth(pageSetting.pageWidth*m_scale);
     ui->graphicsView->setMinimumHeight(pageSetting.pageHeight*m_scale);
     ui->graphicsView->resize(pageSetting.pageWidth*m_scale, pageSetting.pageHeight*m_scale);
@@ -364,11 +366,13 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
     }
 }
 
-//Correct band position after inserting, deleteing
+//Correct band position after inserting, deleteing or changing margins
 void RepScrollArea::correctBandGeom(ReportBand *rep)
 {
     QPointF p = ui->graphicsView->mapToScene(0,0);
     int top_ = p.y()+pageSetting.marginsTop;
+    int left_ = p.x()+pageSetting.marginsLeft;
+    int width_ = pageSetting.pageWidth - pageSetting.marginsLeft - pageSetting.marginsRight;
 
     auto allReportBand = getReportBands();
     if (!allReportBand.isEmpty())
@@ -377,7 +381,8 @@ void RepScrollArea::correctBandGeom(ReportBand *rep)
     for (auto &band : allReportBand) {
         if (band == rep)
             continue;
-        band->setPos( QPointF(band->pos().x(), top_) );
+        band->setPos( QPointF(left_, top_) );
+        band->setWidth( width_ );
         top_ += band->getHeight()+15;
     }
 }
