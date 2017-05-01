@@ -293,7 +293,7 @@ void GraphicsBox::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseMoveEvent(event); // move the item...
     auto m_scene = qobject_cast<GraphicsScene *>(scene());
 
-    auto band = static_cast<ReportBand*>(this->parentItem());
+    auto band = qgraphicsitem_cast<ReportBand*>(this->parentItem());
     if (band != nullptr) {
         bool toBound = false;
         if (x() <= 0) {

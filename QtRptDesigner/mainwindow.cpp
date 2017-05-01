@@ -369,7 +369,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->actSelect_tool->setChecked(true);
 
-    for (int i = 0; i < MaxRecentFiles; ++i) {
+    for (quint16 i = 0; i < MaxRecentFiles; ++i) {
         recentFileActs[i] = new QAction(this);
         recentFileActs[i]->setVisible(false);
         ui->menuFile->insertAction(ui->actionExit,recentFileActs[i]);
@@ -648,7 +648,7 @@ void MainWindow::checkUpdates()
 void MainWindow::openDBGroupProperty()
 {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    auto band = static_cast<ReportBand *>(repPage->scene->selectedItems().at(0));
+    auto band = qgraphicsitem_cast<ReportBand *>(repPage->scene->selectedItems().at(0));
 
     QScopedPointer<FldPropertyDlg> dlg(new FldPropertyDlg(this));
     if (band != nullptr && band->bandType == DataGroupHeader) {
@@ -667,7 +667,7 @@ void MainWindow::updateRecentFileActions()
 
     int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);
 
-    for (int i = 0; i < numRecentFiles; ++i) {
+    for (quint16 i = 0; i < numRecentFiles; ++i) {
         QString text = tr("&%1 %2").arg(i + 1).arg(QFileInfo(files[i]).fileName());
         recentFileActs[i]->setText(text);
         recentFileActs[i]->setData(files[i]);
@@ -715,7 +715,7 @@ void MainWindow::itemResizing(QGraphicsItem *item)
             auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(ui->tabWidget->currentIndex()));
             repPage->correctBandGeom(nullptr);
         } else if (item->type() == ItemType::GBox) {
-            auto band = static_cast<ReportBand *>(item->parentItem());
+            auto band = qgraphicsitem_cast<ReportBand *>(item->parentItem());
             setParamTree(Width, box->getWidth());
             setParamTree(Top, box->pos().y() - band->titleHeight);
             setParamTree(Left, box->pos().x());

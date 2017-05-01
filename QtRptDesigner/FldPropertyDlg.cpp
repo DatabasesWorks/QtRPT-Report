@@ -248,7 +248,7 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
         }
         case 1: {
             this->setWindowTitle(tr("Data Group property"));
-            ReportBand *band = static_cast<ReportBand *>(widget);
+            ReportBand *band = qgraphicsitem_cast<ReportBand *>(widget);
             ui->edtFiledGrouping->setText(band->getGroupingField());
             ui->chkStartLineNum->setChecked(band->getStartNewNumertaion());
             ui->chkStartNewPage->setChecked(band->getStartNewPage());
@@ -294,7 +294,7 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
                 break;
             }
             case 1: {
-                ReportBand *band = static_cast<ReportBand *>(widget);
+                ReportBand *band = qgraphicsitem_cast<ReportBand *>(widget);
                 band->setGroupingField(ui->edtFiledGrouping->text());
                 band->setStartNewNumeration(ui->chkStartLineNum->checkState());
                 band->setStartNewPage(ui->chkStartNewPage->checkState());
