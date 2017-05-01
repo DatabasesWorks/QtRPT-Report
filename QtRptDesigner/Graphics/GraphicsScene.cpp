@@ -378,6 +378,9 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
     qreal right = rectView.width() - m_rightM;
 
     QVarLengthArray<QLineF, 100> lines;
+	painter->drawRect(left, top,
+                     rectView.width()-m_rightM-m_leftM,
+                     rectView.height()-m_topM-m_bottomM);
 
     //vertical lines
     for (qreal x = left; x <= right; x += gridSize)
