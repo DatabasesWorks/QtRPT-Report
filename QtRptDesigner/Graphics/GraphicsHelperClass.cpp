@@ -41,10 +41,10 @@ GraphicsHelperClass::GraphicsHelperClass(QObject *parent)
     borderWidth = 1;
     itemInTree = nullptr;
     m_backgroundColor = Qt::white;
-    m_borderLeftColor = Qt::white;
-    m_borderRightColor = Qt::white;
-    m_borderTopColor = Qt::white;
-    m_borderBottomColor = Qt::white;
+    m_borderLeftColor = Qt::black;
+    m_borderRightColor = Qt::black;
+    m_borderTopColor = Qt::black;
+    m_borderBottomColor = Qt::black;
     m_borderStyle = Qt::SolidLine;
     m_borderColor = Qt::black;
     m_outterborderColor = Qt::black;
