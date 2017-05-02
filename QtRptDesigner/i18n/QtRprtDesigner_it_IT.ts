@@ -35,7 +35,7 @@
     <message>
         <location filename="../aboutDlg.cpp" line="51"/>
         <source>2012-2017 years</source>
-        <translation type="unfinished">Dal 2012 al 2017</translation>
+        <translation>Dal 2012 al 2017</translation>
     </message>
     <message>
         <location filename="../aboutDlg.cpp" line="52"/>
@@ -248,32 +248,32 @@
     <message>
         <location filename="../EditFldDlg.ui" line="970"/>
         <source>Show Header</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra intestazione</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="977"/>
         <source>Show Total column, by row</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra Totale colonna, per riga</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="984"/>
         <source>Show Total row, by column</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra Totale riga, per colonna</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="991"/>
         <source>Show Sub Total row, by column</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra Subtotale riga, per colonna</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="998"/>
         <source>Background color of Header</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore di sfondo dell&apos;intestazione</translation>
     </message>
     <message>
         <location filename="../EditFldDlg.ui" line="1029"/>
         <source>Background color of Totals</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore di sfondo dei Totali</translation>
     </message>
     <message>
         <source>Diagram&apos;s property</source>
@@ -693,7 +693,7 @@ Eliminarla?</translation>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="208"/>
         <source>Italian</source>
-        <translation type="unfinished">Italiano</translation>
+        <translation>Italiano</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="216"/>
@@ -703,12 +703,12 @@ Eliminarla?</translation>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="250"/>
         <source>Data Group property</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietà Data Group</translation>
     </message>
     <message>
         <location filename="../FldPropertyDlg.cpp" line="258"/>
         <source>Formatting</source>
-        <translation type="unfinished"></translation>
+        <translation>Formattazione</translation>
     </message>
 </context>
 <context>
