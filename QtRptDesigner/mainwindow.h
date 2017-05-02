@@ -157,6 +157,7 @@ private slots:
     void addBand();
     void addField(FieldType type);
     void addDraw();
+    void setSelectionMode();
     void sceneItemSelectionChanged(QGraphicsItem *item);
     void selTree(QTreeWidgetItem *tItem, int);
     void itemChanged(QTreeWidgetItem *item, int column);

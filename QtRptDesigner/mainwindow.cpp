@@ -383,6 +383,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject::connect(ui->actUndo, SIGNAL(triggered()), this, SLOT(undo()));
     QObject::connect(ui->actRedo, SIGNAL(triggered()), this, SLOT(redo()));
+    QObject::connect(ui->actSelect_tool, SIGNAL(triggered()), this, SLOT(setSelectionMode()));
     QObject::connect(ui->actAddDiagram, &QAction::triggered, [=] { addField(Diagram); });
     QObject::connect(ui->actAddPicture, &QAction::triggered, [=] { addField(Image); });
     QObject::connect(ui->actAddBarcode, &QAction::triggered, [=] { addField(Barcode); });
@@ -2462,6 +2463,12 @@ void MainWindow::selTree(QTreeWidgetItem *tItem, int)
             }
         }
     }
+}
+
+void MainWindow::setSelectionMode()
+{
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
+    repPage->scene->setMode(GraphicsScene::Mode::SelectObject);
 }
 
 void MainWindow::enableAdding()
