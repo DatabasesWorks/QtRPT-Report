@@ -1419,7 +1419,7 @@ void MainWindow::alignFields()
     ui->actSaveReport->setEnabled(true);
 }
 
-static void xmlWrite(QXmlStreamWriter* w, QDomElement e)
+static void xmlWrite(QXmlStreamWriter *w, QDomElement e)
 {
     // note that this only writes elements, text and attributes (comments and CDATA ignored)
 
@@ -1448,12 +1448,11 @@ static void xmlWrite(QXmlStreamWriter* w, QDomElement e)
 
     QDomNode child = e.firstChild();
     while (!child.isNull()) {
-        if (child.isText()) {
+        if (child.isText())
             w->writeCharacters(child.toText().data());
-        }
-        else if (child.isElement()) {
+        else if (child.isElement())
             xmlWrite(w, child.toElement());
-        }
+
         child = child.nextSibling();
     }
 
@@ -1513,6 +1512,9 @@ void MainWindow::saveReport()
     QFile file(fileName);
     if (file.open(QIODevice::WriteOnly)) {
         setCurrentFile(fileName);
+
+        //QTextStream stream(&file);
+        //xmlDoc->save(stream, 2, QDomNode::EncodingFromTextStream);
 
         QXmlStreamWriter w(&file);
         w.setAutoFormatting(true);
