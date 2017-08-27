@@ -29,12 +29,12 @@
     <message>
         <location filename="../aboutDlg.cpp" line="48"/>
         <source>Web Site: </source>
-        <translation>الموقع الإلكتورني:</translation>
+        <translation>الموقع الإلكتروني: </translation>
     </message>
     <message>
         <location filename="../aboutDlg.cpp" line="49"/>
         <source>E-mail: </source>
-        <translation>البريد الإلكتروني:</translation>
+        <translation>البريد الإلكتروني: </translation>
     </message>
     <message>
         <source>2012-2016 years</source>
@@ -542,33 +542,33 @@ Remove it?</source>
 <context>
     <name>EditorDelegate</name>
     <message>
-        <location filename="../mainwindow.cpp" line="59"/>
+        <location filename="../mainwindow.cpp" line="72"/>
         <source>Left</source>
         <translation>يسار</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="60"/>
-        <location filename="../mainwindow.cpp" line="70"/>
+        <location filename="../mainwindow.cpp" line="73"/>
+        <location filename="../mainwindow.cpp" line="83"/>
         <source>Center</source>
         <translation>وسط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="61"/>
+        <location filename="../mainwindow.cpp" line="74"/>
         <source>Right</source>
         <translation>يمين</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="62"/>
+        <location filename="../mainwindow.cpp" line="75"/>
         <source>Justify</source>
         <translation>ضبط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="69"/>
+        <location filename="../mainwindow.cpp" line="82"/>
         <source>Top</source>
         <translation>أعلى</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="71"/>
+        <location filename="../mainwindow.cpp" line="84"/>
         <source>Bottom</source>
         <translation>أسفل</translation>
     </message>
@@ -746,32 +746,32 @@ Remove it?</source>
         <translation type="vanished">المجموع</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="861"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="866"/>
         <source>New image</source>
         <translation>صورة جديدة</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="867"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="872"/>
         <source>New diagram</source>
         <translation>مخطط جديد</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="932"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="937"/>
         <source>Edit</source>
         <translation>تحرير</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="936"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="941"/>
         <source>Delete</source>
         <translation>حذف</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="942"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="947"/>
         <source>Move forward</source>
         <translation>تحريك للأمام</translation>
     </message>
     <message>
-        <location filename="../Graphics/GraphicsBox.cpp" line="948"/>
+        <location filename="../Graphics/GraphicsBox.cpp" line="953"/>
         <source>Move back</source>
         <translation>تحريك للخلف</translation>
     </message>
@@ -852,8 +852,8 @@ Remove it?</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="152"/>
-        <location filename="../mainwindow.cpp" line="2043"/>
-        <location filename="../mainwindow.cpp" line="2203"/>
+        <location filename="../mainwindow.cpp" line="2149"/>
+        <location filename="../mainwindow.cpp" line="2309"/>
         <source>Name</source>
         <translation>اسم</translation>
     </message>
@@ -869,7 +869,7 @@ Remove it?</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="195"/>
-        <location filename="../mainwindow.cpp" line="324"/>
+        <location filename="../mainwindow.cpp" line="337"/>
         <source>Report</source>
         <translation>تقرير</translation>
     </message>
@@ -940,28 +940,28 @@ Remove it?</source>
     <message>
         <location filename="../mainwindow.ui" line="419"/>
         <location filename="../mainwindow.ui" line="422"/>
-        <location filename="../mainwindow.cpp" line="2068"/>
+        <location filename="../mainwindow.cpp" line="2174"/>
         <source>Justify</source>
         <translation>ضبط</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="434"/>
         <location filename="../mainwindow.ui" line="437"/>
-        <location filename="../mainwindow.cpp" line="2224"/>
+        <location filename="../mainwindow.cpp" line="2330"/>
         <source>Bold</source>
         <translation>غامق</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="449"/>
         <location filename="../mainwindow.ui" line="452"/>
-        <location filename="../mainwindow.cpp" line="2234"/>
+        <location filename="../mainwindow.cpp" line="2340"/>
         <source>Italic</source>
         <translation>مائل</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="464"/>
         <location filename="../mainwindow.ui" line="467"/>
-        <location filename="../mainwindow.cpp" line="2244"/>
+        <location filename="../mainwindow.cpp" line="2350"/>
         <source>Underline</source>
         <translation>تحته خط</translation>
     </message>
@@ -1229,7 +1229,7 @@ Remove it?</source>
     <message>
         <location filename="../mainwindow.ui" line="986"/>
         <location filename="../mainwindow.ui" line="989"/>
-        <location filename="../mainwindow.cpp" line="2254"/>
+        <location filename="../mainwindow.cpp" line="2360"/>
         <source>Strikeout</source>
         <translation>مشطوب</translation>
     </message>
@@ -1334,319 +1334,319 @@ Remove it?</source>
         <translation>إضافة كائن CrossTabBD</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="293"/>
+        <location filename="../mainwindow.cpp" line="306"/>
         <source>Frame width</source>
         <translation>عرض الإطار</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="432"/>
+        <location filename="../mainwindow.cpp" line="446"/>
         <source>Report Title</source>
         <translation>عنوان التقرير</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="438"/>
+        <location filename="../mainwindow.cpp" line="452"/>
         <source>Report Summary</source>
         <translation>ملخص التقرير</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="444"/>
+        <location filename="../mainwindow.cpp" line="458"/>
         <source>Page Header</source>
         <translation>ترويسة الصفحة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="450"/>
+        <location filename="../mainwindow.cpp" line="464"/>
         <source>Page Footer</source>
         <translation>تذييل الصفحة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="456"/>
+        <location filename="../mainwindow.cpp" line="470"/>
         <source>Master Data</source>
         <translation>بيانات رئيسية</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="462"/>
+        <location filename="../mainwindow.cpp" line="476"/>
         <source>Data Grouping Header</source>
         <translation>ترويسة مجموعة البيانات</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="469"/>
+        <location filename="../mainwindow.cpp" line="483"/>
         <source>Data Grouping Footer</source>
         <translation>تذييل مجموعة البيانات</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="476"/>
+        <location filename="../mainwindow.cpp" line="490"/>
         <source>Master Header</source>
         <translation>ترويسة رئيسية</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="482"/>
+        <location filename="../mainwindow.cpp" line="496"/>
         <source>Master Footer</source>
         <translation>تذييل رئيسي</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="525"/>
+        <location filename="../mainwindow.cpp" line="539"/>
         <source>Line with arrows at both side</source>
         <translation>خط بأسهم على الجانبين</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="531"/>
+        <location filename="../mainwindow.cpp" line="545"/>
         <source>Rectangle</source>
         <translation>مستطيل</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="537"/>
+        <location filename="../mainwindow.cpp" line="551"/>
         <source>Rounded rectangle</source>
         <translation>مستطيل بحواف مدوّرة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="543"/>
+        <location filename="../mainwindow.cpp" line="557"/>
         <source>Ellipse</source>
         <translation>قطع ناقص</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="549"/>
+        <location filename="../mainwindow.cpp" line="563"/>
         <source>Triangle</source>
         <translation>مثلث</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="555"/>
+        <location filename="../mainwindow.cpp" line="569"/>
         <source>Rhombus</source>
         <translation>معين</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="658"/>
+        <location filename="../mainwindow.cpp" line="672"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="824"/>
-        <location filename="../mainwindow.cpp" line="1043"/>
+        <location filename="../mainwindow.cpp" line="839"/>
+        <location filename="../mainwindow.cpp" line="1071"/>
         <source>Page %1</source>
         <translation>صفحة %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="970"/>
-        <location filename="../mainwindow.cpp" line="983"/>
-        <location filename="../mainwindow.cpp" line="1741"/>
-        <location filename="../mainwindow.cpp" line="2530"/>
+        <location filename="../mainwindow.cpp" line="992"/>
+        <location filename="../mainwindow.cpp" line="1007"/>
+        <location filename="../mainwindow.cpp" line="1845"/>
+        <location filename="../mainwindow.cpp" line="2640"/>
         <source>Saving</source>
         <translation>حفظ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="970"/>
-        <location filename="../mainwindow.cpp" line="983"/>
-        <location filename="../mainwindow.cpp" line="1741"/>
-        <location filename="../mainwindow.cpp" line="2530"/>
+        <location filename="../mainwindow.cpp" line="992"/>
+        <location filename="../mainwindow.cpp" line="1007"/>
+        <location filename="../mainwindow.cpp" line="1845"/>
+        <location filename="../mainwindow.cpp" line="2640"/>
         <source>The report was changed.
 Save the report?</source>
         <translation>تم تعديل التقرير.
 هل تود حفظ التقرير؟</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="998"/>
+        <location filename="../mainwindow.cpp" line="1024"/>
         <source>Select File</source>
         <translation>تحديد ملف</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1229"/>
+        <location filename="../mainwindow.cpp" line="1263"/>
         <source>Going to make undo: </source>
         <translation>Going to make undo: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1237"/>
+        <location filename="../mainwindow.cpp" line="1271"/>
         <source>Going to make redo: </source>
         <translation>Going to make redo: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1412"/>
+        <location filename="../mainwindow.cpp" line="1507"/>
         <source>Save File</source>
         <translation>حفظ ملف</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1412"/>
+        <location filename="../mainwindow.cpp" line="1507"/>
         <source>XML Files (*.xml)</source>
         <translation>ملفات XML (*.xml)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1426"/>
+        <location filename="../mainwindow.cpp" line="1530"/>
         <source>Error</source>
         <translation>خطأ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2118"/>
+        <location filename="../mainwindow.cpp" line="2224"/>
         <source>Length</source>
         <translation>طول</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2193"/>
+        <location filename="../mainwindow.cpp" line="2299"/>
         <source>FrameWidth</source>
         <translation>عرض الإطار</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2285"/>
+        <location filename="../mainwindow.cpp" line="2391"/>
         <source>AutoHeight</source>
         <translation>إرتفاع تلقائي</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2291"/>
+        <location filename="../mainwindow.cpp" line="2397"/>
         <source>IgnoreRatioAspect</source>
         <translation>تجاهل تناسب العرض للإرتفاع</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2297"/>
+        <location filename="../mainwindow.cpp" line="2403"/>
         <source>ArrowStart</source>
         <translation>بداية السهم</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2303"/>
+        <location filename="../mainwindow.cpp" line="2409"/>
         <source>ArrowEnd</source>
         <translation>نهاية السهم</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2309"/>
+        <location filename="../mainwindow.cpp" line="2415"/>
         <source>TextWrap</source>
         <translation>إلتفاف النص</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2315"/>
+        <location filename="../mainwindow.cpp" line="2421"/>
         <source>BackgroundColor</source>
         <translation>لون الخلفية</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2321"/>
+        <location filename="../mainwindow.cpp" line="2427"/>
         <source>BorderColor</source>
         <translation>لون الإطار</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2330"/>
+        <location filename="../mainwindow.cpp" line="2436"/>
         <source>FontColor</source>
         <translation>لون الخط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1661"/>
+        <location filename="../mainwindow.cpp" line="1765"/>
         <source>Font</source>
         <translation>خط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="251"/>
+        <location filename="../mainwindow.cpp" line="264"/>
         <source>Font name</source>
         <translation>اسم الخط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="254"/>
+        <location filename="../mainwindow.cpp" line="267"/>
         <source>Font size</source>
         <translation>حجم الخط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="279"/>
+        <location filename="../mainwindow.cpp" line="292"/>
         <source>Zoom</source>
         <translation>مكبرة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="507"/>
+        <location filename="../mainwindow.cpp" line="521"/>
         <source>Line</source>
         <translation>خط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="513"/>
+        <location filename="../mainwindow.cpp" line="527"/>
         <source>Line with arrow at the end</source>
         <translation>خط بسهم بالنهاية</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="519"/>
+        <location filename="../mainwindow.cpp" line="533"/>
         <source>Line with arrow at the start</source>
         <translation>خط بسهم بالبداية</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1630"/>
-        <location filename="../mainwindow.cpp" line="1669"/>
+        <location filename="../mainwindow.cpp" line="1734"/>
+        <location filename="../mainwindow.cpp" line="1773"/>
         <source>Frame</source>
         <translation>إطار</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2049"/>
+        <location filename="../mainwindow.cpp" line="2155"/>
         <source>Aligment hor</source>
         <translation>محاذاة أفقية</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2053"/>
-        <location filename="../mainwindow.cpp" line="2112"/>
-        <location filename="../mainwindow.cpp" line="2139"/>
+        <location filename="../mainwindow.cpp" line="2159"/>
+        <location filename="../mainwindow.cpp" line="2218"/>
+        <location filename="../mainwindow.cpp" line="2245"/>
         <source>Left</source>
         <translation>يسار</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2058"/>
-        <location filename="../mainwindow.cpp" line="2086"/>
+        <location filename="../mainwindow.cpp" line="2164"/>
+        <location filename="../mainwindow.cpp" line="2192"/>
         <source>Center</source>
         <translation>وسط</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2063"/>
-        <location filename="../mainwindow.cpp" line="2149"/>
+        <location filename="../mainwindow.cpp" line="2169"/>
+        <location filename="../mainwindow.cpp" line="2255"/>
         <source>Right</source>
         <translation>يمين</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2077"/>
+        <location filename="../mainwindow.cpp" line="2183"/>
         <source>Aligment ver</source>
         <translation>محاذاة عمودية</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2081"/>
-        <location filename="../mainwindow.cpp" line="2124"/>
-        <location filename="../mainwindow.cpp" line="2159"/>
+        <location filename="../mainwindow.cpp" line="2187"/>
+        <location filename="../mainwindow.cpp" line="2230"/>
+        <location filename="../mainwindow.cpp" line="2265"/>
         <source>Top</source>
         <translation>أعلى</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2091"/>
-        <location filename="../mainwindow.cpp" line="2169"/>
+        <location filename="../mainwindow.cpp" line="2197"/>
+        <location filename="../mainwindow.cpp" line="2275"/>
         <source>Bottom</source>
         <translation>أسفل</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2100"/>
+        <location filename="../mainwindow.cpp" line="2206"/>
         <source>Height</source>
         <translation>ارتفاع</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2106"/>
+        <location filename="../mainwindow.cpp" line="2212"/>
         <source>Width</source>
         <translation>عرض</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2213"/>
+        <location filename="../mainwindow.cpp" line="2319"/>
         <source>Size</source>
         <translation>قياس</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2261"/>
+        <location filename="../mainwindow.cpp" line="2367"/>
         <source>Printing</source>
         <translation>طباعة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2267"/>
+        <location filename="../mainwindow.cpp" line="2373"/>
         <source>Start New Numeration</source>
         <translation>بدء ترقيم جديد</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2273"/>
+        <location filename="../mainwindow.cpp" line="2379"/>
         <source>Show In Group</source>
         <translation>عرض بمجموعة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2279"/>
+        <location filename="../mainwindow.cpp" line="2385"/>
         <source>Start New Page</source>
         <translation>بدء صفحة جديدة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2336"/>
+        <location filename="../mainwindow.cpp" line="2442"/>
         <source>BarcodeType</source>
         <translation>نوع الباركود</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2342"/>
+        <location filename="../mainwindow.cpp" line="2448"/>
         <source>BarcodeFrameType</source>
         <translation>نوع إطار الباركود</translation>
     </message>
@@ -2077,7 +2077,7 @@ Save the report?</source>
 <context>
     <name>RepScrollArea</name>
     <message>
-        <location filename="../RepScrollArea.cpp" line="144"/>
+        <location filename="../RepScrollArea.cpp" line="149"/>
         <source>%</source>
         <translation>%</translation>
     </message>
@@ -2722,12 +2722,12 @@ Restart application?</source>
         <translation>الغاء الأمر</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="55"/>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="56"/>
         <source>Open Directory</source>
         <translation>فتح المجلد</translation>
     </message>
     <message>
-        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="77"/>
+        <location filename="../../CommonFiles/XYZ_UpdateDlg.cpp" line="78"/>
         <source>Downloading %0. ..</source>
         <translation>تحميل %0. ..</translation>
     </message>
