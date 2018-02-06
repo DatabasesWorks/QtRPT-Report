@@ -1,4 +1,4 @@
-QT       += gui xml script sql
+QT       += gui xml script sql charts
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets printsupport

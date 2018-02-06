@@ -370,6 +370,7 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     borderWidth = e.attribute("borderWidth","1").replace("px","").toInt();
     borderStyle = e.attribute("borderStyle","solid");
     borderColor = colorFromString(e.attribute("borderColor"));
+    qChartType = e.attribute("qChartType","");
 
     aligment = QtRPT::getAligment(e);
     autoHeight = e.attribute("autoHeight","0").toInt();

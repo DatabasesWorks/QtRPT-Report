@@ -409,6 +409,7 @@ FieldType QtRPT::getFieldType(QDomElement e)
     else if (e.attribute("type","label") == "line") return Line;
     else if (e.attribute("type","label") == "DatabaseImage") return DatabaseImage;
     else if (e.attribute("type","label") == "crossTab") return CrossTab;
+    else if (e.attribute("type","label") == "QtChart") return QtChart;
     else return Text;
 }
 
@@ -434,6 +435,7 @@ QString QtRPT::getFieldTypeName(FieldType type)
         case Barcode: return "barcode";
         case DatabaseImage: return "DatabaseImage";
         case CrossTab: return "crossTab";
+        case QtChart: return "QtChart";
         default: return "label";
     }
 }
@@ -500,33 +502,33 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             && fieldType != Image
             && fieldType != CrossTab) {
             // Fill background
-            if ( fieldObject->backgroundColor  != QColor(255,255,255,0)) {
+            if ( fieldObject->backgroundColor  != QColor(255,255,255,255)) {
                 if (painter->isActive())
                     painter->fillRect(left_+1, top_+1, width_-2, height_-2, fieldObject->backgroundColor);
             }
             // Draw frame
-            if (fieldObject->borderTop != QColor(255,255,255,0)) {
+            if (fieldObject->borderTop != QColor(255,255,255,255)) {
                 pen.setColor(fieldObject->borderTop);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_ + width_, top_);
                 }
             }
-            if (fieldObject->borderBottom != QColor(255,255,255,0)) {
+            if (fieldObject->borderBottom != QColor(255,255,255,255)) {
                 pen.setColor(fieldObject->borderBottom);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_ + height_, left_ + width_, top_ + height_);
                 }
             }
-            if (fieldObject->borderLeft != QColor(255,255,255,0)) {
+            if (fieldObject->borderLeft != QColor(255,255,255,255)) {
                 pen.setColor(fieldObject->borderLeft);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_, top_ + height_);
                 }
             }
-            if (fieldObject->borderRight != QColor(255,255,255,0)) {
+            if (fieldObject->borderRight != QColor(255,255,255,255)) {
                 pen.setColor(fieldObject->borderRight);
                 if (painter->isActive()) {
                     painter->setPen(pen);
@@ -650,8 +652,11 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 if (painter->isActive())
                     painter->drawImage(QRectF(left_,top_,width_,height_),image);
             } else {
+                QImage scaledImage = image.scaled(QSize(width_,height_), Qt::KeepAspectRatio);
+                QPoint point(left_, top_);
+
                 if (painter->isActive())
-                    painter->drawImage(QRectF(left_,top_,image.width()*koefRes_w,image.height()*koefRes_h),image);
+                    painter->drawImage(point,scaledImage);
             }
 
             if (m_printMode == QtRPT::Html)
@@ -680,6 +685,141 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             }
             if (painter->isActive())
                 chart->paintChart(painter);
+        }
+        if (fieldType == QtChart) {
+            QChart *chart;
+            if (fieldObject->qChartType == "1") {
+                QLineSeries *series = new QLineSeries();
+                series->append(0,0);
+                series->append(1,1);
+
+                chart = new QChart();
+                chart->addSeries(series);
+                chart->createDefaultAxes();
+                chart->axisX()->setTitleText(QString("x [m]"));
+                chart->axisY()->setTitleText(QString("y [m]"));
+                chart->setTitle("Simple chart example");
+                chart->resize(500,500);
+            }
+            if (fieldObject->qChartType == "2") {
+                QBarSet *set0 = new QBarSet("Jane");
+                   QBarSet *set1 = new QBarSet("John");
+                   QBarSet *set2 = new QBarSet("Axel");
+                   QBarSet *set3 = new QBarSet("Mary");
+                   QBarSet *set4 = new QBarSet("Samantha");
+
+                   *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+                   *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+                   *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+                   *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+                   *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+                   QStackedBarSeries *series = new QStackedBarSeries();
+                   series->append(set0);
+                   series->append(set1);
+                   series->append(set2);
+                   series->append(set3);
+                   series->append(set4);
+
+                   chart = new QChart();
+                   chart->addSeries(series);
+                   chart->setTitle("Simple stackedbarchart example");
+                   //chart->setAnimationOptions(QChart::SeriesAnimations);
+
+                   QStringList categories;
+                   categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+                   QBarCategoryAxis *axis = new QBarCategoryAxis();
+                   axis->append(categories);
+                   chart->createDefaultAxes();
+                   chart->setAxisX(axis, series);
+
+                   chart->legend()->setVisible(true);
+                   chart->legend()->setAlignment(Qt::AlignBottom);
+
+                chart->resize(500,500);
+            }
+            if (fieldObject->qChartType == "3") {
+                QPieSeries *series = new QPieSeries();
+                series->append("Jane", 1);
+                series->append("Joe", 2);
+                series->append("Andy", 3);
+                series->append("Barbara", 4);
+                series->append("Axel", 5);
+
+                QPieSlice *slice = series->slices().at(1);
+                slice->setExploded();
+                slice->setLabelVisible();
+                slice->setPen(QPen(Qt::darkGreen, 2));
+                slice->setBrush(Qt::green);
+
+                chart = new QChart();
+                chart->addSeries(series);
+                chart->setTitle("Simple piechart example");
+                chart->legend()->hide();
+                chart->resize(500,500);
+            }
+            if (fieldObject->qChartType == "4") {
+                QBarSet *set0 = new QBarSet("Jane");
+                    QBarSet *set1 = new QBarSet("John");
+                    QBarSet *set2 = new QBarSet("Axel");
+                    QBarSet *set3 = new QBarSet("Mary");
+                    QBarSet *set4 = new QBarSet("Sam");
+
+                    *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+                    *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+                    *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+                    *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+                    *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+                    QBarSeries *barseries = new QBarSeries();
+                    barseries->append(set0);
+                    barseries->append(set1);
+                    barseries->append(set2);
+                    barseries->append(set3);
+                    barseries->append(set4);
+
+                    QLineSeries *lineseries = new QLineSeries();
+                    lineseries->setName("trend");
+                    lineseries->append(QPoint(0, 4));
+                    lineseries->append(QPoint(1, 15));
+                    lineseries->append(QPoint(2, 20));
+                    lineseries->append(QPoint(3, 4));
+                    lineseries->append(QPoint(4, 12));
+                    lineseries->append(QPoint(5, 17));
+
+                    chart = new QChart();
+                    chart->addSeries(barseries);
+                    chart->addSeries(lineseries);
+                    chart->setTitle("Line and barchart example");
+
+                    QStringList categories;
+                    categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+                    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+                    axisX->append(categories);
+                    chart->setAxisX(axisX, lineseries);
+                    chart->setAxisX(axisX, barseries);
+                    axisX->setRange(QString("Jan"), QString("Jun"));
+
+                    QValueAxis *axisY = new QValueAxis();
+                    chart->setAxisY(axisY, lineseries);
+                    chart->setAxisY(axisY, barseries);
+                    axisY->setRange(0, 20);
+
+                    chart->legend()->setVisible(true);
+                    chart->legend()->setAlignment(Qt::AlignBottom);
+
+
+                chart->resize(500,500);
+            }
+
+            QChartView *chartView = new QChartView(chart);
+            chartView->setRenderHint(QPainter::TextAntialiasing);
+            chartView->show();
+
+            QRectF rect = QRectF(left_, top_, width_, height_);
+            chartView->render(painter, rect, chartView->rect());
+
+            delete chartView;
         }
         if (fieldType == Barcode) {
             #ifndef NO_BARCODE
@@ -1365,6 +1505,11 @@ QString QtRPT::getFormattedValue(QString value, QString formatString)
             if (formatString.mid(1,formatString.size()-2) == "#,###.##") {
                 locale = QLocale(QLocale::C);
                 value = locale.toString(value.toDouble(), 'f', precision);
+
+                for(int point = 0, i = (value.lastIndexOf('.') == -1 ? value.length() : value.lastIndexOf('.')); i > 0; --i, ++point) {
+                    if(point != 0 && point % 3 == 0)
+                        value.insert(i, ',');
+                }
             }
             if (formatString.mid(1,formatString.size()-2) == "# ###,##") {
                 locale = QLocale("fr_FR");
@@ -1796,7 +1941,7 @@ void QtRPT::setPageSettings(QPrinter *printer, int pageReport)
 
     if (m_orientation != orientation) {
         m_orientation = orientation;
-        //painter->resetTransform();
+        painter->resetTransform();
         if (orientation == 1) {
             if (painter->isActive()) {
                 painter->rotate(90); // поворачиваем относительно (0,0)
@@ -2161,7 +2306,7 @@ void QtRPT::processPFooter(bool draw)
 void QtRPT::processRSummary(QPrinter *printer, int &y, bool draw)
 {
     if (pageList.at(m_pageReport)->getBand(ReportSummary) == nullptr) return;
-    if (y + pageList.at(m_pageReport)->getBand(ReportSummary)->height > ph-mb-mt-pageList.at(m_pageReport)->getBand(ReportSummary)->height)
+    if (y + pageList.at(m_pageReport)->getBand(ReportSummary)->height > ph-mb-mt/*-pageList.at(m_pageReport)->getBand(ReportSummary)->height*/)
         newPage(printer, y, draw);
     if (allowPrintPage(draw,curPage))
         drawBandRow(pageList.at(m_pageReport)->getBand(ReportSummary), y);

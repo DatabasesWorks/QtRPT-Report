@@ -64,6 +64,7 @@ public:
     QString borderStyle;
     QFont font;
     FieldType fieldType;
+    QString qChartType;
     QString formatString;
     QString highlighting;
     QString imgFormat;

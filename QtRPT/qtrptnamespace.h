@@ -56,7 +56,8 @@ namespace QtRptName {
         Line,
         Barcode,
         DatabaseImage,
-        CrossTab
+        CrossTab,
+        QtChart  //this is a chart based on QChart. QChart came since Qt 5.8.0.
     };
 
     enum BorderStyle

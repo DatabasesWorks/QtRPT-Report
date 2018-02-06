@@ -143,7 +143,18 @@ void ExampleDlg7::print()
         dir.cd(QFile::decodeName("../Resources"));
     #endif
 
-    QString fileName = dir.absolutePath()+"/examples_report/example7.xml";
+    QString fileName = dir.absolutePath()+"/examples_report/example19.xml";
+    auto report = QtRPT::createSPtr(this);
+    report->recordCount << ui->tableWidget->rowCount();
+    if (report->loadReport(fileName) == false)
+        qDebug()<<"Report file not found";
+
+    //QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+    //                 this, SLOT(setValue(const int, const QString, QVariant&, const int)));
+    //QObject::connect(report.data(), SIGNAL(setValueDiagram(Chart&)),this,SLOT(setValueDiagram(Chart&)));
+    report->printExec();
+
+    /*QString fileName = dir.absolutePath()+"/examples_report/example7.xml";
     auto report = QtRPT::createSPtr(this);
     report->recordCount << ui->tableWidget->rowCount();
     if (report->loadReport(fileName) == false)
@@ -152,8 +163,7 @@ void ExampleDlg7::print()
     QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
     QObject::connect(report.data(), SIGNAL(setValueDiagram(Chart&)),this,SLOT(setValueDiagram(Chart&)));
-    report->printExec();
-
+    report->printExec();*/
 }
 
 ExampleDlg7::~ExampleDlg7()

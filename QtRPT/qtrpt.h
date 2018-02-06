@@ -24,6 +24,7 @@ limitations under the License.
 #ifndef QTRPT_H
 #define QTRPT_H
 
+#include <QtCharts>
 #include <QPainter>
 #include <QDomDocument>
 #include <QScriptEngine>
@@ -42,6 +43,7 @@ limitations under the License.
 #endif
 
 using namespace QtRptName;
+using namespace QtCharts;
 
 enum HiType
 {
@@ -125,6 +127,7 @@ public:
     QList<RptPageObject*> pageList;    
     QList<int> recordCount;
     ~QtRPT();
+    static QString getFormattedValue(QString value, QString formatString);
 
     void setUserSqlConnection(int pageReport, QString dsName, QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QString sql, QString dbCoding = "UTF8", QString charsetCoding = "UTF8");
     void activateUserSqlConnection(int pageReport, bool bActive);
@@ -182,7 +185,6 @@ private:
     int fromPage;
     int toPage;
     QStringList listOfGroup;
-    QString getFormattedValue(QString value, QString formatString);
     void setFont(RptFieldObject *fieldObject);
     static Qt::Alignment getAligment(QDomElement e);
     QPen getPen(RptFieldObject *fieldObject);
