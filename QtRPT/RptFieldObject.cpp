@@ -302,6 +302,7 @@ limitations under the License.
 RptFieldObject::RptFieldObject()
 {
     this->highlighting = "";
+    this->autoHeight = false;
     this->backgroundColor = Qt::white;
     this->m_backgroundColor = Qt::white;
     this->fontColor = Qt::black;
@@ -370,7 +371,8 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     borderWidth = e.attribute("borderWidth","1").replace("px","").toInt();
     borderStyle = e.attribute("borderStyle","solid");
     borderColor = colorFromString(e.attribute("borderColor"));
-    qChartType = e.attribute("qChartType","");
+
+    rotate = e.attribute("rotate","0").toInt();
 
     aligment = QtRPT::getAligment(e);
     autoHeight = e.attribute("autoHeight","0").toInt();
@@ -459,6 +461,65 @@ void RptFieldObject::updateDiagramValue()
     if (autoFillData == 1)
         for (auto &graph : graphList)
             graph.valueReal = m_qtrpt->sectionField(this->parentBand, graph.formula, false).toFloat();
+}
+
+/*!
+ \fn RptFieldObject *RptFieldObject::clone()
+    Clone the current field and return \c RptFieldObject of the new field object
+*/
+RptFieldObject *RptFieldObject::clone()
+{
+    auto field = new RptFieldObject();
+    field->name = name;
+    field->value = value;
+    field->rect = rect;
+    field->borderTop = borderTop;
+    field->borderBottom = borderBottom;
+    field->borderLeft = borderLeft;
+    field->borderRight = borderRight;
+    field->borderColor = borderColor;
+    field->fontColor = fontColor;
+    field->backgroundColor = backgroundColor;
+    field->autoHeight = autoHeight;
+
+
+    field->borderWidth = borderWidth;
+    field->autoHeight = autoHeight;
+    field->textWrap = textWrap;
+    field->rotate = rotate;
+
+    field->aligment = aligment;
+    field->borderStyle = borderStyle;
+    field->font = font;
+    field->fieldType = fieldType;
+    field->formatString = formatString;
+    field->highlighting = highlighting;
+    field->imgFormat = imgFormat;
+    field->printing = printing;
+    field->barcodeType = barcodeType;
+    field->barcodeFrameType = barcodeFrameType;
+    field->barcodeHeight = barcodeHeight;
+    field->ignoreAspectRatio = ignoreAspectRatio;
+    field->picture = picture;
+    field->parentBand = parentBand;
+    //field->*parentCrossTab = parentCrossTab;
+
+    field->lineStartX = lineStartX;
+    field->lineEndX = lineEndX;
+    field->lineStartY = lineStartY;
+    field->lineEndY = lineEndY;
+    field->arrowStart = arrowStart;
+    field->arrowEnd = arrowEnd;
+
+    field->m_fontColor = m_fontColor;
+    field->m_backgroundColor = m_backgroundColor;
+    field->m_recNo = m_recNo;
+    field->m_reportPage = m_reportPage;
+    field->m_top = m_top;
+    field->m_qtrpt = m_qtrpt;
+
+
+    return field;
 }
 
 /*!

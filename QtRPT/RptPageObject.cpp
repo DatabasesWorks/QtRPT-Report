@@ -194,6 +194,33 @@ RptFieldObject *RptPageObject::findFieldObjectByName(QString name)
 }
 
 /*!
+ \fn RptPageObject *RptPageObject::clone()
+    Clone the current page and return \c RptPageObject of the new page object
+*/
+RptPageObject *RptPageObject::clone()
+{
+    auto reportPage = new RptPageObject(m_qtrpt);
+    reportPage->pageNo      = pageNo;
+    reportPage->orientation = orientation;
+    reportPage->ph          = ph;
+    reportPage->pw          = pw;
+    reportPage->ml          = ml;
+    reportPage->mr          = mr;
+    reportPage->mt          = mt;
+    reportPage->mb          = mb;
+    reportPage->border      = border;
+    reportPage->borderWidth = borderWidth;
+    reportPage->borderColor = borderColor;
+    reportPage->borderStyle = borderStyle;
+    for (auto band : bandList) {
+        auto newBand = band->clone();
+        reportPage->addBand(newBand);
+    }
+
+    return reportPage;
+}
+
+/*!
   Destroys the object, deleting all its child objects.
  */
 RptPageObject::~RptPageObject()

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>347</width>
-    <height>450</height>
+    <height>631</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>347</width>
-    <height>450</height>
+    <height>631</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
    <iconset resource="images.qrc">
     <normaloff>:/new/prefix1/images/pageSetting.png</normaloff>:/new/prefix1/images/pageSetting.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
@@ -274,17 +274,13 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0" colspan="2">
-         <widget class="QCheckBox" name="chkDrawBorder">
-          <property name="text">
-           <string>Draw border</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Border color</string>
+        <item row="1" column="3" colspan="2">
+         <widget class="QComboBox" name="cmbBorderStyle">
+          <property name="iconSize">
+           <size>
+            <width>64</width>
+            <height>16</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -304,12 +300,29 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="chkDrawBorder">
+          <property name="text">
+           <string>Draw border</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Border color</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="4">
          <widget class="QToolButton" name="btnBorderColor">
           <property name="text">
            <string>...</string>
           </property>
          </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spnBorderWidth"/>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_9">
@@ -318,9 +331,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="spnBorderWidth"/>
-        </item>
         <item row="1" column="2">
          <widget class="QLabel" name="label_15">
           <property name="text">
@@ -328,13 +338,73 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="3" colspan="2">
-         <widget class="QComboBox" name="cmbBorderStyle">
-          <property name="iconSize">
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Watermark</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="chckWatermark">
+          <property name="text">
+           <string>Use watermark</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Opacity:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_16">
+          <property name="text">
+           <string>Image:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>64</width>
-            <height>16</height>
+            <width>40</width>
+            <height>20</height>
            </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <widget class="XYZLabel" name="label_18">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../QtRPT/imagesRpt.qrc">:/QtRptDesigner/images/QtRptDesigner.ico</pixmap>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QSpinBox" name="spinBox">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>100</number>
           </property>
          </widget>
         </item>
@@ -376,8 +446,18 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XYZLabel</class>
+   <extends>QLabel</extends>
+   <header>XYZ_Label.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
+  <include location="../QtRPT/imagesRpt.qrc"/>
+  <include location="../QtRPT/imagesRpt.qrc"/>
   <include location="images.qrc"/>
+  <include location="../QtRPT/imagesRpt.qrc"/>
  </resources>
  <connections>
   <connection>

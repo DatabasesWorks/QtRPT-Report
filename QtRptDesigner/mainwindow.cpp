@@ -67,6 +67,16 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                 return editor;
                 break;
             }
+            case TextRotate: {
+                auto editor = new QComboBox(parent);
+                editor->addItem(tr("0 Degres"), 0);
+                editor->addItem(tr("90 Degres"), 1);
+                editor->addItem(tr("180 Degres"), 2);
+                editor->addItem(tr("270 Degres"), 3);
+                connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
+                return editor;
+                break;
+            }
             case AligmentH: {
                 auto editor = new QComboBox(parent);
                 editor->addItem(tr("Left"),Qt::AlignLeft);
@@ -125,6 +135,7 @@ void EditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) co
         switch (command) {
             case BarcodeType:
             case BarcodeFrameType:
+            case TextRotate:
             case AligmentH:
             case AligmentV: {
                 auto value = index.model()->data(index, Qt::EditRole).toString();
@@ -162,6 +173,7 @@ void EditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
                 model->setData(index, ed->itemData(ed->currentIndex()));
                 break;
             }
+            case TextRotate:
             case AligmentH:
             case AligmentV: {
                 auto ed = qobject_cast<QComboBox*>(editor);
@@ -309,6 +321,11 @@ MainWindow::MainWindow(QWidget *parent)
     cbFrameWidth->addItem("3");
     cbFrameWidth->addItem("4");
     cbFrameWidth->addItem("5");
+    cbFrameWidth->addItem("6");
+    cbFrameWidth->addItem("7");
+    cbFrameWidth->addItem("8");
+    cbFrameWidth->addItem("9");
+    cbFrameWidth->addItem("10");
     ui->toolBar->addWidget(cbFrameWidth);
     QObject::connect(cbFrameWidth, SIGNAL(activated(int)), this, SLOT(changeFrameWidth()));
     QObject::connect(cbFontName, SIGNAL(activated(int)), this, SLOT(changeTextFont()));
@@ -801,7 +818,7 @@ void MainWindow::reportPageChanged(int index)
         ui->actDeleteReportPage->setEnabled(true);
 
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(index));
-    repPage->setScale(cbZoom->currentText());
+	repPage->setScale(cbZoom->currentText());
     auto allReportBand = repPage->getReportBands();
     if (!allReportBand.isEmpty())
         std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) {return p1->bandType < p2->bandType;});
@@ -1036,7 +1053,7 @@ void MainWindow::openFile()
     }
     file.close();
 
-    QApplication::setOverrideCursor(Qt::WaitCursor);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 
     QDomElement docElem = xmlDoc->documentElement();  //get root element
     QDomElement repElem;
@@ -1067,6 +1084,7 @@ void MainWindow::openFile()
         repPage->pageSetting.borderWidth     = repElem.attribute("borderWidth", "1").toInt();
         repPage->pageSetting.borderColor     = repElem.attribute("borderColor", "rgba(0,0,0,255)");
         repPage->pageSetting.borderStyle     = repElem.attribute("borderStyle", "solid");
+        repPage->pageSetting.watermark       = repElem.attribute("watermark", "0").toInt();
 
         ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), tr("Page %1").arg(ui->tabWidget->currentIndex()+1));
         repPage->setPaperSize(0);
@@ -1490,6 +1508,7 @@ void MainWindow::saveReport()
         repElem.setAttribute("borderWidth",repPage->pageSetting.borderWidth);
         repElem.setAttribute("borderColor",repPage->pageSetting.borderColor);
         repElem.setAttribute("borderStyle",repPage->pageSetting.borderStyle);
+        repElem.setAttribute("watermark",repPage->pageSetting.watermark);
         docElem.appendChild(repElem);
 
         for (auto &gItem : repPage->scene->items(Qt::AscendingOrder))
@@ -1776,7 +1795,8 @@ void MainWindow::showParamState()
                 setParamTree(FrameTop, top, true);
                 setParamTree(FrameBottom, bottom, true);
                 setParamTree(FrameWidth, field->getBorderWidth());
-                setParamTree(TextWrap, field->getTextWrap());
+                setParamTree(TextWrap, field->textWrap());
+                setParamTree(TextRotate, field->textRotate());
                 break;
             }
             case TextRich: {
@@ -1917,7 +1937,7 @@ void MainWindow::execButtonCommand(Command command, QVariant value)
     for (auto item : getSelectedItems())
         processCommand(command, value, item);
 
-    setParamTree(command,value);
+    setParamTree(command, value);
     repPage->scene->update();
     ui->actSaveReport->setEnabled(true);
 
@@ -1925,7 +1945,7 @@ void MainWindow::execButtonCommand(Command command, QVariant value)
     BArrayList newList = ParamCommand::getBArrayFromContList(getSelectedHelperItems());
     QList<PairCont> lst = ParamCommand::compoundArrays(oldList,newList);
 
-    GraphicsScene *scene = qobject_cast<GraphicsScene*>(repPage->scene);
+    auto scene = qobject_cast<GraphicsScene*>(repPage->scene);
     scene->m_undoStack->push(new ParamCommand( lst, repPage->scene ));
 }
 
@@ -2080,7 +2100,7 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
             break;
         }
         case Printing: {
-            helper->setPrinting( value.toBool() == true ? "1" : "0" );
+            helper->setPrinting(value.toBool() == true ? "1" : "0");
             break;
         }
         case IgnoreRatioAspect: {
@@ -2109,6 +2129,10 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
         }
         case AutoHeight: {
             box->setAutoHeight(value.toBool());
+            break;
+        }
+        case TextRotate: {
+            box->setTextRotate(value.toInt());
             break;
         }
         case TextWrap: {
@@ -2417,6 +2441,30 @@ void MainWindow::setParamTree(Command command, QVariant value, bool child)
             else item->setCheckState(1,Qt::Unchecked);
             break;
         }
+        case TextRotate: {
+            item->setText(0,tr("TextRotate"));
+            item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+            switch(value.toInt()) {
+                case 0: {
+                    item->setText(1,tr("0 Degres"));
+                    break;
+                }
+                case 1: {
+                    item->setText(1,tr("90 Degres"));
+                    break;
+                }
+                case 2: {
+                    item->setText(1,tr("180 Degres"));
+                    break;
+                }
+                case 3: {
+                    item->setText(1,tr("270 Degres"));
+                    break;
+                }
+                default: item->setText(1,"");
+            }
+            break;
+        }
         case BackgroundColor: {
             item->setText(0,tr("BackgroundColor"));
             item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable);
@@ -2573,6 +2621,8 @@ void MainWindow::addField(FieldType type)
     repPage->scene->newFieldType(type);
     repPage->scene->newFieldMenu(contMenu);
     repPage->scene->setMode(GraphicsScene::Mode::DrawContainer);
+    //убрать? ui->actSelect_tool->setChecked(true);
+    //убрать? ui->actSaveReport->setEnabled(true);
 }
 
 void MainWindow::addDraw()
@@ -2618,6 +2668,7 @@ void MainWindow::addDraw()
         }
     }
 
+    //убрать? ui->actSelect_tool->setChecked(true);
 }
 
 void MainWindow::showPreview()
@@ -2763,6 +2814,7 @@ void MainWindow::closeEditor()
     QVariant v;
     Command command = (Command)item->data(1,Qt::UserRole).toInt();
     switch (command) {
+        case TextRotate:
         case Name:
         case Left:
         case Top:

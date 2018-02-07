@@ -56,6 +56,7 @@ GraphicsBox::GraphicsBox()
     m_highlighting = "";
     m_formatString = "";
     m_text = tr("New Label");
+    m_textRotate = 0;
     m_radius = 6;
     m_barcode = (SPtrBarCode)nullptr;
     m_crossTab = (SPtrCrossTab)nullptr;
@@ -445,6 +446,10 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
         painter->drawPixmap(QRect(m_drawingWidth-18,2,16,16), m_bandPixmap);
     }
     if (type() == ItemType::GBox) {
+        painter->save();
+
+
+
         QRectF rc (QPointF(0,0), QPointF(getWidth(), getHeight()));
         switch(this->getFieldType()) {
             case Text:
@@ -461,11 +466,37 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
                 if (borderIsCheck(FrameBottom))
                     painter->drawLine(0,getHeight(), getWidth()-1, getHeight()); //bottom
 
+                int flags = m_alignment;
+                if (m_textWrap == true)
+                    flags = flags | Qt::TextWordWrap;
+
                 m_outterborderPen.setColor( m_fontColor );
                 painter->setPen(m_outterborderPen);
-
                 painter->setFont(m_font);
-                painter->drawText(rcT,m_alignment,m_text);
+
+                switch (m_textRotate) {
+                case 1: {  //90 degres
+                    painter->translate(getWidth(), 0);
+                    painter->rotate(90);
+                    painter->drawText(0, 0, rcT.height(), rcT.width(), flags, m_text);
+                    break;
+                }
+                case 2: {  //180 degres
+                    painter->translate(getWidth(), getHeight());
+                    painter->rotate(180);
+                    painter->drawText(0, 0, rcT.width(), rcT.height(), flags, m_text);
+                    break;
+                }
+                case 3: {  //270 degres
+                    painter->translate(0, getHeight());
+                    painter->rotate(-90);
+                    painter->drawText(0, 0, rcT.height(), rcT.width(), flags, m_text);
+                    break;
+                }
+                default:
+                    painter->drawText(rcT, flags, m_text);
+                }
+
                 break;
             }
             case TextRich: {
@@ -595,6 +626,8 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
 
             }
         }
+
+        painter->restore();
     }
 }
 
@@ -634,6 +667,7 @@ GraphicsBox* GraphicsBox::clone()
     newPos.setX(newPos.x()+5);
 
     auto newContField  = new GraphicsBox();
+    newContField->setBorderVisible(this->borderIsVisible());
     newContField->setColorValue(BackgroundColor, this->getColorValue(BackgroundColor));
     newContField->setColorValue(BorderColor, this->getColorValue(BorderColor));
     newContField->setColorValue(FontColor, this->getColorValue(FontColor));
@@ -683,6 +717,7 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
         this->m_formatString = e.attribute("format","");
         this->m_highlighting = e.attribute("highlighting","");
         m_textWrap = e.attribute("textWrap","1").toInt();
+        m_textRotate = e.attribute("rotate","0").toInt();
     } else if (this->m_type == Image || e.attribute("picture","text") != "text") {
         //load picture into lable
         QByteArray byteArray = QByteArray::fromBase64(e.attribute("picture","text").toLatin1());
@@ -755,6 +790,7 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
         elem.setAttribute("format",this->m_formatString);
         elem.setAttribute("highlighting",this->m_highlighting);
         elem.setAttribute("textWrap",this->m_textWrap);
+        elem.setAttribute("rotate",this->m_textRotate);
     }
     if (this->m_type == Image) {
         //Saving picture

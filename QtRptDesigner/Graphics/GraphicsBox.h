@@ -75,7 +75,9 @@ public:
     void setTextDirection(bool value) {m_textDirection = value;}
     bool getTextDirection() {return m_textDirection;}
     void setTextWrap(bool value) {m_textWrap = value;}
-    bool getTextWrap() {return m_textWrap;}
+    bool textWrap() {return m_textWrap;}
+    void setTextRotate(int value) {m_textRotate = value;}
+    int textRotate() {return m_textRotate;}
     QString getFormatString() {return m_formatString;}
     void setFormatString(QString value) {m_formatString = value;}
     void setImage(QPixmap pixmap);
@@ -139,6 +141,7 @@ private:
     bool m_autoHeight;
     bool m_textDirection;
     bool m_textWrap;
+    int m_textRotate;
     int m_radius;
     SPtrBarCode m_barcode;
     SPtrChart m_chart;

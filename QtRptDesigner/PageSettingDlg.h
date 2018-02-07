@@ -39,6 +39,7 @@ struct PageSetting {
     float pageHeight;
     int pageOrientation;
     bool border;
+    bool watermark;
     int borderWidth;
     QString borderColor;
     QString borderStyle;

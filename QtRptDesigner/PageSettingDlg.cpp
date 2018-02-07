@@ -99,6 +99,8 @@ void PageSettingDlg::showThis(PageSetting pageSetting)
     ui->lblBorderColor->setStyleSheet("QLabel {background-color: "+pageSetting.borderColor+"}");
     strColor = pageSetting.borderColor;
 
+    ui->chckWatermark->setChecked(pageSetting.watermark);
+
     if (pageSetting.borderStyle == "solid") ui->cmbBorderStyle->setCurrentIndex(0);
     if (pageSetting.borderStyle == "dashed") ui->cmbBorderStyle->setCurrentIndex(1);
     if (pageSetting.borderStyle == "dotted") ui->cmbBorderStyle->setCurrentIndex(2);
@@ -154,6 +156,7 @@ void PageSettingDlg::saveSettings()
     pageSetting.border        = ui->chkDrawBorder->isChecked();
     pageSetting.borderWidth   = ui->spnBorderWidth->value();
     pageSetting.borderColor   = strColor;
+    pageSetting.watermark     = ui->chckWatermark->isChecked();
 
     if (ui->rLandscape->isChecked())
         pageSetting.pageOrientation = 1;

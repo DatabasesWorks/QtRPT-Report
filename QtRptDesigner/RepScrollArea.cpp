@@ -69,6 +69,7 @@ RepScrollArea::RepScrollArea(QTreeWidgetItem* rootItem, QWidget *parent)
     pageSetting.pageOrientation = 0;
     pageSetting.border          = false;
     pageSetting.borderWidth     = 1;
+    pageSetting.watermark       = false;
 
     this->setMouseTracking(true);
     this->installEventFilter(parent);

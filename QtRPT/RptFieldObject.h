@@ -59,12 +59,12 @@ public:
     int borderWidth;
     bool autoHeight;
     bool textWrap;
+    int rotate;
 
     Qt::Alignment aligment;
     QString borderStyle;
     QFont font;
     FieldType fieldType;
-    QString qChartType;
     QString formatString;
     QString highlighting;
     QString imgFormat;
@@ -100,6 +100,7 @@ public:
     QString getHTMLStyle();
     RptCrossTabObject *crossTab;
     bool isCrossTabChild();
+    RptFieldObject *clone();
 
 private:
     QColor m_fontColor;

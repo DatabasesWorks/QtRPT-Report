@@ -184,8 +184,9 @@ QtRPT::QtRPT(QObject *parent)
 : QObject(parent)
 {
     xmlDoc = QDomDocument("Reports");
-    m_backgroundImage = 0;
+    m_backgroundImage = nullptr;
     m_orientation = 0;
+    m_backgroundOpacity = 1;
     m_printMode = QtRPT::Printer;
     m_resolution = QPrinter::HighResolution;
     painter = nullptr;
@@ -687,139 +688,23 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 chart->paintChart(painter);
         }
         if (fieldType == QtChart) {
-            QChart *chart;
-            if (fieldObject->qChartType == "1") {
-                QLineSeries *series = new QLineSeries();
-                series->append(0,0);
-                series->append(1,1);
+            auto chart = new QChart();
+            chart->setObjectName("nullptr");
 
-                chart = new QChart();
-                chart->addSeries(series);
-                chart->createDefaultAxes();
-                chart->axisX()->setTitleText(QString("x [m]"));
-                chart->axisY()->setTitleText(QString("y [m]"));
-                chart->setTitle("Simple chart example");
-                chart->resize(500,500);
-            }
-            if (fieldObject->qChartType == "2") {
-                QBarSet *set0 = new QBarSet("Jane");
-                   QBarSet *set1 = new QBarSet("John");
-                   QBarSet *set2 = new QBarSet("Axel");
-                   QBarSet *set3 = new QBarSet("Mary");
-                   QBarSet *set4 = new QBarSet("Samantha");
-
-                   *set0 << 1 << 2 << 3 << 4 << 5 << 6;
-                   *set1 << 5 << 0 << 0 << 4 << 0 << 7;
-                   *set2 << 3 << 5 << 8 << 13 << 8 << 5;
-                   *set3 << 5 << 6 << 7 << 3 << 4 << 5;
-                   *set4 << 9 << 7 << 5 << 3 << 1 << 2;
-
-                   QStackedBarSeries *series = new QStackedBarSeries();
-                   series->append(set0);
-                   series->append(set1);
-                   series->append(set2);
-                   series->append(set3);
-                   series->append(set4);
-
-                   chart = new QChart();
-                   chart->addSeries(series);
-                   chart->setTitle("Simple stackedbarchart example");
-                   //chart->setAnimationOptions(QChart::SeriesAnimations);
-
-                   QStringList categories;
-                   categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
-                   QBarCategoryAxis *axis = new QBarCategoryAxis();
-                   axis->append(categories);
-                   chart->createDefaultAxes();
-                   chart->setAxisX(axis, series);
-
-                   chart->legend()->setVisible(true);
-                   chart->legend()->setAlignment(Qt::AlignBottom);
-
-                chart->resize(500,500);
-            }
-            if (fieldObject->qChartType == "3") {
-                QPieSeries *series = new QPieSeries();
-                series->append("Jane", 1);
-                series->append("Joe", 2);
-                series->append("Andy", 3);
-                series->append("Barbara", 4);
-                series->append("Axel", 5);
-
-                QPieSlice *slice = series->slices().at(1);
-                slice->setExploded();
-                slice->setLabelVisible();
-                slice->setPen(QPen(Qt::darkGreen, 2));
-                slice->setBrush(Qt::green);
-
-                chart = new QChart();
-                chart->addSeries(series);
-                chart->setTitle("Simple piechart example");
-                chart->legend()->hide();
-                chart->resize(500,500);
-            }
-            if (fieldObject->qChartType == "4") {
-                QBarSet *set0 = new QBarSet("Jane");
-                    QBarSet *set1 = new QBarSet("John");
-                    QBarSet *set2 = new QBarSet("Axel");
-                    QBarSet *set3 = new QBarSet("Mary");
-                    QBarSet *set4 = new QBarSet("Sam");
-
-                    *set0 << 1 << 2 << 3 << 4 << 5 << 6;
-                    *set1 << 5 << 0 << 0 << 4 << 0 << 7;
-                    *set2 << 3 << 5 << 8 << 13 << 8 << 5;
-                    *set3 << 5 << 6 << 7 << 3 << 4 << 5;
-                    *set4 << 9 << 7 << 5 << 3 << 1 << 2;
-
-                    QBarSeries *barseries = new QBarSeries();
-                    barseries->append(set0);
-                    barseries->append(set1);
-                    barseries->append(set2);
-                    barseries->append(set3);
-                    barseries->append(set4);
-
-                    QLineSeries *lineseries = new QLineSeries();
-                    lineseries->setName("trend");
-                    lineseries->append(QPoint(0, 4));
-                    lineseries->append(QPoint(1, 15));
-                    lineseries->append(QPoint(2, 20));
-                    lineseries->append(QPoint(3, 4));
-                    lineseries->append(QPoint(4, 12));
-                    lineseries->append(QPoint(5, 17));
-
-                    chart = new QChart();
-                    chart->addSeries(barseries);
-                    chart->addSeries(lineseries);
-                    chart->setTitle("Line and barchart example");
-
-                    QStringList categories;
-                    categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
-                    QBarCategoryAxis *axisX = new QBarCategoryAxis();
-                    axisX->append(categories);
-                    chart->setAxisX(axisX, lineseries);
-                    chart->setAxisX(axisX, barseries);
-                    axisX->setRange(QString("Jan"), QString("Jun"));
-
-                    QValueAxis *axisY = new QValueAxis();
-                    chart->setAxisY(axisY, lineseries);
-                    chart->setAxisY(axisY, barseries);
-                    axisY->setRange(0, 20);
-
-                    chart->legend()->setVisible(true);
-                    chart->legend()->setAlignment(Qt::AlignBottom);
-
-
-                chart->resize(500,500);
+            emit setChart(*fieldObject, *chart);
+            if (chart->objectName() == "nullptr") {
+                delete chart;
+                return;
             }
 
-            QChartView *chartView = new QChartView(chart);
-            chartView->setRenderHint(QPainter::TextAntialiasing);
+            QScopedPointer<QChartView> chartView(new QChartView(chart));
+            chartView.data()->setRenderHint(QPainter::TextAntialiasing);
             chartView->show();
 
             QRectF rect = QRectF(left_, top_, width_, height_);
-            chartView->render(painter, rect, chartView->rect());
+            chartView.data()->render(painter, rect, chartView.data()->rect());
 
-            delete chartView;
+            delete chart;
         }
         if (fieldType == Barcode) {
             #ifndef NO_BARCODE
@@ -890,8 +775,33 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         if (fieldObject->textWrap == 1)
             flags = flags | Qt::TextWordWrap;
         if (draw) {
-            if (painter->isActive())
-                painter->drawText(left_+10, top_, width_-15, height_, flags, txt);
+            if (painter->isActive()) {
+                if (fieldObject->rotate == 0)
+                    painter->drawText(left_+10, top_, width_-15, height_, flags, txt);
+
+
+                if (fieldObject->rotate == 1) {
+                    painter->save();
+                    painter->translate(left_ + width_, height_);
+                    painter->rotate(90);
+                    painter->drawText(0, 0, height_, width_, flags, txt);
+                    painter->restore();
+                }
+                if (fieldObject->rotate == 2) {
+                    painter->save();
+                    painter->translate(left_ + width_, top_ + height_);
+                    painter->rotate(180);
+                    painter->drawText(0, 0, height_, width_, flags, txt);
+                    painter->restore();
+                }
+                if (fieldObject->rotate == 3) {
+                    painter->save();
+                    painter->translate(left_, top_ + height_);
+                    painter->rotate(-90);
+                    painter->drawText(0, 0, height_, width_, flags, txt);
+                    painter->restore();
+                }
+            }
 
             if (m_printMode == QtRPT::Html)
                 m_HTML.append("<div "+fieldObject->getHTMLStyle()+">"+txt+"</div>\n");
@@ -1885,7 +1795,8 @@ void QtRPT::printPreview(QPrinter *printer)
 
     m_orientation = 0;
     painter->resetTransform();
-    //setPageSettings(printer,0);
+
+
     curPage = 1;
     for (int i = 0; i < pageList.size(); i++) {
         //listOfPair.clear();
@@ -1923,7 +1834,7 @@ void QtRPT::setPageSettings(QPrinter *printer, int pageReport)
     printer->setPageMargins(ml/4+0.01, mt/4+0.01, mr/4+0.01, mb/4+0.01, QPrinter::Millimeter);
 
     QRect r = printer->pageRect();
-    //pageList.at(pageReport)->border = true;
+
     //Draw page's border
     if (pageList.at(pageReport)->border) {
         if (painter->isActive()) {
@@ -1960,13 +1871,19 @@ void QtRPT::setPageSettings(QPrinter *printer, int pageReport)
 
 void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
 {
+    painter->resetTransform();
+    painter->save();
+
     setPageSettings(printer, pageReport);
     int y = 0;
 
-    drawBackground();
+
+
     if (pageReport > 0) {
         newPage(printer, y, draw, true);
     } else {
+        drawBackground(draw);
+
         processRTitle(y,draw);
         processPHeader(y,draw);
     }
@@ -1981,6 +1898,8 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
         //processMFooter(printer,y,draw);
 
     processRSummary(printer,y,draw);
+
+    painter->restore();
 }
 
 /*!
@@ -2040,7 +1959,7 @@ void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage)
 {
     if (allowNewPage(draw, curPage+1)) {
         printer->newPage();
-        drawBackground();
+        drawBackground(draw);
     }
     curPage += 1;
     if (draw)
@@ -2056,8 +1975,19 @@ void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage)
 }
 
 /*!
+ \fn void QtRPT::setBackgroundImageOpacity(float opacity)
+ Sets background image opacity from \a opacity
+ \sa setBackgroundImage(QPixmap &image)
+ */
+void QtRPT::setBackgroundImageOpacity(float opacity)
+{
+    m_backgroundOpacity = opacity;
+}
+
+/*!
  \fn QtRPT::setBackgroundImage(QPixmap &image)
  Sets background image from \a image
+ \sa setBackgroundImageOpacity(float opacity)
  */
 void QtRPT::setBackgroundImage(QPixmap &image)
 {
@@ -2066,23 +1996,31 @@ void QtRPT::setBackgroundImage(QPixmap &image)
 
 /*! \overload
  Sets background image from \a image
+ \sa setBackgroundImageOpacity(float opacity)
 */
 void QtRPT::setBackgroundImage(QPixmap image)
 {
     m_backgroundImage = &image;
 }
 
-void QtRPT::drawBackground()
+void QtRPT::drawBackground(bool draw)
 {
+    if (!draw)
+        return;
+
     if (painter->isActive())
         painter->setBackgroundMode(Qt::TransparentMode);
 
     if (m_backgroundImage != 0) {
-        if (painter->isActive())
+        if (painter->isActive()) {
+            painter->setOpacity (m_backgroundOpacity);
+
             painter->drawPixmap(-ml*koefRes_w,
                                 -mt*koefRes_h,
                                 pw*koefRes_w,
                                 ph*koefRes_h, *m_backgroundImage);
+            painter->setOpacity (1.0);
+        }
     }
 }
 
@@ -2460,6 +2398,16 @@ void QtRPT::setSqlQuery(QString sqlString)
   \sa setField(), setValue(), setValueImage()
  */
 
+/*!
+ \fn void QtRPT::setChart(RptFieldObject &fieldObject, QChart *chart);
+  This signal is emitted when QtRPT request a QChart from user application.
+  Pass \a fieldObject to user's application as a reference that hold the chart object.
+  Pass \a chart to user's application as a pointer to requested QChart object.
+  User should set the appropriate properties of the \a chart.
+  Please note, you must have installed Qt 5.8.0 and higher
+  This signal is emitted after following signal: setField()
+  \sa setField(), setValue(), setValueImage()
+ */
 
 /*!
   \page qtrptproject.html

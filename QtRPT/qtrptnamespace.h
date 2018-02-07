@@ -115,7 +115,8 @@ namespace QtRptName {
         IgnoreRatioAspect,
         BarcodeType,
         BarcodeFrameType,
-        TextWrap
+        TextWrap,
+        TextRotate
     };
 }
 

@@ -54,6 +54,7 @@ public:
     void addField(RptFieldObject *field);
     QList<RptFieldObject*> fieldList;
     RptPageObject *parentReportPage;
+    RptBandObject *clone();
 
 private:
 	QtRPT *m_qtrpt;

@@ -56,6 +56,7 @@ public:
     RptBandObject *getBand(BandType type);
     RptFieldObject *findFieldObjectByName(QString name);
     QList<RptBandObject*> bandList;
+    RptPageObject *clone();
 
 private:
 	QtRPT *m_qtrpt;

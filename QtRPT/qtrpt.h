@@ -114,6 +114,7 @@ public:
     void clearObject();
     void printExec(bool maximum = false, bool direct = false, QString printerName = QString());
     //void setCallbackFunc(void (*func)(int &recNo, QString &paramName, QVariant &paramValue));
+    void setBackgroundImageOpacity(float opacity);
     void setBackgroundImage(QPixmap &image);
     void setBackgroundImage(QPixmap image);
     void printPDF(const QString &filePath, bool open = true);
@@ -153,6 +154,7 @@ private:
     int curPage;
     int totalPage;
     int m_orientation;
+    float m_backgroundOpacity;
     QPrintPreviewWidget *pr;
     QList<QAction*> lst;
     QDomDocument xmlDoc;
@@ -177,7 +179,7 @@ private:
     void processMasterData(QPrinter* printer, int &y, bool draw, int pageReport);
     void processGroupHeader(QPrinter* printer, int &y, bool draw, int pageReport);
     void setPageSettings(QPrinter* printer, int pageReport);
-    void drawBackground();
+    void drawBackground(bool draw);
     bool isFieldVisible(RptFieldObject* fieldObject);
     QVariant processHighligthing(RptFieldObject* field, HiType type);
     bool allowPrintPage(bool draw, int curPage_);
@@ -219,6 +221,7 @@ signals:
     void setField(RptFieldObject &fieldObject);
     void setValueImage(const int recNo, const QString paramName, QImage &paramValue, const int reportPage);
     void setValueDiagram(Chart &chart);
+    void setChart(RptFieldObject &fieldObject, QChart &chart);
     void newPage(int page);
 
 public slots:

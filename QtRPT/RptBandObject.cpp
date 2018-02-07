@@ -172,6 +172,25 @@ void RptBandObject::addField(RptFieldObject *field)
 }
 
 /*!
+ \fn RptBandObject *RptBandObject::clone()
+    Clone the current band and return \c RptBandObject of the new band object
+*/
+RptBandObject *RptBandObject::clone()
+{
+    auto band = new RptBandObject();
+    band->name = "ReportTitle";
+    band->height = this->height;
+    band->type = this->type;
+    band->m_qtrpt = this->m_qtrpt;
+    for (auto field : fieldList) {
+        auto newField = field->clone();
+        band->addField(newField);
+    }
+
+    return band;
+}
+
+/*!
   Destroys the object, deleting all its child objects.
  */
 RptBandObject::~RptBandObject()
