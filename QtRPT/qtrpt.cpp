@@ -2474,3 +2474,5 @@ void QtRPT::activateUserSqlConnection(int pageReport, bool bActive)
     SqlConnection.m_bIsActive = bActive;
     setUserSqlConnection(pageReport, SqlConnection);
 }
+
+

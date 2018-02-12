@@ -201,6 +201,7 @@ private:
     QString m_HTML;
     RptCrossTabObject *crossTab;
 
+
     #ifdef QXLSX_LIBRARY
         QXlsx::Document *m_xlsx;
     #endif
