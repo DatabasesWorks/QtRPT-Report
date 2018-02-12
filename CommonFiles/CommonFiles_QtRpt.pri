@@ -17,10 +17,12 @@ contains(DEFINES,QXLSX_LIBRARY) {
 }
 
 SOURCES += $$PWD/CommonClasses.cpp \
+           $$PWD/numbertoarabicword.cpp \
            $$PWD/chart.cpp \
            $$PWD/Barcode.cpp
 
 HEADERS += $$PWD/CommonClasses.h \
+           $$PWD/numbertoarabicword.h \
            $$PWD/chart.h \
            $$PWD/Barcode.h
 

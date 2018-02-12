@@ -21,6 +21,7 @@ limitations under the License.
 */
 
 #include "CommonClasses.h"
+#include "numbertoarabicword.h"
 #include <QDebug>
 
 QString double2MoneyUKR(double n, int currency)
@@ -1079,7 +1080,12 @@ QString double2MoneyITA(double n)
     return output;
 }
 
-
+//Thanks to Mohamed Glaiow <mh_glaiow@yahoo.com>
+QString double2MoneyAR(double n)
+{
+    NumberToArabicWord number(n);
+    return number.ConvertToArabic();
+}
 
 QString double2Money(double n, QString lang)
 {
@@ -1101,6 +1107,8 @@ QString double2Money(double n, QString lang)
         return double2MoneyFrench(n,2);
     else if (lang == "ITA")
         return double2MoneyITA(n);
+    else if (lang == "AR")
+        return double2MoneyAR(n);
     else
         return double2MoneyENG(n);
 }
