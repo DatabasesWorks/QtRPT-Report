@@ -28,7 +28,7 @@ limitations under the License.
 #include <QSqlRecord>
 #include <QImage>
 
-RptSql::RptSql(QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QObject *parent)
+RptSql::RptSql(RptSqlConnection connection, QObject *parent)
 : QObject(parent)
 {
     /*#ifdef QT_DEBUG
@@ -37,13 +37,15 @@ RptSql::RptSql(QString dbType, QString dbName, QString dbHost, QString dbUser, Q
       qDebug() << "Running a release build";
     #endif*/
 
-    db = QSqlDatabase::addDatabase(dbType, dbConnectionName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : dbConnectionName);
-    db.setDatabaseName(dbName);
-    db.setHostName(dbHost);
-    db.setUserName(dbUser);
-    db.setPassword(dbPassword);
-    if(dbPort)
-        db.setPort(dbPort);
+    db = QSqlDatabase::addDatabase(connection.dbType, connection.dbConnectionName.isEmpty() ? QLatin1String(QSqlDatabase::defaultConnection) : connection.dbConnectionName);
+    db.setDatabaseName(connection.dbName);
+    db.setHostName(connection.dbHost);
+    db.setUserName(connection.dbUser);
+    db.setPassword(connection.dbPassword);
+    if (connection.dbPort)
+        db.setPort(connection.dbPort);
+
+    this->setObjectName(connection.dsName);
 }
 
 bool RptSql::openQuery(QString sql, QString dbCoding, QString charsetCoding)

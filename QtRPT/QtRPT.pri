@@ -16,7 +16,6 @@ INCLUDEPATH += $$PWD
 
 SOURCES += $$PWD/qtrpt.cpp \
            $$PWD/RptSql.cpp \
-           $$PWD/RptSqlConnection.cpp \
            $$PWD/RptFieldObject.cpp \
            $$PWD/RptBandObject.cpp \
            $$PWD/RptPageObject.cpp \
@@ -24,7 +23,6 @@ SOURCES += $$PWD/qtrpt.cpp \
 HEADERS += $$PWD/qtrpt.h \
            $$PWD/qtrptnamespace.h \
            $$PWD/RptSql.h \
-           $$PWD/RptSqlConnection.h \
            $$PWD/RptFieldObject.h \
            $$PWD/RptBandObject.h \
            $$PWD/RptPageObject.h \

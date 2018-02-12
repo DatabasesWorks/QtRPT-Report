@@ -118,6 +118,7 @@ RptPageObject::RptPageObject(QtRPT *qtrpt)
     this->borderWidth = 1;
     this->borderColor = Qt::black;
     this->borderStyle = "solid";
+    this->rtpSql = nullptr;
 }
 
 void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)

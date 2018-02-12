@@ -27,6 +27,7 @@ limitations under the License.
 #include <qtrptnamespace.h>
 #include <RptBandObject.h>
 #include <RptFieldObject.h>
+#include <RptSql.h>
 
 using namespace QtRptName;
 
@@ -57,6 +58,9 @@ public:
     RptFieldObject *findFieldObjectByName(QString name);
     QList<RptBandObject*> bandList;
     RptPageObject *clone();
+
+    RptSql *rtpSql;
+    RptSqlConnection sqlConnection;
 
 private:
 	QtRPT *m_qtrpt;

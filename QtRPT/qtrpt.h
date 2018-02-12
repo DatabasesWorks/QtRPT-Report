@@ -34,7 +34,7 @@ limitations under the License.
 #include <RptFieldObject.h>
 #include <RptBandObject.h>
 #include <RptPageObject.h>
-#include <RptSqlConnection.h>
+#include <RptSql.h>
 
 #if QT_VERSION >= 0x50000
     #ifdef QXLSX_LIBRARY
@@ -129,6 +129,7 @@ public:
     QList<int> recordCount;
     ~QtRPT();
     static QString getFormattedValue(QString value, QString formatString);
+    void addReportToBatch(const QString &fleName);
 
     void setUserSqlConnection(int pageReport, QString dsName, QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QString sql, QString dbCoding = "UTF8", QString charsetCoding = "UTF8");
     void activateUserSqlConnection(int pageReport, bool bActive);
@@ -193,14 +194,12 @@ private:
     void drawFields(RptFieldObject *fieldObject, int bandTop, bool firstPass);
     void drawLines(RptFieldObject *fieldObject, int bandTop);
     void openDataSource(int pageReport);
-    void setUserSqlConnection(int pageReport, const RptSqlConnection &SqlConnection);
-    void getUserSqlConnection(int pageReport, RptSqlConnection &SqlConnection);
-    QVector <RptSql*> rtpSqlVector;
-    QVector <RptSqlConnection> userSqlConnection;
+    void setUserSqlConnection(int pageReport, const RptSqlConnection &sqlConnection);
+    void getUserSqlConnection(int pageReport, RptSqlConnection &sqlConnection);
+
     QString m_sqlQuery;
     QString m_HTML;
     RptCrossTabObject *crossTab;
-
 
     #ifdef QXLSX_LIBRARY
         QXlsx::Document *m_xlsx;

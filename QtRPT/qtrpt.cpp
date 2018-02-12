@@ -246,6 +246,11 @@ bool QtRPT::loadReport(QDomDocument xmlDoc)
     return true;
 }
 
+void QtRPT::addReportToBatch(const QString &fleName)
+{
+
+}
+
 /*!
  \fn QtRPT::setPainter(QPainter *painter)
   Set the \a painter that will be used for the report to draw.
@@ -1257,16 +1262,15 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
     for (int i = 0; i < res.size(); ++i) {
         if (res.at(i).contains("[") && res.at(i).contains("]") && !res.at(i).contains("<")) {
             QString tmp;
-            if (rtpSqlVector.size() > 0) {
-                //if we have Sql DataSource
-                if (rtpSqlVector[m_pageReport] != 0 ) {
-                    if (res.at(i).contains(rtpSqlVector[m_pageReport]->objectName())) {
-                        QString fieldName = res.at(i);
-                        fieldName.replace("[","");
-                        fieldName.replace("]","");
-                        fieldName.replace(rtpSqlVector[m_pageReport]->objectName()+".","");
-                        tmp = rtpSqlVector[m_pageReport]->getFieldValue(fieldName, m_recNo);
-                    }
+
+            auto rptSql = pageList[m_pageReport]->rtpSql;
+            if (rptSql != nullptr) {
+                if (res.at(i).contains(rptSql->objectName())) {
+                    QString fieldName = res.at(i);
+                    fieldName.replace("[","");
+                    fieldName.replace("]","");
+                    fieldName.replace(rptSql->objectName()+".","");
+                    tmp = rptSql->getFieldValue(fieldName, m_recNo);
                 }
             } else {
                 tmp = sectionValue(res.at(i));
@@ -1336,13 +1340,14 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                     )
                     {
                         //if we have Sql DataSource
-                        if (rtpSqlVector.size() > 0 && rtpSqlVector[m_pageReport] != nullptr) {
-                            if (tl.at(j).contains(rtpSqlVector[m_pageReport]->objectName())) {
+                        auto rptSql = pageList[m_pageReport]->rtpSql;
+                        if (rptSql != nullptr) {
+                            if (tl.at(j).contains(rptSql->objectName())) {
                                 QString fieldName = tl.at(j);
                                 fieldName.replace("[","");
                                 fieldName.replace("]","");
-                                fieldName.replace(rtpSqlVector[m_pageReport]->objectName()+".","");
-                                QString tmp = rtpSqlVector[m_pageReport]->getFieldValue(fieldName, m_recNo);
+                                fieldName.replace(rptSql->objectName()+".","");
+                                QString tmp = rptSql->getFieldValue(fieldName, m_recNo);
                                 qDebug() << "value from DB: "<<tmp;
                                 formulaStr.replace(tl.at(j), tmp);
                                 qDebug() << "formula with value: "<<formulaStr;
@@ -1472,11 +1477,15 @@ QVariant QtRPT::processFunctions(QString value)
 
 QImage QtRPT::sectionFieldImage(QString value)
 {
+    auto rptSql = pageList[m_pageReport]->rtpSql;
+    if (rptSql == nullptr)
+        return QImage();
+
     QString fieldName = value;
     fieldName.replace("[","");
     fieldName.replace("]","");
-    fieldName.replace(rtpSqlVector[m_pageReport]->objectName()+".","");
-    return rtpSqlVector[m_pageReport]->getFieldImage(fieldName, m_recNo);
+    fieldName.replace(rptSql->objectName()+".","");
+    return rptSql->getFieldImage(fieldName, m_recNo);
 }
 
 QString QtRPT::sectionValue(QString paramName)
@@ -2254,27 +2263,20 @@ void QtRPT::processRSummary(QPrinter *printer, int &y, bool draw)
 
 void QtRPT::openDataSource(int pageReport)
 {
-    RptSqlConnection SqlConnection;
+    RptSqlConnection sqlConnection = pageList[pageReport]->sqlConnection;
 
-    getUserSqlConnection(pageReport, SqlConnection);
-
-    if (SqlConnection.m_bIsActive) {
+    if (sqlConnection.active) {
         // If user connection is active, use their parameters
-        QString sqlQuery = SqlConnection.m_sqlQuery;
-        auto rptSql = new RptSql(SqlConnection.m_dbType,SqlConnection.m_dbName,SqlConnection.m_dbHost,SqlConnection.m_dbUser,SqlConnection.m_dbPassword,SqlConnection.m_dbPort,SqlConnection.m_dbConnectionName,this);
-        rptSql->setObjectName(SqlConnection.m_dsName);
+        QString sqlQuery = sqlConnection.sqlQuery;
+        auto rptSql = new RptSql(sqlConnection, this);
+        rptSql->setObjectName(sqlConnection.dsName);
 
-        if (rtpSqlVector.size() <= pageReport) {
-            rtpSqlVector.resize(pageReport);
-            rtpSqlVector.insert(pageReport, rptSql);
-        } else {
-            rtpSqlVector.replace(pageReport, rptSql);
-        }
+        pageList[pageReport]->rtpSql = rptSql;
 
         if (!m_sqlQuery.isEmpty())
             sqlQuery = m_sqlQuery;
 
-        if (!rptSql->openQuery(sqlQuery,SqlConnection.m_dbCoding,SqlConnection.m_charsetCoding)) {
+        if (!rptSql->openQuery(sqlQuery, sqlConnection.dbCoding, sqlConnection.charsetCoding)) {
             recordCount << 0;
             return;
         }
@@ -2294,30 +2296,27 @@ void QtRPT::openDataSource(int pageReport)
         }
 
         if (!dsElement.isNull() && dsElement.attribute("type") == "SQL") {
-            auto dsName = dsElement.attribute("name");
-            auto dbType = dsElement.attribute("dbType");
-            auto dbName = dsElement.attribute("dbName");
-            auto dbHost = dsElement.attribute("dbHost");
-            auto dbUser = dsElement.attribute("dbUser");
-            auto dbPassword = dsElement.attribute("dbPassword");
-            auto dbCoding = dsElement.attribute("dbCoding");
-            auto charsetCoding = dsElement.attribute("charsetCoding");
-            auto sqlQuery = dsElement.text().trimmed();
-            auto dbPort = dsElement.attribute("dbPort").toInt();
-            auto dbConnectionName = dsElement.attribute("dbConnectionName");
-            auto rptSql = new RptSql(dbType,dbName,dbHost,dbUser,dbPassword,dbPort,dbConnectionName,this);
-            rptSql->setObjectName(dsName);
+            RptSqlConnection sqlConnection;
+            sqlConnection.dsName = dsElement.attribute("name");
+            sqlConnection.dbType = dsElement.attribute("dbType");
+            sqlConnection.dbName = dsElement.attribute("dbName");
+            sqlConnection.dbHost = dsElement.attribute("dbHost");
+            sqlConnection.dbUser = dsElement.attribute("dbUser");
+            sqlConnection.dbPassword = dsElement.attribute("dbPassword");
+            sqlConnection.dbCoding = dsElement.attribute("dbCoding");
+            sqlConnection.charsetCoding = dsElement.attribute("charsetCoding");
+            sqlConnection.sqlQuery = dsElement.text().trimmed();
+            sqlConnection.dbPort = dsElement.attribute("dbPort").toInt();
+            sqlConnection.dbConnectionName = dsElement.attribute("dbConnectionName");
 
-            if (rtpSqlVector.size() <= pageReport) {
-                rtpSqlVector.resize(pageReport);
-                rtpSqlVector.insert(pageReport, rptSql);
-            } else {
-                rtpSqlVector.replace(pageReport, rptSql);
-            }
+            auto rptSql = new RptSql(sqlConnection, this);
+
+            pageList[m_pageReport]->rtpSql = rptSql;
 
             if (!m_sqlQuery.isEmpty())
-                sqlQuery = m_sqlQuery;
-            if (!rptSql->openQuery(sqlQuery,dbCoding,charsetCoding)) {
+                sqlConnection.sqlQuery = m_sqlQuery;
+
+            if (!rptSql->openQuery(sqlConnection.sqlQuery, sqlConnection.dbCoding, sqlConnection.charsetCoding)) {
                 recordCount << 0;
                 return;
             }
@@ -2433,24 +2432,15 @@ void QtRPT::setSqlQuery(QString sqlString)
   \endlist
 */
 
-void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection &SqlConnection)
+void QtRPT::getUserSqlConnection(int pageReport, RptSqlConnection &sqlConnection)
 {
-    if (userSqlConnection.count() <= pageReport) {
-        // If page does not exist, add new connection for this page
-        userSqlConnection.resize(pageReport);
-        userSqlConnection.insert(pageReport, SqlConnection);
-    } else {
-        // If page exists, replace connection for this page
-        userSqlConnection.replace(pageReport, SqlConnection);
-    }
+    if (pageList.size() <= pageReport)  // Return inactive connection
+        sqlConnection = pageList[pageReport]->sqlConnection;
 }
 
-void QtRPT::getUserSqlConnection(int pageReport, RptSqlConnection &SqlConnection)
+void QtRPT::setUserSqlConnection(int pageReport, const RptSqlConnection &sqlConnection)
 {
-    if (userSqlConnection.count() <= pageReport)  // Return inactive connection
-        SqlConnection.reset();
-    else
-        SqlConnection = userSqlConnection.at(pageReport);
+    pageList[pageReport]->sqlConnection = sqlConnection;
 }
 
 void QtRPT::setUserSqlConnection(int pageReport, QString dsName, QString dbType, QString dbName,
@@ -2458,21 +2448,24 @@ void QtRPT::setUserSqlConnection(int pageReport, QString dsName, QString dbType,
                                  QString dbConnectionName, QString sqlQuery, QString dbCoding,
                                  QString charsetCoding)
 {
-    // Create enabled RptSqlConnection object with all parameters
-    RptSqlConnection SqlConnection(dsName, dbType, dbName, dbHost, dbUser,
-                                   dbPassword, dbPort, dbConnectionName, sqlQuery, dbCoding, charsetCoding);
+    RptSqlConnection sqlConnection;
+    sqlConnection.dbHost = dbHost;
+    sqlConnection.dbPort = dbPort;
+    sqlConnection.dbUser = dbUser;
+    sqlConnection.dbPassword = dbPassword;
+    sqlConnection.dbName = dbName;
+    sqlConnection.dbType = dbType;
+    sqlConnection.dbConnectionName = dbConnectionName;
+    sqlConnection.sqlQuery = sqlQuery;
+    sqlConnection.dsName = dsName;
+    sqlConnection.dbCoding = dbCoding;
+    sqlConnection.charsetCoding = charsetCoding;
 
-    setUserSqlConnection(pageReport, SqlConnection);
+    setUserSqlConnection(pageReport, sqlConnection);
 }
 
 void QtRPT::activateUserSqlConnection(int pageReport, bool bActive)
 {
-    RptSqlConnection SqlConnection;
-
     // Enable or disable connection
-    getUserSqlConnection(pageReport, SqlConnection);
-    SqlConnection.m_bIsActive = bActive;
-    setUserSqlConnection(pageReport, SqlConnection);
+    pageList[pageReport]->sqlConnection.active = bActive;
 }
-
-

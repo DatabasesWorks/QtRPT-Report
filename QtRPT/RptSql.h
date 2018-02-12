@@ -28,11 +28,27 @@ limitations under the License.
 #include <QSqlQuery>
 #include <QImage>
 
+struct RptSqlConnection
+{
+    bool active;
+    QString dsName;
+    QString dbType;
+    QString dbName;
+    QString dbHost;
+    QString dbUser;
+    QString dbPassword;
+    int dbPort;
+    QString dbConnectionName;
+    QString sqlQuery;
+    QString dbCoding;
+    QString charsetCoding;
+};
+
 class RptSql : public QObject
 {
     Q_OBJECT
 public:
-    explicit RptSql(QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QObject *parent = 0);
+    explicit RptSql(RptSqlConnection connection, QObject *parent = 0);
     bool openQuery(QString sql, QString dbCoding, QString charsetCoding);
     int getRecordCount();
     QString getFieldValue(QString fieldName, int recNo);
