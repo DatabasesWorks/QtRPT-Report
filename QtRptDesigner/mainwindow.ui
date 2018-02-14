@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>C:/Users/Aleksey/Desktop/32.png</normaloff>C:/Users/Aleksey/Desktop/32.png</iconset>
+    <normaloff>../../../../../Aleksey/Desktop/32.png</normaloff>../../../../../Aleksey/Desktop/32.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -173,7 +173,7 @@
      <x>0</x>
      <y>0</y>
      <width>1664</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

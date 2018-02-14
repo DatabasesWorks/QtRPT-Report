@@ -147,6 +147,9 @@ private:
     QGraphicsItemList getSelectedItems();
     GraphicsHelperList getSelectedHelperItems();
 
+    QList<QObject*> plugins;
+    bool loadPlugin();
+
 private slots:
     void showAbout();
     void openFile();

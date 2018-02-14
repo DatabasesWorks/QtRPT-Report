@@ -44,7 +44,8 @@ HEADERS  += mainwindow.h \
     RepScrollArea.h \
     SettingDlg.h \
     SqlDesigner.h \
-    XmlViewModel.h
+    XmlViewModel.h \
+    CustomInterface.h \
 
 FORMS    += mainwindow.ui \
     PageSettingDlg.ui \

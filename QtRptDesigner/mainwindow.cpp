@@ -648,6 +648,58 @@ MainWindow::MainWindow(QWidget *parent)
         openFile();
     }
     this->installEventFilter(this);
+
+    loadPlugin();
+}
+
+#include "CustomInterface.h"
+bool MainWindow::loadPlugin()
+{
+    QDir pluginsDir(qApp->applicationDirPath());
+#if defined(Q_OS_WIN)
+    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+        pluginsDir.cdUp();
+#elif defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS") {
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+    }
+#endif
+    pluginsDir.cdUp();
+    pluginsDir.cd("plugins");
+
+    QMenu *menuPlugins = nullptr;
+    if (pluginsDir.entryList(QDir::Files).size() > 0) {
+        menuPlugins = new QMenu("Plugins", ui->menuService);
+        ui->menuService->addMenu(menuPlugins);
+    }
+
+    for (QString &fileName : pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+        auto plugin = pluginLoader.instance();
+        if (plugin) {
+            plugins << plugin;
+
+            int index = plugin->metaObject()->indexOfClassInfo("AddToMenu");
+            if (QString(plugin->metaObject()->classInfo(index).value()) == "true") {
+                index = plugin->metaObject()->indexOfClassInfo("PluginName");
+                QString pluginName = plugin->metaObject()->classInfo(index).value();
+
+                auto act = new QAction(pluginName, menuPlugins);
+                menuPlugins->addAction(act);
+
+                auto echoInterface = qobject_cast<CustomInterface *>(plugin);
+                if (echoInterface) {
+                    index = plugin->metaObject()->indexOfClassInfo("RunOnLoading");
+                    if (QString(plugin->metaObject()->classInfo(index).value()) == "true")
+                        echoInterface->execute();
+                }
+            }
+        }
+    }
+
+    return true;
 }
 
 void MainWindow::checkUpdates()
