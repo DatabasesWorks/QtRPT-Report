@@ -42,13 +42,21 @@ void ExampleDlg13::print()
 
     QString fileName = dir.absolutePath()+"/examples_report/example13.xml";
     QtRPT *report = new QtRPT(this);
-    report->recordCount << 3;
+
     QObject::connect(report, SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
+    QObject::connect(report, SIGNAL(setRecordCount(const int, const int, int &)),
+                     this, SLOT(setRecordCount(const int, const int, int &)));
+
     if (report->loadReport(fileName) == false) {
         qDebug()<<"Report file not found";
         return;
     }
     report->printExec();
+}
+
+void ExampleDlg13::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+{
+    recordCount = 3;
 }
 
 void ExampleDlg13::setField(RptFieldObject &fieldObject)

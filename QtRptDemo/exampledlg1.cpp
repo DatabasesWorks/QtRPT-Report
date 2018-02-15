@@ -105,15 +105,22 @@ void ExampleDlg1::print()
     QString fileName = dir.absolutePath()+"/examples_report/example1.xml";
     auto report = new QtRPT(this);
     report->setBackgroundImage(QPixmap(dir.absolutePath()+"/examples_report/qt_background_portrait.png"));
-    report->recordCount << ui->tableWidget->rowCount();
     report->loadReport(fileName);
 
     QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
     QObject::connect(report, SIGNAL(setValueImage(const int, const QString, QImage&, const int)),
                      this, SLOT(setValueImage(const int, const QString, QImage&, const int)));
+    QObject::connect(report, SIGNAL(setRecordCount(const int, const int, int &)),
+                     this, SLOT(setRecordCount(const int, const int, int &)));
+
     //report->setCallbackFunc(getReportValue);
     report->printExec(true);
+}
+
+void ExampleDlg1::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+{
+    recordCount = ui->tableWidget->rowCount();
 }
 
 ExampleDlg1::~ExampleDlg1()

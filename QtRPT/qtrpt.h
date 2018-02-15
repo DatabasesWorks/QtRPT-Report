@@ -126,10 +126,10 @@ public:
     static QSet<FieldType> getDrawingFields();
     static Qt::PenStyle getPenStyle(QString value);
     QList<RptPageObject*> pageList;    
-    QList<int> recordCount;
+
     ~QtRPT();
     static QString getFormattedValue(QString value, QString formatString);
-    void addReportToBatch(const QString &fleName);
+    void addReportToBatch(const QString &fileName);
 
     void setUserSqlConnection(int pageReport, QString dsName, QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QString sql, QString dbCoding = "UTF8", QString charsetCoding = "UTF8");
     void activateUserSqlConnection(int pageReport, bool bActive);
@@ -144,6 +144,7 @@ private:
     int m_recNo;
     int mg_recNo;
     int m_pageReport;
+    int m_batchNo;
     float koefRes_h;
     float koefRes_w;
     int ph;
@@ -174,7 +175,7 @@ private:
     void processMFooter(QPrinter* printer, int &y, bool draw);
     void processRSummary(QPrinter* printer, int &y, bool draw);
     //void (*callbackFunc)(int &recNo, QString &paramName, QVariant &paramValue);
-    void processReport(QPrinter *printer, bool draw, int pageReport);
+    void processReport(QPrinter *printer, bool draw, int pageReport, int batchNo);
     void processRTitle(int &y, bool draw);
     void processMHeader(int &y, bool draw);
     void processMasterData(QPrinter* printer, int &y, bool draw, int pageReport);
@@ -197,6 +198,8 @@ private:
     void setUserSqlConnection(int pageReport, const RptSqlConnection &sqlConnection);
     void getUserSqlConnection(int pageReport, RptSqlConnection &sqlConnection);
 
+    QList<int> m_recordCount;
+
     QString m_sqlQuery;
     QString m_HTML;
     RptCrossTabObject *crossTab;
@@ -216,6 +219,8 @@ private:
     PrintMode m_printMode;
     QPrinter::PrinterMode m_resolution;
 
+    QList<QDomDocument*> m_batches;
+
 signals:
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
     void setField(RptFieldObject &fieldObject);
@@ -223,6 +228,7 @@ signals:
     void setValueDiagram(Chart &chart);
     void setChart(RptFieldObject &fieldObject, QChart &chart);
     void newPage(int page);
+    void setRecordCount(const int batchNo, const int reportPage, int &recordCount);
 
 public slots:
     void printPreview(QPrinter *printer);

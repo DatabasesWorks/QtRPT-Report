@@ -192,10 +192,17 @@ void ExampleDlg14::print()
     pf->value = "<Page> of <TotalPages>";
     band4->addField(pf);  //Append field to the PageFooterBand
 
-    report->recordCount << 4;
     QObject::connect(report.data(), SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
+    QObject::connect(report.data(), SIGNAL(setRecordCount(const int, const int, int &)),
+                     this, SLOT(setRecordCount(const int, const int, int &)));
+
 
     report->printExec();
+}
+
+void ExampleDlg14::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+{
+    recordCount = 4;
 }
 
 void ExampleDlg14::setField(RptFieldObject &fieldObject)

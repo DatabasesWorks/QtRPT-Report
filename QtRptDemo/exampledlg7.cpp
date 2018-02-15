@@ -145,9 +145,12 @@ void ExampleDlg7::print()
 
     QString fileName = dir.absolutePath()+"/examples_report/example19.xml";
     auto report = QtRPT::createSPtr(this);
-    report->recordCount << ui->tableWidget->rowCount();
+
     if (report->loadReport(fileName) == false)
         qDebug()<<"Report file not found";
+
+    QObject::connect(report.data(), SIGNAL(setRecordCount(const int, const int, int &)),
+                     this, SLOT(setRecordCount(const int, const int, int &)));
 
     //QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
     //                 this, SLOT(setValue(const int, const QString, QVariant&, const int)));
@@ -156,7 +159,7 @@ void ExampleDlg7::print()
 
     /*QString fileName = dir.absolutePath()+"/examples_report/example7.xml";
     auto report = QtRPT::createSPtr(this);
-    report->recordCount << ui->tableWidget->rowCount();
+    report->recordCount = ui->tableWidget->rowCount();
     if (report->loadReport(fileName) == false)
         qDebug()<<"Report file not found";
 
@@ -164,6 +167,11 @@ void ExampleDlg7::print()
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
     QObject::connect(report.data(), SIGNAL(setValueDiagram(Chart&)),this,SLOT(setValueDiagram(Chart&)));
     report->printExec();*/
+}
+
+void ExampleDlg7::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+{
+    recordCount = ui->tableWidget->rowCount();
 }
 
 ExampleDlg7::~ExampleDlg7()

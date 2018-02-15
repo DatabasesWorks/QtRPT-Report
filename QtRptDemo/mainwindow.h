@@ -66,6 +66,7 @@ private slots:
     void showReport();
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
     void setField(RptFieldObject &);
+    void setRecordCount(const int batchNo, const int reportPage, int &recordCount);
 
 };
 

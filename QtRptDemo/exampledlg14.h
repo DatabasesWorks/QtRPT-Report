@@ -45,6 +45,7 @@ private:
 private slots:
     void print();
     void setField(RptFieldObject &);
+    void setRecordCount(const int batchNo, const int reportPage, int &recordCount);
 };
 
 #endif // EXAMPLEDLG14_H

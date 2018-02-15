@@ -119,6 +119,7 @@ RptPageObject::RptPageObject(QtRPT *qtrpt)
     this->borderColor = Qt::black;
     this->borderStyle = "solid";
     this->rtpSql = nullptr;
+    this->sqlConnection.active = false;
 }
 
 void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
@@ -213,6 +214,7 @@ RptPageObject *RptPageObject::clone()
     reportPage->borderWidth = borderWidth;
     reportPage->borderColor = borderColor;
     reportPage->borderStyle = borderStyle;
+    reportPage->recordCount = recordCount;
     for (auto band : bandList) {
         auto newBand = band->clone();
         reportPage->addBand(newBand);
