@@ -54,12 +54,13 @@ void ExampleDlg2::print()
 
     QString fileName = dir.absolutePath()+"/examples_report/example2.xml";
     report = new QtRPT(this);
-    report->recordCount << ui->table1->rowCount();
-    report->recordCount << ui->table2->rowCount();
-    report->loadReport(fileName);
 
     QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
+    QObject::connect(report, SIGNAL(setRecordCount(const int, const int, int&)),
+                     this, SLOT(setRecordCount(const int, const int, int&)));
+
+    report->loadReport(fileName);
     report->printExec();
 }
 
@@ -77,6 +78,14 @@ void ExampleDlg2::setValue(const int recNo, const QString paramName, QVariant &p
             paramValue = ui->table2->item(recNo,0)->text();
         }
     }
+}
+
+void ExampleDlg2::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+{
+    if (reportPage == 0)
+        recordCount = ui->table1->rowCount();
+    if (reportPage == 1)
+        recordCount = ui->table2->rowCount();
 }
 
 ExampleDlg2::~ExampleDlg2()

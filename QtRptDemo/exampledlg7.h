@@ -46,6 +46,7 @@ private slots:
     void print();
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
     void setValueDiagram(Chart &chart);
+    void setRecordCount(const int batchNo, const int reportPage, int &recordCount);
 };
 
 #endif // EXAMPLEDLG7_H

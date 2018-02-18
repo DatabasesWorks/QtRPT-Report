@@ -79,7 +79,7 @@ void MainWindow::showReport()
     {
         QString fileName = dir.absolutePath()+"/examples_report/example11.xml";
         auto report = QtRPT::createSPtr(this);
-        report->recordCount << 10;
+
         QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
@@ -91,7 +91,7 @@ void MainWindow::showReport()
     {
         QString fileName = dir.absolutePath()+"/examples_report/example12.xml";
         auto report = QtRPT::createSPtr(this);
-        report->recordCount << 3;
+
         QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
@@ -133,7 +133,7 @@ void MainWindow::showReport()
             doubleVector.append(32767 * (float)qrand() / RAND_MAX);
         QString fileName = dir.absolutePath()+"/examples_report/example17.xml";
         auto report = QtRPT::createSPtr(this);
-        report->recordCount << doubleVector.size();
+
         QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         if (report->loadReport(fileName) == false)
@@ -153,6 +153,29 @@ void MainWindow::showReport()
 
         report->printExec(true);
     }
+    else if (ui->rBtn19->isChecked())
+    {
+        auto report = QtRPT::createSPtr(this);
+
+        QString fileName1 = dir.absolutePath()+"/examples_report/example19a.xml";
+        QString fileName2 = dir.absolutePath()+"/examples_report/example19b.xml";
+        QString fileName3 = dir.absolutePath()+"/examples_report/example19c.xml";
+
+        if (report->loadReport(fileName1) == false)
+            qDebug()<<"Report file not found";
+
+        report->addReportToBatch(fileName2);
+        report->addReportToBatch(fileName3);
+
+
+//        QObject::connect(report.data(), SIGNAL(setField(RptFieldObject &)), this, SLOT(setField(RptFieldObject &)));
+        QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+                         this, SLOT(setValue(const int, const QString, QVariant&, const int)));
+        QObject::connect(report.data(), SIGNAL(setRecordCount(const int, const int, int &)),
+                         this, SLOT(setRecordCount(const int, const int, int &)));
+
+        report->printExec(true);
+    }
     else if (ui->rBtnRussian->isChecked())
     {
         QString fileName = dir.absolutePath()+"/examples_report/RussianInvaders.xml";
@@ -164,15 +187,37 @@ void MainWindow::showReport()
 
         report->printExec();
     }
+
     if (dlg != nullptr)
         dlg->exec();
 
     delete dlg;
 }
 
+void MainWindow::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+{
+    if (ui->rBtn17->isChecked())
+        recordCount = doubleVector.size();
+
+    if (ui->rBtn10->isChecked())
+        recordCount = 3;
+
+    if (ui->rBtn12->isChecked())
+        recordCount = 3;
+
+    if (ui->rBtn19->isChecked())
+        recordCount = 3;
+}
+
 void MainWindow::setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage)
 {
     Q_UNUSED(reportPage);
+
+    if (ui->rBtn19->isChecked()) {
+        if (paramName == "ns") {
+            paramValue = recNo;
+        }
+    }
 
     if (ui->rBtn11->isChecked()) {
         if (paramName == "bar1") {

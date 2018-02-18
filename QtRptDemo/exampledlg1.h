@@ -50,6 +50,7 @@ private slots:
     void print();
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
     void setValueImage(const int recNo, const QString paramName, QImage &paramValue, const int reportPage);
+    void setRecordCount(const int batchNo, const int reportPage, int &recordCount);
 
 };
 

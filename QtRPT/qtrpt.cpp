@@ -227,6 +227,8 @@ bool QtRPT::loadReport(QString fileName)
         return false;
     }
 
+    m_batches << &xmlDoc;
+
     file.close();
     makeReportObjectStructure();
 
@@ -240,15 +242,30 @@ bool QtRPT::loadReport(QString fileName)
 bool QtRPT::loadReport(QDomDocument xmlDoc)
 {
     QtRPT::xmlDoc = xmlDoc;
+    m_batches << &xmlDoc;
+
     listOfPair.clear();
     listIdxOfGroup.clear();
     makeReportObjectStructure();
     return true;
 }
 
-void QtRPT::addReportToBatch(const QString &fleName)
+void QtRPT::addReportToBatch(const QString &fileName)
 {
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
 
+    auto batchXml = new QDomDocument();
+    if (!batchXml->setContent(&file)) {
+        file.close();
+        qWarning() << "Report file not found";
+        return;
+    }
+
+    m_batches << batchXml;
+
+    file.close();
 }
 
 /*!
@@ -1786,35 +1803,55 @@ void QtRPT::printPreview(QPrinter *printer)
     fromPage = printer->fromPage();
     toPage =   printer->toPage();
 
-    /*Make a two pass report
-     *First pass calculate total pages
-     *Second pass draw a report
-     */
-    curPage = 1;
-    for (int i = 0; i < pageList.size(); i++) {
-        openDataSource(i);
-        //listOfPair.clear();
-        listIdxOfGroup.clear();
-        m_recNo = 0;
-        m_pageReport = i;
-        //First pass
-        processReport(printer,false,i);
-        totalPage = curPage;
+
+    for (int b = 0; b < m_batches.size(); b++) {
+        if (b != 0) {
+            QtRPT::xmlDoc = *m_batches.at(b);
+            listOfPair.clear();
+            listIdxOfGroup.clear();
+            makeReportObjectStructure();
+        }
+
+        m_recordCount.clear();
+
+        /*Make a two pass report
+         *First pass calculate total pages
+         *Second pass draw a report
+         */
+        curPage = 1;
+        for (int i = 0; i < pageList.size(); i++) {
+            int recCount = 0;
+            emit setRecordCount(b, i, recCount);
+            m_recordCount << recCount;
+
+
+            openDataSource(i);
+            //listOfPair.clear();
+            listIdxOfGroup.clear();
+            m_recNo = 0;
+            m_pageReport = i;
+
+            //First pass
+            processReport(printer,false,i,b);
+            totalPage = curPage;
+        }
+
+        m_orientation = 0;
+        painter->resetTransform();
+
+
+        curPage = 1;
+        for (int i = 0; i < pageList.size(); i++) {
+            //listOfPair.clear();
+            listIdxOfGroup.clear();
+            m_recNo = 0;
+            m_pageReport = i;
+            //Second pass
+            processReport(printer,true,i,b);
+        }
+
     }
 
-    m_orientation = 0;
-    painter->resetTransform();
-
-
-    curPage = 1;
-    for (int i = 0; i < pageList.size(); i++) {
-        //listOfPair.clear();
-        listIdxOfGroup.clear();
-        m_recNo = 0;
-        m_pageReport = i;
-        //Second pass
-        processReport(printer,true,i);
-    }
     painter->end();
     //pr->setWindowState(pr->windowState() ^ Qt::WindowFullScreen);
 #endif
@@ -1878,7 +1915,7 @@ void QtRPT::setPageSettings(QPrinter *printer, int pageReport)
     }
 }
 
-void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
+void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport, int batchNo)
 {
     painter->resetTransform();
     painter->save();
@@ -1888,7 +1925,7 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
 
 
 
-    if (pageReport > 0) {
+    if (pageReport > 0 || (batchNo > 0 && pageReport == 0)) {
         newPage(printer, y, draw, true);
     } else {
         drawBackground(draw);
@@ -2046,8 +2083,8 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
             fillListOfValue(pageList.at(pageReport)->getBand(MasterData));
 
         if (!listOfPair.isEmpty()) {
-            if (recordCount.size() >= pageReport+1) {
-                for (int i = 0; i < recordCount.at(pageReport); i++) {
+            if (m_recordCount.size() >= pageReport+1) {
+                for (int i = 0; i < m_recordCount.at(pageReport); i++) {
                     m_recNo = i;
                     if (pageList.at(pageReport)->getBand(DataGroupHeader) != nullptr) {
                         sectionField(pageList.at(pageReport)->getBand(DataGroupHeader),
@@ -2156,10 +2193,10 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
 
 void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int pageReport)
 {
-    if (!recordCount.isEmpty()) {
-        if (pageReport < recordCount.size() && recordCount.at(pageReport) > 0) {
+    if (!m_recordCount.isEmpty()) {
+        if (pageReport < m_recordCount.size() && m_recordCount.at(pageReport) > 0) {
             if (pageList.at(m_pageReport)->getBand(MasterData) != nullptr) {
-                for (int i = 0; i < recordCount.at(pageReport); i++) {
+                for (int i = 0; i < m_recordCount.at(pageReport); i++) {
                     m_recNo = i;
 
                     bool found = false;
@@ -2265,9 +2302,13 @@ void QtRPT::openDataSource(int pageReport)
 {
     RptSqlConnection sqlConnection = pageList[pageReport]->sqlConnection;
 
+
     if (sqlConnection.active) {
         // If user connection is active, use their parameters
         QString sqlQuery = sqlConnection.sqlQuery;
+        if (sqlQuery.isEmpty())
+            return;
+
         auto rptSql = new RptSql(sqlConnection, this);
         rptSql->setObjectName(sqlConnection.dsName);
 
@@ -2277,11 +2318,13 @@ void QtRPT::openDataSource(int pageReport)
             sqlQuery = m_sqlQuery;
 
         if (!rptSql->openQuery(sqlQuery, sqlConnection.dbCoding, sqlConnection.charsetCoding)) {
-            recordCount << 0;
+            //m_recordCount[m_recordCount.size()-1] = 0;
+            //m_recordCount << 0;
             return;
         }
 
-        recordCount << rptSql->getRecordCount();
+        m_recordCount[m_recordCount.size()-1] = rptSql->getRecordCount();
+        //m_recordCount << rptSql->getRecordCount();
     } else {
         QDomElement docElem = xmlDoc.documentElement().childNodes().at(pageReport).toElement();
         QDomNode n = docElem.firstChild();
@@ -2309,6 +2352,9 @@ void QtRPT::openDataSource(int pageReport)
             sqlConnection.dbPort = dsElement.attribute("dbPort").toInt();
             sqlConnection.dbConnectionName = dsElement.attribute("dbConnectionName");
 
+            if (sqlConnection.sqlQuery.isEmpty())
+                return;
+
             auto rptSql = new RptSql(sqlConnection, this);
 
             pageList[m_pageReport]->rtpSql = rptSql;
@@ -2317,11 +2363,13 @@ void QtRPT::openDataSource(int pageReport)
                 sqlConnection.sqlQuery = m_sqlQuery;
 
             if (!rptSql->openQuery(sqlConnection.sqlQuery, sqlConnection.dbCoding, sqlConnection.charsetCoding)) {
-                recordCount << 0;
+                //m_recordCount[m_recordCount.size()-1] = 0;
+                //m_recordCount << 0;
                 return;
             }
 
-            recordCount << rptSql->getRecordCount();
+            m_recordCount[m_recordCount.size()-1] = rptSql->getRecordCount();
+            //m_recordCount << rptSql->getRecordCount();
         }
         if (!dsElement.isNull() && dsElement.attribute("type") == "XML") {
 

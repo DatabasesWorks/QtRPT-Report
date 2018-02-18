@@ -182,6 +182,13 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QRadioButton" name="rBtn19">
+           <property name="text">
+            <string>Batch report</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -265,8 +272,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="../QtRPT/imagesRpt.qrc"/>
-  <include location="../QtRPT/imagesRpt.qrc"/>
   <include location="resurce.qrc"/>
+  <include location="../QtRPT/imagesRpt.qrc"/>
+  <include location="../QtRPT/imagesRpt.qrc"/>
  </resources>
  <connections/>
 </ui>

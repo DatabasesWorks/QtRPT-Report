@@ -88,14 +88,21 @@ void ExampleDlg5::print()
 
     QString fileName = dir.absolutePath()+"/examples_report/example5.xml";
     report = new QtRPT(this);
-    report->recordCount << ui->tableWidget->rowCount();
+
     if (report->loadReport(fileName) == false) {
         qDebug()<<"Report file not found";
     }
     QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
+    QObject::connect(report, SIGNAL(setRecordCount(const int, const int, int &)),
+                     this, SLOT(setRecordCount(const int, const int, int &)));
     report->printExec();
 
+}
+
+void ExampleDlg5::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+{
+    recordCount = ui->tableWidget->rowCount();
 }
 
 ExampleDlg5::~ExampleDlg5()

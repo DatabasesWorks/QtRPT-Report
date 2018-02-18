@@ -57,6 +57,7 @@ public:
     RptBandObject *getBand(BandType type);
     RptFieldObject *findFieldObjectByName(QString name);
     QList<RptBandObject*> bandList;
+    int recordCount;
     RptPageObject *clone();
 
     RptSql *rtpSql;
