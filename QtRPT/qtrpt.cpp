@@ -531,28 +531,28 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             }
             // Draw frame
             if (fieldObject->borderTop != QColor(255,255,255,255)) {
-                pen.setColor(fieldObject->borderTop);
+                pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_ + width_, top_);
                 }
             }
             if (fieldObject->borderBottom != QColor(255,255,255,255)) {
-                pen.setColor(fieldObject->borderBottom);
+                pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_ + height_, left_ + width_, top_ + height_);
                 }
             }
             if (fieldObject->borderLeft != QColor(255,255,255,255)) {
-                pen.setColor(fieldObject->borderLeft);
+                pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_, top_ + height_);
                 }
             }
             if (fieldObject->borderRight != QColor(255,255,255,255)) {
-                pen.setColor(fieldObject->borderRight);
+                pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_ + width_, top_, left_ + width_, top_ + height_);

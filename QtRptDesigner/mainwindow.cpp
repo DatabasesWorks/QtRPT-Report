@@ -1250,7 +1250,7 @@ void MainWindow::chooseColor()
         ui->actSaveReport->setEnabled(true);
     } else return;
 
-    execButtonCommand(command,color);
+    execButtonCommand(command, color);
 }
 
 void MainWindow::changeTextFont()
@@ -1986,7 +1986,7 @@ void MainWindow::execButtonCommand(Command command, QVariant value)
     //before changing params gets params
     BArrayList oldList = ParamCommand::getBArrayFromContList(getSelectedHelperItems());
 
-    for (auto item : getSelectedItems())
+    for (auto &item : getSelectedItems())
         processCommand(command, value, item);
 
     setParamTree(command, value);
@@ -2200,7 +2200,7 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
             break;
         }
         case BorderColor: {
-            helper->setBorder(BorderColor,value.toString());
+            helper->setBorder(BorderColor, value.toString());
             break;
         }
         default: break;
