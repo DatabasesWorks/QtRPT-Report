@@ -261,7 +261,7 @@ void RepScrollArea::paintVerRuler()
     }
 }
 
-ReportBand* RepScrollArea::m_addBand(BandType type, QMenu* bandMenu, int m_height)
+ReportBand* RepScrollArea::m_addBand(BandType type, QMenu *bandMenu, int m_height, QString objName, int bandNo)
 {
     QMenu m_bandMenu;
     for (auto &action : bandMenu->actions()) {
@@ -273,9 +273,21 @@ ReportBand* RepScrollArea::m_addBand(BandType type, QMenu* bandMenu, int m_heigh
         }
     }
 
-    auto reportBand = new ReportBand(type);
+    int cnt = 1;
+    if (objName.isEmpty()) {
+        for (auto &band : getReportBands()) {
+            if (band->bandType == type)
+                cnt++;
+        }
+    } else {
+        cnt = bandNo;
+    }
+
+    auto reportBand = new ReportBand(type, cnt);
     reportBand->setMenu(&m_bandMenu);
     reportBand->setZValue(10);
+    if (!objName.isEmpty())
+        reportBand->setObjectName(objName);
 
     reportBand->setWidth(pageSetting.pageWidth - pageSetting.marginsLeft - pageSetting.marginsRight);
     if (m_height != 0)
@@ -377,11 +389,43 @@ void RepScrollArea::correctBandGeom(ReportBand *rep)
 
     auto allReportBand = getReportBands();
     if (!allReportBand.isEmpty())
-        std::sort(allReportBand.begin(), allReportBand.end(), [](ReportBand* p1, ReportBand* p2) { return p1->bandType < p2->bandType; });
+        std::sort(allReportBand.begin(), allReportBand.end(), [](ReportBand* p1, ReportBand* p2) {
+//            Undefined = 0,
+//            ReportTitle = 1,
+//            PageHeader = 2,
+//            DataGroupHeader = 3,
+//            MasterHeader = 4,
+//            MasterData = 5,
+//            MasterFooter = 6,
+//            DataGroupFooter = 7,
+//            ReportSummary = 8,
+//            PageFooter = 9
+
+            int v1 = 0;
+            int v2 = 0;
+
+            if (p1->bandType < MasterHeader)
+                v1 = p1->bandType;
+            else if (p1->bandType < ReportSummary)
+                v1 = QString(QString::number(p1->bandNo) + QString::number(p1->bandType)).toInt();
+            else
+                v1 = p1->bandType * 100;
+
+            if (p2->bandType < MasterHeader)
+                v2 = p2->bandType;
+            else if (p2->bandType < ReportSummary)
+                v2 = QString(QString::number(p2->bandNo) + QString::number(p2->bandType)).toInt();
+            else
+                v2 = p2->bandType * 100;
+
+            return v1 < v2;
+
+        });
 
     for (auto &band : allReportBand) {
         if (band == rep)
             continue;
+
         band->setPos( QPointF(left_, top_) );
         band->setWidth( width_ );
         top_ += band->getHeight()+15;

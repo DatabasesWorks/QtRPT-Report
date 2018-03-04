@@ -29,16 +29,16 @@ limitations under the License.
 namespace QtRptName {
     enum BandType
     {
-        Undefined,
-        ReportTitle,
-        PageHeader,
-        DataGroupHeader,
-        MasterHeader,
-        MasterData,
-        MasterFooter,
-        DataGroupFooter,
-        ReportSummary,
-        PageFooter
+        Undefined = 0,
+        ReportTitle = 1,
+        PageHeader = 2,
+        DataGroupHeader = 3,
+        MasterHeader = 4,
+        MasterData = 5,
+        MasterFooter = 6,
+        DataGroupFooter = 7,
+        ReportSummary = 8,
+        PageFooter = 9
     };
 
     enum FieldType

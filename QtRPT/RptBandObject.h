@@ -51,6 +51,7 @@ public:
     int left;
     int right;
     BandType type;
+    int bandNo;
     void addField(RptFieldObject *field);
     QList<RptFieldObject*> fieldList;
     RptPageObject *parentReportPage;

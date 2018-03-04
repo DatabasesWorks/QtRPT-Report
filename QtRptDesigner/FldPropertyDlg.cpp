@@ -142,6 +142,13 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
 
                 item = new QTreeWidgetItem(f1);
                 item->setIcon(0,iconFunction);
+                item->setToolTip(0,tr("Replace"));
+                item->setText(0,"Replace");
+                item->setData(0,Qt::UserRole,"<Replace(String, OldStr, NewStr)>");
+                f1->addChild(item);
+
+                item = new QTreeWidgetItem(f1);
+                item->setIcon(0,iconFunction);
                 item->setToolTip(0,tr("To upper case"));
                 item->setText(0,"To Upper");
                 item->setData(0,Qt::UserRole,"<ToUpper(Word)>");

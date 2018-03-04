@@ -26,7 +26,7 @@ limitations under the License.
 #include <QObject>
 #include "mainwindow.h"
 
-ReportBand::ReportBand(BandType type)
+ReportBand::ReportBand(BandType type, int num)
 {
     setFlag(QGraphicsItem::ItemIsMovable,false);
     m_menu = new QMenu;
@@ -34,6 +34,7 @@ ReportBand::ReportBand(BandType type)
     m_infocus = false;
     itemInTree = nullptr;
     titleHeight = 20;
+    bandNo = num;
 
     m_groupingField = "";
     m_startNewNumeration = false;
@@ -41,48 +42,48 @@ ReportBand::ReportBand(BandType type)
     m_startNewPage = false;
 
     if (type == ReportTitle) {
-        this->setObjectName("RepTitleBand");
-        setText(QObject::tr("Report title"));
+        this->setObjectName(QString("RepTitleBand%1").arg(num));
+        setText(QString("Report title %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/reportTitle.png")));
     }
     if (type == ReportSummary) {
-        this->setObjectName("ReportSummaryBand");
-        setText(QObject::tr("Report summary"));
+        this->setObjectName(QString("ReportSummaryBand%1").arg(num));
+        setText(QString("Report summary %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/reportFooter.png")));
     }
     if (type == PageHeader) {
-        this->setObjectName("PageHeaderBand");
-        setText(QObject::tr("Page header"));
+        this->setObjectName(QString("PageHeaderBand%1").arg(num));
+        setText(QString("Page header %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/pageTitle.png")));
     }
     if (type == PageFooter) {
-        this->setObjectName("PageFooterBand");
-        setText(QObject::tr("Page footer"));
+        this->setObjectName(QString("PageFooterBand%1").arg(num));
+        setText(QString("Page footer %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/pageFooter.png")));
     }
     if (type == MasterData) {
-        this->setObjectName("MasterDataBand");
-        setText(QObject::tr("Master band"));
+        this->setObjectName(QString("MasterDataBand%1").arg(num));
+        setText(QString("Master band %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/data.png")));
     }
     if (type == MasterFooter) {
-        this->setObjectName("MasterFooterBand");
-        setText(QObject::tr("Master footer"));
+        this->setObjectName(QString("MasterFooterBand%1").arg(num));
+        setText(QString("Master footer %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/dataFooter.png")));
     }
     if (type == MasterHeader) {
-        this->setObjectName("MasterHeaderBand");
-        setText(QObject::tr("Master header"));
+        this->setObjectName(QString("MasterHeaderBand%1").arg(num));
+        setText(QString("Master header %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/dataFooter.png")));
     }
     if (type == DataGroupHeader) {
-        this->setObjectName("DataGroupHeaderBand");
-        setText(QObject::tr("Data Group Header"));
+        this->setObjectName(QString("DataGroupHeaderBand%1").arg(num));
+        setText(QString("Data Group Header %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/dataGroupingHeader.png")));
     }
     if (type == DataGroupFooter) {
-        this->setObjectName("DataGroupFooterBand");
-        setText(QObject::tr("Data Group Footer"));
+        this->setObjectName(QString("DataGroupFooterBand%1").arg(num));
+        setText(QString("Data Group Footer %1").arg(num));
         setBandPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/dataGroupingFooter.png")));
     }   
 }

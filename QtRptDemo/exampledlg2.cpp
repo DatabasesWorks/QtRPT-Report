@@ -57,8 +57,8 @@ void ExampleDlg2::print()
 
     QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
-    QObject::connect(report, SIGNAL(setRecordCount(const int, const int, int&)),
-                     this, SLOT(setRecordCount(const int, const int, int&)));
+    QObject::connect(report, SIGNAL(setRecordCount(const int, int&)),
+                     this, SLOT(setRecordCount(const int, int&)));
 
     report->loadReport(fileName);
     report->printExec();
@@ -80,7 +80,7 @@ void ExampleDlg2::setValue(const int recNo, const QString paramName, QVariant &p
     }
 }
 
-void ExampleDlg2::setRecordCount(const int batchNo, const int reportPage, int &recordCount)
+void ExampleDlg2::setRecordCount(const int reportPage, int &recordCount)
 {
     if (reportPage == 0)
         recordCount = ui->table1->rowCount();
