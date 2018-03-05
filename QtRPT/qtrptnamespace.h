@@ -116,7 +116,8 @@ namespace QtRptName {
         BarcodeType,
         BarcodeFrameType,
         TextWrap,
-        TextRotate
+        TextRotate,
+        DSName
     };
 }
 

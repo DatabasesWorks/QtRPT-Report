@@ -1829,6 +1829,7 @@ void QtRPT::printPreview(QPrinter *printer)
     for (int i = 0; i < pageList.size(); i++) {
         for (int ds = 1; ds <= pageList.at(i)->bandsCountByType(MasterData); ds++) {
             DataSetInfo dsInfo;
+            dsInfo.dsName = pageList.at(i)->getBand(MasterData, ds)->dsName;
             dsInfo.reportPage = i;
             dsInfo.recordCount = 0;
             dsInfo.dataSetNo = ds;

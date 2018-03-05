@@ -10,9 +10,6 @@ class NumberToArabicWord : public QObject
 public:
 
     NumberToArabicWord(double number);
-
-    QString ToArWords(double n);
-
     QString ConvertToArabic();
 
     double number;

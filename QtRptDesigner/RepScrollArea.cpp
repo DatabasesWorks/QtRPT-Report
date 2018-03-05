@@ -404,14 +404,14 @@ void RepScrollArea::correctBandGeom(ReportBand *rep)
             int v1 = 0;
             int v2 = 0;
 
-            if (p1->bandType < MasterHeader)
+            if (p1->bandType < DataGroupHeader)
                 v1 = p1->bandType;
             else if (p1->bandType < ReportSummary)
                 v1 = QString(QString::number(p1->bandNo) + QString::number(p1->bandType)).toInt();
             else
                 v1 = p1->bandType * 100;
 
-            if (p2->bandType < MasterHeader)
+            if (p2->bandType < DataGroupHeader)
                 v2 = p2->bandType;
             else if (p2->bandType < ReportSummary)
                 v2 = QString(QString::number(p2->bandNo) + QString::number(p2->bandType)).toInt();

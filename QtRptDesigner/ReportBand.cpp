@@ -128,6 +128,16 @@ void ReportBand::setStartNewNumeration(bool value)
     m_startNewNumeration = value;
 }
 
+QString ReportBand::getDSName()
+{
+    return m_dsName;
+}
+
+QString ReportBand::setDSName(QString value)
+{
+    m_dsName = value;
+}
+
 bool ReportBand::getShowInGroup()
 {
     return m_showInGroup;

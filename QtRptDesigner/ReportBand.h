@@ -45,6 +45,8 @@ public:
     void setShowInGroup(bool value);
     bool getStartNewPage();
     void setStartNewPage(bool value);
+    QString getDSName();
+    QString setDSName(QString value);
     BandType bandType;
     int titleHeight;
     int bandNo;
@@ -52,6 +54,7 @@ public:
 private:
     bool m_infocus;
     QString m_groupingField;
+    QString m_dsName;
     bool m_startNewNumeration;
     bool m_showInGroup;
     bool m_startNewPage;

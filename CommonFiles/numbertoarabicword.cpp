@@ -118,11 +118,6 @@ NumberToArabicWord::NumberToArabicWord(double number)
     << "سكستيليونات";
 }
 
-QString NumberToArabicWord::ToArWords(double n)
-{
-    return ConvertToArabic();
-}
-
 QString NumberToArabicWord::ConvertToArabic()
 {
     if (number == 0)

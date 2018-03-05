@@ -1175,6 +1175,7 @@ void MainWindow::openFile()
                 auto bandNo = e.attribute("bandNo", "1").toInt();
                 auto reportBand = repPage->m_addBand(type, bandMenu, bandHeight, bandName, bandNo);
                 reportBand->setGroupingField(e.attribute("groupingField"));
+                reportBand->setDSName(e.attribute("dataSourceName"));
                 reportBand->setStartNewNumeration(e.attribute("startNewNumeration").toInt());
                 reportBand->setShowInGroup(e.attribute("showInGroup").toInt());
                 reportBand->setStartNewPage(e.attribute("startNewPage").toInt());
@@ -1377,8 +1378,12 @@ void MainWindow::setGroupingField()
     for (auto &item : repPage->scene->items()) {
         if (item->type() == ItemType::GLine || item->type() == ItemType::GBox) {
             auto helper = gItemToHelper(item);
+            auto helperSelected = gItemToHelper(selectedGItem());
 
-            if (sender() == ui->actUngroup && helper->getGroupName() == gItemToHelper(selectedGItem())->getGroupName()) {
+            if (helper == nullptr || helperSelected == nullptr)
+                continue;
+
+            if (sender() == ui->actUngroup && helper->getGroupName() == helperSelected->getGroupName()) {
                 helper->setGroupName("");
                 helper->helperSelect(false);
             }
@@ -1629,8 +1634,10 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
             type = "PageHeader";
         if (band->bandType == PageFooter)
             type = "PageFooter";
-        if (band->bandType == MasterData)
+        if (band->bandType == MasterData) {
             type = "MasterData";
+            elem.setAttribute("dataSourceName",band->getDSName());
+        }
         if (band->bandType == MasterFooter) {
             type = "MasterFooter";
             elem.setAttribute("showInGroup",band->getShowInGroup());
@@ -1701,7 +1708,7 @@ void MainWindow::showParamState()
     ui->actFontColor->setEnabled(false);
 
     if (repPage->scene->selectedItems().at(0)->type() == ItemType::GBand) {
-        auto rep = static_cast<ReportBand *>(repPage->scene->selectedItems().at(0));
+        auto band = static_cast<ReportBand *>(repPage->scene->selectedItems().at(0));
         ui->actBackgroundColor->setEnabled(false);
         ui->actAlignBottom->setChecked(false);
         ui->actAlignCenter->setChecked(false);
@@ -1721,18 +1728,22 @@ void MainWindow::showParamState()
         ui->actLineRight->setChecked(false);
         ui->actLineTop->setChecked(false);
 
-        selectItemInTree(rep->itemInTree);
-        setParamTree(Name, rep->objectName());
-        setParamTree(Height, rep->getHeight() - rep->titleHeight);
-        switch(rep->bandType) {
+        selectItemInTree(band->itemInTree);
+        setParamTree(Name, band->objectName());
+        setParamTree(Height, band->getHeight() - band->titleHeight);
+        switch(band->bandType) {
             case DataGroupHeader: {
-                setParamTree(StartNewNumeration, rep->getStartNewNumertaion());
-                setParamTree(StartNewPage, rep->getStartNewPage());
+                setParamTree(StartNewNumeration, band->getStartNewNumertaion());
+                setParamTree(StartNewPage, band->getStartNewPage());
+                break;
+            }
+            case MasterData: {
+                setParamTree(DSName, band->getDSName());
                 break;
             }
             case MasterHeader:
             case MasterFooter: {
-                setParamTree(ShowInGroup, rep->getShowInGroup());
+                setParamTree(ShowInGroup, band->getShowInGroup());
                 break;
             }
             default:
@@ -2011,6 +2022,8 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
 
     auto helper = gItemToHelper(item);
     if (helper == nullptr) return;
+    if (item->type() == ItemType::GBand)
+        band = static_cast<ReportBand *>(item);
     if (item->type() == ItemType::GBox)
         box = static_cast<GraphicsBox*>(item);
     if (item->type() == ItemType::GLine)
@@ -2135,7 +2148,7 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
         case Top: {
             auto band = static_cast<ReportBand *>(box->parentItem());
             QPointF r = box->pos();
-            r.setY(value.toInt()+band->titleHeight);
+            r.setY(value.toInt() + band->titleHeight);
             box->setPos(r);
             break;
         }
@@ -2168,6 +2181,10 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
         }
         case ArrowEnd: {
             line->setArrow(ArrowEnd,value.toBool());
+            break;
+        }
+        case DSName: {
+            band->setDSName(value.toString());
             break;
         }
         case StartNewNumeration: {
@@ -2446,6 +2463,12 @@ void MainWindow::setParamTree(Command command, QVariant value, bool child)
             item->setText(0,tr("Printing"));
             if (value.toBool()) item->setCheckState(1,Qt::Checked);
             else item->setCheckState(1,Qt::Unchecked);
+            break;
+        }
+        case DSName: {
+            item->setText(0,tr("DataSourceName"));
+            item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+            item->setText(1,value.toString());
             break;
         }
         case StartNewNumeration: {
@@ -2873,6 +2896,7 @@ void MainWindow::closeEditor()
     switch (command) {
         case TextRotate:
         case Name:
+        case DSName:
         case Left:
         case Top:
         case Height:
@@ -2885,9 +2909,9 @@ void MainWindow::closeEditor()
         case FontName:
         case FontSize: {
             v = item->text(1);
-            auto rep = static_cast<ReportBand *>(selectedGItem());
-            if (rep->type() == ItemType::GBand && command == Height && rep != nullptr)
-                v = item->text(1).toInt() + rep->titleHeight;
+            auto band = static_cast<ReportBand *>(selectedGItem());
+            if (band->type() == ItemType::GBand && command == Height && band != nullptr)
+                v = item->text(1).toInt() + band->titleHeight;
             break;
         }
         case Width: {

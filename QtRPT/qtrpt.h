@@ -84,9 +84,10 @@ static QList<AggregateValues> listOfPair;
 static QList<int> listIdxOfGroup;
 
 struct DataSetInfo {
-   int reportPage;
-   int dataSetNo;
-   int recordCount;
+    QString dsName;
+    int reportPage;
+    int dataSetNo;
+    int recordCount;
 };
 typedef QList<DataSetInfo> DataSetInfoList;
 
