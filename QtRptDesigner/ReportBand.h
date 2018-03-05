@@ -32,7 +32,7 @@ class ReportBand : public GraphicsBox
 {
     
 public:
-    explicit ReportBand(BandType type = ReportTitle);
+    explicit ReportBand(BandType type, int num);
     int type() const Q_DECL_OVERRIDE { return ItemType::GBand; }
     void setMenu(QMenu *menu);
     qreal scale;
@@ -47,6 +47,7 @@ public:
     void setStartNewPage(bool value);
     BandType bandType;
     int titleHeight;
+    int bandNo;
 
 private:
     bool m_infocus;

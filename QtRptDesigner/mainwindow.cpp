@@ -872,8 +872,8 @@ void MainWindow::reportPageChanged(int index)
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(index));
 	repPage->setScale(cbZoom->currentText());
     auto allReportBand = repPage->getReportBands();
-    if (!allReportBand.isEmpty())
-        std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) {return p1->bandType < p2->bandType;});
+//    if (!allReportBand.isEmpty())
+//        std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) {return p1->bandType < p2->bandType;});
 
     for (auto &band : allReportBand) {
         rootItem->addChild(band->itemInTree);
@@ -884,11 +884,11 @@ void MainWindow::reportPageChanged(int index)
         if (band->bandType == ReportSummary) this->actReportSummary->setEnabled(false);
         if (band->bandType == PageHeader) this->actPageHeader->setEnabled(false);
         if (band->bandType == PageFooter) this->actPageFooter->setEnabled(false);
-        if (band->bandType == MasterData) this->actMasterData->setEnabled(false);
-        if (band->bandType == MasterFooter) this->actMasterFooter->setEnabled(false);
-        if (band->bandType == MasterHeader) this->actMasterHeader->setEnabled(false);
-        if (band->bandType == DataGroupHeader) this->actDataGroupingHeader->setEnabled(false);
-        if (band->bandType == DataGroupFooter) this->actDataGroupingFooter->setEnabled(false);
+//        if (band->bandType == MasterData) this->actMasterData->setEnabled(false);
+//        if (band->bandType == MasterFooter) this->actMasterFooter->setEnabled(false);
+//        if (band->bandType == MasterHeader) this->actMasterHeader->setEnabled(false);
+//        if (band->bandType == DataGroupHeader) this->actDataGroupingHeader->setEnabled(false);
+//        if (band->bandType == DataGroupFooter) this->actDataGroupingFooter->setEnabled(false);
     }
 
     if (sqlDesigner != nullptr)
@@ -1170,8 +1170,10 @@ void MainWindow::openFile()
                 if (type == QtRptName::Undefined) continue;
 
                 auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-                auto reportBand = repPage->m_addBand(type,bandMenu,e.attribute("height").toInt());
-                reportBand->setObjectName(e.attribute("name"));
+                auto bandHeight = e.attribute("height").toInt();
+                auto bandName = e.attribute("name");
+                auto bandNo = e.attribute("bandNo", "1").toInt();
+                auto reportBand = repPage->m_addBand(type, bandMenu, bandHeight, bandName, bandNo);
                 reportBand->setGroupingField(e.attribute("groupingField"));
                 reportBand->setStartNewNumeration(e.attribute("startNewNumeration").toInt());
                 reportBand->setShowInGroup(e.attribute("showInGroup").toInt());
@@ -1650,6 +1652,7 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
         }
         elem.setAttribute("name",band->objectName());
         elem.setAttribute("type",type);
+        elem.setAttribute("bandNo",band->bandNo);
         //        elem.setAttribute("top",widget->geometry().y());
         //        elem.setAttribute("left",widget->geometry().x());
         elem.setAttribute("width",band->getWidth());
@@ -2656,8 +2659,10 @@ void MainWindow::addBand()
         type = DataGroupFooter;
 
     ui->actSelect_tool->setChecked(true);
-    auto action = qobject_cast<QAction *>(sender());
-    action->setEnabled(false);
+    if (type != MasterData && type != MasterFooter && type != MasterHeader) {
+        auto action = qobject_cast<QAction *>(sender());
+        action->setEnabled(false);
+    }
     ui->actSaveReport->setEnabled(true);
 
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());

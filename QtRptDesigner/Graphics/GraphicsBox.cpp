@@ -502,6 +502,7 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
             case TextRich: {
                 QTextDocument td;
                 td.setHtml(m_text);
+                td.setTextWidth(getWidth());
                 QAbstractTextDocumentLayout::PaintContext ctx;
                 ctx.clip = QRectF( 0, 0, getWidth(), getHeight() );
                 td.documentLayout()->draw( painter, ctx );

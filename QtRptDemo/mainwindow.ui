@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>578</width>
-    <height>554</height>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -185,7 +185,7 @@
          <item>
           <widget class="QRadioButton" name="rBtn19">
            <property name="text">
-            <string>Batch report</string>
+            <string>Several data bands</string>
            </property>
           </widget>
          </item>
@@ -272,8 +272,8 @@
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="../QtRPT/imagesRpt.qrc"/>
-  <include location="resurce.qrc"/>
   <include location="../QtRPT/imagesRpt.qrc"/>
+  <include location="resurce.qrc"/>
   <include location="../QtRPT/imagesRpt.qrc"/>
  </resources>
  <connections/>
