@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ limitations under the License.
 #include <QSettings>
 #include <QtDebug>
 #include <QColorDialog>
+#include <QFileDialog>
 #include "PageSettingDlg.h"
 #include "ui_PageSettingDlg.h"
 #include "CommonClasses.h"
@@ -37,6 +38,8 @@ PageSettingDlg::PageSettingDlg(QWidget *parent)
     QObject::connect(ui->rPortrait, SIGNAL(clicked()), this, SLOT(changeOrientation()));
     QObject::connect(ui->cbPageSize, SIGNAL(currentIndexChanged(int)), this, SLOT(pageSizeChanged(int)));
     QObject::connect(ui->btnBorderColor, SIGNAL(clicked()), this, SLOT(selectColor()));
+    QObject::connect(ui->lblWatermarkImage, SIGNAL(clicked()), this, SLOT(changeWatermark()));
+
     ui->chkDrawBorder->setChecked(false);
     ui->spnBorderWidth->setValue(1);
     ui->lblBorderColor->setStyleSheet("QLabel {background-color: black}");
@@ -100,6 +103,11 @@ void PageSettingDlg::showThis(PageSetting pageSetting)
     strColor = pageSetting.borderColor;
 
     ui->chckWatermark->setChecked(pageSetting.watermark);
+    ui->spnWaterOpacity->setValue(pageSetting.watermarkOpacity*100);
+
+    m_watermarkPixmap = pageSetting.watermarkPixmap;
+
+    scaleImage();
 
     if (pageSetting.borderStyle == "solid") ui->cmbBorderStyle->setCurrentIndex(0);
     if (pageSetting.borderStyle == "dashed") ui->cmbBorderStyle->setCurrentIndex(1);
@@ -145,18 +153,51 @@ void PageSettingDlg::changeOrientation()
         ui->lblOrientation->setPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/portrait.png")));
 }
 
+void PageSettingDlg::changeWatermark()
+{
+    QString folderPath = QApplication::applicationDirPath();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select File"), folderPath, "Images (*.*)");
+    if (fileName.isEmpty())
+        return;
+
+    if (!fileName.isEmpty()) {
+        m_watermarkPixmap.load(fileName);
+
+        scaleImage();
+    }
+}
+
+void PageSettingDlg::scaleImage()
+{
+    if (m_watermarkPixmap.isNull())
+        return;
+
+    Qt::AspectRatioMode aspect = Qt::KeepAspectRatio;
+
+    QSize pixSize = m_watermarkPixmap.size();
+    QSize lblSize = ui->lblWatermarkImage->size();
+    pixSize.scale(lblSize.width(), lblSize.height(), aspect);
+
+    QPixmap scaledPix = m_watermarkPixmap.scaled(pixSize, aspect, Qt::SmoothTransformation );
+
+    ui->lblWatermarkImage->setPixmap(scaledPix);
+    ui->lblWatermarkImage->setScaledContents(false);
+}
+
 void PageSettingDlg::saveSettings()
 {
-    pageSetting.marginsLeft   = QString::number(ui->edtLeft->text().toFloat()*koef,'f',0).toFloat();
-    pageSetting.marginsRight  = QString::number(ui->edtRight->text().toFloat()*koef,'f',0).toFloat();
-    pageSetting.marginsTop    = QString::number(ui->edtTop->text().toFloat()*koef,'f',0).toFloat();
-    pageSetting.marginsBottom = QString::number(ui->edtBottom->text().toFloat()*koef,'f',0).toFloat();
-    pageSetting.pageWidth     = QString::number(ui->edtWidth->text().toFloat()*koef,'f',0).toFloat();
-    pageSetting.pageHeight    = QString::number(ui->edtHeight->text().toFloat()*koef,'f',0).toFloat();
-    pageSetting.border        = ui->chkDrawBorder->isChecked();
-    pageSetting.borderWidth   = ui->spnBorderWidth->value();
-    pageSetting.borderColor   = strColor;
-    pageSetting.watermark     = ui->chckWatermark->isChecked();
+    pageSetting.marginsLeft      = QString::number(ui->edtLeft->text().toFloat()*koef,'f',0).toFloat();
+    pageSetting.marginsRight     = QString::number(ui->edtRight->text().toFloat()*koef,'f',0).toFloat();
+    pageSetting.marginsTop       = QString::number(ui->edtTop->text().toFloat()*koef,'f',0).toFloat();
+    pageSetting.marginsBottom    = QString::number(ui->edtBottom->text().toFloat()*koef,'f',0).toFloat();
+    pageSetting.pageWidth        = QString::number(ui->edtWidth->text().toFloat()*koef,'f',0).toFloat();
+    pageSetting.pageHeight       = QString::number(ui->edtHeight->text().toFloat()*koef,'f',0).toFloat();
+    pageSetting.border           = ui->chkDrawBorder->isChecked();
+    pageSetting.borderWidth      = ui->spnBorderWidth->value();
+    pageSetting.borderColor      = strColor;
+    pageSetting.watermark        = ui->chckWatermark->isChecked();
+    pageSetting.watermarkPixmap  = m_watermarkPixmap;
+    pageSetting.watermarkOpacity = (double)ui->spnWaterOpacity->value()/100.0;
 
     if (ui->rLandscape->isChecked())
         pageSetting.pageOrientation = 1;

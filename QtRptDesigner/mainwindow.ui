@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../../../../Aleksey/Desktop/32.png</normaloff>../../../../../Aleksey/Desktop/32.png</iconset>
+    <normaloff>../../../Aleksey/Desktop/32.png</normaloff>../../../Aleksey/Desktop/32.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -211,7 +211,8 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actReadme"/>
+    <addaction name="actReadmeQtRPT"/>
+    <addaction name="actReadmeQtRptDesigner"/>
     <addaction name="actCheckUpdates"/>
     <addaction name="actAbout"/>
    </widget>
@@ -1133,13 +1134,13 @@
     <string>Add Barcode</string>
    </property>
   </action>
-  <action name="actReadme">
+  <action name="actReadmeQtRPT">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/new/prefix1/images/readme.png</normaloff>:/new/prefix1/images/readme.png</iconset>
    </property>
    <property name="text">
-    <string>Readme</string>
+    <string>Readme QtRPT</string>
    </property>
    <property name="toolTip">
     <string>Readme</string>
@@ -1221,6 +1222,15 @@
    </property>
    <property name="toolTip">
     <string>Add CrossTabBD object</string>
+   </property>
+  </action>
+  <action name="actReadmeQtRptDesigner">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/new/prefix1/images/readme.png</normaloff>:/new/prefix1/images/readme.png</iconset>
+   </property>
+   <property name="text">
+    <string>Readme QtRptDesigner</string>
    </property>
   </action>
  </widget>

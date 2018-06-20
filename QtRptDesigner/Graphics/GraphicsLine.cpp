@@ -205,7 +205,7 @@ void GraphicsLine::setSelected(bool selected_)
     if (selected_) {
         createCorners();
         auto m_scene = qobject_cast<GraphicsScene *>(scene());
-        emit m_scene->itemSelected(this);
+        m_scene->itemSelect(this);
         this->setZValue(3);
     } else {
         destroyCorners();

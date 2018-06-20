@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -40,6 +40,10 @@ limitations under the License.
 #include <QGraphicsProxyWidget>
 #include <QPushButton>
 #include <Barcode.h>
+
+
+using SPtrQChartView = QSharedPointer<QChartView>;
+using SPtrQChart = QSharedPointer<QChart>;
 
 class GraphicsBox : public QGraphicsItem, public GraphicsHelperClass
 {
@@ -95,7 +99,7 @@ public:
     QString getHighlighting() {return m_highlighting;}
     void setHighlighting(QString value) {m_highlighting = value;}
     SPtrCrossTab getCrossTab();
-    SPtrChart getChart();
+    SPtrQChart getChart();
     SPtrBarCode getBarCode();
 
 protected:
@@ -144,7 +148,8 @@ private:
     int m_textRotate;
     int m_radius;
     SPtrBarCode m_barcode;
-    SPtrChart m_chart;
+    SPtrQChartView m_chartView;
+    SPtrQChart m_chart;
     SPtrCrossTab m_crossTab;
 
     QString m_formatString;
@@ -153,5 +158,7 @@ private:
     QPixmap m_pixmap;
 
 };
+
+
 
 #endif // GRAPHICSBOX_H

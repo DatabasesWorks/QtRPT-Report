@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>521</width>
-    <height>382</height>
+    <width>732</width>
+    <height>615</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -524,8 +524,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>98</width>
-            <height>28</height>
+            <width>81</width>
+            <height>16</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -598,225 +598,458 @@
              <property name="title">
               <string>Diagram</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_12">
+             <layout class="QVBoxLayout" name="verticalLayout_17">
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <layout class="QHBoxLayout" name="horizontalLayout_23">
                 <item>
-                 <widget class="QLabel" name="label_2">
-                  <property name="text">
-                   <string>Chart caption</string>
-                  </property>
-                 </widget>
+                 <layout class="QVBoxLayout" name="verticalLayout_12">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_13">
+                    <item>
+                     <widget class="QLabel" name="label_8">
+                      <property name="text">
+                       <string>Type of chart</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="cbChartType"/>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_8">
+                    <item>
+                     <widget class="QLabel" name="label_2">
+                      <property name="text">
+                       <string>Chart caption</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="edtCaption"/>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_15">
+                    <item>
+                     <widget class="QCheckBox" name="chkShowLegend">
+                      <property name="text">
+                       <string>Show legend</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_8">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_12">
+                      <property name="text">
+                       <string>Legend at:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="cbLegendAligment">
+                      <item>
+                       <property name="text">
+                        <string>Top</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Bottom</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Left</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Right</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_20">
+                    <item>
+                     <widget class="QLabel" name="lblHoleSize">
+                      <property name="text">
+                       <string>Hole size:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDoubleSpinBox" name="spnHoleSize">
+                      <property name="maximum">
+                       <double>0.800000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.050000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="chkStaticChart">
+                    <property name="text">
+                     <string>Static chart's data</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_21">
+                    <item>
+                     <widget class="QLabel" name="label_13">
+                      <property name="text">
+                       <string>Caption font:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFontComboBox" name="fntTitle">
+                      <property name="editable">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QToolButton" name="btnTitleFont">
+                      <property name="text">
+                       <string>...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_24">
+                    <item>
+                     <widget class="QLabel" name="label_17">
+                      <property name="text">
+                       <string>Caption font color:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_4">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="lblColorTitle">
+                      <property name="minimumSize">
+                       <size>
+                        <width>148</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::Box</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Sunken</enum>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="btnColorTitle">
+                      <property name="text">
+                       <string>Color...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_22">
+                    <item>
+                     <widget class="QLabel" name="label_14">
+                      <property name="text">
+                       <string>Legend font:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFontComboBox" name="fntLegend">
+                      <property name="editable">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QToolButton" name="btnLegendFont">
+                      <property name="text">
+                       <string>...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_25">
+                    <item>
+                     <widget class="QLabel" name="label_16">
+                      <property name="text">
+                       <string>Legend font color:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_7">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="lblColorLegend">
+                      <property name="minimumSize">
+                       <size>
+                        <width>148</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::Box</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Sunken</enum>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="btnColorLegend">
+                      <property name="text">
+                       <string>Color...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_26">
+                    <item>
+                     <widget class="QLabel" name="label_15">
+                      <property name="text">
+                       <string>Background color:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_9">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="lblColorBackground">
+                      <property name="minimumSize">
+                       <size>
+                        <width>148</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::Box</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Sunken</enum>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="btnColorBackground">
+                      <property name="text">
+                       <string>Color...</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_6">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_14">
+                    <item>
+                     <widget class="QToolButton" name="btnAddSeries">
+                      <property name="toolTip">
+                       <string>Add row</string>
+                      </property>
+                      <property name="text">
+                       <string>...</string>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="images.qrc">
+                        <normaloff>:/new/prefix1/images/edit_add.png</normaloff>:/new/prefix1/images/edit_add.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QToolButton" name="btnRemoveSeries">
+                      <property name="toolTip">
+                       <string>Remove row</string>
+                      </property>
+                      <property name="text">
+                       <string>...</string>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="images.qrc">
+                        <normaloff>:/new/prefix1/images/edit_remove.png</normaloff>:/new/prefix1/images/edit_remove.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_5">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="edtCaption"/>
+                 <layout class="QVBoxLayout" name="verticalLayout_10">
+                  <item>
+                   <widget class="QLabel" name="lblChartTypePic">
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="pixmap">
+                     <pixmap resource="images.qrc">:/new/prefix1/images/pieChart.png</pixmap>
+                    </property>
+                    <property name="scaledContents">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </item>
               <item>
-               <widget class="QCheckBox" name="chkShowCaption">
-                <property name="text">
-                 <string>Show caption</string>
+               <widget class="QTableWidget" name="tableSeries">
+                <property name="editTriggers">
+                 <set>QAbstractItemView::NoEditTriggers</set>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="chkShowGrid">
-                <property name="text">
-                 <string>Show grid</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="chkShowLegend">
-                <property name="text">
-                 <string>Show legend</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="chkGraphs">
-                <property name="text">
-                 <string>Set the params of the graphs</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="chkGraphsCaption">
-                <property name="text">
-                 <string>Show graph caption</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="grpGraphCaption">
-                <property name="enabled">
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>250</number>
+                </attribute>
+                <attribute name="horizontalHeaderStretchLastSection">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderVisible">
                  <bool>false</bool>
-                </property>
-                <property name="title">
-                 <string>Graph caption</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_10">
-                 <item>
-                  <widget class="QRadioButton" name="rbRealValue">
-                   <property name="text">
-                    <string>Real values</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="rbPercentValue">
-                   <property name="text">
-                    <string>Percent values</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                </attribute>
+                <attribute name="verticalHeaderDefaultSectionSize">
+                 <number>20</number>
+                </attribute>
+                <attribute name="verticalHeaderHighlightSections">
+                 <bool>false</bool>
+                </attribute>
+                <attribute name="verticalHeaderStretchLastSection">
+                 <bool>false</bool>
+                </attribute>
+                <row>
+                 <property name="text">
+                  <string>Новая строка</string>
+                 </property>
+                </row>
+                <column>
+                 <property name="text">
+                  <string>Series name</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Color</string>
+                 </property>
+                </column>
                </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
               </item>
              </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="tabGraphs">
-          <attribute name="title">
-           <string>Graphs</string>
-          </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_14">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QToolButton" name="btnAddRow">
-               <property name="toolTip">
-                <string>Add row</string>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset resource="images.qrc">
-                 <normaloff>:/new/prefix1/images/edit_add.png</normaloff>:/new/prefix1/images/edit_add.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="btnRemoveRow">
-               <property name="toolTip">
-                <string>Remove row</string>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset resource="images.qrc">
-                 <normaloff>:/new/prefix1/images/edit_remove.png</normaloff>:/new/prefix1/images/edit_remove.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="btnUp">
-               <property name="toolTip">
-                <string>Up</string>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset resource="images.qrc">
-                 <normaloff>:/new/prefix1/images/up.png</normaloff>:/new/prefix1/images/up.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="btnDown">
-               <property name="toolTip">
-                <string>Down</string>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset resource="images.qrc">
-                 <normaloff>:/new/prefix1/images/down.png</normaloff>:/new/prefix1/images/down.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="tableWidget">
-             <property name="editTriggers">
-              <set>QAbstractItemView::DoubleClicked</set>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="columnCount">
-              <number>3</number>
-             </property>
-             <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>120</number>
-             </attribute>
-             <attribute name="horizontalHeaderMinimumSectionSize">
-              <number>30</number>
-             </attribute>
-             <attribute name="horizontalHeaderStretchLastSection">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="verticalHeaderDefaultSectionSize">
-              <number>22</number>
-             </attribute>
-             <column>
-              <property name="text">
-               <string>Caption</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Value</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Color</string>
-              </property>
-             </column>
             </widget>
            </item>
           </layout>
@@ -1072,6 +1305,183 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="seriesPage">
+      <layout class="QVBoxLayout" name="verticalLayout_14">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_18">
+         <item>
+          <widget class="QLabel" name="lblSeriesName">
+           <property name="text">
+            <string>Series name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="edtSeriesName"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_17">
+         <item>
+          <widget class="QLabel" name="lblSeriesDS">
+           <property name="text">
+            <string>Series data source:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="edtSeriesDS"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_19">
+         <item>
+          <widget class="QLabel" name="lblSeriesColor">
+           <property name="text">
+            <string>Series color</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblColorSeries">
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnColorSeries">
+           <property name="text">
+            <string>Color...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QLabel" name="lblPieValue">
+           <property name="text">
+            <string>Pie value:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="edtPieValue"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkSliceCaption">
+         <property name="text">
+          <string>Slice caption is visible</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkSliceExploded">
+         <property name="text">
+          <string>Slice is explode</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <widget class="QLabel" name="lblStaticValues">
+           <property name="text">
+            <string>Static values</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="btnAddValue">
+           <property name="toolTip">
+            <string>Add row</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="images.qrc">
+             <normaloff>:/new/prefix1/images/edit_add.png</normaloff>:/new/prefix1/images/edit_add.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="btnRemoveValue">
+           <property name="toolTip">
+            <string>Remove row</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="images.qrc">
+             <normaloff>:/new/prefix1/images/edit_remove.png</normaloff>:/new/prefix1/images/edit_remove.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tblSeriesValues">
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderDefaultSectionSize">
+          <number>20</number>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -1154,22 +1564,6 @@
     <hint type="destinationlabel">
      <x>199</x>
      <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chkGraphsCaption</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>grpGraphCaption</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>200</x>
-     <y>193</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>215</x>
-     <y>254</y>
     </hint>
    </hints>
   </connection>

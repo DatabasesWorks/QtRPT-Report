@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ GraphicsBox::GraphicsBox()
     m_radius = 6;
     m_barcode = (SPtrBarCode)nullptr;
     m_crossTab = (SPtrCrossTab)nullptr;
-    m_chart = (SPtrChart)nullptr;
+    m_chart = (SPtrQChart)nullptr;
     m_outterborderPen.setWidth(1);
     m_outterborderPen.setColor(m_outterborderColor);
 
@@ -104,6 +104,7 @@ void GraphicsBox::adjustSize(int x, int y)
     m_drawingHeight =  m_height + m_YcornerGrabBuffer;
 
     if (m_chart != nullptr) {
+        m_chartView->resize(m_width, m_height);
         m_chart->resize(m_width, m_height);
     }
     if (m_crossTab != nullptr) {
@@ -273,6 +274,8 @@ void GraphicsBox::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mouseReleaseEvent(event);
     event->setAccepted(true);
+
+    this->setSelected(this->isSelected());
 }
 
 // for supporting moving the box across the scene
@@ -280,8 +283,13 @@ void GraphicsBox::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mousePressEvent(event);
     event->setAccepted(true);
-    m_dragStart = event->pos();
+
+    if (event->button() == Qt::LeftButton)
+        m_dragStart = event->pos();
+
     setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
+
     this->setSelected(!this->isSelected());
 }
 
@@ -291,7 +299,15 @@ void GraphicsBox::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (this->type() == ItemType::GBand)
         return;
 
+    if (event->buttons() & Qt::LeftButton) {
+        int distance = (event->pos() - m_dragStart).manhattanLength();
+        if (distance < QApplication::startDragDistance())
+            return;
+    }
+
+
     QGraphicsItem::mouseMoveEvent(event); // move the item...
+
     auto m_scene = qobject_cast<GraphicsScene *>(scene());
 
     auto band = qgraphicsitem_cast<ReportBand*>(this->parentItem());
@@ -316,6 +332,7 @@ void GraphicsBox::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if (toBound == true) return;
     }
 
+
     QPointF newPos = event->pos() ;
     m_location += (newPos - m_dragStart);
     this->setPos(m_location);
@@ -331,7 +348,7 @@ void GraphicsBox::setSelected(bool selected)
     if (selected) {
         createCorners();
         auto m_scene = qobject_cast<GraphicsScene *>(scene());
-        emit m_scene->itemSelected(this);
+        m_scene->itemSelect(this);
     } else
         destroyCorners();
     this->scene()->update();
@@ -341,6 +358,7 @@ bool GraphicsBox::isSelected()
 {
     if (itemInTree != nullptr)
         return itemInTree->isSelected();
+
     return false;
 }
 
@@ -426,13 +444,16 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
 
     painter->setPen(m_outterborderPen);
 
-    QRectF rcT (QPointF(2,0), QPointF(getWidth(), getHeight()));
+
 
     if (type() == ItemType::GBand) {
+        auto band = qgraphicsitem_cast<ReportBand*>(this);
+        auto titleHeight = band->titleHeight;
+
         QRectF rc (QPointF(0,0), QPointF(getWidth()-1, getHeight()));
         painter->drawRect(rc);
 
-        QPointF p2R(getWidth(),20);
+        QPointF p2R(getWidth(), titleHeight);
         QRectF textRect(QPointF(0,0), p2R);
         QRectF fillRect(QPointF(1,1), QPointF(p2R.x()-1,p2R.y()));
         painter->fillRect(fillRect, QBrush(QColor(232,183,98,255)));
@@ -441,14 +462,17 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
         font.setBold(true);
         painter->setFont(font);
 
-        painter->drawLine(QPointF(0,20),  p2R);
+        painter->drawLine(QPointF(0, titleHeight),  p2R);
         painter->drawText(textRect,Qt::AlignCenter,m_text);
-        painter->drawPixmap(QRect(m_drawingWidth-18,2,16,16), m_bandPixmap);
+        painter->drawPixmap(QRect(m_drawingWidth - titleHeight-2,
+                                  1,
+                                  titleHeight-2,
+                                  titleHeight-2), m_bandPixmap);
     }
     if (type() == ItemType::GBox) {
         painter->save();
 
-
+        QRectF rcT (QPointF(2,0), QPointF(getWidth(), getHeight()));
 
         QRectF rc (QPointF(0,0), QPointF(getWidth(), getHeight()));
         switch(this->getFieldType()) {
@@ -584,13 +608,14 @@ void GraphicsBox::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
             case Barcode: {
                 if (m_barcode != nullptr) {
                     m_barcode->setValue(m_text);
-                    m_barcode->drawBarcode(painter,0,0,this->getWidth(),this->getHeight());
+                    m_barcode->drawBarcode(painter, 0, 0, this->getWidth(), this->getHeight());
                 }
                 break;
             }
             case Diagram: {
                 if (m_chart != nullptr) {
-                    m_chart->paintChart(painter);
+                    QRectF rect = QRectF(0, 0, getWidth(), getHeight());
+                    m_chartView.data()->render(painter, rect, m_chartView.data()->rect());
                 }
                 break;
             }
@@ -726,15 +751,153 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
         m_pixmap = QPixmap::fromImage(QImage::fromData(byteArray, m_imgFormat.toLatin1().data()));
         m_ignoreAspectRatio = e.attribute("ignoreAspectRatio","1").toInt();
     } else if (this->m_type == Diagram) {
-        m_chart->setParams(e.attribute("showGrid","1").toInt(),
-                         e.attribute("showLegend","1").toInt(),
-                         e.attribute("showCaption","1").toInt(),
-                         e.attribute("showGraphCaption","1").toInt(),
-                         e.attribute("showPercent","1").toInt(),
-                         e.attribute("caption","Example"),
-                         e.attribute("autoFillData","0").toInt()
-                         );
-        m_chart->loadXML(e);
+        QColor color;
+        QBrush brush;
+
+        m_chart->removeAllSeries();
+        m_chart->setTitle(e.attribute("caption"));
+        QFont fnt =  m_chart->titleFont();
+        fnt.fromString(e.attribute("titleFont", m_chart->titleFont().toString()));
+        m_chart->setTitleFont(fnt);
+        m_chart->legend()->setVisible(e.attribute("showLegend", "1").toInt());
+        fnt =  m_chart->legend()->font();
+        fnt.fromString(e.attribute("legendFont", m_chart->legend()->font().toString()));
+        m_chart->legend()->setFont(fnt);
+
+        color = colorFromString(e.attribute("colorLegend"));
+        brush = m_chart->legend()->labelBrush();
+        brush.setColor(color);
+        m_chart->legend()->setLabelBrush(brush);
+
+        color = colorFromString(e.attribute("colorBackground"));
+        brush = m_chart->backgroundBrush();
+        brush.setColor(color);
+        brush.setStyle(Qt::SolidPattern);
+        m_chart->setBackgroundBrush(brush);
+
+        color = colorFromString(e.attribute("colorTitle"));
+        brush = m_chart->titleBrush();
+        brush.setColor(color);
+        m_chart->setTitleBrush(brush);
+
+        m_chart->setProperty("staticChart", e.attribute("staticChart", "1").toInt());
+
+        Qt::Alignment alig;
+        if (e.attribute("legendAligment").toInt() == 0) alig = Qt::AlignTop;
+        if (e.attribute("legendAligment").toInt() == 1) alig = Qt::AlignBottom;
+        if (e.attribute("legendAligment").toInt() == 2) alig = Qt::AlignLeft;
+        if (e.attribute("legendAligment").toInt() == 3) alig = Qt::AlignRight;
+        m_chart->legend()->setAlignment(alig);
+
+
+        if (e.attribute("chartType").contains("SeriesTypeLine")) {
+            QDomNode c = e.firstChild();
+            while(!c.isNull()) {
+                QDomElement graphElement = c.toElement();
+                if (!graphElement.isNull()) {
+                    auto series = new QLineSeries();
+                    series->setName(graphElement.attribute("caption"));
+                    series->setColor(colorFromString(graphElement.attribute("color")));
+                    series->setProperty("graphDS", graphElement.attribute("graphDS"));
+
+                    QDomNode v = graphElement.firstChild();
+                    while(!v.isNull()) {
+                        QDomElement valueElement = v.toElement();
+                        series->append(valueElement.attribute("x").toDouble(),
+                                       valueElement.attribute("y").toDouble());
+
+                        v = v.nextSibling();
+                    }
+
+                    m_chart->addSeries(series);
+                }
+
+                c = c.nextSibling();
+            }
+
+
+        }
+
+        if (e.attribute("chartType") == "SeriesTypeBar" ||
+            e.attribute("chartType") == "SeriesTypeStackedBar") {
+
+            QAbstractSeries *abstrSeries = nullptr;
+
+            if (e.attribute("chartType") == "SeriesTypeBar") {
+                auto series = new QBarSeries();
+                abstrSeries = series;
+            }
+            if (e.attribute("chartType") == "SeriesTypeStackedBar") {
+                auto series = new QStackedBarSeries();
+                abstrSeries = series;
+            }
+
+
+            QDomNode c = e.firstChild();
+            while(!c.isNull()) {
+                QDomElement graphElement = c.toElement();
+                if (!graphElement.isNull()) {
+                    auto barSet = new QBarSet(graphElement.attribute("caption"));
+                    barSet->setColor(colorFromString(graphElement.attribute("color")));
+                    barSet->setProperty("graphDS", graphElement.attribute("graphDS"));
+
+                    QDomNode v = graphElement.firstChild();
+                    while(!v.isNull()) {
+                        QDomElement valueElement = v.toElement();
+                        barSet->append(valueElement.attribute("val").toDouble());
+
+                        v = v.nextSibling();
+                    }
+
+
+
+                    if (abstrSeries->type() == QAbstractSeries::SeriesTypeStackedBar) {
+                        auto series = qobject_cast<QStackedBarSeries*>(abstrSeries);
+                        series->append(barSet);
+                    }
+                    if (abstrSeries->type() == QAbstractSeries::SeriesTypeBar) {
+                        auto series = qobject_cast<QBarSeries*>(abstrSeries);
+                        series->append(barSet);
+                    }
+                }
+
+                c = c.nextSibling();
+            }
+
+            m_chart->addSeries(abstrSeries);
+            m_chart->createDefaultAxes();
+            m_chart->update();
+        }
+
+        if (e.attribute("chartType") == "SeriesTypePie") {
+            auto series = new QPieSeries();
+            series->setName(e.attribute("caption"));
+            series->setHoleSize(e.attribute("holeSize", "0.00").toDouble());
+            series->setProperty("graphDS", e.attribute("graphDS"));
+
+            m_chart->addSeries(series);
+
+            QDomNode c = e.firstChild();
+            while(!c.isNull()) {
+                QDomElement graphElement = c.toElement();
+                if (!graphElement.isNull()) {
+                    auto slice = new QPieSlice(graphElement.attribute("caption"),
+                                               graphElement.attribute("value").toDouble(), series);
+                    slice->setExploded(graphElement.attribute("sliceExploaded").toInt());
+                    slice->setLabelVisible(graphElement.attribute("labelVisible").toInt());
+
+                    series->append(slice);
+
+                    QColor color = colorFromString(graphElement.attribute("color"));
+                    slice->setColor(color);
+                }
+                c = c.nextSibling();
+            }
+        }
+
+        m_chart->createDefaultAxes();
+        //m_chart->setTheme(QChart::ChartThemeBrownSand);
+
     } else if (this->m_type == Barcode) {
         setBarcodeType( (BarCode::BarcodeTypes)e.attribute("barcodeType","13").toInt() );
         setBarcodeFrameType( (BarCode::FrameTypes)e.attribute("barcodeFrameType","0").toInt() );
@@ -809,23 +972,112 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
         elem.setAttribute("ignoreAspectRatio",m_ignoreAspectRatio);
     }
     if (this->m_type == Diagram) {
-        elem.setAttribute("showGrid",m_chart->getParam(DrawGrid).toBool());
-        elem.setAttribute("showLegend",m_chart->getParam(ShowLegend).toBool());
-        elem.setAttribute("showCaption",m_chart->getParam(ShowCaption).toBool());
-        elem.setAttribute("showGraphCaption",m_chart->getParam(ShowGraphCaption).toBool());
-        elem.setAttribute("showPercent",m_chart->getParam(ShowPercent).toBool());
-        elem.setAttribute("caption",m_chart->getParam(Caption).toString());
-        elem.setAttribute("autoFillData",m_chart->getParam(AutoFillData).toBool());
+        if (m_chart->series().size() > 0) {
+            QString chartType;
+            QString strColor;
 
-        if (m_chart->getParam(AutoFillData).toBool()) {
-            //get info about graphs
-            for (const auto &graphParam : getChart()->getGraphParamList()) {
-                QDomElement graph = xmlDoc->createElement("graph");
-                graph.setAttribute("caption",graphParam.caption);
-                graph.setAttribute("value",graphParam.valueString);
-                graph.setAttribute("color",colorToString(graphParam.color));
-                elem.appendChild(graph);
+            if (m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypeLine) {
+                chartType = "SeriesTypeLine";
+
+                for (auto &absSeries : m_chart->series()) {
+                    auto series = qobject_cast<QLineSeries*>(absSeries);
+
+                    QDomElement graph = xmlDoc->createElement("graph");
+                    graph.setAttribute("color", colorToString(series->color()));
+                    graph.setAttribute("caption", series->name());
+                    graph.setAttribute("graphDS", series->property("graphDS").toString());
+
+                    for (int row = 0; row < series->count(); row++) {
+                        auto point = series->at(row);
+
+                        QDomElement valueElement = xmlDoc->createElement("value");
+                        valueElement.setAttribute("x", QString::number(point.x()));
+                        valueElement.setAttribute("y", QString::number(point.y()));
+                        graph.appendChild(valueElement);
+                    }
+
+                    elem.appendChild(graph);
+                }
             }
+            if (m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar ||
+                m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+
+                QList<QBarSet *> barSets;
+
+
+                if (m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar) {
+                    chartType = "SeriesTypeBar";
+
+                    auto series = qobject_cast<QBarSeries*>(m_chart->series().at(0));
+                    barSets = series->barSets();
+                }
+                if (m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+                    chartType = "SeriesTypeStackedBar";
+
+                    auto series = qobject_cast<QStackedBarSeries*>(m_chart->series().at(0));
+                    barSets = series->barSets();
+                }
+
+                for (auto &barSet : barSets) {
+                    QString graphDS = barSet->property("graphDS").toString();
+
+                    QDomElement graph = xmlDoc->createElement("graph");
+                    graph.setAttribute("color", colorToString(barSet->color()));
+                    graph.setAttribute("caption", barSet->label());
+                    graph.setAttribute("graphDS", graphDS);
+
+                    for (int row = 0; row < barSet->count(); row++) {
+                        auto value = barSet->at(row);
+
+                        QDomElement valueElement = xmlDoc->createElement("value");
+                        valueElement.setAttribute("val", QString::number(value));
+                        graph.appendChild(valueElement);
+                    }
+
+                    elem.appendChild(graph);
+                }
+            }
+            if (m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypePie) {
+                chartType = "SeriesTypePie";
+
+                auto series = qobject_cast<QPieSeries*>(m_chart->series().at(0));
+                elem.setAttribute("graphDS", series->property("graphDS").toString());
+                elem.setAttribute("holeSize", series->holeSize());
+
+
+                for (auto &slice : series->slices()) {
+                    QDomElement graph = xmlDoc->createElement("graph");
+                    graph.setAttribute("color", colorToString(slice->color()));
+                    graph.setAttribute("caption", slice->label());
+                    graph.setAttribute("value", slice->value());
+                    graph.setAttribute("labelVisible", slice->isLabelVisible());
+                    graph.setAttribute("sliceExploaded", slice->isExploded());
+                    elem.appendChild(graph);
+                }
+            }
+
+            int currentIndex;
+            if (m_chart->legend()->alignment() == Qt::AlignTop) currentIndex = 0;
+            if (m_chart->legend()->alignment() == Qt::AlignBottom) currentIndex = 1;
+            if (m_chart->legend()->alignment() == Qt::AlignLeft) currentIndex = 2;
+            if (m_chart->legend()->alignment() == Qt::AlignRight) currentIndex = 3;
+
+            elem.setAttribute("legendAligment", currentIndex);
+            elem.setAttribute("chartType", chartType);
+            elem.setAttribute("showLegend", m_chart->legend()->isVisible());
+            elem.setAttribute("legendFont", m_chart->legend()->font().toString());
+            elem.setAttribute("caption", m_chart->title());
+            elem.setAttribute("titleFont", m_chart->titleFont().toString());
+            elem.setAttribute("staticChart", m_chart->property("staticChart").toInt());
+
+            strColor = colorToString(m_chart->titleBrush().color());
+            elem.setAttribute("colorTitle", strColor);
+
+            strColor = colorToString(m_chart->backgroundBrush().color());
+            elem.setAttribute("colorBackground", strColor);
+
+            strColor = colorToString(m_chart->legend()->labelBrush().color());
+            elem.setAttribute("colorLegend", strColor);
         }
     }
     if (this->m_type == Barcode) {
@@ -913,10 +1165,51 @@ void GraphicsBox::setFieldType(FieldType value)
             this->setWidth(300);
             this->setHeight(300);
 
-            m_chart = SPtrChart(new Chart(nullptr));
-            m_chart->setObjectName("chart");
-            m_chart->setVisible(false);
-            m_chart->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+            m_chart = SPtrQChart(new QChart());
+
+            //---------------------------------
+            auto set0 = new QBarSet("Jane");
+            auto set1 = new QBarSet("John");
+            auto set2 = new QBarSet("Axel");
+            auto set3 = new QBarSet("Mary");
+            auto set4 = new QBarSet("Samantha");
+
+            *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+            *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+            *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+            *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+            *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+            auto series = new QStackedBarSeries();
+            series->setName("QStackedBarSeries");
+            series->append(set0);
+            series->append(set1);
+            series->append(set2);
+            series->append(set3);
+            series->append(set4);
+
+            m_chart->addSeries(series);
+            m_chart->setTitle("Simple stackedbarchart example");
+
+            QStringList categories;
+            categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+            auto axis = new QBarCategoryAxis();
+            axis->append(categories);
+            m_chart->createDefaultAxes();
+            m_chart->setAxisX(axis, series);
+            m_chart->legend()->setVisible(true);
+            m_chart->legend()->setAlignment(Qt::AlignBottom);
+
+            QBrush brush = m_chart->backgroundBrush();
+            brush.setColor(Qt::white);
+            m_chart->setBackgroundBrush(brush);
+            //---------------------------------
+
+            m_chartView = SPtrQChartView(new QChartView(m_chart.data()));
+            m_chartView->setRenderHint(QPainter::Antialiasing);
+            m_chartView->setVisible(false);
+            m_chartView->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+            m_chartView->resize(m_width, m_height);
             m_chart->resize(m_width, m_height);
             break;
         }
@@ -1060,7 +1353,7 @@ SPtrCrossTab GraphicsBox::getCrossTab()
     return m_crossTab;
 }
 
-SPtrChart GraphicsBox::getChart()
+SPtrQChart GraphicsBox::getChart()
 {
     return m_chart;
 }

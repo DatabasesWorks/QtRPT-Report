@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ limitations under the License.
 #include <QPrintDialog>
 #include <QUrl>
 #include <QToolBar>
-#include "chart.h"
 #include "CommonClasses.h"
 #include "RptSql.h"
 #include "Barcode.h"
@@ -185,7 +184,7 @@ QtRPT::QtRPT(QObject *parent)
 {
     qRegisterMetaType<DataSetInfo>("DataSetInfo");
 
-    xmlDoc = QDomDocument("Reports");
+    m_xmlDoc = QDomDocument("Reports");
     m_backgroundImage = nullptr;
     m_orientation = 0;
     m_backgroundOpacity = 1;
@@ -223,7 +222,7 @@ bool QtRPT::loadReport(QString fileName)
         listIdxOfGroup.clear();
     }
 
-    if (!xmlDoc.setContent(&file)) {
+    if (!m_xmlDoc.setContent(&file)) {
         file.close();
         qWarning() << "Report file not found";
         return false;
@@ -241,12 +240,21 @@ bool QtRPT::loadReport(QString fileName)
 */
 bool QtRPT::loadReport(QDomDocument xmlDoc)
 {
-    QtRPT::xmlDoc = xmlDoc;
+    QtRPT::m_xmlDoc = xmlDoc;
 
     listOfPair.clear();
     listIdxOfGroup.clear();
     makeReportObjectStructure();
     return true;
+}
+
+/*!
+ \fn QtRPT::xmlDoc()
+  Returns \c QDomDocument of the report.
+ */
+QDomDocument QtRPT::xmlDoc()
+{
+    return m_xmlDoc;
 }
 
 /*!
@@ -280,8 +288,12 @@ bool QtRPT::setPrinter(QPrinter *printer)
 void QtRPT::makeReportObjectStructure()
 {
     clearObject();
-    for (int i = 0; i < xmlDoc.documentElement().childNodes().count(); i++) {
-        QDomElement docElem = xmlDoc.documentElement().childNodes().at(i).toElement();
+    for (int i = 0; i < m_xmlDoc.documentElement().childNodes().count(); i++) {
+        QDomElement docElem = m_xmlDoc.documentElement().childNodes().at(i).toElement();
+
+        if (docElem.tagName() != "Report")
+            continue;
+
         auto pageObject = new RptPageObject();
         pageObject->setProperty(this, docElem);
         pageList.append(pageObject);
@@ -430,7 +442,6 @@ FieldType QtRPT::getFieldType(QDomElement e)
     else if (e.attribute("type","label") == "line") return Line;
     else if (e.attribute("type","label") == "DatabaseImage") return DatabaseImage;
     else if (e.attribute("type","label") == "crossTab") return CrossTab;
-    else if (e.attribute("type","label") == "QtChart") return QtChart;
     else return Text;
 }
 
@@ -456,7 +467,6 @@ QString QtRPT::getFieldTypeName(FieldType type)
         case Barcode: return "barcode";
         case DatabaseImage: return "DatabaseImage";
         case CrossTab: return "crossTab";
-        case QtChart: return "QtChart";
         default: return "label";
     }
 }
@@ -491,6 +501,9 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     if (!fieldObject->isCrossTabChild())
         emit setField(*fieldObject);
 
+    if (!isFieldVisible(fieldObject))
+        return;
+
     if (fieldObject->isCrossTabChild()) {
         bool isTotalField = fieldObject->parentCrossTab->isTotalField(fieldObject);
         bool isHeaderField = fieldObject->parentCrossTab->isHeaderField(fieldObject);
@@ -521,35 +534,37 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         if (!getDrawingFields().contains(fieldType)
             && fieldType != Barcode
             && fieldType != Image
-            && fieldType != CrossTab) {
+            && fieldType != CrossTab
+            && fieldType != Diagram
+        ) {
             // Fill background
             if ( fieldObject->backgroundColor  != QColor(255,255,255,255)) {
                 if (painter->isActive())
                     painter->fillRect(left_+1, top_+1, width_-2, height_-2, fieldObject->backgroundColor);
             }
             // Draw frame
-            if (fieldObject->borderTop != QColor(255,255,255,255)) {
+            if (fieldObject->borderTop != QColor(255,255,255,255) && fieldObject->borderTop != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_ + width_, top_);
                 }
             }
-            if (fieldObject->borderBottom != QColor(255,255,255,255)) {
+            if (fieldObject->borderBottom != QColor(255,255,255,255) && fieldObject->borderBottom != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_ + height_, left_ + width_, top_ + height_);
                 }
             }
-            if (fieldObject->borderLeft != QColor(255,255,255,255)) {
+            if (fieldObject->borderLeft != QColor(255,255,255,255) && fieldObject->borderLeft != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
                     painter->drawLine(left_, top_, left_, top_ + height_);
                 }
             }
-            if (fieldObject->borderRight != QColor(255,255,255,255)) {
+            if (fieldObject->borderRight != QColor(255,255,255,255) && fieldObject->borderRight != QColor(255,255,255,0)) {
                 pen.setColor(fieldObject->borderColor);
                 if (painter->isActive()) {
                     painter->setPen(pen);
@@ -684,47 +699,30 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 m_HTML.append(fieldObject->getHTMLStyle());
         }
         if (fieldType == Diagram) {
-            auto chart = SPtrChart(new Chart(nullptr));
-            chart->setObjectName(fieldObject->name);
-            chart->setParams(fieldObject->showGrid,
-                             fieldObject->showLegend,
-                             fieldObject->showCaption,
-                             fieldObject->showGraphCaption,
-                             fieldObject->showPercent,
-                             fieldObject->caption,
-                             fieldObject->autoFillData
-                             );
-            chart->clearData();
-            chart->setKoef(koefRes_w, koefRes_h, left_, top_);
-            chart->resize(width_,height_);
-            if (fieldObject->autoFillData == 0) {
-                emit setValueDiagram(*chart);
-            } else {
-                fieldObject->updateDiagramValue();
-                for (const auto &graph : fieldObject->graphList)
-                    chart->setData(graph);
-            }
-            if (painter->isActive())
-                chart->paintChart(painter);
-        }
-        if (fieldType == QtChart) {
-            auto chart = new QChart();
-            chart->setObjectName("nullptr");
+            #if QT_VERSION >= 0x50800
+                emit setChart(*fieldObject, *fieldObject->chart);
 
-            emit setChart(*fieldObject, *chart);
-            if (chart->objectName() == "nullptr") {
-                delete chart;
-                return;
-            }
+                GraphDataList dataList = fieldObject->getChartData();
+                emit setValueDiagram(dataList);
+                fieldObject->setChartData(dataList);
 
-            QScopedPointer<QChartView> chartView(new QChartView(chart));
-            chartView.data()->setRenderHint(QPainter::TextAntialiasing);
-            chartView->show();
+                fieldObject->chart->resize(width_, height_);
 
-            QRectF rect = QRectF(left_, top_, width_, height_);
-            chartView.data()->render(painter, rect, chartView.data()->rect());
+                QFont font = fieldObject->chart->legend()->font();
+                font.setPointSize(font.pointSize() * 2);
+                fieldObject->chart->legend()->setFont(font);
 
-            delete chart;
+                font = fieldObject->chart->titleFont();
+                font.setPointSize(font.pointSize() * 2);
+                fieldObject->chart->setTitleFont(font);
+
+                QRectF rect = QRectF(left_, top_, width_, height_);
+                QScopedPointer<QChartView> chartView(new QChartView(fieldObject->chart));
+                chartView.data()->setRenderHint(QPainter::TextAntialiasing);
+
+                chartView->render(painter, rect, chartView.data()->rect());
+                chartView->show();
+            #endif
         }
         if (fieldType == Barcode) {
             #ifndef NO_BARCODE
@@ -898,6 +896,9 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
 
 void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop)
 {
+    if (!isFieldVisible(fieldObject))
+        return;
+
     int startX = fieldObject->lineStartX * koefRes_w;
     int endX = fieldObject->lineEndX * koefRes_w;
 
@@ -954,18 +955,16 @@ void QtRPT::drawBandRow(RptBandObject *band, int bandTop, bool allowDraw)
     band->realHeight = band->height; //set a 'realHeight' to default value
     /*First pass used to determine a max height of the band*/
     for (auto &field : band->fieldList)
-        if (field->fieldType != Line && isFieldVisible(field))
+        if (field->fieldType != Line)
             drawFields(field, bandTop, false);
 
     /*Second pass used for drawing*/
     if (allowDraw) {
         for (auto &field : band->fieldList) {
-            if (isFieldVisible(field)) {
-                if (field->fieldType != Line)
-                    drawFields(field, bandTop, true);
-                else
-                    drawLines(field, bandTop);
-            }
+            if (field->fieldType != Line)
+                drawFields(field, bandTop, true);
+            else
+                drawLines(field, bandTop);
         }
     }
 }
@@ -1860,7 +1859,7 @@ void QtRPT::printPreview(QPrinter *printer)
         m_recNo = 0;
         m_pageReport = i;
         //Second pass
-        processReport(printer,true,i);
+        processReport(printer, true, i);
     }
 
 
@@ -1878,6 +1877,14 @@ void QtRPT::setPageSettings(QPrinter *printer, int pageReport)
     mr = pageList.at(pageReport)->mr;
     mt = pageList.at(pageReport)->mt;
     mb = pageList.at(pageReport)->mb;
+
+    if (pageList.at(pageReport)->watermark) {
+        m_backgroundImage = &pageList.at(pageReport)->watermarkPixmap;
+        setBackgroundImageOpacity(pageList.at(pageReport)->watermarkOpacity);
+    } else {
+        m_backgroundImage = nullptr;
+    }
+
     int orientation = pageList.at(pageReport)->orientation;
 
     QSizeF paperSize;
@@ -1942,8 +1949,9 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
     } else {
         drawBackground(draw);
 
-        processRTitle(y,draw);
         processPHeader(y,draw);
+        processRTitle(y,draw);
+
     }
 
     //processRTitle(y,draw);
@@ -2026,9 +2034,10 @@ void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage)
     if (m_printMode != QtRPT::Html && m_printMode != QtRPT::Xlsx)
         y = 0;
 
+    processPHeader(y,draw);
     if (newReportPage)
         processRTitle(y,draw);
-    processPHeader(y,draw);
+
     processPFooter(draw);
 }
 
@@ -2073,10 +2082,11 @@ void QtRPT::drawBackground(bool draw)
         if (painter->isActive()) {
             painter->setOpacity (m_backgroundOpacity);
 
-            painter->drawPixmap(-ml*koefRes_w,
-                                -mt*koefRes_h,
-                                pw*koefRes_w,
-                                ph*koefRes_h, *m_backgroundImage);
+            painter->drawPixmap(0, //-ml*koefRes_w,
+                                0, //-mt*koefRes_h,
+                                pw*koefRes_w - ml*koefRes_w*2,
+                                ph*koefRes_h - mt*koefRes_h*2,
+                                *m_backgroundImage);
             painter->setOpacity (1.0);
         }
     }
@@ -2084,12 +2094,15 @@ void QtRPT::drawBackground(bool draw)
 
 void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageReport)
 {
+    if (pageReport == 0)
+        processPFooter(draw);
+
     for (int dsNo = 1; dsNo < 6; dsNo++) {
         m_recNo = 0;
 
         if (pageList.at(m_pageReport)->getBand(DataGroupHeader, dsNo) == nullptr) {
             processMHeader(y, dsNo, draw);
-            processPFooter(draw);
+            //processPFooter(draw);
             processMasterData(printer, y, draw, pageReport, dsNo);
             processMFooter(printer, y, dsNo, draw);
         } else {
@@ -2174,7 +2187,7 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
                             bandObj = pageList.at(pageReport)->getBand(MasterHeader, dsNo);
                             if (bandObj != nullptr && bandObj->showInGroup == 1)
                                 processMHeader(y, dsNo, draw);
-                            processPFooter(draw);
+                            //processPFooter(draw);
                             processMasterData(printer, y, draw, pageReport, dsNo);
 
                             bandObj = pageList.at(pageReport)->getBand(MasterFooter, dsNo);
@@ -2210,46 +2223,47 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int pageRep
 
 void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int pageReport, int dsNo)
 {
-    if (getRecCount(pageReport, dsNo) != 0) {
-        if (pageReport < getRecCount(pageReport, dsNo) && getRecCount(pageReport, dsNo) > 0) {
-            if (pageList.at(m_pageReport)->getBand(MasterData, dsNo) != nullptr) {
-                for (int i = 0; i < getRecCount(pageReport, dsNo); i++) {
-                    m_recNo = i;
+    int recCount = getRecCount(pageReport, dsNo);
 
-                    bool found = false;
-                    //If report with groups, we checking that current line in the current group
-                    if (!listIdxOfGroup.isEmpty()) {
-                        if (listIdxOfGroup.indexOf(i) != -1)
-                            found = true;
-                    }  else {
+
+    if (recCount > 0) {
+        if (pageList.at(m_pageReport)->getBand(MasterData, dsNo) != nullptr) {
+            for (int i = 0; i < recCount; i++) {
+                m_recNo = i;
+
+                bool found = false;
+                //If report with groups, we checking that current line in the current group
+                if (!listIdxOfGroup.isEmpty()) {
+                    if (listIdxOfGroup.indexOf(i) != -1)
                         found = true;
-                    }
+                }  else {
+                    found = true;
+                }
 
-                    if (found) {
-                        mg_recNo += 1;
-                        int yPF = 0;
-                        if (pageList.at(pageReport)->getBand(PageFooter, dsNo) != nullptr)
-                            yPF = pageList.at(m_pageReport)->getBand(PageFooter, dsNo)->height;
+                if (found) {
+                    mg_recNo += 1;
+                    int yPF = 0;
+                    if (pageList.at(pageReport)->getBand(PageFooter, dsNo) != nullptr)
+                        yPF = pageList.at(m_pageReport)->getBand(PageFooter, dsNo)->height;
 
-                        int yMF = 0;
-                        if (pageList.at(pageReport)->getBand(MasterFooter, dsNo) != nullptr)
-                            yMF = pageList.at(pageReport)->getBand(MasterFooter, dsNo)->height;
+                    int yMF = 0;
+                    if (pageList.at(pageReport)->getBand(MasterFooter, dsNo) != nullptr)
+                        yMF = pageList.at(pageReport)->getBand(MasterFooter, dsNo)->height;
 
-                        drawBandRow(pageList.at(pageReport)->getBand(MasterData, dsNo), y, false);
-                        if (y + pageList.at(pageReport)->getBand(MasterData, dsNo)->realHeight > ph-mb-mt-yPF-yMF) {
-                            if (m_printMode != QtRPT::Html) {
-                                newPage(printer, y, draw);
-                                processMHeader(y, dsNo, draw);
-                            }
+                    drawBandRow(pageList.at(pageReport)->getBand(MasterData, dsNo), y, false);
+                    if (y + pageList.at(pageReport)->getBand(MasterData, dsNo)->realHeight > ph-mb-mt-yPF-yMF) {
+                        if (m_printMode != QtRPT::Html) {
+                            newPage(printer, y, draw);
+                            processMHeader(y, dsNo, draw);
                         }
-
-                        if (allowPrintPage(draw,curPage))
-                            drawBandRow(pageList.at(pageReport)->getBand(MasterData, dsNo), y, true);
-                        else
-                            fillListOfValue(pageList.at(pageReport)->getBand(MasterData, dsNo));
-
-                        y += pageList.at(m_pageReport)->getBand(MasterData, dsNo)->realHeight;
                     }
+
+                    if (allowPrintPage(draw,curPage))
+                        drawBandRow(pageList.at(pageReport)->getBand(MasterData, dsNo), y, true);
+                    else
+                        fillListOfValue(pageList.at(pageReport)->getBand(MasterData, dsNo));
+
+                    y += pageList.at(m_pageReport)->getBand(MasterData, dsNo)->realHeight;
                 }
             }
         }
@@ -2344,7 +2358,7 @@ void QtRPT::openDataSource(int pageReport)
         ////m_recordCount[m_recordCount.size()-1] = rptSql->getRecordCount();
         //m_recordCount << rptSql->getRecordCount();
     } else {
-        QDomElement docElem = xmlDoc.documentElement().childNodes().at(pageReport).toElement();
+        QDomElement docElem = m_xmlDoc.documentElement().childNodes().at(pageReport).toElement();
         QDomNode n = docElem.firstChild();
         QDomElement dsElement;
 
@@ -2479,7 +2493,7 @@ void QtRPT::setSqlQuery(QString sqlString)
   \page qtrptproject.html
   \title QtRptProject
   \list
-  \li Version 2.0.1
+  \li Version 2.0.2
   \li Programmer: Aleksey Osipov
   \li Web-site: \l {http://www.aliks-os.tk} {http://www.aliks-os.tk}
   \li Email: \l {mailto:aliks-os@ukr.net} {aliks-os@ukr.net}

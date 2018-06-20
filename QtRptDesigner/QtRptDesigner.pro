@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml network charts
+QT       += core gui xml network charts script sql
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
@@ -12,16 +12,40 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 }
 
 TARGET = QtRptDesigner
-VERSION = 2.0.1
+VERSION = 2.0.2
 DEFINES += VERSION=\\\"$$VERSION\\\"
 TEMPLATE = app
 
-include(../CommonFiles/CommonFiles_QtRptDesigner.pri)
-include(Graphics/Graphics.pri)
-include(../QtRPT/QtRPT.pri)
-include(SQLDiagram/SQLDiagram.pri)
+CONFIG(debug, debug|release) {
+    DEST_DIRECTORY = $$PWD/../bin/debug
+}
+CONFIG(release, debug|release) {
+    DEST_DIRECTORY = $$PWD/../bin/release
+}
 
 DESTDIR = $${DEST_DIRECTORY}
+
+DEFINES += QTRPT_LIBRARY
+
+contains(DEFINES, QTRPT_LIBRARY) {
+    INCLUDEPATH += $$PWD/../QtRPT/
+    LIBS += -L$${DEST_DIRECTORY}/lib -lQtRPT
+} else {
+    include(../QtRPT/QtRPT.pri)
+}
+
+!contains(DEFINES, NO_BARCODE) {
+    INCLUDEPATH += $$PWD/../3rdparty/zint-2.4.4/backend_qt4
+    INCLUDEPATH += $$PWD/../3rdparty/zint-2.4.4/backend
+
+    LIBS += -L$${DEST_DIRECTORY}/lib -lQtZint
+}
+
+include(../CommonFiles/CommonFiles_QtRptDesigner.pri)
+include(Graphics/Graphics.pri)
+include(SQLDiagram/SQLDiagram.pri)
+
+
 
 SOURCES += main.cpp\
     mainwindow.cpp \

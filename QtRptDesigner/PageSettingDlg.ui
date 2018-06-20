@@ -386,7 +386,7 @@
          </spacer>
         </item>
         <item row="1" column="2">
-         <widget class="XYZLabel" name="label_18">
+         <widget class="XYZLabel" name="lblWatermarkImage">
           <property name="text">
            <string/>
           </property>
@@ -399,7 +399,7 @@
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="QSpinBox" name="spinBox">
+         <widget class="QSpinBox" name="spnWaterOpacity">
           <property name="maximum">
            <number>100</number>
           </property>
@@ -455,8 +455,8 @@
  </customwidgets>
  <resources>
   <include location="../QtRPT/imagesRpt.qrc"/>
-  <include location="../QtRPT/imagesRpt.qrc"/>
   <include location="images.qrc"/>
+  <include location="../QtRPT/imagesRpt.qrc"/>
   <include location="../QtRPT/imagesRpt.qrc"/>
  </resources>
  <connections>

@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -67,6 +67,8 @@ public:
     void newFieldType(QtRptName::FieldType value) {m_newFieldType = value;}
     void newFieldMenu(QMenu *menu) {m_newFieldMenu = menu;}
     void removeItem(QGraphicsItem *item);
+    void itemSelect(QGraphicsItem *item);
+    QList<QGraphicsItem*> itemsSelected() {return m_selectedItems;}
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -85,10 +87,7 @@ private:
     Mode sceneMode;
     QtRptName::FieldType m_newFieldType;
     QMenu *m_newFieldMenu;
-
-    //QGraphicsPixmapItem *m_backgroundItem;
-    //QString m_backgroundPath;
-
+    QList<QGraphicsItem*> m_selectedItems;
     bool m_trackingMoves;
     QList<ItemsAndParams> m_movedItems;
 

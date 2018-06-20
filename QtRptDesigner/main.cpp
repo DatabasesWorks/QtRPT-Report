@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     a.setApplicationName(QApplication::tr("QtRptDesigner"));
     a.setOrganizationName("Aleksey Osipov");
     a.setOrganizationDomain("https://sourceforge.net/projects/qtrpt/");  //projects web page
-    a.setApplicationVersion("2.0.1");
+    a.setApplicationVersion("2.0.2");
 
     QTextCodec *codec = QTextCodec::codecForName("UTF8");
     QTextCodec::setCodecForLocale(codec);
@@ -57,7 +57,13 @@ int main(int argc, char *argv[]) {
 
 
     MainWindow w;
-    w.show();
+    if (w.property("AllowStart").toBool()) {
+        w.show();
+        return a.exec();
+    } else {
+        a.exit(0);
+        return 0;
+    }
 
-    return a.exec();
+
 }

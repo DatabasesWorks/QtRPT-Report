@@ -8,9 +8,8 @@ NumberToArabicWord::NumberToArabicWord(double number)
     this->number = number;
 
 
-
     ExtractIntegerAndDecimalParts();
-    arabicOnes = QStringList() << QString::null
+    arabicOnes = QStringList() << QString()
     << "واحد"
     << "اثنان"
     << "ثلاثة"
@@ -31,7 +30,7 @@ NumberToArabicWord::NumberToArabicWord(double number)
     << "ثمانية عشر"
     << "تسعة عشر";
 
-    arabicFeminineOnes <<  QStringList() << QString::null
+    arabicFeminineOnes <<  QStringList() << QString()
     << "إحدى"
     << "اثنتان"
     << "ثلاث"
@@ -99,7 +98,7 @@ NumberToArabicWord::NumberToArabicWord(double number)
     << "كوينتليون"
     << "سكستيليون";
 
-    arabicAppendedGroup << QString::null
+    arabicAppendedGroup << QString()
     << "ألفاً"
     << "مليوناً"
     << "ملياراً"
@@ -108,7 +107,7 @@ NumberToArabicWord::NumberToArabicWord(double number)
     << "كوينتليوناً"
     << "سكستيليوناً";
 
-    arabicPluralGroups << QString::null
+    arabicPluralGroups << QString()
     << "آلاف"
     << "ملايين"
     << "مليارات"
@@ -126,11 +125,11 @@ QString NumberToArabicWord::ConvertToArabic()
     }
     else if(number==1)
     {
-          return "واحد";
+        return "واحد";
     }
     else if(number==2)
     {
-          return "اثنان";
+        return "اثنان";
     }
 
     double tempNumber = number;
@@ -140,7 +139,7 @@ QString NumberToArabicWord::ConvertToArabic()
     QString decimalString = ProcessArabicGroup(_decimalValue, -1, 0);
 
 
-    QString retVal = QString::null;
+    QString retVal = QString();
     short group = 0;
 
     while (tempNumber >= 1)
@@ -184,9 +183,9 @@ QString NumberToArabicWord::ConvertToArabic()
         group++;
     }
 
-    QString formattedNumber = QString::null;
+    QString formattedNumber = QString();
 
-    formattedNumber += (!retVal.isEmpty()) ? retVal : QString::null;
+    formattedNumber += (!retVal.isEmpty()) ? retVal : QString();
     formattedNumber += (_decimalValue != 0) ? " و " : "";
     formattedNumber += (_decimalValue != 0) ? decimalString : "";
 
@@ -231,7 +230,7 @@ QString NumberToArabicWord::ProcessArabicGroup(int groupNumber, int groupLevel, 
                     retVal += arabicGroup[groupLevel];
                 else
                     if ((tens == 1 || tens == 2) && (groupLevel == 0 || groupLevel == -1) && hundreds == 0 && remainingNumber == 0)
-                        retVal += QString::null; // Special case for 1 and 2 numbers like: ليرة سورية و ليرتان سوريتان
+                        retVal += QString(); // Special case for 1 and 2 numbers like: ليرة سورية و ليرتان سوريتان
                     else
                         retVal += GetDigitFeminineStatus(tens, groupLevel);// Get Feminine status for this digit
             }
@@ -263,41 +262,34 @@ QString NumberToArabicWord::ProcessArabicGroup(int groupNumber, int groupLevel, 
 
 QString NumberToArabicWord::GetDigitFeminineStatus(int digit, int groupLevel)
 {
-    if (groupLevel == -1)
-    { // if it is in the decimal part
-            return arabicOnes.at(digit);
-    }
+    if (groupLevel == -1)  // if it is in the decimal part
+        return arabicOnes.at(digit);
+    else if (groupLevel == 0)
+        return arabicOnes.at(digit);
     else
-        if (groupLevel == 0)
-        {
-
-                return arabicOnes.at(digit);
-        }
-        else
-            return arabicOnes.at(digit);
-
+        return arabicOnes.at(digit);
 }
 
 void NumberToArabicWord::ExtractIntegerAndDecimalParts()
 {
     QStringList splits = QString::number(number).split('.');
 
-                bool ok;
-                _intergerValue = splits.at(0).toULongLong(&ok);
+    bool ok;
+    _intergerValue = splits.at(0).toULongLong(&ok);
 
-                if(!ok) _intergerValue = 0;
+    if(!ok) _intergerValue = 0;
 
-                ok = false; // assuming there is no decimal value by default
-                if (splits.count() > 1)
-                    _decimalValue = GetDecimalValue(splits.at(1)).toULongLong(&ok);
+    ok = false; // assuming there is no decimal value by default
+    if (splits.count() > 1)
+        _decimalValue = GetDecimalValue(splits.at(1)).toULongLong(&ok);
 
-                if(!ok) _decimalValue = 0;
+    if(!ok) _decimalValue = 0;
 }
 
 QString NumberToArabicWord::GetDecimalValue(QString decimalPart)
 {
     QString result = "";
-        result = decimalPart;
+    result = decimalPart;
 
     return result;
 }

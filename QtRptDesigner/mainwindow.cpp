@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -248,6 +248,21 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     MainWindow::mw = this;
 
+    dontSelect = false;
+
+    this->setProperty("AllowStart", true);
+
+    auto spacerWidget = new QWidget(this);
+    spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    spacerWidget->setVisible(true);
+
+    auto lblLogo = new QLabel("", this);
+    lblLogo->setObjectName("lblLogo");
+
+
+    ui->mainToolBar->addWidget(spacerWidget);
+    ui->mainToolBar->addWidget(lblLogo);
+
     m_status1 = new QLabel("Left", this);
     m_status1->setText(QString("X: %1 Y: %2").arg(0).arg(0));
     m_status1->setFixedWidth(150);
@@ -259,7 +274,8 @@ MainWindow::MainWindow(QWidget *parent)
     this->statusBar()->addPermanentWidget(m_status1, 0);
     this->statusBar()->addPermanentWidget(m_status2, 1);
     this->statusBar()->addPermanentWidget(m_status3, 2);
-    this->showMaximized();
+    this->setWindowState(this->windowState() ^ Qt::WindowMaximized);
+
 
     ui->treeParams->setColumnWidth(0,150);
     ui->treeParams->setColumnWidth(1,70);
@@ -333,6 +349,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(cbZoom, SIGNAL(activated(int)), this, SLOT(changeZoom()));
 
     listFrameStyle = new QListWidget(this);
+    listFrameStyle->hide();
     listFrameStyle->setFixedHeight(116);
     listFrameStyle->setIconSize(QSize(85, 16));
     QObject::connect(listFrameStyle, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(setFrameStyle(QListWidgetItem *)));
@@ -458,7 +475,12 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->actPageSettings, SIGNAL(triggered()), this, SLOT(showPageSetting()));
     QObject::connect(ui->actPreview, SIGNAL(triggered()), this, SLOT(showPreview()));
     QObject::connect(ui->actDataSource, SIGNAL(triggered()), this, SLOT(showDataSource()));
-    QObject::connect(ui->actReadme, &QAction::triggered, [=] { QDesktopServices::openUrl(QUrl("file:///"+QCoreApplication::applicationDirPath()+"/readme.pdf", QUrl::TolerantMode)); });
+    QObject::connect(ui->actReadmeQtRPT, &QAction::triggered, [=] {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QCoreApplication::applicationDirPath()+"/ReadmeQtRPT.pdf"));
+    });
+    QObject::connect(ui->actReadmeQtRptDesigner, &QAction::triggered, [=] {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QCoreApplication::applicationDirPath()+"/ReadmeQtRptDesigner.pdf"));
+    });
 
     actRepTitle = new QAction(tr("Report Title"),this);
     actRepTitle->setObjectName("actRepTitle");
@@ -649,7 +671,18 @@ MainWindow::MainWindow(QWidget *parent)
     }
     this->installEventFilter(this);
 
+
     loadPlugin();
+
+    if (this->property("AllowStart").toBool() == false) {
+        while (!pluginsLoaders.isEmpty()) {
+            auto pluginLoader = pluginsLoaders.takeFirst();
+            pluginLoader->unload();
+            delete pluginLoader;
+        }
+
+        qApp->quit();
+    }
 }
 
 #include "CustomInterface.h"
@@ -676,26 +709,37 @@ bool MainWindow::loadPlugin()
     }
 
     for (QString &fileName : pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
-        auto plugin = pluginLoader.instance();
+        auto pluginLoader = new QPluginLoader(pluginsDir.absoluteFilePath(fileName), this);
+        auto plugin = pluginLoader->instance();
         if (plugin) {
+            plugin->setParent(this);
             plugins << plugin;
+            pluginsLoaders << pluginLoader;
+
+            auto echoInterface = qobject_cast<CustomInterface *>(plugin);
 
             int index = plugin->metaObject()->indexOfClassInfo("AddToMenu");
             if (QString(plugin->metaObject()->classInfo(index).value()) == "true") {
                 index = plugin->metaObject()->indexOfClassInfo("PluginName");
                 QString pluginName = plugin->metaObject()->classInfo(index).value();
 
-                auto act = new QAction(pluginName, menuPlugins);
-                menuPlugins->addAction(act);
-
-                auto echoInterface = qobject_cast<CustomInterface *>(plugin);
                 if (echoInterface) {
-                    index = plugin->metaObject()->indexOfClassInfo("RunOnLoading");
-                    if (QString(plugin->metaObject()->classInfo(index).value()) == "true")
-                        echoInterface->execute();
+                    auto act = new QAction(pluginName, menuPlugins);
+                    QObject::connect(act, &QAction::triggered, [=] {
+                        echoInterface->execute(xmlDoc);
+                        echoInterface->saveData(xmlDoc);
+
+                        ui->actSaveReport->setEnabled(true);
+                    });
+
+                    menuPlugins->addAction(act);
                 }
             }
+
+            index = plugin->metaObject()->indexOfClassInfo("RunOnLoading");
+            if (QString(plugin->metaObject()->classInfo(index).value()) == "true")
+                if (echoInterface)
+                    echoInterface->execute(xmlDoc);
         }
     }
 
@@ -784,6 +828,7 @@ void MainWindow::itemResizing(QGraphicsItem *item)
         if (item->type() == ItemType::GBand) {
             auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(ui->tabWidget->currentIndex()));
             repPage->correctBandGeom(nullptr);
+            setParamTree(Height, box->getHeight() - ReportBand::titleHeight);
         } else if (item->type() == ItemType::GBox) {
             auto band = qgraphicsitem_cast<ReportBand *>(item->parentItem());
             setParamTree(Width, box->getWidth());
@@ -872,8 +917,8 @@ void MainWindow::reportPageChanged(int index)
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(index));
 	repPage->setScale(cbZoom->currentText());
     auto allReportBand = repPage->getReportBands();
-//    if (!allReportBand.isEmpty())
-//        std::sort(allReportBand.begin(), allReportBand.end(),  [](ReportBand* p1, ReportBand* p2) {return p1->bandType < p2->bandType;});
+
+
 
     for (auto &band : allReportBand) {
         rootItem->addChild(band->itemInTree);
@@ -908,14 +953,23 @@ void MainWindow::newReportPage()
     ui->tabWidget->addTab(repPage,tr("Page %1").arg(ui->tabWidget->count()+1));
     ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
     ui->tabWidget->setUpdatesEnabled(true);
+
+    if (sender() != nullptr)
+        ui->actSaveReport->setEnabled(true);
 }
 
 void MainWindow::deleteReportPage()
 {
     if (sqlDesigner != nullptr)
         sqlDesigner->removeDiagramDocument(ui->tabWidget->currentIndex());
-    ui->tabWidget->removeTab(ui->tabWidget->currentIndex());
+
+    int index = ui->tabWidget->currentIndex();
+    ui->tabWidget->setCurrentIndex(index-1);
+
+
+    ui->tabWidget->removeTab(index);
     enableAdding();
+    ui->actSaveReport->setEnabled(true);
 }
 
 void MainWindow::sceneItemAdded(QGraphicsItem *mItem)
@@ -1107,6 +1161,8 @@ void MainWindow::openFile()
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
+    dontSelect = true;
+
     QDomElement docElem = xmlDoc->documentElement();  //get root element
     QDomElement repElem;
 
@@ -1118,25 +1174,32 @@ void MainWindow::openFile()
     for (int t = 0; t < docElem.childNodes().count(); t++) {
         if (docElem.tagName() == "Reports" )  //Делаем проверку для совместимости со старыми версиями
             repElem = docElem.childNodes().at(t).toElement();
-        else
-            repElem = docElem;
+
+        if (repElem.tagName() != "Report")
+            continue;
 
         if (t != 0) newReportPage();
 
-        RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(t));
+        auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(t));
         repPage->clearReport();
-        repPage->pageSetting.marginsLeft     = repElem.attribute("marginsLeft").toInt();
-        repPage->pageSetting.marginsRight    = repElem.attribute("marginsRight").toInt();
-        repPage->pageSetting.marginsTop      = repElem.attribute("marginsTop").toInt();
-        repPage->pageSetting.marginsBottom   = repElem.attribute("marginsBottom").toInt();
-        repPage->pageSetting.pageWidth       = repElem.attribute("pageWidth").toInt();
-        repPage->pageSetting.pageHeight      = repElem.attribute("pageHeight").toInt();
-        repPage->pageSetting.pageOrientation = repElem.attribute("orientation").toInt();
-        repPage->pageSetting.border          = repElem.attribute("border", "0").toInt();
-        repPage->pageSetting.borderWidth     = repElem.attribute("borderWidth", "1").toInt();
-        repPage->pageSetting.borderColor     = repElem.attribute("borderColor", "rgba(0,0,0,255)");
-        repPage->pageSetting.borderStyle     = repElem.attribute("borderStyle", "solid");
-        repPage->pageSetting.watermark       = repElem.attribute("watermark", "0").toInt();
+        repPage->pageSetting.marginsLeft       = repElem.attribute("marginsLeft").toInt();
+        repPage->pageSetting.marginsRight      = repElem.attribute("marginsRight").toInt();
+        repPage->pageSetting.marginsTop        = repElem.attribute("marginsTop").toInt();
+        repPage->pageSetting.marginsBottom     = repElem.attribute("marginsBottom").toInt();
+        repPage->pageSetting.pageWidth         = repElem.attribute("pageWidth").toInt();
+        repPage->pageSetting.pageHeight        = repElem.attribute("pageHeight").toInt();
+        repPage->pageSetting.pageOrientation   = repElem.attribute("orientation").toInt();
+        repPage->pageSetting.border            = repElem.attribute("border", "0").toInt();
+        repPage->pageSetting.borderWidth       = repElem.attribute("borderWidth", "1").toInt();
+        repPage->pageSetting.borderColor       = repElem.attribute("borderColor", "rgba(0,0,0,255)");
+        repPage->pageSetting.borderStyle       = repElem.attribute("borderStyle", "solid");
+        repPage->pageSetting.watermark         = repElem.attribute("watermark", "0").toInt();
+        repPage->pageSetting.watermarkOpacity  = repElem.attribute("watermarkOpacity", "0.5").toDouble();
+
+        QByteArray byteArray = QByteArray::fromBase64(repElem.attribute("watermarkPixmap").toLatin1());
+        repPage->pageSetting.watermarkPixmap = QPixmap::fromImage(QImage::fromData(byteArray, "PNG"));
+
+
 
         ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), tr("Page %1").arg(ui->tabWidget->currentIndex()+1));
         repPage->setPaperSize(0);
@@ -1227,7 +1290,11 @@ void MainWindow::openFile()
     enableAdding();
 
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(0));
+    QCoreApplication::processEvents();
+    repPage->scene->update();
     repPage->scene->m_undoStack->clear();
+
+    dontSelect = false;
 
     QApplication::restoreOverrideCursor();
 }
@@ -1396,9 +1463,9 @@ void MainWindow::setGroupingField()
 QGraphicsItem *MainWindow::selectedGItem()
 {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    if (repPage->scene->selectedItems().isEmpty())
+    if (repPage->scene->itemsSelected().isEmpty())
         return nullptr;
-    return repPage->scene->selectedItems().at(0);
+    return repPage->scene->itemsSelected().at(0);
 }
 
 GraphicsHelperClass *MainWindow::gItemToHelper(QGraphicsItem *item)
@@ -1410,6 +1477,9 @@ GraphicsHelperClass *MainWindow::gItemToHelper(QGraphicsItem *item)
 //Container's selection
 void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item)
 {
+    if (dontSelect)
+        return;
+
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     auto scene = repPage->scene;
 
@@ -1417,21 +1487,27 @@ void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item)
         // unselect all
         scene->blockSignals(true);
         for (auto &m_item : scene->items()) {
-            if (m_item->type() == ItemType::GLine || m_item->type() == ItemType::GBox || m_item->type() == ItemType::GBand) {
+            bool isLine = m_item->type() == ItemType::GLine;
+            bool isBox = m_item->type() == ItemType::GBox;
+            bool isBand = m_item->type() == ItemType::GBand;
+
+            if (isLine || isBox || isBand) {
                  auto helper = dynamic_cast<GraphicsHelperClass*>(m_item);
                  helper->helperSelect(false);
             }
         }
+
         ui->treeParams->clear();
         showParamState();
         scene->blockSignals(false);
         return;
     }
 
-    if (item->type() != ItemType::GLine &&
-        item->type() != ItemType::GBox &&
-        item->type() != ItemType::GBand
-        ) return;
+    bool isLine = item->type() == ItemType::GLine;
+    bool isBox = item->type() == ItemType::GBox;
+    bool isBand = item->type() == ItemType::GBand;
+    if (!isLine && !isBox && !isBand)
+        return;
 
     scene->blockSignals(true);
 
@@ -1458,6 +1534,7 @@ void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item)
                 }
             }
         }
+
         ui->treeParams->clear();
         showParamState();
     }
@@ -1568,6 +1645,20 @@ void MainWindow::saveReport()
         repElem.setAttribute("borderColor",repPage->pageSetting.borderColor);
         repElem.setAttribute("borderStyle",repPage->pageSetting.borderStyle);
         repElem.setAttribute("watermark",repPage->pageSetting.watermark);
+        repElem.setAttribute("watermarkOpacity",repPage->pageSetting.watermarkOpacity);
+
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        buffer.open(QIODevice::WriteOnly);
+
+        //if (m_imgFormat.isEmpty() || m_imgFormat.isNull())
+            repPage->pageSetting.watermarkPixmap.save(&buffer, "PNG");
+        //else
+        //    pageSetting.watermarkPixmap.save(&buffer, m_imgFormat.toLatin1().data());
+
+        QString s = byteArray.toBase64();
+
+        repElem.setAttribute("watermarkPixmap",s);
         docElem.appendChild(repElem);
 
         for (auto &gItem : repPage->scene->items(Qt::AscendingOrder))
@@ -1579,6 +1670,13 @@ void MainWindow::saveReport()
                 setXMLProperty(&repElem, gItem, 1);
 
         setXMLProperty(&repElem, sqlDesigner, 0); //Set XML for DataSource
+    }
+
+    for (auto plugin : plugins) {
+        auto echoInterface = qobject_cast<CustomInterface *>(plugin);
+        if (echoInterface) {
+            echoInterface->saveData(xmlDoc);
+        }
     }
 
     if (fileName.isEmpty() || fileName.isNull() || sender() == ui->actSaveAs) {
@@ -1663,7 +1761,7 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
         //        elem.setAttribute("top",widget->geometry().y());
         //        elem.setAttribute("left",widget->geometry().x());
         elem.setAttribute("width",band->getWidth());
-        elem.setAttribute("height",band->getHeight()-band->titleHeight);
+        elem.setAttribute("height",band->getHeight() - band->titleHeight);
         repElem->appendChild(elem);
     }
     if (gItem != nullptr && (gItem->type() == ItemType::GBox || gItem->type() == ItemType::GLine)) {
@@ -1938,7 +2036,7 @@ void MainWindow::newReport()
     while (ui->tabWidget->count() > 1)
         ui->tabWidget->removeTab(ui->tabWidget->count()-1);
 
-    RepScrollArea *repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(0));
+    auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(0));
     repPage->clearReport();
     QTimer::singleShot(10, repPage->scene, SLOT(update()));
 
@@ -1949,8 +2047,15 @@ void MainWindow::newReport()
     fileName = "";
     this->setWindowTitle("QtRPT Designer "+fileName);
 
-    for(auto &action : ui->actionInsert_band->menu()->actions())
+    for (auto &action : ui->actionInsert_band->menu()->actions())
         action->setEnabled(true);
+
+    for (auto &plugin : plugins) {
+        auto echoInterface = qobject_cast<CustomInterface *>(plugin);
+        if (echoInterface) {
+            echoInterface->clear(xmlDoc);
+        }
+    }
 
     sqlDesigner->clearAll();
     enableAdding();
@@ -1972,10 +2077,15 @@ QGraphicsItemList MainWindow::getSelectedItems()
 {
     QGraphicsItemList list;
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    for (auto &item : repPage->scene->items())
-        if (item->type() == ItemType::GBox || item->type() == ItemType::GBand || item->type() == ItemType::GLine)
+    for (auto &item : repPage->scene->items()) {
+        bool isLine = item->type() == ItemType::GLine;
+        bool isBox = item->type() == ItemType::GBox;
+        bool isBand = item->type() == ItemType::GBand;
+
+        if (isBox || isBand || isLine)
             if (gItemToHelper(item)->helperIsSelected())
                 list.append(item);
+    }
     return list;
 }
 
@@ -2158,7 +2268,7 @@ void MainWindow::processCommand(Command command, QVariant value, QGraphicsItem *
         }
         case Height: {
             if (band != nullptr)
-                band->setHeight(value.toInt()+band->titleHeight);
+                band->setHeight(value.toInt());
             if (box != nullptr)
                 box->setHeight(value.toInt());
             break;
@@ -2753,6 +2863,19 @@ void MainWindow::addDraw()
 
 void MainWindow::showPreview()
 {
+    for (auto &plugin : plugins) {
+        auto echoInterface = qobject_cast<CustomInterface *>(plugin);
+
+        int index = plugin->metaObject()->indexOfClassInfo("ShowReport");
+        if (QString(plugin->metaObject()->classInfo(index).value()) == "true") {
+            if (echoInterface) {
+                // We use plugin's report preview
+                echoInterface->showReport(xmlDoc);
+                return;
+            }
+        }
+    }
+
     auto report = QtRPT::createSPtr(this);
 
     if (fileName.isEmpty())
@@ -2891,6 +3014,7 @@ void MainWindow::closeEditor()
     auto item = ui->treeParams->currentItem();
     if (item == nullptr) return;
     if (selectedGItem() == nullptr) return;
+
     QVariant v;
     Command command = (Command)item->data(1,Qt::UserRole).toInt();
     switch (command) {
@@ -2909,9 +3033,6 @@ void MainWindow::closeEditor()
         case FontName:
         case FontSize: {
             v = item->text(1);
-            auto band = static_cast<ReportBand *>(selectedGItem());
-            if (band->type() == ItemType::GBand && command == Height && band != nullptr)
-                v = item->text(1).toInt() + band->titleHeight;
             break;
         }
         case Width: {
@@ -2921,7 +3042,7 @@ void MainWindow::closeEditor()
         default:
             return;
     }
-    execButtonCommand(command,v);
+    execButtonCommand(command, v);
 }
 
 void MainWindow::clipBoard()
@@ -3021,6 +3142,12 @@ void MainWindow::clipBoard()
 
 MainWindow::~MainWindow()
 {
+    while (!pluginsLoaders.isEmpty()) {
+        auto pluginLoader = pluginsLoaders.takeFirst();
+        pluginLoader->unload();
+        delete pluginLoader;
+    }
+
     delete ui;
 }
 

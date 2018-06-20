@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -44,11 +44,32 @@ EditFldDlg::EditFldDlg(QWidget *parent)
     QObject::connect(ui->btnColorF, SIGNAL(clicked()), this, SLOT(chooseColor()));
     QObject::connect(ui->btnColorTotal, SIGNAL(clicked()), this, SLOT(chooseColor()));
     QObject::connect(ui->btnColorHeader, SIGNAL(clicked()), this, SLOT(chooseColor()));
+    QObject::connect(ui->btnColorSeries, SIGNAL(clicked()), this, SLOT(chooseColor()));
+    QObject::connect(ui->btnColorTitle, SIGNAL(clicked()), this, SLOT(chooseColor()));
+    QObject::connect(ui->btnColorLegend, SIGNAL(clicked()), this, SLOT(chooseColor()));
+    QObject::connect(ui->btnColorBackground, SIGNAL(clicked()), this, SLOT(chooseColor()));
     QObject::connect(ui->chkBold, SIGNAL(clicked()), this, SLOT(encodeHighLightingString()));
     QObject::connect(ui->chkItalic, SIGNAL(clicked()), this, SLOT(encodeHighLightingString()));
     QObject::connect(ui->chkUnderline, SIGNAL(clicked()), this, SLOT(encodeHighLightingString()));
     QObject::connect(ui->chkStrikeout, SIGNAL(clicked()), this, SLOT(encodeHighLightingString()));
-    QObject::connect(ui->chkGraphs, SIGNAL(toggled(bool)), this, SLOT(autoFillData(bool)));
+
+
+    QObject::connect(ui->btnAddValue, SIGNAL(clicked()), this, SLOT(seriesValue()));
+    QObject::connect(ui->btnRemoveValue, SIGNAL(clicked()), this, SLOT(seriesValue()));
+    QObject::connect(ui->btnAddSeries, SIGNAL(clicked()), this, SLOT(addSeries()));
+    QObject::connect(ui->btnRemoveSeries, SIGNAL(clicked()), this, SLOT(removeSeries()));
+    QObject::connect(ui->tableSeries, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
+                     this, SLOT(seriesDoubleClicked(QTableWidgetItem*)));
+    QObject::connect(ui->btnTitleFont, SIGNAL(clicked()), this, SLOT(fontSelect()));
+    QObject::connect(ui->btnLegendFont, SIGNAL(clicked()), this, SLOT(fontSelect()));
+}
+
+void EditFldDlg::fontSelect()
+{
+    if (sender() == ui->btnTitleFont)
+        ui->fntTitle->setCurrentFont(QFontDialog::getFont(0, ui->fntTitle->currentFont()));
+    if (sender() == ui->btnLegendFont)
+        ui->fntLegend->setCurrentFont(QFontDialog::getFont(0, ui->fntLegend->currentFont()));
 }
 
 void EditFldDlg::chooseColor()
@@ -64,6 +85,14 @@ void EditFldDlg::chooseColor()
         label = ui->lblColorTotal;
     if (sender() == ui->btnColorHeader)
         label = ui->lblColorHeader;
+    if (sender() == ui->btnColorSeries)
+        label = ui->lblColorSeries;
+    if (sender() == ui->btnColorTitle)
+        label = ui->lblColorTitle;
+    if (sender() == ui->btnColorLegend)
+        label = ui->lblColorLegend;
+    if (sender() == ui->btnColorBackground)
+        label = ui->lblColorBackground;
 
     if (label != nullptr)
         color = colorFromString(label->styleSheet());
@@ -79,7 +108,8 @@ void EditFldDlg::chooseColor()
     if (label != nullptr)
         label->setStyleSheet("QLabel {background-color: "+strColor+"}");
 
-    encodeHighLightingString();
+    if (sender() != ui->btnColorSeries)
+        encodeHighLightingString();
 }
 
 void EditFldDlg::conditionChanged(const QString &text)
@@ -350,6 +380,202 @@ int EditFldDlg::showTextRich(QGraphicsItem *gItem)
         return QDialog::Rejected;
 }
 
+void EditFldDlg::seriesDoubleClicked(QTableWidgetItem *item)
+{
+    auto row = item->row();
+    auto series = m_chart->series().at(0);
+
+    auto dlg = new EditFldDlg(this);
+    dlg->showSeries(series, row);
+
+
+    if (dlg->result() == QDialog::Accepted) {
+        if (ui->cbChartType->currentData().toInt() == QAbstractSeries::SeriesTypeLine) {
+            m_chart->removeSeries(series);
+            m_chart->addSeries(series);
+            m_chart->createDefaultAxes();
+
+            fillSeriesTbl();
+        }
+    }
+
+    delete dlg;
+}
+
+int EditFldDlg::showSeries(QAbstractSeries *abstrSeries, int barSetNo)
+{
+    ui->stackedWidget->setCurrentIndex(6);
+
+    switch(abstrSeries->type()) {
+    case QAbstractSeries::SeriesTypeStackedBar:
+    case QAbstractSeries::SeriesTypeBar: {
+        QBarSet *barSet = nullptr;
+
+        if (abstrSeries->type() == QAbstractSeries::SeriesTypeBar) {
+            auto series = qobject_cast<QBarSeries*>(abstrSeries);
+            barSet = series->barSets().at(barSetNo);
+        } else {
+            auto series = qobject_cast<QStackedBarSeries*>(abstrSeries);
+            barSet = series->barSets().at(barSetNo);
+        }
+
+        this->setWindowTitle("Bar property");
+        ui->edtSeriesName->setText(barSet->label());
+        ui->edtSeriesDS->setText(barSet->property("graphDS").toString());
+
+        ui->edtPieValue->setVisible(false);
+        ui->lblPieValue->setVisible(false);
+        ui->tblSeriesValues->setVisible(true);
+        ui->btnAddValue->setVisible(true);
+        ui->btnRemoveValue->setVisible(true);
+        ui->chkSliceCaption->setVisible(false);
+        ui->chkSliceExploded->setVisible(false);
+
+        QString strColor = colorToString(barSet->color());
+        ui->lblColorSeries->setStyleSheet("QLabel {background-color: "+strColor+"}");
+
+        ui->tblSeriesValues->setRowCount(barSet->count());
+
+        for (int row = 0; row < barSet->count(); row++) {
+            auto value = barSet->at(row);
+            auto newItem = new QTableWidgetItem(QString::number(value));
+            ui->tblSeriesValues->setItem(row, 0, newItem);
+        }
+        break;
+    }
+    case QAbstractSeries::SeriesTypePie: {
+        auto series = qobject_cast<QPieSeries*>(abstrSeries);
+        auto slice = series->slices().at(barSetNo);
+
+        ui->chkSliceCaption->setChecked(slice->isLabelVisible());
+        ui->chkSliceExploded->setChecked(slice->isExploded());
+
+
+        ui->edtSeriesDS->setText(abstrSeries->property("graphDS").toString());
+        ui->edtSeriesName->setText(slice->label());
+
+        ui->edtPieValue->setVisible(true);
+        ui->lblPieValue->setVisible(true);
+        ui->tblSeriesValues->setVisible(false);
+        ui->btnAddValue->setVisible(false);
+        ui->btnRemoveValue->setVisible(false);
+        ui->lblStaticValues->setVisible(false);
+
+        this->setWindowTitle("Pie property");
+
+        ui->lblSeriesDS->setText("Pie data source");
+        ui->lblSeriesName->setText("Pie name");
+        ui->lblSeriesColor->setText("Pie color");
+
+        QString strColor = colorToString(slice->color());
+        ui->lblColorSeries->setStyleSheet("QLabel {background-color: "+strColor+"}");
+
+        ui->tblSeriesValues->setRowCount(1);
+
+        ui->edtPieValue->setText(QString::number(slice->value()));
+
+        break;
+    }
+    case QAbstractSeries::SeriesTypeLine: {
+        ui->edtSeriesDS->setText(abstrSeries->property("graphDS").toString());
+        ui->edtSeriesName->setText(abstrSeries->name());
+        auto series = qobject_cast<QLineSeries*>(abstrSeries);
+
+        ui->edtPieValue->setVisible(false);
+        ui->lblPieValue->setVisible(false);
+        ui->tblSeriesValues->setVisible(true);
+        ui->btnAddValue->setVisible(true);
+        ui->btnRemoveValue->setVisible(true);
+        ui->chkSliceCaption->setVisible(false);
+        ui->chkSliceExploded->setVisible(false);
+
+        this->setWindowTitle("Line property");
+
+        QString strColor = colorToString(series->color());
+        ui->lblColorSeries->setStyleSheet("QLabel {background-color: "+strColor+"}");
+
+        ui->tblSeriesValues->setColumnCount(1);
+        ui->tblSeriesValues->setRowCount(series->count());
+
+        for (int row = 0; row < series->count(); row++) {
+            auto point = series->at(row);
+            auto newItem = new QTableWidgetItem(QString::number(point.y()));
+            ui->tblSeriesValues->setItem(row, 0, newItem);
+        }
+        break;
+    }
+    default: qDebug() << "Type is not defined";
+    }
+
+    if (this->exec()) {
+        switch(abstrSeries->type()) {
+        case QAbstractSeries::SeriesTypeStackedBar:
+        case QAbstractSeries::SeriesTypeBar: {
+            QBarSet *barSet = nullptr;
+
+            if (abstrSeries->type() == QAbstractSeries::SeriesTypeBar) {
+                auto series = qobject_cast<QBarSeries*>(abstrSeries);
+                barSet = series->barSets().at(barSetNo);
+            } else {
+                auto series = qobject_cast<QStackedBarSeries*>(abstrSeries);
+                barSet = series->barSets().at(barSetNo);
+            }
+
+            barSet->remove(0, barSet->count());
+            barSet->setProperty("graphDS", ui->edtSeriesDS->text());
+
+            for (int row = 0; row < ui->tblSeriesValues->rowCount(); row++) {
+                auto item = ui->tblSeriesValues->item(row, 0);
+                barSet->append(item->text().toFloat());
+            }
+
+            QColor color = colorFromString(ui->lblColorSeries->styleSheet());
+            barSet->setColor(color);
+            barSet->setLabel(ui->edtSeriesName->text());
+            break;
+        }
+        case QAbstractSeries::SeriesTypePie: {
+            auto series = qobject_cast<QPieSeries*>(abstrSeries);
+            auto slice = series->slices().at(barSetNo);
+
+            series->remove(slice);
+
+            series->setProperty("graphDS", ui->edtSeriesDS->text());
+
+            slice = new QPieSlice(ui->edtSeriesName->text(), ui->edtPieValue->text().toFloat(), series);
+            slice->setExploded(ui->chkSliceExploded->isChecked());
+            slice->setLabelVisible(ui->chkSliceCaption->isChecked());
+
+            series->insert(barSetNo, slice);
+
+            QColor color = colorFromString(ui->lblColorSeries->styleSheet());
+            slice->setColor(color);
+            slice->setLabel(ui->edtSeriesName->text());
+            break;
+        }
+        case QAbstractSeries::SeriesTypeLine: {
+            auto series = qobject_cast<QLineSeries*>(abstrSeries);
+            series->removePoints(0, series->count());
+
+            for (int row = 0; row < ui->tblSeriesValues->rowCount(); row++) {
+                auto item = ui->tblSeriesValues->item(row, 0);
+                series->append(row, item->text().toDouble());
+            }
+
+            QColor color = colorFromString(ui->lblColorSeries->styleSheet());
+            series->setColor(color);
+            series->setName(ui->edtSeriesName->text());
+            series->setProperty("graphDS", ui->edtSeriesDS->text());
+            break;
+        }
+        default: qDebug() << "Type is not defined";
+        }
+
+        return QDialog::Accepted;
+    } else
+        return QDialog::Rejected;
+}
+
 int EditFldDlg::showImage(QGraphicsItem *gItem)
 {
     auto cont = qgraphicsitem_cast<GraphicsBox*>(gItem);
@@ -479,164 +705,374 @@ void EditFldDlg::setScaledContents(bool value)
     ui->label->setScaledContents(value);
 }
 
-int EditFldDlg::showDiagram(QGraphicsItem *gItem)
+void EditFldDlg::chartTypeChanged(int index)
 {
-    auto cont = qgraphicsitem_cast<GraphicsBox*>(gItem);
-    ui->stackedWidget->setCurrentIndex(2);
-    ui->tabDiagram->setTabEnabled(1,false);
-    ui->chkShowGrid->setChecked( cont->getChart()->getParam(DrawGrid).toBool() );
-    ui->chkShowCaption->setChecked( cont->getChart()->getParam(ShowCaption).toBool() );
-    ui->chkShowLegend->setChecked( cont->getChart()->getParam(ShowLegend).toBool() );
-    ui->chkGraphsCaption->setChecked( cont->getChart()->getParam(ShowGraphCaption).toBool() );
-    if (cont->getChart()->getParam(ShowPercent).toBool())
-        ui->rbPercentValue->setChecked( cont->getChart()->getParam(ShowPercent).toBool() );
-    else
-        ui->rbRealValue->setChecked( cont->getChart()->getParam(ShowPercent).toBool() );
-    ui->edtCaption->setText( cont->getChart()->getParam(Caption).toString() );
-    ui->chkGraphs->setChecked( cont->getChart()->getParam(AutoFillData).toBool() );
+    Q_UNUSED(index);
 
-    QObject::connect(ui->btnUp, SIGNAL(clicked()), this, SLOT(moveRow()));
-    QObject::connect(ui->btnDown, SIGNAL(clicked()), this, SLOT(moveRow()));
-    QObject::connect(ui->btnAddRow, SIGNAL(clicked()), this, SLOT(addRow()));
-    QObject::connect(ui->btnRemoveRow, SIGNAL(clicked()), this, SLOT(removeRow()));
-    QObject::connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChanged()));
+    if (index != -1)
+        m_chart->removeAllSeries();
 
-    QTableWidgetItem *newItem;
-    quint16 i = 0;
-    ui->tableWidget->setRowCount( cont->getChart()->getGraphParamList().size() );
-    for (const auto &graphParam : cont->getChart()->getGraphParamList()) {
-        newItem = new QTableWidgetItem( graphParam.caption );
-        ui->tableWidget->setItem(i,0,newItem);
+    ui->lblHoleSize->setVisible(false);
+    ui->spnHoleSize->setVisible(false);
 
-        newItem = new QTableWidgetItem( graphParam.valueString );
-        ui->tableWidget->setItem(i,1,newItem);
+    if (ui->cbChartType->currentData().toInt() == QAbstractSeries::SeriesTypeLine) {
+        ui->lblChartTypePic->setPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/lineChart.png")));
 
-        newItem = new QTableWidgetItem( graphParam.valueString );
-        ui->tableWidget->setItem(i,1,newItem);
+        if (index != -1) {
+            auto series = new QLineSeries();
+            series->append(0,0);
+            series->append(1,3);
+            series->setName(QString("Series #%1").arg(m_chart->series().size()));
 
-        //-- color box and button for selecting color
-        auto sc = new SelectColor(ui->tableWidget, colorToString(graphParam.color));
-        QObject::connect(sc->button, SIGNAL(clicked()), this, SLOT(selectGraphColor()));
-        ui->tableWidget->setCellWidget(i,2,sc);
+            m_chart->addSeries(series);
+            m_chart->createDefaultAxes();
+        }
+    }
+    else if (ui->cbChartType->currentData().toInt() == QAbstractSeries::SeriesTypeBar) {
+        ui->lblChartTypePic->setPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/barChart.png")));
 
-        i++;
+        if (index != -1) {
+            auto set0 = new QBarSet("Jane");
+            auto set1 = new QBarSet("John");
+            auto set2 = new QBarSet("Axel");
+            auto set3 = new QBarSet("Mary");
+            auto set4 = new QBarSet("Sam");
+
+            *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+            *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+            *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+            *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+            *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+            auto series = new QBarSeries();
+            series->append(set0);
+            series->append(set1);
+            series->append(set2);
+            series->append(set3);
+            series->append(set4);
+
+            m_chart->addSeries(series);
+        }
+    }
+    else if (ui->cbChartType->currentData().toInt() == QAbstractSeries::SeriesTypeStackedBar) {
+        ui->lblChartTypePic->setPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/barStackedChart.png")));
+
+        if (index != -1) {
+            auto set0 = new QBarSet("Jane");
+            auto set1 = new QBarSet("John");
+            auto set2 = new QBarSet("Axel");
+            auto set3 = new QBarSet("Mary");
+            auto set4 = new QBarSet("Sam");
+
+            *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+            *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+            *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+            *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+            *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+            auto series = new QStackedBarSeries();
+            series->append(set0);
+            series->append(set1);
+            series->append(set2);
+            series->append(set3);
+            series->append(set4);
+
+            m_chart->addSeries(series);
+            m_chart->setTitle("Simple stackedbarchart example");
+
+            QStringList categories;
+            categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+            auto axis = new QBarCategoryAxis();
+            axis->append(categories);
+            m_chart->createDefaultAxes();
+            m_chart->setAxisX(axis, series);
+            m_chart->legend()->setVisible(true);
+        }
+    }
+    else if (ui->cbChartType->currentData().toInt() == QAbstractSeries::SeriesTypePie) {
+        ui->lblChartTypePic->setPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/pieChart.png")));
+        ui->lblHoleSize->setVisible(true);
+        ui->spnHoleSize->setVisible(true);
+
+        if (index != -1) {
+            auto series = new QPieSeries();
+            series->append("Jane", 1);
+            series->append("Joe", 2);
+            series->append("Andy", 3);
+            series->append("Barbara", 4);
+            series->append("Axel", 5);
+
+            auto slice = series->slices().at(1);
+            slice->setExploded();
+            slice->setLabelVisible();
+            slice->setPen(QPen(Qt::darkGreen, 2));
+            slice->setBrush(Qt::green);
+
+            m_chart->addSeries(series);
+        }
     }
 
-    if (this->exec()) {
-        //saving graphs to XML nodes
-        cont->getChart()->clearData();
-        for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
-            GraphParam param;
-            auto sc = qobject_cast<SelectColor *>(ui->tableWidget->cellWidget(i,2));
-            param.color = colorFromString(sc->getBackGroundColor());
-            param.valueReal = ui->tableWidget->item(i,1)->text().toFloat();
-            param.valueString = ui->tableWidget->item(i,1)->text();
-            param.caption = ui->tableWidget->item(i,0)->text();
-            cont->getChart()->setData(param);
-        }
-        cont->getChart()->setParams(ui->chkShowGrid->isChecked(),
-                                    ui->chkShowLegend->isChecked(),
-                                    ui->chkShowCaption->isChecked(),
-                                    ui->chkGraphsCaption->isChecked(),
-                                    ui->rbPercentValue->isChecked(),
-                                    ui->edtCaption->text(),
-                                    ui->chkGraphs->isChecked());
 
+    fillSeriesTbl();
+}
+
+void EditFldDlg::addSeries()
+{
+    QAbstractSeries *abstrSeries;
+    if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeLine) {
+        QLineSeries *series = new QLineSeries();
+        series->append(0,0);
+        series->append(1,3);
+        series->setName(QString("Series #%1").arg(m_chart->series().size()));
+        abstrSeries = series;
+
+        m_chart->addSeries(series);
+        m_chart->createDefaultAxes();
+
+    } else if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeBar) {
+        auto set = new QBarSet("New set");
+        *set << 1 << 2 << 3 << 4 << 5 << 6;
+
+        abstrSeries = m_chart->series().at(0);
+        auto series = qobject_cast<QBarSeries*>(abstrSeries);
+        series->append(set);
+    } else if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeStackedBar) {
+        auto set = new QBarSet("New set");
+        *set << 1 << 2 << 3 << 4 << 5 << 6;
+
+        abstrSeries = m_chart->series().at(0);
+        auto series = qobject_cast<QStackedBarSeries*>(abstrSeries);
+        series->append(set);
+    } else if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypePie) {
+        abstrSeries = m_chart->series().at(0);
+        auto series = qobject_cast<QPieSeries*>(abstrSeries);
+        series->append("New pie", 1);
+    }
+
+    fillSeriesTbl();
+}
+
+void EditFldDlg::seriesValue()
+{
+    if (sender() == ui->btnAddValue) {
+        ui->tblSeriesValues->setRowCount(ui->tblSeriesValues->rowCount()+1);
+    }
+    if (sender() == ui->btnRemoveValue) {
+        auto row = ui->tblSeriesValues->currentRow();
+        ui->tblSeriesValues->removeRow(row);
+    }
+}
+
+void EditFldDlg::removeSeries()
+{
+    QAbstractSeries *abstrSeries;
+    auto row = ui->tableSeries->currentRow();
+    if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeLine) {
+        auto series = m_chart->series().at(row);
+        m_chart->removeSeries(series);
+    } else if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeBar) {
+        abstrSeries = m_chart->series().at(0);
+        auto series = qobject_cast<QBarSeries*>(abstrSeries);
+        auto set = series->barSets().at(row);
+        series->remove(set);
+    } else if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeStackedBar) {
+        abstrSeries = m_chart->series().at(0);
+        auto series = qobject_cast<QStackedBarSeries*>(abstrSeries);
+        auto set = series->barSets().at(row);
+        series->remove(set);
+    } else if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypePie) {
+        abstrSeries = m_chart->series().at(0);
+        auto series = qobject_cast<QPieSeries*>(abstrSeries);
+        auto slice = series->slices().at(row);
+        series->remove(slice);
+    }
+
+    fillSeriesTbl();
+}
+
+void EditFldDlg::fillSeriesTbl()
+{
+    ui->tableSeries->setColumnCount(2);
+
+    if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypePie) {
+        ui->tableSeries->horizontalHeaderItem(0)->setText("Name");
+
+        auto series = qobject_cast<QPieSeries*>(m_chart->series().at(0));
+
+        ui->tableSeries->setRowCount(series->count());
+        for (int row = 0; row < series->count(); row++) {
+            auto slice = series->slices().at(row);
+            auto name = slice->label();
+            auto newItem = new QTableWidgetItem(name);
+            ui->tableSeries->setItem(row, 0, newItem);
+
+            //-- color box and button for selecting color
+            auto sc = new SelectColor(ui->tableSeries, colorToString(slice->color()));
+            sc->button->setVisible(false);
+            //QObject::connect(sc->button, SIGNAL(clicked()), this, SLOT(selectGraphColor()));
+            ui->tableSeries->setCellWidget(row, 1, sc);
+        }
+    }
+
+    if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeLine) {
+        ui->tableSeries->horizontalHeaderItem(0)->setText("Series name");
+        ui->tableSeries->setRowCount(m_chart->series().size());
+
+
+        for (int row = 0; row < m_chart->series().size(); row++) {
+            auto series = qobject_cast<QLineSeries*>(m_chart->series().at(row));
+            auto name = series->name();
+            auto newItem = new QTableWidgetItem(name);
+            ui->tableSeries->setItem(row, 0, newItem);
+
+            //-- color box and button for selecting color
+            auto sc = new SelectColor(ui->tableSeries, colorToString(series->color()));
+            sc->button->setVisible(false);
+            //QObject::connect(sc->button, SIGNAL(clicked()), this, SLOT(selectGraphColor()));
+            ui->tableSeries->setCellWidget(row, 1, sc);
+        }
+    }
+
+    if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeStackedBar ||
+            ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeBar) {
+        ui->tableSeries->horizontalHeaderItem(0)->setText("Bar set name");
+
+        ui->tableSeries->setRowCount(0);
+        if (m_chart->series().size() == 0) return;
+
+        QList<QBarSet*> barSetList;
+        if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeBar) {
+            auto series = qobject_cast<QBarSeries*>(m_chart->series().at(0));
+            barSetList = series->barSets();
+        }
+
+        if (ui->cbChartType->currentData() == QAbstractSeries::SeriesTypeStackedBar) {
+            auto series = qobject_cast<QStackedBarSeries*>(m_chart->series().at(0));
+            barSetList = series->barSets();
+        }
+
+
+        ui->tableSeries->setRowCount(barSetList.size());
+        for (int row = 0; row < barSetList.size(); row++) {
+            auto barSet = barSetList.at(row);
+            auto name = barSet->label();
+            auto newItem = new QTableWidgetItem(name);
+            ui->tableSeries->setItem(row, 0, newItem);
+
+            //-- color box and button for selecting color
+            auto sc = new SelectColor(ui->tableSeries, colorToString(barSet->color()));
+            sc->button->setVisible(false);
+            //QObject::connect(sc->button, SIGNAL(clicked()), this, SLOT(selectGraphColor()));
+            ui->tableSeries->setCellWidget(row, 1, sc);
+        }
+    }
+}
+
+int EditFldDlg::showDiagram(QGraphicsItem *gItem)
+{
+    this->setWindowTitle("Chart's property");
+
+    ui->cbChartType->clear();
+    ui->cbChartType->addItem("Line chart", QAbstractSeries::SeriesTypeLine);
+    ui->cbChartType->addItem("Bar chart", QAbstractSeries::SeriesTypeBar);
+    ui->cbChartType->addItem("Bar stacked chart", QAbstractSeries::SeriesTypeStackedBar);
+    ui->cbChartType->addItem("Pie chart", QAbstractSeries::SeriesTypePie);
+
+    auto cont = qgraphicsitem_cast<GraphicsBox*>(gItem);
+    m_chart = cont->getChart();
+
+    ui->stackedWidget->setCurrentIndex(2);
+
+    if (m_chart->series().size() > 0 && m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypePie) {
+        auto series = qobject_cast<QPieSeries*>(m_chart->series().at(0));
+        ui->spnHoleSize->setValue(series->holeSize());
+    }
+
+    ui->chkStaticChart->setChecked(m_chart->property("staticChart").toInt());
+    ui->chkShowLegend->setChecked(m_chart->legend()->isVisible());
+    ui->edtCaption->setText(m_chart->title());
+    ui->fntTitle->setCurrentFont(m_chart->titleFont());
+    ui->fntLegend->setCurrentFont(m_chart->legend()->font());
+
+    QString strColor = colorToString(m_chart->titleBrush().color());
+    ui->lblColorTitle->setStyleSheet("QLabel {background-color: "+strColor+"}");
+
+    strColor = colorToString(m_chart->backgroundBrush().color());
+    ui->lblColorBackground->setStyleSheet("QLabel {background-color: "+strColor+"}");
+
+    strColor = colorToString(m_chart->legend()->labelBrush().color());
+    ui->lblColorLegend->setStyleSheet("QLabel {background-color: "+strColor+"}");
+
+    int currentIndex;
+    if (m_chart->legend()->alignment() == Qt::AlignTop) currentIndex = 0;
+    if (m_chart->legend()->alignment() == Qt::AlignBottom) currentIndex = 1;
+    if (m_chart->legend()->alignment() == Qt::AlignLeft) currentIndex = 2;
+    if (m_chart->legend()->alignment() == Qt::AlignRight) currentIndex = 3;
+
+    ui->cbLegendAligment->setCurrentIndex(currentIndex);
+
+    if (m_chart->series().size() > 0) {
+        int index = ui->cbChartType->findData(m_chart->series().at(0)->type());
+        ui->cbChartType->setCurrentIndex(index);
+        chartTypeChanged(-1);
+    }
+
+    fillSeriesTbl();
+
+    QObject::connect(ui->cbChartType, SIGNAL(currentIndexChanged(int)), this, SLOT(chartTypeChanged(int)));
+
+
+    if (this->exec()) {
+        QObject::disconnect(ui->cbChartType, SIGNAL(currentIndexChanged(int)), this, SLOT(chartTypeChanged(int)));
+
+        Qt::Alignment alig;
+        if (ui->cbLegendAligment->currentIndex() == 0) alig = Qt::AlignTop;
+        if (ui->cbLegendAligment->currentIndex() == 1) alig = Qt::AlignBottom;
+        if (ui->cbLegendAligment->currentIndex() == 2) alig = Qt::AlignLeft;
+        if (ui->cbLegendAligment->currentIndex() == 3) alig = Qt::AlignRight;
+
+        m_chart->legend()->setAlignment(alig);
+        m_chart->legend()->setVisible(ui->chkShowLegend->isChecked());
+        m_chart->setTitle(ui->edtCaption->text());
+        m_chart->setProperty("staticChart", ui->chkStaticChart->isChecked());
+        m_chart->setTitleFont(ui->fntTitle->currentFont());
+        m_chart->legend()->setFont(ui->fntLegend->currentFont());
+
+        QColor color = colorFromString(ui->lblColorTitle->styleSheet());
+        QBrush brush = m_chart->titleBrush();
+        brush.setColor(color);
+        m_chart->setTitleBrush(brush);
+
+        color = colorFromString(ui->lblColorBackground->styleSheet());
+        brush = m_chart->backgroundBrush();
+        brush.setColor(color);
+        brush.setStyle(Qt::SolidPattern);
+        m_chart->setBackgroundBrush(brush);
+
+//        QLinearGradient backgroundGradient;
+//        backgroundGradient.setStart(QPointF(0, 0));
+//        backgroundGradient.setFinalStop(QPointF(0, 1));
+//        backgroundGradient.setColorAt(0.0, QRgb(0xd2d0d1));
+//        backgroundGradient.setColorAt(1.0, color/*QRgb(0x4c4547)*/);
+//        backgroundGradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+//        m_chart->setBackgroundBrush(backgroundGradient);
+
+        color = colorFromString(ui->lblColorLegend->styleSheet());
+        brush = m_chart->legend()->labelBrush();
+        brush.setColor(color);
+        m_chart->legend()->setLabelBrush(brush);
+
+
+        if (m_chart->series().at(0)->type() == QAbstractSeries::SeriesTypePie) {
+            auto series = qobject_cast<QPieSeries*>(m_chart->series().at(0));
+            series->setHoleSize(ui->spnHoleSize->value());
+        }
 
         return QDialog::Accepted;
     } else {
+        QObject::disconnect(ui->cbChartType, SIGNAL(currentIndexChanged(int)), this, SLOT(chartTypeChanged(int)));
         return QDialog::Rejected;
     }
-}
-
-void EditFldDlg::removeRow()
-{
-    ui->tableWidget->removeRow(ui->tableWidget->currentRow());
-}
-
-void EditFldDlg::addRow()
-{
-    ui->tableWidget->insertRow(ui->tableWidget->rowCount());
-    ui->tableWidget->setCurrentCell(ui->tableWidget->rowCount()-1,0);
-    QTableWidgetItem *newItem = nullptr;
-
-    newItem = new QTableWidgetItem("New graph");
-    ui->tableWidget->setItem(ui->tableWidget->rowCount()-1,0,newItem);
-
-    newItem = new QTableWidgetItem("Field");
-    ui->tableWidget->setItem(ui->tableWidget->rowCount()-1,1,newItem);
-
-    auto sc = new SelectColor(ui->tableWidget, "rgba(255,255,255,255)");
-    QObject::connect(sc->button, SIGNAL(clicked()), this, SLOT(selectGraphColor()));
-    ui->tableWidget->setCellWidget(ui->tableWidget->rowCount()-1,2,sc);
-    ui->tableWidget->setFocus();
-}
-
-void EditFldDlg::itemSelectionChanged()
-{
-    if (ui->tableWidget->rowCount() == 0) {
-        ui->btnUp->setEnabled(false);
-        ui->btnDown->setEnabled(false);
-        ui->btnRemoveRow->setEnabled(false);
-    }
-
-    int row = ui->tableWidget->currentRow();
-    if (row == 0 || ui->tableWidget->rowCount() == 1)
-        ui->btnUp->setEnabled(false);
-    else
-        ui->btnUp->setEnabled(true);
-
-    if (row == ui->tableWidget->rowCount()-1 || ui->tableWidget->rowCount() == 1)
-        ui->btnDown->setEnabled(false);
-    else
-        ui->btnDown->setEnabled(true);
-}
-
-void EditFldDlg::moveRow()
-{
-    const int row = ui->tableWidget->currentRow();
-    const int col = ui->tableWidget->currentColumn();
-    auto newItem1 = ui->tableWidget->takeItem(ui->tableWidget->currentRow(),0);
-    auto newItem2 = ui->tableWidget->takeItem(ui->tableWidget->currentRow(),1);
-    auto newItem3 = ui->tableWidget->cellWidget(ui->tableWidget->currentRow(),2);
-
-    if (sender() == ui->btnUp) {
-        ui->tableWidget->insertRow(row-1);
-        ui->tableWidget->setItem(row-1,0,newItem1);
-        ui->tableWidget->setItem(row-1,1,newItem2);
-        ui->tableWidget->setCellWidget(row-1,2,newItem3);
-        ui->tableWidget->setCurrentCell(row-1,col);
-        ui->tableWidget->removeRow(row+1);
-    }
-    if (sender() == ui->btnDown) {
-        ui->tableWidget->insertRow(row+2);
-        ui->tableWidget->setItem(row+2,0,newItem1);
-        ui->tableWidget->setItem(row+2,1,newItem2);
-        ui->tableWidget->setCellWidget(row+2,2,newItem3);
-        ui->tableWidget->setCurrentCell(row+2,col);
-        ui->tableWidget->removeRow(row);
-    }
-}
-
-void EditFldDlg::selectGraphColor()
-{
-    QColor color;
-    QScopedPointer<QColorDialog> dlg(new QColorDialog(color, this));
-    if (dlg->exec() == QDialog::Accepted)
-        color = dlg->selectedColor();
-    else
-        return;
-
-    QString strColor = colorToString(color);
-
-    auto colorBox = ui->tableWidget->cellWidget(ui->tableWidget->currentRow(),2)->findChild<QWidget *>("colorBox");
-
-    int start; int end;
-    QString str = colorBox->styleSheet();
-    start = str.indexOf(";background-color:",0,Qt::CaseInsensitive);
-    end = str.indexOf(";",start+1,Qt::CaseInsensitive);
-    str.replace(start,end-start,";background-color:"+strColor);
-    colorBox->setStyleSheet(str);
 }
 
 void EditFldDlg::loadImage()

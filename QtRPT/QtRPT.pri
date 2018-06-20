@@ -1,14 +1,13 @@
-QT       += gui xml script sql charts
+QT       += gui xml script sql
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets printsupport
     DEFINES += HAVE_QT5
 }
 
+greaterThan(QT_MAJOR_VERSION, 5):
+    greaterThan(QT_MINOR_VERSION, 7):QT += charts
 
-#DEFINES += QTRPT_LIBRARY    #Un-remark this line, if you want to build QtRPT as a library
-#DEFINES += NO_BARCODE       #Un-remark this line, if you want to build QtRPT without BARCODE support
-#DEFINES += QXLSX_LIBRARY    #Remark this line, if you want to build QtRPT without XLSX support
 
 include(../CommonFiles/CommonFiles_QtRpt.pri)
 

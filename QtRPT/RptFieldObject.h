@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,18 +21,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef RPTFIELDOBJECT_H
-#define RPTFIELDOBJECT_H
+#pragma once
 
 #include "qtrpt.h"
-#include "chart.h"
 #include "RptCrossTabObject.h"
+#include "RptBandObject.h"
+#include <qtrptnamespace.h>
+#include <QDomElement>
+
+#if QT_VERSION >= 0x050800
+    #include <QtCharts>
+#endif
 
 using namespace QtRptName;
 
 class QtRPT;
 class RptBandObject;
 class RptCrossTabObject;
+
+
 
 class RptFieldObject
 {
@@ -77,21 +84,19 @@ public:
     RptBandObject *parentBand;
     RptCrossTabObject *parentCrossTab;
 
+    #if QT_VERSION >= 0x50800
+        QChart *chart;
+    #endif
+
+    void setChartData(GraphDataList dataList);
+    GraphDataList getChartData();
+
     int lineStartX;
     int lineEndX;
     int lineStartY;
     int lineEndY;
     bool arrowStart;
     bool arrowEnd;
-
-    bool showGrid;
-    bool showLegend;
-    bool showCaption;
-    bool showGraphCaption;
-    bool showPercent;
-    bool autoFillData;
-    QString caption;
-    QList<GraphParam> graphList;
 
     int recNo() {return m_recNo;}
     int reportPage() {return m_reportPage;}
@@ -110,14 +115,13 @@ private:
     int m_top;
     QtRPT *m_qtrpt;
     void setProperty(QtRPT *qtrpt, QDomElement e);
-    void updateDiagramValue();
     void updateHighlightingParam();
 
 };
 
 Q_DECLARE_METATYPE(RptFieldObject)
+Q_DECLARE_METATYPE(GraphDataList)
 
 QDebug operator<<(QDebug dbg, const RptFieldObject &obj);
 QDebug operator<<(QDebug dbg, const RptFieldObject *obj);
 
-#endif // RPTFIELDOBJECT_H

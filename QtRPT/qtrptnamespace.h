@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,15 +23,17 @@ limitations under the License.
 
 #ifndef QTRPTNAMESPACE_H
 #define QTRPTNAMESPACE_H
+
 #include <QObject>
 #include <QMetaType>
+#include <QColor>
 
 namespace QtRptName {
     enum BandType
     {
         Undefined = 0,
-        ReportTitle = 1,
-        PageHeader = 2,
+        PageHeader = 1,
+        ReportTitle = 2,
         DataGroupHeader = 3,
         MasterHeader = 4,
         MasterData = 5,
@@ -56,8 +58,7 @@ namespace QtRptName {
         Line,
         Barcode,
         DatabaseImage,
-        CrossTab,
-        QtChart  //this is a chart based on QChart. QChart came since Qt 5.8.0.
+        CrossTab
     };
 
     enum BorderStyle
@@ -73,6 +74,16 @@ namespace QtRptName {
         Ridge,
         Solid,
         BorderNone
+    };
+
+    enum HiType
+    {
+        FntBold,
+        FntItalic,
+        FntUnderline,
+        FntStrikeout,
+        FntColor,
+        BgColor
     };
 
     enum Command
@@ -122,6 +133,21 @@ namespace QtRptName {
 }
 
 Q_DECLARE_METATYPE(QtRptName::FieldType)
+
+struct GraphValue {
+    QString caption;  //for Pie, for Line - ignore
+    double valueX;    //for Line only
+    double valueY;
+};
+
+struct GraphData {
+    QList<GraphValue> valueList;
+    QColor color;
+    QString graphDS;
+    QString caption;  //for Pie - ignore
+};
+
+typedef QList<GraphData> GraphDataList;
 
 
 

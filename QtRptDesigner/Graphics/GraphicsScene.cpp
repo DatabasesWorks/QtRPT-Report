@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ limitations under the License.
 GraphicsScene::GraphicsScene(QObject *parent)
 : QGraphicsScene(parent)
 {
+    setItemIndexMethod(BspTreeIndex);
+
     sceneMode = SelectObject;
     m_trackingMoves = false;
 
@@ -134,8 +136,7 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     if (sceneMode == Mode::SelectObject && QApplication::keyboardModifiers() != Qt::ControlModifier) {
         if (!itemAt(event->scenePos(), this->views().at(0)->transform())) {
-            this->clearSelection();
-            emit itemSelected(0);
+            itemSelect(nullptr);
             return;
         }
     }
@@ -158,6 +159,21 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     QGraphicsScene::mouseReleaseEvent(event);
     m_trackingMoves = false;
+}
+
+void GraphicsScene::itemSelect(QGraphicsItem *item)
+{
+    if (item == nullptr) {
+        this->clearSelection();
+        m_selectedItems.clear();
+    } else {
+        if (QApplication::keyboardModifiers() != Qt::ControlModifier)
+            m_selectedItems.clear();
+
+        m_selectedItems.append(item);
+    }
+
+    emit itemSelected(item);
 }
 
 void GraphicsScene::keyPressEvent(QKeyEvent *event)

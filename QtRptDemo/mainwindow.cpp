@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -53,8 +53,30 @@ void MainWindow::showReport()
         dlg = new ExampleDlg6(this,1);
     else if (ui->rBtn6b->isChecked())
         dlg = new ExampleDlg6(this,2);
-    else if (ui->rBtn7->isChecked())
-        dlg = new ExampleDlg7(this);
+    else if (ui->rBtn7a->isChecked())
+    {
+        QString fileName = dir.absolutePath()+"/examples_report/example7a.xml";
+        auto report = QtRPT::createSPtr(this);
+
+        if (report->loadReport(fileName) == false)
+            qDebug()<<"Report file not found";
+
+        QObject::connect(report.data(), SIGNAL(setValueDiagram(GraphDataList&)), this, SLOT(setValueDiagram(GraphDataList&)));
+
+        report->printExec();
+    }
+    else if (ui->rBtn7b->isChecked())
+    {
+        QString fileName = dir.absolutePath()+"/examples_report/example7b.xml";
+        auto report = QtRPT::createSPtr(this);
+
+        if (report->loadReport(fileName) == false)
+            qDebug()<<"Report file not found";
+
+        QObject::connect(report.data(), SIGNAL(setChart(RptFieldObject&, QChart&)), this, SLOT(setChart(RptFieldObject&, QChart&)));
+
+        report->printExec();
+    }
     else if (ui->rBtn8->isChecked())
         dlg = new ExampleDlg8(this);
     else if (ui->rBtn9->isChecked())
@@ -162,7 +184,7 @@ void MainWindow::showReport()
     }
     else if (ui->rBtn19->isChecked())
     {
-        QString fileName = dir.absolutePath()+"/examples_report/example19.xml";
+        QString fileName = dir.absolutePath()+"/examples_report/example20.xml";
         auto report = QtRPT::createSPtr(this);
 
         if (report->loadReport(fileName) == false)
@@ -292,6 +314,338 @@ void MainWindow::setField(RptFieldObject &fieldObject)
         fieldObject.value = QString::number(col+row);
     }
     // ---Example 18---
+}
+
+void MainWindow::setChart(RptFieldObject &fieldObject, QChart &chart)
+{
+    if (ui->rBtn7b->isChecked()) {
+        // ---Example 7b---
+        chart.removeAllSeries();
+
+        if (fieldObject.name == "diagram1") {
+            auto series = new QLineSeries();
+            series->setProperty("graphDS", "1");
+            series->append(0,0);
+            series->append(3,3);
+            series->setColor(Qt::blue);
+            series->setName(QString("Series #%1").arg(chart.series().size()));
+
+            chart.addSeries(series);
+            chart.createDefaultAxes();
+            chart.axisX()->setTitleText(QString("x [m]"));
+            chart.axisY()->setTitleText(QString("y [m]"));
+            chart.setTitle("Simple chart example");
+        }
+
+        if (fieldObject.name == "diagram2") {
+            auto set0 = new QBarSet("Jane");
+            auto set1 = new QBarSet("John");
+            auto set2 = new QBarSet("Axel");
+            auto set3 = new QBarSet("Mary");
+            auto set4 = new QBarSet("Samantha");
+
+            *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+            *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+            *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+            *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+            *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+            auto series = new QStackedBarSeries();
+            series->append(set0);
+            series->append(set1);
+            series->append(set2);
+            series->append(set3);
+            series->append(set4);
+
+            chart.addSeries(series);
+            chart.setTitle("Simple stackedbarchart example");
+
+            QStringList categories;
+            categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+            auto axis = new QBarCategoryAxis();
+            axis->append(categories);
+            chart.createDefaultAxes();
+            chart.setAxisX(axis, series);
+
+            chart.legend()->setVisible(true);
+            chart.legend()->setAlignment(Qt::AlignBottom);
+        }
+
+        if (fieldObject.name == "diagram3") {
+            auto series = new QPieSeries();
+            series->append("Jane", 1);
+            series->append("Joe", 2);
+            series->append("Andy", 3);
+            series->append("Barbara", 4);
+            series->append("Axel", 5);
+
+            auto slice = series->slices().at(1);
+            slice->setExploded();
+            slice->setLabelVisible();
+            slice->setPen(QPen(Qt::darkGreen, 2));
+            slice->setBrush(Qt::green);
+
+            chart.addSeries(series);
+            chart.setTitle("Simple piechart example");
+            chart.legend()->hide();
+        }
+
+        if (fieldObject.name == "diagram4") {
+            auto set0 = new QBarSet("Jane");
+            auto set1 = new QBarSet("John");
+            auto set2 = new QBarSet("Axel");
+            auto set3 = new QBarSet("Mary");
+            auto set4 = new QBarSet("Sam");
+
+            *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+            *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+            *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+            *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+            *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+            auto barseries = new QBarSeries();
+            barseries->append(set0);
+            barseries->append(set1);
+            barseries->append(set2);
+            barseries->append(set3);
+            barseries->append(set4);
+
+            auto lineseries = new QLineSeries();
+            lineseries->setName("trend");
+            lineseries->append(QPoint(0, 4));
+            lineseries->append(QPoint(1, 15));
+            lineseries->append(QPoint(2, 20));
+            lineseries->append(QPoint(3, 4));
+            lineseries->append(QPoint(4, 12));
+            lineseries->append(QPoint(5, 17));
+
+            chart.addSeries(barseries);
+            chart.addSeries(lineseries);
+            chart.setTitle("Line and barchart example");
+
+            QStringList categories;
+            categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+            auto axisX = new QBarCategoryAxis();
+            axisX->append(categories);
+            chart.setAxisX(axisX, lineseries);
+            chart.setAxisX(axisX, barseries);
+            axisX->setRange(QString("Jan"), QString("Jun"));
+
+            auto axisY = new QValueAxis();
+            chart.setAxisY(axisY, lineseries);
+            chart.setAxisY(axisY, barseries);
+            axisY->setRange(0, 20);
+
+            chart.legend()->setVisible(true);
+            chart.legend()->setAlignment(Qt::AlignBottom);
+        }
+
+        QFont font = chart.titleFont();
+        font.setPointSize(font.pointSize() * 2);
+        chart.setTitleFont(font);
+
+        // ---Example 7b---
+    }
+}
+
+void MainWindow::setValueDiagram(GraphDataList &dataList)
+{
+    for (auto &data: dataList) {
+        if (data.graphDS == "ds1") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueX = 0; //X - for Line only
+            graphValue.valueY = 0;
+            valueList << graphValue;
+
+            graphValue.valueX = 1;
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueX = 2;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueX = 3;
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds2-1") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds2-2") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds2-3") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds2-4") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds2-5") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds3-1") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds3-2") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds3-3") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            graphValue.valueY = 1;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds3-4") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds3-5") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+        if (data.graphDS == "ds4") {
+            QList<GraphValue> valueList;
+
+            GraphValue graphValue;
+            graphValue.valueY = 1;
+            graphValue.caption = "Pie 1";
+            valueList << graphValue;
+
+            graphValue.valueY = 2;
+            graphValue.caption = "Pie 2";
+            valueList << graphValue;
+
+            graphValue.valueY = 3;
+            graphValue.caption = "Pie 3";
+            valueList << graphValue;
+
+            graphValue.valueY = 4;
+            graphValue.caption = "Pie 4";
+            valueList << graphValue;
+
+            data.valueList = valueList;
+        }
+    }
 }
 
 MainWindow::~MainWindow()

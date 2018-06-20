@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ limitations under the License.
 */
 
 #include "RptPageObject.h"
+#include "CommonClasses.h"
 
 /*!
  \class RptPageObject
@@ -120,22 +121,31 @@ RptPageObject::RptPageObject(QtRPT *qtrpt)
     this->borderStyle = "solid";
     this->rtpSql = nullptr;
     this->sqlConnection.active = false;
+    this->watermark = false;
+    this->watermarkOpacity = 1;
 }
 
 void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
 {
-    ph = docElem.attribute("pageHeight").toInt();
-    pw = docElem.attribute("pageWidth").toInt();
-    ml = docElem.attribute("marginsLeft").toInt();
-    mr = docElem.attribute("marginsRight").toInt();
-    mt = docElem.attribute("marginsTop").toInt();
-    mb = docElem.attribute("marginsBottom").toInt();
-    orientation = docElem.attribute("orientation").toInt();
-    pageNo = docElem.attribute("pageNo").toInt();
-    border = docElem.attribute("border").toInt();
-    borderWidth = docElem.attribute("borderWidth").toInt();
-    borderColor = colorFromString(docElem.attribute("borderColor"));
-    borderStyle = docElem.attribute("borderStyle");
+    QByteArray byteArray = QByteArray::fromBase64(docElem.attribute("watermarkPixmap").toLatin1());
+
+    ph                = docElem.attribute("pageHeight").toInt();
+    pw                = docElem.attribute("pageWidth").toInt();
+    ml                = docElem.attribute("marginsLeft").toInt();
+    mr                = docElem.attribute("marginsRight").toInt();
+    mt                = docElem.attribute("marginsTop").toInt();
+    mb                = docElem.attribute("marginsBottom").toInt();
+    orientation       = docElem.attribute("orientation").toInt();
+    pageNo            = docElem.attribute("pageNo").toInt();
+    border            = docElem.attribute("border").toInt();
+    borderWidth       = docElem.attribute("borderWidth").toInt();
+    borderColor       = colorFromString(docElem.attribute("borderColor"));
+    borderStyle       = docElem.attribute("borderStyle");
+    watermark         = docElem.attribute("watermark", "0").toInt();
+    watermarkOpacity  = docElem.attribute("watermarkOpacity", "0.5").toDouble();
+    watermarkPixmap   = QPixmap::fromImage(QImage::fromData(byteArray, "PNG"));
+
+
 
     QDomNode n = docElem.firstChild();
     while(!n.isNull()) {

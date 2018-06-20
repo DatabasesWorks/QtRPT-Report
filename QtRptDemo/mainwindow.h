@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -38,7 +38,6 @@ limitations under the License.
 #include "exampledlg4.h"
 #include "exampledlg5.h"
 #include "exampledlg6.h"
-#include "exampledlg7.h"
 #include "exampledlg8.h"
 #include "exampledlg13.h"
 #include "exampledlg14.h"
@@ -67,6 +66,8 @@ private slots:
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
     void setField(RptFieldObject &);
     void setDSInfo(DataSetInfo &dsInfo);
+    void setChart(RptFieldObject &fieldObject, QChart &chart);
+    void setValueDiagram(GraphDataList &dataList);
 
 };
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>578</width>
-    <height>575</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,9 +80,16 @@
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="rBtn7">
+          <widget class="QRadioButton" name="rBtn7a">
            <property name="text">
-            <string>Report with Diagram</string>
+            <string>Report with Diagram (getting data from application)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rBtn7b">
+           <property name="text">
+            <string>Report with Diagram (building chart from application)</string>
            </property>
           </widget>
          </item>
@@ -273,8 +280,8 @@
  <resources>
   <include location="../QtRPT/imagesRpt.qrc"/>
   <include location="../QtRPT/imagesRpt.qrc"/>
-  <include location="resurce.qrc"/>
   <include location="../QtRPT/imagesRpt.qrc"/>
+  <include location="resurce.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -374,8 +374,9 @@ QDataStream &operator<<(QDataStream &stream, const GraphicsHelperClass &obj)
         stream << item->getFont();
     }
     if (obj.m_type == Diagram) {
-        item->getChart()->setProperties();
-        stream << *item->getChart();
+        //todo
+//        item->getChart()->setProperties();
+//        stream << *item->getChart();
     }
     if (obj.m_type == Barcode) {
         item->getBarCode()->setProperties();
@@ -413,8 +414,9 @@ QDataStream &operator>>(QDataStream &stream, GraphicsHelperClass &obj)
         item->setFont(font);
     }
 
-    if (obj.m_type == Diagram)
-        stream >> *item->getChart();
+    //todo
+//    if (obj.m_type == Diagram)
+//        stream >> *item->getChart();
 
     if (obj.m_type == Barcode)
         stream >> *item->getBarCode();

@@ -12,6 +12,6 @@ contains(DEFINES, QXLSX_LIBRARY) {
     SUBDIRS += $$PWD/QtXlsx/QtXlsx.pro
 }
 
-contains(DEFINES,QTRPT_LIBRARY) {
+contains(DEFINES, QTRPT_LIBRARY) {
     SUBDIRS += $$PWD/../QtRPT
 }

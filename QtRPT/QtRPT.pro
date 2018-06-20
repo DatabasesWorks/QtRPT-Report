@@ -29,7 +29,7 @@ DLLDESTDIR = $${DEST_DIRECTORY}
 DESTDIR    = $${DEST_DIRECTORY}/lib
 
 QMAKE_TARGET_COMPANY = "QtRPT"
-QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2012-2017 Aleksey Osipov <aliks-os@ukr.net>"
+QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2012-2018 Aleksey Osipov <aliks-os@ukr.net>"
 QMAKE_TARGET_DESCRIPTION = "Qt Print report library"
 
 win32 {

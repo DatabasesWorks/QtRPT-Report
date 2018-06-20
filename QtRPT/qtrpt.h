@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ limitations under the License.
 #ifndef QTRPT_H
 #define QTRPT_H
 
-#include <QtCharts>
 #include <QPainter>
 #include <QDomDocument>
 #include <QScriptEngine>
@@ -42,18 +41,13 @@ limitations under the License.
     #endif
 #endif
 
-using namespace QtRptName;
-using namespace QtCharts;
+#if QT_VERSION >= 0x50800
+    #include <QtCharts>
+    using namespace QtCharts;
+#endif
 
-enum HiType
-{
-    FntBold,
-    FntItalic,
-    FntUnderline,
-    FntStrikeout,
-    FntColor,
-    BgColor
-};
+using namespace QtRptName;
+
 
 struct AggregateValues
 {
@@ -63,7 +57,7 @@ struct AggregateValues
     int pageReport;
 };
 
-class Chart;
+
 class RptSql;
 class RptPageObject;
 class RptBandObject;
@@ -91,7 +85,22 @@ struct DataSetInfo {
 };
 typedef QList<DataSetInfo> DataSetInfoList;
 
+//***************************************************
 
+//struct GraphValue {
+//    QString caption;  //for Pie, for Line - ignore
+//    double valueX;    //for Line only
+//    double valueY;
+//};
+
+//struct GraphData {
+//    QList<GraphValue> valueList;
+//    QString graphDS;
+//    QString caption;  //for Pie - ignore
+//};
+//typedef QList<GraphData> GraphDataList;
+
+//***************************************************
 
 #ifndef QTRPT_LIBRARY
     class QtRPT : public QObject
@@ -107,7 +116,7 @@ typedef QList<DataSetInfo> DataSetInfoList;
     friend class RptBandObject;
 
 public:
-    using SPtrQtRPT = QSharedPointer<QtRPT>;
+    typedef QSharedPointer<QtRPT> SPtrQtRPT;
 
     explicit QtRPT(QObject *parent = 0);
     static SPtrQtRPT createSPtr(QObject *parent = 0)
@@ -122,6 +131,7 @@ public:
     bool loadReport(QString fileName);
     bool loadReport(QDomDocument xmlDoc);
     void clearObject();
+    QDomDocument xmlDoc();
     void printExec(bool maximum = false, bool direct = false, QString printerName = QString());
     //void setCallbackFunc(void (*func)(int &recNo, QString &paramName, QVariant &paramValue));
     void setBackgroundImageOpacity(float opacity);
@@ -167,7 +177,7 @@ private:
     float m_backgroundOpacity;
     QPrintPreviewWidget *pr;
     QList<QAction*> lst;
-    QDomDocument xmlDoc;
+    QDomDocument m_xmlDoc;
     QDomNode getBand(BandType type, QDomElement docElem);
     void drawBandRow(RptBandObject *band, int bandTop, bool allowDraw = true);
     void fillListOfValue(RptBandObject *bandObject);
@@ -233,8 +243,10 @@ signals:
     void setValue(const int recNo, const QString paramName, QVariant &paramValue, const int reportPage);
     void setField(RptFieldObject &fieldObject);
     void setValueImage(const int recNo, const QString paramName, QImage &paramValue, const int reportPage);
-    void setValueDiagram(Chart &chart);
-    void setChart(RptFieldObject &fieldObject, QChart &chart);
+    void setValueDiagram(GraphDataList &data);
+    #if QT_VERSION >= 0x50800
+        void setChart(RptFieldObject &fieldObject, QChart &chart);
+    #endif
     void newPage(int page);
     void setDSInfo(DataSetInfo &dsInfo);
 

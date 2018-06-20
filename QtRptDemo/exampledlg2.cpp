@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -57,8 +57,8 @@ void ExampleDlg2::print()
 
     QObject::connect(report, SIGNAL(setValue(const int, const QString, QVariant&, const int)),
                      this, SLOT(setValue(const int, const QString, QVariant&, const int)));
-    QObject::connect(report, SIGNAL(setRecordCount(const int, int&)),
-                     this, SLOT(setRecordCount(const int, int&)));
+    QObject::connect(report, SIGNAL(setDSInfo(DataSetInfo &)),
+                     this, SLOT(setDSInfo(DataSetInfo &)));
 
     report->loadReport(fileName);
     report->printExec();
@@ -80,12 +80,12 @@ void ExampleDlg2::setValue(const int recNo, const QString paramName, QVariant &p
     }
 }
 
-void ExampleDlg2::setRecordCount(const int reportPage, int &recordCount)
+void ExampleDlg2::setDSInfo(DataSetInfo &dsInfo)
 {
-    if (reportPage == 0)
-        recordCount = ui->table1->rowCount();
-    if (reportPage == 1)
-        recordCount = ui->table2->rowCount();
+    if (dsInfo.reportPage == 0)
+        dsInfo.recordCount = ui->table1->rowCount();
+    if (dsInfo.reportPage == 1)
+        dsInfo.recordCount = ui->table2->rowCount();
 }
 
 ExampleDlg2::~ExampleDlg2()

@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ RepScrollArea::RepScrollArea(QTreeWidgetItem* rootItem, QWidget *parent)
 
     ui->graphicsView->setContentsMargins(0,0,0,0);
     ui->graphicsView->setScene(scene);
+    //ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
     //ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     //ui->graphicsView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing, true);
 
@@ -359,8 +360,8 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
             icon.addPixmap(QPixmap(QString::fromUtf8(":/new/prefix1/images/crossTab.png")), QIcon::Normal, QIcon::On);
         item->setIcon(0,icon);
         item->setText(0,gItem->objectName());
-        item->setSelected(true);
         m_rootItem->addChild(item);
+        item->setSelected(true);
         bandItem->setExpanded(true);
     }
     if (gLine != nullptr) {
@@ -383,16 +384,16 @@ void RepScrollArea::newFieldTreeItem(QGraphicsItem* item)
 void RepScrollArea::correctBandGeom(ReportBand *rep)
 {
     QPointF p = ui->graphicsView->mapToScene(0,0);
-    int top_ = p.y()+pageSetting.marginsTop;
-    int left_ = p.x()+pageSetting.marginsLeft;
+    int top_ = p.y() + pageSetting.marginsTop;
+    int left_ = p.x() + pageSetting.marginsLeft;
     int width_ = pageSetting.pageWidth - pageSetting.marginsLeft - pageSetting.marginsRight;
 
     auto allReportBand = getReportBands();
     if (!allReportBand.isEmpty())
         std::sort(allReportBand.begin(), allReportBand.end(), [](ReportBand* p1, ReportBand* p2) {
 //            Undefined = 0,
-//            ReportTitle = 1,
-//            PageHeader = 2,
+//            ReportTitle = 2,
+//            PageHeader = 1,
 //            DataGroupHeader = 3,
 //            MasterHeader = 4,
 //            MasterData = 5,
@@ -428,7 +429,7 @@ void RepScrollArea::correctBandGeom(ReportBand *rep)
 
         band->setPos( QPointF(left_, top_) );
         band->setWidth( width_ );
-        top_ += band->getHeight()+15;
+        top_ += band->getHeight() + 4;  //space between bands in the designer
     }
 }
 

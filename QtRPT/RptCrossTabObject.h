@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,7 +26,9 @@ limitations under the License.
 
 #include <QDebug>
 #include <QMetaType>
+#include <QDomElement>
 #include <RptFieldObject.h>
+#include <qtrptnamespace.h>
 
 #if QT_VERSION >= 0x50000
     #ifdef QXLSX_LIBRARY
@@ -50,7 +52,14 @@ struct RptTabElement
     quint32 row;
 };
 
-class RptCrossTabObject
+#ifndef QTRPT_LIBRARY
+    class RptCrossTabObject
+#else
+    #include <qtrpt_global.h>
+    class QTRPTSHARED_EXPORT RptCrossTabObject
+#endif
+
+//class RptCrossTabObject
 {
     friend class QtRPT;
     friend class RptFieldObject;
@@ -108,14 +117,13 @@ private:
     void total(RptFieldObject *field);
     bool isHeaderField(RptFieldObject *field);
     void header(RptFieldObject *field);
-
     void addField(RptFieldObject *field);
 
     QVector<RptTabElement> m_elements;
 
 };
 
-using SPtrCrossTab = QSharedPointer<RptCrossTabObject>;
+typedef QSharedPointer<RptCrossTabObject> SPtrCrossTab;
 
 Q_DECLARE_METATYPE(RptCrossTabObject)
 

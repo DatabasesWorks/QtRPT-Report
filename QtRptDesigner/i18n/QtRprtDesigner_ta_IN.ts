@@ -34,8 +34,8 @@
     </message>
     <message>
         <location filename="../aboutDlg.cpp" line="51"/>
-        <source>2012-2017 years</source>
-        <translation>2012-2017 ஆண்டுகள்</translation>
+        <source>2012-2018 years</source>
+        <translation>2012-2018 ஆண்டுகள்</translation>
     </message>
     <message>
         <location filename="../aboutDlg.cpp" line="52"/>

@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ limitations under the License.
 */
 
 #include "RptFieldObject.h"
+#include "CommonClasses.h"
 
 /*!
  \class RptFieldObject
@@ -301,6 +302,8 @@ limitations under the License.
 */
 RptFieldObject::RptFieldObject()
 {
+    qRegisterMetaType<GraphDataList>("GraphDataList");
+
     this->highlighting = "";
     this->autoHeight = false;
     this->backgroundColor = Qt::white;
@@ -321,6 +324,10 @@ RptFieldObject::RptFieldObject()
     this->aligment = Qt::AlignVCenter | Qt::AlignLeft;
     this->parentBand = nullptr;
     this->parentCrossTab = nullptr;
+
+    #if QT_VERSION >= 0x050800
+        this->chart = nullptr;
+    #endif
 }
 
 /*!
@@ -331,6 +338,9 @@ RptFieldObject::~RptFieldObject()
 {
     if (fieldType == CrossTab)
         delete crossTab;
+
+//    if (chart != nullptr)
+//        delete chart;
 }
 
 /*!
@@ -402,14 +412,6 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     picture = QByteArray::fromBase64(e.attribute("picture","text").toLatin1());
     ignoreAspectRatio = e.attribute("ignoreAspectRatio","1").toInt();
 
-    showGrid = e.attribute("showGrid","1").toInt();
-    showLegend = e.attribute("showLegend","1").toInt();
-    showCaption = e.attribute("showCaption","1").toInt();
-    showGraphCaption = e.attribute("showGraphCaption","1").toInt();
-    showPercent = e.attribute("showPercent","1").toInt();
-    caption = e.attribute("caption","Example");
-    autoFillData = e.attribute("autoFillData","0").toInt();
-
     lineStartX = e.attribute("lineStartX").toInt();
     lineEndX = e.attribute("lineEndX").toInt();
     lineStartY = e.attribute("lineStartY").toInt();
@@ -418,21 +420,152 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     arrowEnd = e.attribute("arrowEnd","0").toInt();
 
     if (fieldType == Diagram) {
-        if (autoFillData == 1) {
-            QDomNode g = e.firstChild();
-            while(!g.isNull()) {
-                QDomElement ge = g.toElement();
+        #if QT_VERSION >= 0x050800
+            chart = new QChart();
+            chart->setTitle(e.attribute("caption"));
+            chart->legend()->setVisible(e.attribute("showLegend", "1").toInt());
+            chart->setProperty("staticChart", e.attribute("staticChart", "1").toInt());
 
-                GraphParam param;
-                param.color = colorFromString( ge.attribute("color") );
-                param.valueReal = qtrpt->sectionField(this->parentBand, ge.attribute("value"), false).toFloat();
-                param.formula = ge.attribute("value");
-                param.caption = ge.attribute("caption");
-                graphList.append(param);
+            QFont fnt =  chart->titleFont();
+            fnt.fromString(e.attribute("titleFont", chart->titleFont().toString()));
+            chart->setTitleFont(fnt);
 
-                g = g.nextSibling();
+            fnt =  chart->legend()->font();
+            fnt.fromString(e.attribute("legendFont", chart->legend()->font().toString()));
+            chart->legend()->setFont(fnt);
+
+            QColor color = colorFromString(e.attribute("colorLegend"));
+            QBrush brush = chart->legend()->labelBrush();
+            brush.setColor(color);
+            chart->legend()->setLabelBrush(brush);
+
+            color = colorFromString(e.attribute("colorBackground"));
+            brush = chart->backgroundBrush();
+            brush.setColor(color);
+            brush.setStyle(Qt::SolidPattern);
+            chart->setBackgroundBrush(brush);
+
+            color = colorFromString(e.attribute("colorTitle"));
+            brush = chart->titleBrush();
+            brush.setColor(color);
+            chart->setTitleBrush(brush);
+
+
+            Qt::Alignment alig;
+            if (e.attribute("legendAligment").toInt() == 0) alig = Qt::AlignTop;
+            if (e.attribute("legendAligment").toInt() == 1) alig = Qt::AlignBottom;
+            if (e.attribute("legendAligment").toInt() == 2) alig = Qt::AlignLeft;
+            if (e.attribute("legendAligment").toInt() == 3) alig = Qt::AlignRight;
+            chart->legend()->setAlignment(alig);
+
+
+            if (e.attribute("chartType").contains("SeriesTypeLine")) {
+                QDomNode c = e.firstChild();
+                while(!c.isNull()) {
+                    QDomElement graphElement = c.toElement();
+                    if (!graphElement.isNull()) {
+                        auto series = new QLineSeries();
+                        series->setName(graphElement.attribute("caption"));
+                        series->setColor(colorFromString(graphElement.attribute("color")));
+                        series->setProperty("graphDS", graphElement.attribute("graphDS"));
+
+                        QDomNode v = graphElement.firstChild();
+                        while(!v.isNull()) {
+                            QDomElement valueElement = v.toElement();
+                            series->append(valueElement.attribute("x").toDouble(),
+                                           valueElement.attribute("y").toDouble());
+
+                            v = v.nextSibling();
+                        }
+
+                        chart->addSeries(series);
+                    }
+
+                    c = c.nextSibling();
+                }
+
+
             }
-        }
+
+            if (e.attribute("chartType") == "SeriesTypeBar" ||
+                e.attribute("chartType") == "SeriesTypeStackedBar") {
+
+                QAbstractSeries *abstrSeries = nullptr;
+
+                if (e.attribute("chartType") == "SeriesTypeBar") {
+                    auto series = new QBarSeries();
+                    abstrSeries = series;
+                }
+                if (e.attribute("chartType") == "SeriesTypeStackedBar") {
+                    auto series = new QStackedBarSeries();
+                    abstrSeries = series;
+                }
+
+
+                QDomNode c = e.firstChild();
+                while(!c.isNull()) {
+                    QDomElement graphElement = c.toElement();
+                    if (!graphElement.isNull()) {
+                        auto barSet = new QBarSet(graphElement.attribute("caption"));
+                        barSet->setColor(colorFromString(graphElement.attribute("color")));
+                        barSet->setProperty("graphDS", graphElement.attribute("graphDS"));
+
+                        QDomNode v = graphElement.firstChild();
+                        while(!v.isNull()) {
+                            QDomElement valueElement = v.toElement();
+                            barSet->append(valueElement.attribute("val").toDouble());
+
+                            v = v.nextSibling();
+                        }
+
+
+
+                        if (abstrSeries->type() == QAbstractSeries::SeriesTypeStackedBar) {
+                            auto series = qobject_cast<QStackedBarSeries*>(abstrSeries);
+                            series->append(barSet);
+                        }
+                        if (abstrSeries->type() == QAbstractSeries::SeriesTypeBar) {
+                            auto series = qobject_cast<QBarSeries*>(abstrSeries);
+                            series->append(barSet);
+                        }
+                    }
+
+                    c = c.nextSibling();
+                }
+
+                chart->addSeries(abstrSeries);
+                chart->createDefaultAxes();
+                chart->update();
+            }
+
+            if (e.attribute("chartType") == "SeriesTypePie") {
+                auto series = new QPieSeries();
+                series->setName(e.attribute("caption"));
+                series->setHoleSize(e.attribute("holeSize", "0.00").toDouble());
+                series->setProperty("graphDS", e.attribute("graphDS"));
+
+                chart->addSeries(series);
+
+                QDomNode c = e.firstChild();
+                while(!c.isNull()) {
+                    QDomElement graphElement = c.toElement();
+                    if (!graphElement.isNull()) {
+                        auto slice = new QPieSlice(graphElement.attribute("caption"),
+                                                   graphElement.attribute("value").toDouble(), series);
+                        slice->setExploded(graphElement.attribute("sliceExploaded").toInt());
+                        slice->setLabelVisible(graphElement.attribute("labelVisible").toInt());
+
+                        series->append(slice);
+
+                        QColor color = colorFromString(graphElement.attribute("color"));
+                        slice->setColor(color);
+                    }
+                    c = c.nextSibling();
+                }
+            }
+
+            chart->createDefaultAxes();
+        #endif
     }
 
     if (fieldType == CrossTab) {
@@ -441,6 +574,168 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
         crossTab->parentField = this;
         crossTab->loadParamFromXML(e);
     }
+}
+
+void RptFieldObject::setChartData(GraphDataList dataList)
+{
+    Q_UNUSED(dataList);
+
+//    struct GraphValue {
+//        QString caption;  //for Pie, for Line - ignore
+//        double valueX;    //for Line only
+//        double valueY;
+//    };
+
+//    struct GraphData {
+//        QList<GraphValue> valueList;
+//        QString graphDS;
+//        QString caption;
+//    };
+
+    #if QT_VERSION >= 0x050800
+        if (chart->property("staticChart").toInt() == true)
+            return;
+
+        if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar ||
+            chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+                auto series = qobject_cast<QStackedBarSeries*>(chart->series().at(0));
+                series->clear();
+            }
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar) {
+                auto series = qobject_cast<QBarSeries*>(chart->series().at(0));
+                series->clear();
+            }
+        }
+
+        for (int i = 0; i < dataList.size(); i++) {
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeLine) {
+                auto series = qobject_cast<QLineSeries*>(chart->series()[i]);
+                series->clear();
+
+                for (const auto &value : dataList.at(i).valueList)
+                    series->append(value.valueX, value.valueY);
+
+                chart->removeSeries(series);
+                chart->addSeries(series);
+            }
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar ||
+                chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+
+                auto barSet = new QBarSet(dataList.at(i).caption);
+                barSet->setColor(dataList.at(i).color);
+                for (const auto &value : dataList.at(i).valueList)
+                    barSet->append(value.valueY);
+
+                if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+                    auto series = qobject_cast<QStackedBarSeries*>(chart->series().at(0));
+                    series->append(barSet);
+                }
+                if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar) {
+                    auto series = qobject_cast<QBarSeries*>(chart->series().at(0));
+                    series->append(barSet);
+                }
+            }
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypePie) {
+                auto series = qobject_cast<QPieSeries*>(chart->series().at(0));
+                series->clear();
+
+                for (const auto &value : dataList.at(i).valueList) {
+                    auto slice = new QPieSlice(value.caption, value.valueY, series);
+                    series->append(slice);
+                }
+
+                chart->removeSeries(series);
+                chart->addSeries(series);
+            }
+        }
+
+        auto series = chart->series().at(0);
+        chart->removeSeries(series);
+        chart->addSeries(series);
+    #endif
+}
+
+GraphDataList RptFieldObject::getChartData()
+{
+    GraphDataList dataList;
+
+    #if QT_VERSION >= 0x050800
+        if (chart->series().size() > 0) {
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeLine) {
+                for (auto &absSeries : chart->series()) {
+                    auto series = qobject_cast<QLineSeries*>(absSeries);
+
+                    GraphData graphData;
+                    graphData.color   = series->color();
+                    graphData.graphDS = series->property("graphDS").toString();
+                    graphData.caption = series->name();
+
+                    QList<GraphValue> valueList;
+                    for (auto point : series->points()) {
+                        GraphValue value;
+                        value.valueX = point.x();
+                        value.valueY = point.y();
+                        valueList << value;
+                    }
+                    graphData.valueList = valueList;
+
+                    dataList << graphData;
+                }
+            }
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar ||
+                chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+
+                QList<QBarSet*> barSets;
+
+                if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeBar) {
+                    auto series = qobject_cast<QBarSeries*>(chart->series().at(0));
+                    barSets = series->barSets();
+                }
+                if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypeStackedBar) {
+                    auto series = qobject_cast<QStackedBarSeries*>(chart->series().at(0));
+                    barSets = series->barSets();
+                }
+
+                for (auto &barSet : barSets) {
+                    GraphData graphData;
+                    graphData.color   = barSet->color();
+                    graphData.graphDS = barSet->property("graphDS").toString();
+                    graphData.caption = barSet->label();
+
+                    QList<GraphValue> valueList;
+                    for (int row = 0; row < barSet->count(); row++) {
+                        GraphValue value;
+                        value.valueY = barSet->at(row);
+                        valueList << value;
+                    }
+                    graphData.valueList = valueList;
+
+                    dataList << graphData;
+                }
+            }
+            if (chart->series().at(0)->type() == QAbstractSeries::SeriesTypePie) {
+                auto series = qobject_cast<QPieSeries*>(chart->series().at(0));
+
+                GraphData graphData;
+                graphData.graphDS = series->property("graphDS").toString();
+                graphData.caption = "";
+
+                QList<GraphValue> valueList;
+                for (auto &slice : series->slices()) {
+                    GraphValue value;
+                    value.caption = slice->label();
+                    value.valueY = slice->value();
+                    valueList << value;
+                }
+                graphData.valueList = valueList;
+
+                dataList << graphData;
+            }
+        }
+    #endif
+
+    return dataList;
 }
 
 void RptFieldObject::updateHighlightingParam()
@@ -454,13 +749,6 @@ void RptFieldObject::updateHighlightingParam()
 
     backgroundColor = colorFromString(m_qtrpt->processHighligthing(this, BgColor).toString());
     fontColor = colorFromString(m_qtrpt->processHighligthing(this, FntColor).toString());
-}
-
-void RptFieldObject::updateDiagramValue()
-{
-    if (autoFillData == 1)
-        for (auto &graph : graphList)
-            graph.valueReal = m_qtrpt->sectionField(this->parentBand, graph.formula, false).toFloat();
 }
 
 /*!

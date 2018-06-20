@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     exampledlg4.cpp \
     exampledlg5.cpp \
     exampledlg6.cpp \
-    exampledlg7.cpp \
     exampledlg8.cpp \
     exampledlg13.cpp \
     exampledlg14.cpp
@@ -41,7 +40,6 @@ HEADERS  += mainwindow.h \
     exampledlg4.h \
     exampledlg5.h \
     exampledlg6.h \
-    exampledlg7.h \
     exampledlg8.h \
     exampledlg13.h \
     exampledlg14.h
@@ -53,7 +51,6 @@ FORMS    += mainwindow.ui \
     exampledlg4.ui \
     exampledlg5.ui \
     exampledlg6.ui \
-    exampledlg7.ui \
     exampledlg8.ui \
     exampledlg13.ui \
     exampledlg14.ui

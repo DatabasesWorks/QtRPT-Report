@@ -1,12 +1,12 @@
 /*
 Name: QtRpt
-Version: 2.0.1
+Version: 2.0.2
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2017 Aleksey Osipov
+Copyright 2012-2018 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -57,6 +57,8 @@ private:
     QString m_cond_printing;
     QString m_cond_higlighting;
     QString m_imgFormat;
+    SPtrQChart m_chart;
+    void fillSeriesTbl();
 
 private slots:
     void loadImage();
@@ -66,17 +68,19 @@ private slots:
     void backGroundToggled(bool value);
     void conditionChanged(const QString &text);
     void chooseColor();
+    void fontSelect();
     void encodeHighLightingString();
     void decodeHighLightingString();
     void autoFillData(bool value);
-    void selectGraphColor();
-    void moveRow();
-    void itemSelectionChanged();
-    void removeRow();
-    void addRow();
     void setScaledContents(bool value);
     void update_preview();
     void textDirection();
+    void chartTypeChanged(int index);
+    void removeSeries();
+    void addSeries();
+    void seriesValue();
+    void seriesDoubleClicked(QTableWidgetItem *item);
+    int showSeries(QAbstractSeries *abstrSeries, int barSetNo);
 
 };
 
