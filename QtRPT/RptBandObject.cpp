@@ -184,7 +184,7 @@ RptBandObject *RptBandObject::clone()
     band->height = this->height;
     band->type = this->type;
     band->m_qtrpt = this->m_qtrpt;
-    for (auto field : fieldList) {
+    for (auto &field : fieldList) {
         auto newField = field->clone();
         band->addField(newField);
     }

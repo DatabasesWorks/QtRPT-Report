@@ -182,7 +182,7 @@ void RptPageObject::addBand(RptBandObject *band)
 */
 RptBandObject *RptPageObject::getBand(BandType type, int No)
 {
-    for (auto &band : bandList)
+    for (const auto &band : bandList)
         if (band->type == type && band->bandNo == No)
             return band;
 
@@ -192,7 +192,7 @@ RptBandObject *RptPageObject::getBand(BandType type, int No)
 int RptPageObject::bandsCountByType(BandType type)
 {
     int count = 0;
-    for (auto &band : bandList)
+    for (const auto &band : bandList)
         if (band->type == type)
             if (band->bandNo > count)
                 count = band->bandNo;
@@ -209,8 +209,8 @@ int RptPageObject::bandsCountByType(BandType type)
 */
 RptFieldObject *RptPageObject::findFieldObjectByName(QString name)
 {
-    for (auto &band : bandList)
-        for (auto &field : band->fieldList)
+    for (const auto &band : bandList)
+        for (const auto &field : band->fieldList)
             if (field->name == name)
                 return field;
 

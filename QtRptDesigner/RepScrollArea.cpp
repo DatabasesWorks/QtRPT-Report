@@ -265,7 +265,7 @@ void RepScrollArea::paintVerRuler()
 ReportBand* RepScrollArea::m_addBand(BandType type, QMenu *bandMenu, int m_height, QString objName, int bandNo)
 {
     QMenu m_bandMenu;
-    for (auto &action : bandMenu->actions()) {
+    for (const auto &action : bandMenu->actions()) {
         if (type == DataGroupHeader) {
             m_bandMenu.addAction(action);
         } else {
@@ -276,7 +276,7 @@ ReportBand* RepScrollArea::m_addBand(BandType type, QMenu *bandMenu, int m_heigh
 
     int cnt = 1;
     if (objName.isEmpty()) {
-        for (auto &band : getReportBands()) {
+        for (const auto &band : getReportBands()) {
             if (band->bandType == type)
                 cnt++;
         }

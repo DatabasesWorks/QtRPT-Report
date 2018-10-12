@@ -322,7 +322,7 @@ void QtRPT::clearObject()
 int QtRPT::getRecCount(int reportPage, int dsSetNo)
 {
     int count = 0;
-    for (auto &ds : m_dataSetInfoList)
+    for (const auto &ds : m_dataSetInfoList)
         if (ds.reportPage == reportPage && ds.dataSetNo == dsSetNo)
             count = ds.recordCount;
 
@@ -954,13 +954,13 @@ void QtRPT::drawBandRow(RptBandObject *band, int bandTop, bool allowDraw)
 {
     band->realHeight = band->height; //set a 'realHeight' to default value
     /*First pass used to determine a max height of the band*/
-    for (auto &field : band->fieldList)
+    for (const auto &field : band->fieldList)
         if (field->fieldType != Line)
             drawFields(field, bandTop, false);
 
     /*Second pass used for drawing*/
     if (allowDraw) {
-        for (auto &field : band->fieldList) {
+        for (const auto &field : band->fieldList) {
             if (field->fieldType != Line)
                 drawFields(field, bandTop, true);
             else

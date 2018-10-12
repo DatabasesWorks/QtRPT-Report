@@ -67,7 +67,7 @@ void BoxSideHub::update()
     DiagramObject *item = owner();
 	QRectF rect = item->boundingRect().translated(item->pos());
 
-    for (Connector *connector : connectors()) {
+    for (auto &connector : connectors()) {
 		Line *connection = connector->owner();
 		Connector *connector1 = connection->connector(0);
 		Connector *connector2 = connection->connector(1);
@@ -97,7 +97,7 @@ void BoxSideHub::update()
 		sides[side].append(qMakePair(connector, angle));
     }
 
-    for (Side side : sides.keys()) {
+    for (auto &side : sides.keys()) {
 		QPointF p, dp;
 		QList<ConnectorRealPair> c = sides[side];
         std::sort(c.begin(), c.end(), itemLessThan);
@@ -124,7 +124,7 @@ void BoxSideHub::update()
 			angle = 180;
 			break;
 		}
-        for (ConnectorRealPair item : c) {
+        for (auto &item : c) {
 			p += dp;
 			item.first->setAngle(angle);
 			item.first->setPos(p);

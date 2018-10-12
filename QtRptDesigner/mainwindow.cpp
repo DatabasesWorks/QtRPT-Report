@@ -1465,6 +1465,7 @@ QGraphicsItem *MainWindow::selectedGItem()
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
     if (repPage->scene->itemsSelected().isEmpty())
         return nullptr;
+
     return repPage->scene->itemsSelected().at(0);
 }
 
@@ -1672,7 +1673,7 @@ void MainWindow::saveReport()
         setXMLProperty(&repElem, sqlDesigner, 0); //Set XML for DataSource
     }
 
-    for (auto plugin : plugins) {
+    for (auto &plugin : plugins) {
         auto echoInterface = qobject_cast<CustomInterface *>(plugin);
         if (echoInterface) {
             echoInterface->saveData(xmlDoc);
@@ -1789,7 +1790,9 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
 void MainWindow::showParamState()
 {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
-    if (repPage->scene->selectedItems().isEmpty()) return;
+    if (repPage->scene->selectedItems().isEmpty())
+        return;
+
     ui->treeParams->clear();
 
     bool enbl1 = false;

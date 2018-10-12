@@ -360,7 +360,7 @@ void GraphicsScene::itemMoving(QGraphicsItem *item)
 
 void GraphicsScene::unselectAll()
 {
-    for (auto item : this->items()) {
+    for (auto &item : this->items()) {
         if (item->type() == ItemType::GLine) {
             auto line = static_cast<GraphicsLine*>(item);
             line->setSelected(false);
