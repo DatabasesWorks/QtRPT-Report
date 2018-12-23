@@ -438,8 +438,15 @@ QString double2MoneyENG(double number) {
 
     QString output;
 
+    // Thanks to Numael Garay for bug fixing
     if (number < 21) {
-        output = numbers[number];
+        double remainder = number - qFloor(number);
+
+        if (remainder > 0) {
+            output = numbers[qFloor(number)];
+        } else {
+            output = numbers[number];
+        }
     } else if (number < 100) {
         output = numbers[10 * qFloor(number / 10)];
         int remainder = (int)number % 10;
@@ -679,7 +686,7 @@ QString double2MoneyESP_Group(int _siGroup, char *_tscGroup, int _siGValue)
 }
 
 /*
-Thank you to Manuel Soriano
+Thanks to Manuel Soriano
 0 : Does not print the decimals
 1 : Print the decimals
 */
