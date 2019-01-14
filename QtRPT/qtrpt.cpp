@@ -1837,11 +1837,11 @@ void QtRPT::printPreview(QPrinter *printer)
             m_dataSetInfoList << dsInfo;
         }
 
+        m_pageReport = i;
         openDataSource(i);
         //listOfPair.clear();
         listIdxOfGroup.clear();
         m_recNo = 0;
-        m_pageReport = i;
 
         //First pass
         processReport(printer, false, i);
