@@ -22,6 +22,7 @@ limitations under the License.
 */
 
 #include <QColorDialog>
+#include <QButtonGroup>
 #include "XYZ_TextEditor.h"
 #include "ui_XYZ_TextEditor.h"
 #include <QDebug>
