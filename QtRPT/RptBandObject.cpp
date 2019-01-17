@@ -117,17 +117,17 @@ limitations under the License.
 */
 void RptBandObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
 {
-    name = docElem.attribute("name");
-    realHeight = docElem.attribute("height").toInt();
-    height = docElem.attribute("height").toInt();
-    width = docElem.attribute("width").toInt();
-    left = docElem.attribute("left").toInt();
-    right = docElem.attribute("right").toInt();
+    name          = docElem.attribute("name");
+    realHeight    = docElem.attribute("height").toInt();
+    height        = docElem.attribute("height").toInt();
+    width         = docElem.attribute("width").toInt();
+    left          = docElem.attribute("left").toInt();
+    right         = docElem.attribute("right").toInt();
     groupingField = docElem.attribute("groupingField");
-    showInGroup = docElem.attribute("showInGroup","0").toInt();
-    startNewPage = docElem.attribute("startNewPage","0").toInt();
-    bandNo = docElem.attribute("bandNo", "1").toInt();
-    dsName = docElem.attribute("dataSourceName", "");
+    showInGroup   = docElem.attribute("showInGroup","0").toInt();
+    startNewPage  = docElem.attribute("startNewPage","0").toInt();
+    bandNo        = docElem.attribute("bandNo", "1").toInt();
+    dsName        = docElem.attribute("dataSourceName", "");
 
     if (docElem.attribute("type") == "ReportTitle")
         type = ReportTitle;

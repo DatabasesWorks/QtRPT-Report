@@ -98,7 +98,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         setMode(Mode::SelectObject);
         m_trackingMoves = false;
     }
-    if(sceneMode == DrawContainer) {
+    if (sceneMode == DrawContainer) {
         auto graphicsBox = new GraphicsBox();
         graphicsBox->setFieldType(m_newFieldType);
         graphicsBox->setPos(origPoint);
@@ -385,7 +385,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
     QColor c(200,200,255,125);
     painter->setPen(c);
-    const int gridSize = m_koef*m_gridStep;
+    const int gridSize = m_koef * m_gridStep;
     QRectF rectView = this->sceneRect();
 
     qreal left = rectView.left() + m_leftM;

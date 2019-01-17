@@ -672,7 +672,7 @@ GraphDataList RptFieldObject::getChartData()
                     graphData.caption = series->name();
 
                     QList<GraphValue> valueList;
-                    for (auto point : series->points()) {
+                    for (const auto &point : series->points()) {
                         GraphValue value;
                         value.valueX = point.x();
                         value.valueY = point.y();
@@ -697,7 +697,7 @@ GraphDataList RptFieldObject::getChartData()
                     barSets = series->barSets();
                 }
 
-                for (auto &barSet : barSets) {
+                for (const auto &barSet : barSets) {
                     GraphData graphData;
                     graphData.color   = barSet->color();
                     graphData.graphDS = barSet->property("graphDS").toString();
@@ -722,7 +722,7 @@ GraphDataList RptFieldObject::getChartData()
                 graphData.caption = "";
 
                 QList<GraphValue> valueList;
-                for (auto &slice : series->slices()) {
+                for (const auto &slice : series->slices()) {
                     GraphValue value;
                     value.caption = slice->label();
                     value.valueY = slice->value();

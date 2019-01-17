@@ -435,11 +435,11 @@ void RepScrollArea::correctBandGeom(ReportBand *rep)
 
 bool RepScrollArea::eventFilter(QObject *obj, QEvent *e)
 {
-    if (obj==ui->horRuler && e->type()==QEvent::Paint) {
+    if (obj == ui->horRuler && e->type()==QEvent::Paint) {
         paintHorRuler();
         return true;
     }
-    if (obj==ui->verRuler && e->type()==QEvent::Paint) {
+    if (obj == ui->verRuler && e->type()==QEvent::Paint) {
         paintVerRuler();        
         return true;
     }

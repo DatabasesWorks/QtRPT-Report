@@ -189,6 +189,12 @@ RptBandObject *RptPageObject::getBand(BandType type, int No)
     return nullptr;
 }
 
+/*!
+ \fn RptBandObject RptPageObject::bandsCountByType(BandType type)
+    Returns count of the bands on this report page by the given \a type.
+
+    \sa RptBandObject
+*/
 int RptPageObject::bandsCountByType(BandType type)
 {
     int count = 0;
