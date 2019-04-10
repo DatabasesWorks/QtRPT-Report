@@ -296,22 +296,25 @@ void MainWindow::setField(RptFieldObject &fieldObject)
     // ---Example 18---
     // set the row and column count of the CrossTab
     if (fieldObject.fieldType == FieldType::CrossTab) {
-        int colCount = 3;
+        int colCount = 5;
 
         fieldObject.crossTab->setColCount(colCount);
-        fieldObject.crossTab->setRowCount(48);
+        fieldObject.crossTab->setRowCount(15);
 
+        fieldObject.crossTab->headers.clear();
         fieldObject.crossTab->headers << "Header1";
         fieldObject.crossTab->headers << "Header2";
         fieldObject.crossTab->headers << "Header3";
         fieldObject.crossTab->headers << "Header4";
+        fieldObject.crossTab->headers << "Header5";
 
     }
     // requiest the data for cell of the CrossTab
     if (fieldObject.parentCrossTab != nullptr) {
         int row = fieldObject.parentCrossTab->fieldRow(&fieldObject);
         int col = fieldObject.parentCrossTab->fieldCol(&fieldObject);
-        fieldObject.value = QString::number(col+row);
+
+        fieldObject.value = QString("Col %1 Row %2").arg(col).arg(row);
     }
     // ---Example 18---
 }

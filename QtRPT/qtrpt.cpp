@@ -509,7 +509,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         bool isHeaderField = fieldObject->parentCrossTab->isHeaderField(fieldObject);
 
         if (isTotalField == false && isHeaderField == false)
-            // we request data if it is a child of the CrossTab, but it is a not Total field
+            // we request data if it is a child of the CrossTab,
+            //but it is a not Total field
             emit setField(*fieldObject);
         else if (isTotalField == true)
             // if it is a Total field, we a calculate Total
@@ -786,6 +787,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     if (fieldType == Text) {   // NOT Proccess if field set as ImageField
         setFont(fieldObject);
         QString txt = sectionField(fieldObject->parentBand, fieldObject->value, false, false, fieldObject->formatString);
+
         pen.setColor(fieldObject->fontColor);
         if (painter->isActive())
             painter->setPen(pen);

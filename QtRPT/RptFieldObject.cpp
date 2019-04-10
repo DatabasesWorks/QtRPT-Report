@@ -315,6 +315,7 @@ RptFieldObject::RptFieldObject()
     font.setPointSize(12);
     this->font = font;
     this->printing = "1";
+    this->rotate = 0;
     this->borderWidth = 1;
     this->borderColor = Qt::black;
     this->borderBottom = Qt::black;
