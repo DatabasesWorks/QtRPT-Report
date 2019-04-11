@@ -854,12 +854,13 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             int prevRow = -1;  // previous row number
 
             bool isPageHeader = fieldObject->parentBand->type == BandType::PageHeader;
+            bool isMasterData = fieldObject->parentBand->type == BandType::MasterData;
             bool isPageFooter = fieldObject->parentBand->type == BandType::PageFooter;
 
-            quint32 startFrom = fieldObject->crossTab->processedCount();
-            quint32 fieldsCount = fieldObject->crossTab->fieldList.size();
+            int startFrom = fieldObject->crossTab->processedCount();
+            int fieldsCount = fieldObject->crossTab->fieldList.size();
 
-            for (quint32 nmr = startFrom; nmr < fieldsCount; nmr++) {
+            for (int nmr = startFrom; nmr < fieldsCount; nmr++) {
                 auto field = fieldObject->crossTab->fieldList[nmr];
                 int row = fieldObject->crossTab->fieldRow(field, true);
 
@@ -867,6 +868,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     tmpRowN += 1;
                     prevRow = row;
                 }
+
+                //qDebug() << field->name << row << field->parentCrossTab->isHeaderField(field);
 
                 if (tmpRowN > fieldObject->crossTab->visibleRowCount()-1) {
                     // we create a new page only for the particular types of the bands.
@@ -878,7 +881,22 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                             processPFooter(draw);
 
                         newPage(printer, bandTop, draw);
+
                         return;
+                    } else if ((isMasterData) && curPage >= totalPage) {
+                        int y = 0;
+                        processPHeader(y, draw);
+
+                        newPage(printer, bandTop, draw);
+
+                        tmpRowN = -1;
+                        prevRow = -1;
+
+                        if (prevRow != row) {
+                            tmpRowN += 1;
+                            prevRow = row;
+                        }
+
                     } else {
                         break;
                     }

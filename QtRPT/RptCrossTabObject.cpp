@@ -333,7 +333,13 @@ int RptCrossTabObject::fieldRow(RptFieldObject *field, bool realNr)
         quint32 row = index;
         quint32 page = (int)row/visibleRowCount();
 
-        if (m_headerVisible)
+        qDebug() << "visibleRowCount" << visibleRowCount();
+        qDebug() << "page" << page;
+        qDebug() << "row" << row;
+
+        if (m_headerVisible && !m_subTotalVisible)
+            return row - page -1;
+        else if (m_headerVisible && m_subTotalVisible)
             return row - page - (page+1);
         else
             return row - page;

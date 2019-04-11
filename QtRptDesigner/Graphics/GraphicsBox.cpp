@@ -735,7 +735,7 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
     GraphicsHelperClass::loadParamFromXML(e);
     this->setFieldType(m_type);
 
-    this->setPos(e.attribute("left").toInt(), e.attribute("top").toInt()+20);
+    this->setPos(e.attribute("left").toInt(), e.attribute("top").toInt()+ReportBand::titleHeight);
     this->setWidth(e.attribute("width").toInt());
     this->setHeight(e.attribute("height").toInt());
 
@@ -944,7 +944,7 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
 {
     QDomElement elem = GraphicsHelperClass::saveParamToXML(xmlDoc);
 
-    elem.setAttribute("top",this->m_location.y()-20);
+    elem.setAttribute("top",this->m_location.y()-ReportBand::titleHeight);
     elem.setAttribute("left",this->m_location.x());
     elem.setAttribute("width",this->m_width);
     elem.setAttribute("height",this->m_height);
