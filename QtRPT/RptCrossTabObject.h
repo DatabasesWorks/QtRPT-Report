@@ -52,6 +52,8 @@ struct RptTabElement
     quint32 row;
 };
 
+
+
 #ifndef QTRPT_LIBRARY
     class RptCrossTabObject
 #else
@@ -65,6 +67,12 @@ struct RptTabElement
     friend class RptFieldObject;
 
 public:
+    struct ColumnParameters
+    {
+        QString caption;
+        int width;
+    };
+
     RptCrossTabObject();
     ~RptCrossTabObject();
     QString name;
@@ -94,7 +102,7 @@ public:
     void buildMatrix();
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
-    QList<QString> headers;
+    QList<ColumnParameters> columns;
 
     QColor totalBackgroundColor;
     QColor headerBackgroundColor;
@@ -120,6 +128,7 @@ private:
     void addField(RptFieldObject *field);
 
     QVector<RptTabElement> m_elements;
+
 
 };
 

@@ -162,27 +162,38 @@ void RptCrossTabObject::buildMatrix()
     fieldWidth  = rect.width()/colCount();
     fieldheight = rowHeight();
 
-    for (quint32 row = 0; row < m_rowCount; row++) {
-        for (quint32 col = 0; col < m_colCount; col++) {
+    for (int row = 0; row < m_rowCount; row++) {
+        int lft = 0;
+        for (int col = 0; col < m_colCount; col++) {
             auto h1 = new RptFieldObject();
             h1->parentCrossTab = this;
             h1->name = QString("f%1%2").arg(col).arg(row);
             h1->fieldType = Text;
             h1->rect.setTop(rect.top() + fieldheight * row);
-            h1->rect.setLeft(rect.left() + fieldWidth * col);
             h1->rect.setHeight(fieldheight);
-            h1->rect.setWidth(fieldWidth);
-            h1->aligment = Qt::AlignCenter;
+            h1->rect.setLeft(lft);
+            //h1->rect.setLeft(rect.left() + fieldWidth * col);
+
+            if (columns.at(col).width != 0)
+                h1->rect.setWidth(columns.at(col).width);
+            else
+                h1->rect.setWidth(fieldWidth);
+
+            lft = lft + h1->rect.width();
+
+
 
             addField(h1);
 
-            if (isTotalField(h1))
+            if (isTotalField(h1)) {
                 h1->setDefaultBackgroundColor(this->totalBackgroundColor);
-
-            if (isHeaderField(h1))
-            {
+                h1->aligment = Qt::AlignCenter;
+            } else if (isHeaderField(h1)) {
                 h1->setDefaultBackgroundColor(this->headerBackgroundColor);
                 header(h1);
+                h1->aligment = Qt::AlignCenter;
+            } else {
+                h1->aligment = Qt::AlignLeft;
             }
         }
     }
@@ -261,8 +272,8 @@ void RptCrossTabObject::total(RptFieldObject *field)
 void RptCrossTabObject::header(RptFieldObject *field)
 {
     quint16 col = fieldCol(field);
-    if (col < headers.size())
-        field->value = headers.at(col);
+    if (col < columns.size())
+        field->value = columns.at(col).caption;
 }
 
 bool RptCrossTabObject::isHeaderField(RptFieldObject *field)
@@ -292,6 +303,19 @@ void RptCrossTabObject::loadParamFromXML(QDomElement e)
     m_headerVisible        = e.attribute("headerIsVisible").toInt();
     totalBackgroundColor   = colorFromString(e.attribute("totalBackgroundColor","rgba(255,255,255,255)"));
     headerBackgroundColor  = colorFromString(e.attribute("headerBackgroundColor","rgba(255,255,255,255)"));
+
+    columns.clear();
+    QDomNode v = e.firstChild();
+    while(!v.isNull()) {
+        QDomElement columnElement = v.toElement();
+
+        RptCrossTabObject::ColumnParameters column;
+        column.caption = columnElement.attribute("caption");
+        column.width   = columnElement.attribute("width", "0").toInt();
+        columns << column;
+
+        v = v.nextSibling();
+    }
 }
 
 void RptCrossTabObject::saveParamToXML(QDomElement &e)
@@ -333,9 +357,9 @@ int RptCrossTabObject::fieldRow(RptFieldObject *field, bool realNr)
         quint32 row = index;
         quint32 page = (int)row/visibleRowCount();
 
-        qDebug() << "visibleRowCount" << visibleRowCount();
-        qDebug() << "page" << page;
-        qDebug() << "row" << row;
+//        qDebug() << "visibleRowCount" << visibleRowCount();
+//        qDebug() << "page" << page;
+//        qDebug() << "row" << row;
 
         if (m_headerVisible && !m_subTotalVisible)
             return row - page -1;

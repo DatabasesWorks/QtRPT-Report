@@ -301,12 +301,19 @@ void MainWindow::setField(RptFieldObject &fieldObject)
         fieldObject.crossTab->setColCount(colCount);
         fieldObject.crossTab->setRowCount(15);
 
-        fieldObject.crossTab->headers.clear();
-        fieldObject.crossTab->headers << "Header1";
-        fieldObject.crossTab->headers << "Header2";
-        fieldObject.crossTab->headers << "Header3";
-        fieldObject.crossTab->headers << "Header4";
-        fieldObject.crossTab->headers << "Header5";
+        fieldObject.crossTab->columns.clear();
+
+        RptCrossTabObject::ColumnParameters column;
+        column.caption = "Header1";
+        fieldObject.crossTab->columns << column;
+        column.caption = "Header2";
+        fieldObject.crossTab->columns << column;
+        column.caption = "Header3";
+        fieldObject.crossTab->columns << column;
+        column.caption = "Header4";
+        fieldObject.crossTab->columns << column;
+        column.caption = "Header5";
+        fieldObject.crossTab->columns << column;
 
     }
     // requiest the data for cell of the CrossTab

@@ -869,8 +869,6 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     prevRow = row;
                 }
 
-                //qDebug() << field->name << row << field->parentCrossTab->isHeaderField(field);
-
                 if (tmpRowN > fieldObject->crossTab->visibleRowCount()-1) {
                     // we create a new page only for the particular types of the bands.
                     // And only if No new page will be created from other places
