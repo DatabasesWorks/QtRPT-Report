@@ -40,6 +40,7 @@ RptCrossTabObject::RptCrossTabObject()
     m_totalByColumnVisible = false;
     m_subTotalVisible = false;
     m_headerVisible = false;
+    dataSourceName = "";
 
     qRegisterMetaType<RptCrossTabObject>("RptCrossTabObject");
 }
@@ -303,6 +304,7 @@ void RptCrossTabObject::loadParamFromXML(QDomElement e)
     m_headerVisible        = e.attribute("headerIsVisible").toInt();
     totalBackgroundColor   = colorFromString(e.attribute("totalBackgroundColor","rgba(255,255,255,255)"));
     headerBackgroundColor  = colorFromString(e.attribute("headerBackgroundColor","rgba(255,255,255,255)"));
+    dataSourceName         = e.attribute("dataSourceName");
 
     columns.clear();
     QDomNode v = e.firstChild();

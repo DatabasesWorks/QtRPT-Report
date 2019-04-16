@@ -103,6 +103,7 @@ public:
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
     QList<ColumnParameters> columns;
+    QString dataSourceName;
 
     QColor totalBackgroundColor;
     QColor headerBackgroundColor;
