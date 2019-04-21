@@ -313,7 +313,9 @@ void RptCrossTabObject::loadParamFromXML(QDomElement e)
 
         RptCrossTabObject::ColumnParameters column;
         column.caption = columnElement.attribute("caption");
+        column.value   = columnElement.attribute("value");
         column.width   = columnElement.attribute("width", "0").toInt();
+
         columns << column;
 
         v = v.nextSibling();

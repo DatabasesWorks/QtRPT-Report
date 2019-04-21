@@ -60,8 +60,6 @@ struct RptTabElement
     #include <qtrpt_global.h>
     class QTRPTSHARED_EXPORT RptCrossTabObject
 #endif
-
-//class RptCrossTabObject
 {
     friend class QtRPT;
     friend class RptFieldObject;
@@ -70,6 +68,7 @@ public:
     struct ColumnParameters
     {
         QString caption;
+        QString value;
         int width;
     };
 
@@ -98,8 +97,8 @@ public:
     void setHeaderVisible(bool value);
     void loadParamFromXML(QDomElement e);
     void saveParamToXML(QDomElement &e);
-
     void buildMatrix();
+
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
     QList<ColumnParameters> columns;
