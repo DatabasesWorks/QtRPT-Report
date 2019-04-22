@@ -788,17 +788,17 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         setFont(fieldObject);
         QString txt = sectionField(fieldObject->parentBand, fieldObject->value, false, false, fieldObject->formatString);
 
-        pen.setColor(fieldObject->fontColor);
-        if (painter->isActive())
-            painter->setPen(pen);
         int flags = fieldObject->aligment | Qt::TextDontClip;
         if (fieldObject->textWrap == 1)
             flags = flags | Qt::TextWordWrap;
         if (draw) {
+            pen.setColor(fieldObject->fontColor);
+
             if (painter->isActive()) {
+                painter->setPen(pen);
+
                 if (fieldObject->rotate == 0)
                     painter->drawText(left_+10, top_, width_-15, height_, flags, txt);
-
 
                 if (fieldObject->rotate == 1) {
                     painter->save();
@@ -1636,6 +1636,7 @@ void QtRPT::printXLSX(const QString &filePath, bool open)
 {
 #ifndef QT_NO_PRINTER
     Q_UNUSED(open);
+    Q_UNUSED(filePath);
 
     #ifdef QXLSX_LIBRARY
         if (crossTab != nullptr)
@@ -1880,10 +1881,7 @@ void QtRPT::printPreview(QPrinter *printer)
         processReport(printer, true, i);
     }
 
-
-
     painter->end();
-    //pr->setWindowState(pr->windowState() ^ Qt::WindowFullScreen);
 #endif
 }
 
