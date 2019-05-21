@@ -847,7 +847,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     }
     if (fieldType == CrossTab) {
         if (draw) {
-            if (curPage == 1)
+            //if (curPage == 1)
                 fieldObject->crossTab->buildMatrix();
 
             int tmpRowN = -1;  // fact row number
@@ -903,6 +903,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 int y = fieldObject->crossTab->rowHeight() * tmpRowN;
                 field->rect.setTop(fieldObject->rect.y() + y);
                 field->rect.setHeight(fieldObject->crossTab->rowHeight());
+
 
                 drawFields(field, bandTop, true);
 
