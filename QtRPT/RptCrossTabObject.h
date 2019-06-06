@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef RPTCROSSTABOBJECT_H
-#define RPTCROSSTABOBJECT_H
+#pragma once
 
 #include <QDebug>
 #include <QMetaType>
@@ -96,7 +95,7 @@ public:
     bool isHeaderVisible();
     void setHeaderVisible(bool value);
     void loadParamFromXML(QDomElement e);
-    void saveParamToXML(QDomElement &e);
+    void saveParamToXML(QSharedPointer<QDomDocument> xmlDoc, QDomElement &e);
     void buildMatrix();
 
     QList<RptFieldObject*> fieldList;
@@ -139,4 +138,3 @@ Q_DECLARE_METATYPE(RptCrossTabObject)
 QDebug operator<<(QDebug dbg, const RptCrossTabObject &obj);
 QDebug operator<<(QDebug dbg, const RptCrossTabObject *obj);
 
-#endif // RPTCROSSTABOBJECT_H

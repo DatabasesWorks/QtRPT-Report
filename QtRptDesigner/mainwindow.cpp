@@ -688,10 +688,10 @@ MainWindow::MainWindow(QWidget *parent)
 #include "CustomInterface.h"
 bool MainWindow::loadPlugin()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
+    QDir pluginsDir(qApp->applicationDirPath() + "/plugins");
 #if defined(Q_OS_WIN)
-    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-        pluginsDir.cdUp();
+    //if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+    //    pluginsDir.cdUp();
 #elif defined(Q_OS_MAC)
     if (pluginsDir.dirName() == "MacOS") {
         pluginsDir.cdUp();
@@ -699,8 +699,8 @@ bool MainWindow::loadPlugin()
         pluginsDir.cdUp();
     }
 #endif
-    pluginsDir.cdUp();
-    pluginsDir.cd("plugins");
+    //pluginsDir.cdUp();
+    //pluginsDir.cd("plugins");
 
     QMenu *menuPlugins = nullptr;
     if (pluginsDir.entryList(QDir::Files).size() > 0) {
@@ -1772,6 +1772,7 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
 
         QString parent = band->objectName();
         QDomNodeList nodelist = repElem->elementsByTagName("ReportBand");
+
         for (quint16 i = 0; i != nodelist.count(); i++) {
             QDomNode prn = nodelist.item(i).toElement();
             if (prn.toElement().attribute("name") == parent) {

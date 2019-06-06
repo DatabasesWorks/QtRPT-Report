@@ -1,4 +1,4 @@
-# Use this pro files only if you want to build QtRPT library
+# Use this pro file only if you want to build QtRPT library
 # and use it in your project
 
 TARGET = QtRPT

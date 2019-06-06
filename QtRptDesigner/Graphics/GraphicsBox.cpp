@@ -903,7 +903,8 @@ void GraphicsBox::loadParamFromXML(QDomElement e)
         setBarcodeFrameType( (BarCode::FrameTypes)e.attribute("barcodeFrameType","0").toInt() );
         setBarcodeHeight(e.attribute("barcodeHeight","50").toInt() );
     } else if (this->m_type == CrossTab) {
-        m_crossTab->loadParamFromXML(e);
+        QDomElement elem = e;
+        m_crossTab->loadParamFromXML(elem);
     }
     m_text = e.attribute("value");
 
@@ -1086,7 +1087,7 @@ QDomElement GraphicsBox::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
         elem.setAttribute("barcodeHeight",m_barcode->getHeight());
     }
     if (this->m_type == CrossTab) {
-        m_crossTab->saveParamToXML(elem);
+        m_crossTab->saveParamToXML(xmlDoc, elem);
     }
 
     QString hAl, vAl;

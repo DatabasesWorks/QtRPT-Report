@@ -322,7 +322,8 @@ void RptCrossTabObject::loadParamFromXML(QDomElement e)
     }
 }
 
-void RptCrossTabObject::saveParamToXML(QDomElement &e)
+void RptCrossTabObject::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc,
+                                       QDomElement &e)
 {
     e.setAttribute("rowHeight", m_rowHeight);
     e.setAttribute("colCount", m_colCount);
@@ -336,6 +337,14 @@ void RptCrossTabObject::saveParamToXML(QDomElement &e)
 
     QString headerBackgroundColor = colorToString(this->headerBackgroundColor);
     e.setAttribute("headerBackgroundColor", headerBackgroundColor);
+
+    for (const auto &col : columns) {
+        QDomElement elem = xmlDoc->createElement("Column");
+        elem.setAttribute("caption", col.caption);
+        elem.setAttribute("value", col.value);
+        elem.setAttribute("width", col.width);
+        e.appendChild(elem);
+    }
 }
 
 /*!

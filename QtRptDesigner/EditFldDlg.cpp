@@ -23,6 +23,7 @@ limitations under the License.
 
 #include "EditFldDlg.h"
 #include "ui_EditFldDlg.h"
+#include "tableDelegates.h"
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -651,6 +652,25 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
     else
         ui->spnColCount->setValue(m_crossTab->colCount());
 
+    auto d = new SpinDelegate(0,
+                              500,
+                              1,
+                              2,
+                              ui->colTable);
+    ui->colTable->setItemDelegateForColumn(2, d);
+    for (const auto &col : m_crossTab->columns) {
+        ui->colTable->setRowCount(ui->colTable->rowCount() + 1);
+
+        auto newItem = new QTableWidgetItem(col.caption);
+        ui->colTable->setItem(ui->colTable->rowCount() - 1, 0, newItem);
+
+        newItem = new QTableWidgetItem(col.value);
+        ui->colTable->setItem(ui->colTable->rowCount() - 1, 1, newItem);
+
+        newItem = new QTableWidgetItem(QString::number(col.width));
+        ui->colTable->setItem(ui->colTable->rowCount() - 1, 2, newItem);
+    }
+
     ui->spnRowHeight->setValue(m_crossTab->rowHeight());
     ui->chkRowTotal->setChecked(m_crossTab->isTotalByRowVisible());
     ui->chkColTotal->setChecked(m_crossTab->isTotalByColumnVisible());
@@ -664,6 +684,10 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
 
     ui->lblColorHeader->setStyleSheet("QLabel {background-color: "+strColorHeader+"}");
     ui->lblColorTotal->setStyleSheet("QLabel {background-color: "+strColorTotal+"}");
+
+    connect(ui->spnColCount, QOverload<int>::of(&QSpinBox::valueChanged), [=](int i) {
+        ui->colTable->setRowCount(i);
+    });
 
     if (this->exec()) {
         m_crossTab->setRowHeight(ui->spnRowHeight->value());
@@ -683,6 +707,16 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
 
         m_crossTab->totalBackgroundColor = colorFromString(strColorT);
         m_crossTab->headerBackgroundColor = colorFromString(strColorH);
+
+        m_crossTab->columns.clear();
+        for (int i = 0; i < ui->colTable->rowCount(); i++) {
+            RptCrossTabObject::ColumnParameters column;
+            column.caption = ui->colTable->item(i,0)->text();
+            column.value   = ui->colTable->item(i,1)->text();
+            column.width   = ui->colTable->item(i,2)->text().toInt();
+
+            m_crossTab->columns << column;
+        }
 
         return QDialog::Accepted;
     } else {
