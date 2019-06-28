@@ -758,7 +758,11 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     || (currentFragment.text().contains("<") && currentFragment.text().contains(">")))
                 {
                     QString tmpTxt = sectionField(fieldObject->parentBand, currentFragment.text(), false, false, "");
-                    QTextCursor c = document.find(currentFragment.text(),0,QTextDocument::FindWholeWords);
+
+                    QTextCursor c(&document);
+                    c = document.find(currentFragment.text(), c);
+
+                    c.beginEditBlock();
                     if (tmpTxt.isEmpty() || tmpTxt.isNull())
                         tmpTxt = " ";
                     if (tmpTxt.toLower().contains("<body") && tmpTxt.toLower().contains("</body>")) {
@@ -768,6 +772,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     } else {
                         c.insertText(tmpTxt);
                     }
+                    c.endEditBlock();
+
                 }
             }
             block = block.next();
