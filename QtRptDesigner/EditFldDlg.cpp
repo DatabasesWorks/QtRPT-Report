@@ -651,6 +651,7 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
         ui->spnColCount->setValue(m_crossTab->colCount()-1);
     else
         ui->spnColCount->setValue(m_crossTab->colCount());
+    ui->colTable->setRowCount(ui->spnColCount->value());
 
     auto d = new SpinDelegate(0,
                               500,
@@ -711,9 +712,12 @@ int EditFldDlg::showCrosstab(QGraphicsItem *gItem)
         m_crossTab->columns.clear();
         for (int i = 0; i < ui->colTable->rowCount(); i++) {
             RptCrossTabObject::ColumnParameters column;
-            column.caption = ui->colTable->item(i,0)->text();
-            column.value   = ui->colTable->item(i,1)->text();
-            column.width   = ui->colTable->item(i,2)->text().toInt();
+            if (ui->colTable->item(i,0) != nullptr)
+                column.caption = ui->colTable->item(i,0)->text();
+            if (ui->colTable->item(i,1) != nullptr)
+                column.value   = ui->colTable->item(i,1)->text();
+            if (ui->colTable->item(i,2) != nullptr)
+                column.width   = ui->colTable->item(i,2)->text().toInt();
 
             m_crossTab->columns << column;
         }
