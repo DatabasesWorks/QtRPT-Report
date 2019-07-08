@@ -223,6 +223,24 @@ RptFieldObject *RptPageObject::findFieldObjectByName(QString name)
     return nullptr;
 }
 
+void RptPageObject::initCrossTabProcessedRows()
+{
+    for (const auto &band : bandList)
+        for (const auto &field : band->fieldList)
+            if (field->fieldType == CrossTab)
+                field->crossTab->setProcessedCount(0);
+}
+
+int RptPageObject::crossTabParts()
+{
+    for (const auto &band : bandList)
+        for (const auto &field : band->fieldList)
+            if (field->fieldType == CrossTab)
+                return field->crossTab->parts();
+
+    return 0;
+}
+
 /*!
  \fn RptPageObject *RptPageObject::clone()
     Clone the current page and return \c RptPageObject of the new page object

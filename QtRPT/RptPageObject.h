@@ -61,6 +61,8 @@ public:
     RptBandObject *getBand(BandType type, int No);
     int bandsCountByType(BandType type);
     RptFieldObject *findFieldObjectByName(QString name);
+    void initCrossTabProcessedRows();
+    int crossTabParts();
     QList<RptBandObject*> bandList;
     int recordCount;
     RptPageObject *clone();

@@ -314,7 +314,6 @@ void MainWindow::setField(RptFieldObject &fieldObject)
         fieldObject.crossTab->columns << column;
         column.caption = "Header5";
         fieldObject.crossTab->columns << column;
-
     }
     // requiest the data for cell of the CrossTab
     if (fieldObject.parentCrossTab != nullptr) {

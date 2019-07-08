@@ -68,13 +68,14 @@ public:
     {
         QString caption;
         QString value;
-        int width;
+        int width = 0;
     };
 
     RptCrossTabObject();
     ~RptCrossTabObject();
     QString name;
     QRect rect;
+    int parts();
     int colCount() const;
     void setColCount(int value);
     int rowCount() const;
@@ -97,6 +98,7 @@ public:
     void loadParamFromXML(QDomElement e);
     void saveParamToXML(QSharedPointer<QDomDocument> xmlDoc, QDomElement &e);
     void buildMatrix();
+    bool isMatrixBuilt();
 
     QList<RptFieldObject*> fieldList;
     RptFieldObject *parentField;
@@ -116,6 +118,7 @@ private:
     quint32 m_rowCount;
     quint32 m_rowHeight;
     quint32 m_processedCount;
+    bool m_matrixInit;
     bool m_totalByRowVisible;
     bool m_totalByColumnVisible;
     bool m_subTotalVisible;

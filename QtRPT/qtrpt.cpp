@@ -852,8 +852,9 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         }
     }
     if (fieldType == CrossTab) {
-        if (draw) {
-            //if (curPage == 1)
+        if (draw)
+        {
+            if (fieldObject->crossTab->isMatrixBuilt() == false)
                 fieldObject->crossTab->buildMatrix();
 
             int tmpRowN = -1;  // fact row number
@@ -879,19 +880,24 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                     // we create a new page only for the particular types of the bands.
                     // And only if No new page will be created from other places
 
-                    if ((isPageHeader || isPageFooter) && curPage >= totalPage) {
+                    if ((isPageHeader || isPageFooter) /*&& curPage >= totalPage*/) {
                         // Processing other (below) bands before creating a new Page
-                        if (isPageHeader)
+                        if (isPageHeader) {
+                            int y = fieldObject->parentBand->height;
+                            if (curPage == 1)
+                                processRTitle(y, draw);
                             processPFooter(draw);
+                        }
 
-                        newPage(printer, bandTop, draw);
+                        totalPage++;
+                        newPage(printer, bandTop, draw/*, true*/);
 
                         return;
-                    } else if ((isMasterData) && curPage >= totalPage) {
+                    } else if (isMasterData && curPage >= totalPage) {
                         int y = 0;
                         processPHeader(y, draw);
 
-                        newPage(printer, bandTop, draw);
+                        newPage(printer, bandTop, draw/*, true*/);
 
                         tmpRowN = -1;
                         prevRow = -1;
@@ -911,7 +917,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 field->rect.setHeight(fieldObject->crossTab->rowHeight());
 
 
-                drawFields(field, bandTop, true);
+                drawFields(field, bandTop, draw);
 
                 fieldObject->crossTab->setProcessedCount(nmr+1);
             }
@@ -1963,6 +1969,8 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
     painter->resetTransform();
     painter->save();
 
+    pageList.at(pageReport)->initCrossTabProcessedRows();
+
     setPageSettings(printer, pageReport);
     int y = 0;
 
@@ -1972,20 +1980,13 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int pageReport)
     } else {
         drawBackground(draw);
 
-        processPHeader(y,draw);
-        processRTitle(y,draw);
+        processPHeader(y, draw);
 
+        if (curPage == 1)
+        processRTitle(y, draw);
     }
 
-    //processRTitle(y,draw);
-    //processPHeader(y,draw);
-
-        //processMHeader(y,draw);
-        //processPFooter(draw);
     processGroupHeader(printer, y, draw, pageReport);
-        //processMasterData(printer,y,draw,pageReport);
-        //processMFooter(printer,y,draw);
-
     processRSummary(printer, y, draw);
 
     painter->restore();
@@ -2018,11 +2019,12 @@ bool QtRPT::eventFilter(QObject *obj, QEvent *e)
 
 bool QtRPT::allowPrintPage(bool draw, int curPage_)
 {
-    if (draw) {
+    if (draw)
+    {
         if (curPage_ < fromPage )
-            draw = false;
-        if ((toPage != 0) && (curPage_ > toPage ))
-            draw = false;
+            return false;
+        if (toPage != 0 && curPage_ > toPage )
+            return false;
         return draw;
     }
 
@@ -2031,7 +2033,8 @@ bool QtRPT::allowPrintPage(bool draw, int curPage_)
 
 bool QtRPT::allowNewPage(bool draw, int curPage_)
 {
-    if (draw) {
+    if (draw)
+    {
         if (curPage-fromPage < 0)
             return false;
         if (curPage_ < fromPage )
@@ -2051,6 +2054,7 @@ void QtRPT::newPage(QPrinter* printer, int &y, bool draw, bool newReportPage)
         drawBackground(draw);
     }
     curPage += 1;
+
     if (draw)
         emit newPage(curPage);
 

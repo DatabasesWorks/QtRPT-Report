@@ -23,6 +23,8 @@ limitations under the License.
 
 #include "RptCrossTabObject.h"
 #include "CommonClasses.h"
+#include <QFontMetrics>
+#include <QFontInfo>
 
 RptCrossTabObject::RptCrossTabObject()
 {
@@ -41,6 +43,7 @@ RptCrossTabObject::RptCrossTabObject()
     m_subTotalVisible = false;
     m_headerVisible = false;
     dataSourceName = "";
+    m_matrixInit = false;
 
     qRegisterMetaType<RptCrossTabObject>("RptCrossTabObject");
 }
@@ -65,6 +68,15 @@ int RptCrossTabObject::rowHeight()
 void RptCrossTabObject::setRowHeight(int height)
 {
     m_rowHeight = height;
+}
+
+int RptCrossTabObject::parts()
+{
+    if (visibleRowCount() == 0)
+        return 1;
+
+    double parts = rowCount() / visibleRowCount();
+    return ceil(parts);
 }
 
 int RptCrossTabObject::colCount() const
@@ -175,10 +187,14 @@ void RptCrossTabObject::buildMatrix()
             h1->rect.setLeft(lft);
             //h1->rect.setLeft(rect.left() + fieldWidth * col);
 
-            if (columns.at(col).width != 0)
-                h1->rect.setWidth(columns.at(col).width);
-            else
+            if (col < columns.size()) {
+                if (columns.at(col).width != 0)
+                    h1->rect.setWidth(columns.at(col).width);
+                else
+                    h1->rect.setWidth(fieldWidth);
+            } else {
                 h1->rect.setWidth(fieldWidth);
+            }
 
             lft = lft + h1->rect.width();
 
@@ -198,6 +214,13 @@ void RptCrossTabObject::buildMatrix()
             }
         }
     }
+
+    m_matrixInit = true;
+}
+
+bool RptCrossTabObject::isMatrixBuilt()
+{
+    return m_matrixInit;
 }
 
 bool RptCrossTabObject::isTotalField(RptFieldObject *field)
@@ -296,7 +319,7 @@ bool RptCrossTabObject::isHeaderField(RptFieldObject *field)
 */
 void RptCrossTabObject::loadParamFromXML(QDomElement e)
 {
-    m_rowHeight            = e.attribute("rowHeight","20").toInt();
+    m_rowHeight            = e.attribute("rowHeight","20").toInt() + 5;
     m_colCount             = e.attribute("colCount","3").toInt();
     m_totalByColumnVisible = e.attribute("totalByColVisible","1").toInt();
     m_totalByRowVisible    = e.attribute("totalByRowVisible","1").toInt();
@@ -305,6 +328,12 @@ void RptCrossTabObject::loadParamFromXML(QDomElement e)
     totalBackgroundColor   = colorFromString(e.attribute("totalBackgroundColor","rgba(255,255,255,255)"));
     headerBackgroundColor  = colorFromString(e.attribute("headerBackgroundColor","rgba(255,255,255,255)"));
     dataSourceName         = e.attribute("dataSourceName");
+
+//    QFontMetrics fm(this->parentField->font);
+    QFontInfo fi(this->parentField->font);
+
+    if (m_rowHeight < fi.pixelSize() + 5)
+        m_rowHeight = fi.pixelSize() + 5;
 
     columns.clear();
     QDomNode v = e.firstChild();
