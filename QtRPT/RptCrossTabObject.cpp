@@ -44,6 +44,7 @@ RptCrossTabObject::RptCrossTabObject()
     m_headerVisible = false;
     dataSourceName = "";
     m_matrixInit = false;
+    parentField = nullptr;
 
     qRegisterMetaType<RptCrossTabObject>("RptCrossTabObject");
 }
@@ -172,7 +173,7 @@ void RptCrossTabObject::buildMatrix()
     if (m_rowCount == 0)
         return;
 
-    fieldWidth  = rect.width()/colCount();
+    fieldWidth  = rect.width() / colCount();
     fieldheight = rowHeight();
 
     for (int row = 0; row < m_rowCount; row++) {
@@ -319,7 +320,7 @@ bool RptCrossTabObject::isHeaderField(RptFieldObject *field)
 */
 void RptCrossTabObject::loadParamFromXML(QDomElement e)
 {
-    m_rowHeight            = e.attribute("rowHeight","20").toInt() + 5;
+    m_rowHeight            = e.attribute("rowHeight","20").toInt();
     m_colCount             = e.attribute("colCount","3").toInt();
     m_totalByColumnVisible = e.attribute("totalByColVisible","1").toInt();
     m_totalByRowVisible    = e.attribute("totalByRowVisible","1").toInt();
@@ -330,10 +331,13 @@ void RptCrossTabObject::loadParamFromXML(QDomElement e)
     dataSourceName         = e.attribute("dataSourceName");
 
 //    QFontMetrics fm(this->parentField->font);
-    QFontInfo fi(this->parentField->font);
+    if (this->parentField) {
+        QFontInfo fi(this->parentField->font);
 
-    if (m_rowHeight < fi.pixelSize() + 5)
-        m_rowHeight = fi.pixelSize() + 5;
+    //    if (m_rowHeight < fi.pixelSize() )
+    //        m_rowHeight = fi.pixelSize() ;
+    }
+
 
     columns.clear();
     QDomNode v = e.firstChild();
