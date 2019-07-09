@@ -75,7 +75,7 @@ int RptCrossTabObject::parts()
     if (visibleRowCount() == 0)
         return 1;
 
-    double parts = rowCount() / visibleRowCount();
+    double parts = (double)rowCount() / (double)visibleRowCount();
     return ceil(parts);
 }
 

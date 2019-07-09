@@ -241,6 +241,18 @@ int RptPageObject::crossTabParts()
     return 0;
 }
 
+QList<RptFieldObject*> RptPageObject::crossTabs()
+{
+    QList<RptFieldObject*> fieldList;
+
+    for (const auto &band : bandList)
+        for (const auto &field : band->fieldList)
+            if (field->fieldType == CrossTab)
+                fieldList << field;
+
+    return fieldList;
+}
+
 /*!
  \fn RptPageObject *RptPageObject::clone()
     Clone the current page and return \c RptPageObject of the new page object

@@ -889,7 +889,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                             processPFooter(draw);
                         }
 
-                        totalPage++;
+                        //totalPage++;
                         newPage(printer, bandTop, draw/*, true*/);
 
                         return;
@@ -1856,6 +1856,7 @@ void QtRPT::printPreview(QPrinter *printer)
      *First pass calculate total pages
      *Second pass draw a report
      */
+    int corTotal = 0;
     curPage = 1;
     for (int i = 0; i < pageList.size(); i++) {
         for (int ds = 1; ds <= pageList.at(i)->bandsCountByType(MasterData); ds++) {
@@ -1878,7 +1879,22 @@ void QtRPT::printPreview(QPrinter *printer)
         //First pass
         processReport(printer, false, i);
         totalPage = curPage;
+
+        auto crossTablList = pageList.at(i)->crossTabs();
+        for (const auto &field : crossTablList) {
+            emit setField(*field);
+
+            if (field->crossTab->isMatrixBuilt() == false)
+                field->crossTab->buildMatrix();
+        }
+
+        qDebug() << pageList.at(i)->crossTabParts();
+        if (pageList.at(i)->crossTabParts() > 1) {
+            corTotal += pageList.at(i)->crossTabParts() - 1;
+        }
     }
+
+    totalPage += corTotal;
 
     m_orientation = 0;
     painter->resetTransform();

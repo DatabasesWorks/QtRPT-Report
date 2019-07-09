@@ -63,6 +63,7 @@ public:
     RptFieldObject *findFieldObjectByName(QString name);
     void initCrossTabProcessedRows();
     int crossTabParts();
+    QList<RptFieldObject*> crossTabs();
     QList<RptBandObject*> bandList;
     int recordCount;
     RptPageObject *clone();
