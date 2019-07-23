@@ -46,6 +46,8 @@ QString double2MoneyFrenchFR(double number, bool bAdditional /*= false*/);
 QString double2MoneyFrenchCH(double number, bool bAdditional /*= false*/);
 QString double2MoneyITA(double n);
 QString double2MoneyAR(double n);
+QString double2MoneyTR(double gelenRakam);
+QString yaziyaCevir(int gelenInt);
 
 QString double2Money(double n, QString lang);
 QString colorToString(QColor color);

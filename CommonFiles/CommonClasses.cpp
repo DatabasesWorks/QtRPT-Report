@@ -1087,6 +1087,94 @@ QString double2MoneyITA(double n)
     return output;
 }
 
+//Thanks to Dr. Mucibirahman İLBUĞA
+QString double2MoneyTR(double gelenRakam)
+{
+    int tam;
+    double kusur;
+    QString takas;
+
+    tam = gelenRakam;
+    kusur = gelenRakam - tam;
+
+    takas = QString::number(kusur, 'f', 2);
+
+    //QString takas = QString::number(gelenRakam,'f', 2).remove(QRegExp("\\.?0+$"));
+
+    QStringList parca = takas.split(".");
+
+
+    /*
+    qDebug()<< gelenRakam;
+    qDebug()<< tam;
+    qDebug()<< parca.last();
+    */
+
+    if(parca.last().toInt()>0)
+
+    return yaziyaCevir(tam) + "#TL#"+yaziyaCevir(parca.last().toInt())+"#KRŞ";
+    else return yaziyaCevir(tam) + "#TL#";
+
+}
+
+QString yaziyaCevir(int gelenInt)
+{
+    QString birlik[10] = {"", "BİR", "İKİ", "ÜÇ", "DÖRT", "BEŞ", "ALTI", "YEDİ", "SEKİZ", "DOKUZ"};
+    QString onluk[10] = {"", "ON", "YİRMİ", "OTUZ", "KIRK", "ELLİ", "ALTMIŞ", "YETMİŞ", "SEKSEN", "DOKSAN"};
+    QString yuzluk[10] = {"", "YÜZ", "İKİYÜZ", "ÜÇYÜZ", "DÖRTYÜZ", "BEŞYÜZ", "ALTIYÜZ", "YEDİYÜZ", "SEKİZYÜZ", "DOKUZYÜZ"};
+    QString bolum[11] = {"BİN", "MİLYON", "MİLYAR", "TRİLYON", "KATRİLYON", "KENTİLYON", "SEKSTİLYON", "SEPTİLYON", "OKTİLYON", "NONİLYON", "DESİLYON"};
+
+
+
+    QString gelenMetin = QString::number(gelenInt);
+
+    QString sonuc="";
+
+
+    int basamak = 1;
+    int bol = 0;
+
+
+    for (int i = gelenMetin.length();i>0;i--) {
+
+        //qDebug()<<basamak;
+        //qDebug()<<i;
+        //qDebug()<<gelenSayi;
+
+
+        switch (basamak) {
+        case 1:
+            //if(gelenMetin.mid(i-1,1).toInt()!=1 && gelenMetin.length()!=4)
+            sonuc = birlik[gelenMetin.mid(i-1,1).toInt()] + sonuc;
+            //qDebug()<<gelenMetin.mid(i-1,1).toInt();
+            //qDebug()<<birlik[gelenMetin.mid(i-1,1).toInt()];
+            break;
+        case 2:
+            sonuc = onluk[gelenMetin.mid(i-1,1).toInt()] + sonuc;
+            //qDebug()<<gelenMetin.mid(i-1,1).toInt();
+            //qDebug()<<onluk[gelenMetin.mid(i-1,1).toInt()];
+            break;
+        case 3:
+            sonuc = yuzluk[gelenMetin.mid(i-1,1).toInt()] + sonuc;
+            //qDebug()<<gelenMetin.mid(i-1,1).toInt();
+            //qDebug()<<yuzluk[gelenMetin.mid(i-1,1).toInt()];
+            break;
+        }
+
+        basamak = basamak +1;
+
+        if(basamak > 3)
+        {
+            if(i!=1) sonuc = bolum[bol]+sonuc;
+            basamak=1;
+            bol=bol+1;
+        }
+
+    }
+
+    if (sonuc.mid(0,6)!="BİRBİN") return sonuc; else return sonuc.mid(3);
+}
+
 //Thanks to Mohamed Glaiow <mh_glaiow@yahoo.com>
 QString double2MoneyAR(double n)
 {
@@ -1116,6 +1204,8 @@ QString double2Money(double n, QString lang)
         return double2MoneyITA(n);
     else if (lang == "AR")
         return double2MoneyAR(n);
+    else if (lang == "TR")
+        return double2MoneyTR(n);
     else
         return double2MoneyENG(n);
 }

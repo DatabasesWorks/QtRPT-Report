@@ -217,6 +217,13 @@ QString FldPropertyDlg::showThis(int index, GraphicsBox *widget, QString value)
                 item->setData(0,Qt::UserRole,"<NumberToWords('ITA', )>");
                 f1->addChild(item);
 
+                item = new QTreeWidgetItem(f1);
+                item->setIcon(0,iconFunction);
+                item->setToolTip(0,tr("Turkey"));
+                item->setText(0,"NumberToWords (TR)");
+                item->setData(0,Qt::UserRole,"<NumberToWords('TR', )>");
+                f1->addChild(item);
+
                 //------------------Math functions----------------------
                 f1 = new QTreeWidgetItem(rootItem);
                 f1->setIcon(0,iconFolder);
