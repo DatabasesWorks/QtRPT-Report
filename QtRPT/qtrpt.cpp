@@ -744,10 +744,50 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         QString txt = fieldObject->value;
 
         QTextDocument document;
-        document.setHtml(txt);
+        document.setHtml(txt.normalized(QString::NormalizationForm_KC));
         document.setDefaultFont(painter->font());
 
         QTextBlock block = document.firstBlock();
+
+        while (block.isValid()) {
+            for (QTextBlock::iterator it = block.begin(); !it.atEnd(); ++it) {
+                QTextFragment currentFragment = it.fragment();
+                if (!currentFragment.isValid())
+                    continue;
+
+                if ((currentFragment.text().contains("[") && currentFragment.text().contains("]"))
+                    || (currentFragment.text().contains("<") && currentFragment.text().contains(">")))
+                {
+                    QString tmpTxt = sectionField(fieldObject->parentBand, currentFragment.text(), false, false, "");
+                    QString srchTxt = currentFragment.text();
+                    QTextCursor c = document.find(srchTxt, 0);
+                    //qDebug() << c.isNull() << srchTxt;
+
+                    if (!c.isNull())
+                    {
+                        c.beginEditBlock();
+                        if (tmpTxt.isEmpty() || tmpTxt.isNull())
+                            tmpTxt = " ";
+                        if (tmpTxt.toLower().contains("<body") && tmpTxt.toLower().contains("</body>")) {
+                            int start = tmpTxt.toLower().indexOf("<body");
+                            int end = tmpTxt.toLower().indexOf("</body>")+1;
+                            c.insertHtml(tmpTxt.mid(start,end));
+                        } else {
+                            c.insertText(tmpTxt);
+                        }
+                        c.endEditBlock();
+
+
+                        block = document.firstBlock();
+                        break;
+                    }
+                }
+            }
+
+            block = block.next();
+        }
+
+        /*QTextBlock block = document.firstBlock();
         while (block.isValid()) {
             for (QTextBlock::iterator it = block.begin(); !it.atEnd(); ++it) {
                 QTextFragment currentFragment = it.fragment();
@@ -759,8 +799,10 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 {
                     QString tmpTxt = sectionField(fieldObject->parentBand, currentFragment.text(), false, false, "");
 
+
                     QTextCursor c(&document);
                     c = document.find(currentFragment.text(), c);
+                    qDebug() << c.isNull() << currentFragment.text();
 
                     c.beginEditBlock();
                     if (tmpTxt.isEmpty() || tmpTxt.isNull())
@@ -777,7 +819,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 }
             }
             block = block.next();
-        }
+        }*/
 
         QRectF rect = QRectF(left_+10, top_, width_-15, height_);
         document.setTextWidth( rect.width() );
@@ -923,6 +965,11 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             }
         }
     }
+}
+
+void QtRPT::editRichText(QTextDocument *document)
+{
+
 }
 
 void QtRPT::drawLines(RptFieldObject *fieldObject, int bandTop)

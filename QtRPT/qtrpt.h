@@ -217,6 +217,7 @@ private:
     void setRecCount(int reportPage, int dsSetNo, int recCount);
     void setUserSqlConnection(int pageReport, const RptSqlConnection &sqlConnection);
     void getUserSqlConnection(int pageReport, RptSqlConnection &sqlConnection);
+    void editRichText(QTextDocument *document);
 
     DataSetInfoList m_dataSetInfoList;
 
