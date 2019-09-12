@@ -1819,6 +1819,16 @@ void QtRPT::printExec(bool maximum, bool direct, QString printerName)
         pr->installEventFilter(this);
         //curPage = 1;
         preview.exec();
+        preview.setAttribute(Qt::WA_DeleteOnClose);
+
+        connect(&preview, &QPrintPreviewDialog::destroyed, [=] {
+            emit previewDestroyed();
+
+            delete printer;
+            printer = nullptr;
+            delete painter;
+            painter = nullptr;
+        });
     } else {
         printPreview(printer);  ///print without preview dialog
     }

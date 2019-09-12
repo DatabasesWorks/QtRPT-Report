@@ -250,6 +250,7 @@ signals:
     #endif
     void newPage(int page);
     void setDSInfo(DataSetInfo &dsInfo);
+    void previewDestroyed();
 
 public slots:
     void printPreview(QPrinter *printer);
