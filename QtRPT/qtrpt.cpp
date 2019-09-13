@@ -717,12 +717,12 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 font.setPointSize(font.pointSize() * 2);
                 fieldObject->chart->setTitleFont(font);
 
-                QRectF rect = QRectF(left_, top_, width_, height_);
                 QScopedPointer<QChartView> chartView(new QChartView(fieldObject->chart));
                 chartView.data()->setRenderHint(QPainter::TextAntialiasing);
-
-                chartView->render(painter, rect, chartView.data()->rect());
                 chartView->show();
+
+                QRectF rect = QRectF(left_, top_, width_, height_);
+                chartView.data()->render(painter, rect, chartView.data()->rect());
             #endif
         }
         if (fieldType == Barcode) {
