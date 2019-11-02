@@ -1318,6 +1318,31 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
     QStringList res;
     bool aggregate = false;
 
+    // To proccess correctly the different functions/operators of Script language
+    // we should make a tmp replacing of '< >' charcters.
+    // After spliting on sections, we revert these charactres back.
+    // "< if(a < 1) str1; else str2;  if (a > 3) str1; else str2; if   (a = 3) str1; else str2;>";
+
+    // Do searching and tmp replacing - start
+    QString tmpValue = value;
+    QRegularExpression re("(if\\s*)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpressionMatch match = re.match(tmpValue);
+    while (match.hasMatch()) {
+        //int startOffset = match.capturedStart(1);
+        int endOffset = match.capturedEnd(1);
+
+        QString tmpStrFrom = match.capturedTexts().at(0);
+        QString tmp        = tmpStrFrom;
+        QString tmpStrTo   = tmp.replace("<", "&lt-;").replace(">", "&gt+;");
+
+        //Do tmp replacing
+        tmpValue = tmpValue.replace(tmpStrFrom, tmpStrTo);
+        match = re.match(tmpValue, endOffset);
+    }
+    value = tmpValue;
+    // Do searching and tmp replacing - end
+
+
     for (int i = 0; i < value.size(); ++i) {
         if (value.at(i) != '[' && value.at(i) != ']' &&
             value.at(i) != '<' && value.at(i) != '>' && !aggregate)
@@ -1420,6 +1445,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
 
             if (res[i].contains("<") && res[i].contains(">")) {
                 QString formulaStr=res[i];
+
                 QScriptEngine myEngine;
 
                 QStringList tl = splitValue(formulaStr);
@@ -1440,7 +1466,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                         !tl.at(j-1).toUpper().contains("ToLower")
                     )
                     {
-                        //if we have Sql DataSource
+                        // If we have Sql DataSource
                         auto rptSql = pageList[m_pageReport]->rtpSql;
                         if (rptSql != nullptr) {
                             if (tl.at(j).contains(rptSql->objectName())) {
@@ -1498,7 +1524,17 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                 formulaStr = formulaStr.replace("<","");
                 formulaStr = formulaStr.replace(">","");                
 
+                // Do replacing back
+                formulaStr = formulaStr.replace("&lt-;", "<").replace("&gt+;", ">");
+
+
                 QScriptValue result  = myEngine.evaluate(formulaStr);
+                if (myEngine.hasUncaughtException()) {
+                      int line = myEngine.uncaughtExceptionLineNumber();
+                      qDebug() << "formulaStr: " << formulaStr;
+                      qDebug() << "uncaught exception at line" << line << ":" << result.toString();
+                }
+
                 res[i] = getFormattedValue(result.toString(), formatString);
             }
 
