@@ -123,6 +123,8 @@ RptPageObject::RptPageObject(QtRPT *qtrpt)
     this->sqlConnection.active = false;
     this->watermark = false;
     this->watermarkOpacity = 1;
+    this->m_visible = true;
+    this->m_totalPages = 0;
 }
 
 void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)
@@ -273,12 +275,59 @@ RptPageObject *RptPageObject::clone()
     reportPage->borderColor = borderColor;
     reportPage->borderStyle = borderStyle;
     reportPage->recordCount = recordCount;
+    reportPage->setVisible(this->m_visible);
+
     for (auto band : bandList) {
         auto newBand = band->clone();
         reportPage->addBand(newBand);
     }
 
     return reportPage;
+}
+
+/*!
+ \fn RptPageObject *RptPageObject::isVisible()
+    Return mark that this page is visible (printable)
+
+    \sa setVisible
+*/
+bool RptPageObject::isVisible()
+{
+    return m_visible;
+}
+
+/*!
+ \fn RptPageObject *RptPageObject::setVisible()
+    Set mark that this page is visible (printable)
+
+    \sa isVisible
+*/
+void RptPageObject::setVisible(bool value)
+{
+    m_visible = value;
+}
+
+/*!
+ \fn RptPageObject *RptPageObject::totalPages()
+    Return the number of pages on this report page
+
+    \sa setTotalPages
+*/
+quint16 RptPageObject::totalPages()
+{
+    return m_totalPages;
+}
+
+/*!
+ \fn RptBandObject RptPageObject::setTotalPages(quint16 value)
+    Set number of pages on this report page by the given \a value.
+    For internal use only!.
+
+    \sa totalPages
+*/
+void RptPageObject::setTotalPages(quint16 value)
+{
+    m_totalPages = value;
 }
 
 /*!

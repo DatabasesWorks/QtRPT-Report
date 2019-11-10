@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef RPTPAGEOBJECT_H
-#define RPTPAGEOBJECT_H
+#pragma once
 
 #include <qtrptnamespace.h>
 #include <RptBandObject.h>
@@ -39,7 +38,7 @@ class RptPageObject
 {
     friend class QtRPT;
 public:
-    RptPageObject(QtRPT *qtrpt = 0);
+    RptPageObject(QtRPT *qtrpt = nullptr);
     ~RptPageObject();
     int pageNo;
     int orientation;
@@ -54,7 +53,7 @@ public:
     QColor borderColor;
     QString borderStyle;
     bool watermark;
-    double watermarkOpacity;
+    float watermarkOpacity;
     QPixmap watermarkPixmap;
 
     void addBand(RptBandObject *band);
@@ -63,6 +62,10 @@ public:
     RptFieldObject *findFieldObjectByName(QString name);
     void initCrossTabProcessedRows();
     int crossTabParts();
+    bool isVisible();
+    void setVisible(bool value);
+    quint16 totalPages();
+    void setTotalPages(quint16 value);
     QList<RptFieldObject*> crossTabs();
     QList<RptBandObject*> bandList;
     int recordCount;
@@ -73,9 +76,11 @@ public:
 
 private:
 	QtRPT *m_qtrpt;
+    bool m_visible;
+    quint16 m_totalPages;
     void setProperty(QtRPT *qtrpt, QDomElement docElem);
+
 };
+
 Q_DECLARE_METATYPE(RptPageObject)
 QDebug operator<<(QDebug dbg, const RptPageObject &obj);
-
-#endif // RPTPAGEOBJECT_H

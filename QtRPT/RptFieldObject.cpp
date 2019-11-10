@@ -377,7 +377,7 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     rect.setHeight(e.attribute("height").toInt());
     borderTop = colorFromString(e.attribute("borderTop"));
     borderBottom = colorFromString(e.attribute("borderBottom"));
-    borderLeft = colorFromString(e.attribute("borderLeft"));
+    borderLeft  = colorFromString(e.attribute("borderLeft"));
     borderRight = colorFromString(e.attribute("borderRight"));
     borderWidth = e.attribute("borderWidth","1").replace("px","").toInt();
     borderStyle = e.attribute("borderStyle","solid");
@@ -388,11 +388,12 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     aligment = QtRPT::getAligment(e);
     autoHeight = e.attribute("autoHeight","0").toInt();
 
-    QFont m_font(e.attribute("fontFamily"),e.attribute("fontSize").toInt());
+    QFont m_font(e.attribute("fontFamily"), e.attribute("fontSize").toInt());
     m_font.setBold(e.attribute("fontBold").toInt());
     m_font.setItalic(e.attribute("fontItalic").toInt());
     m_font.setUnderline(e.attribute("fontUnderline").toInt());
     m_font.setStrikeOut(e.attribute("fontStrikeout").toInt());
+
     font = m_font;
 
     backgroundColor = colorFromString(e.attribute("backgroundColor"));

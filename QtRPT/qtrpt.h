@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef QTRPT_H
-#define QTRPT_H
+#pragma once
 
 #include <QPainter>
 #include <QDomDocument>
@@ -118,8 +117,8 @@ typedef QList<DataSetInfo> DataSetInfoList;
 public:
     typedef QSharedPointer<QtRPT> SPtrQtRPT;
 
-    explicit QtRPT(QObject *parent = 0);
-    static SPtrQtRPT createSPtr(QObject *parent = 0)
+	explicit QtRPT(QObject *parent = nullptr);
+    static SPtrQtRPT createSPtr(QObject *parent = nullptr)
     {
         SPtrQtRPT sptr= SPtrQtRPT(new QtRPT(parent));
         return sptr;
@@ -150,8 +149,8 @@ public:
     ~QtRPT();
     static QString getFormattedValue(QString value, QString formatString);
 
-    void setUserSqlConnection(int pageReport, QString dsName, QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QString sql, QString dbCoding = "UTF8", QString charsetCoding = "UTF8");
-    void activateUserSqlConnection(int pageReport, bool bActive);
+    void setUserSqlConnection(int pageReportNo, QString dsName, QString dbType, QString dbName, QString dbHost, QString dbUser, QString dbPassword, int dbPort, QString dbConnectionName, QString sql, QString dbCoding = "UTF8", QString charsetCoding = "UTF8");
+    void activateUserSqlConnection(int pageReportNo, bool bActive);
 
 protected:
     bool eventFilter(QObject *obj, QEvent *e);
@@ -163,15 +162,15 @@ private:
     int m_recNo;
     int mg_recNo;
     int m_pageReport;
-    float koefRes_h;
-    float koefRes_w;
+    double koefRes_h;
+    double koefRes_w;
     int ph;
     int pw;
     int ml;
     int mr;
     int mt;
     int mb;
-    int curPage;
+    int currentPage;
     int totalPage;
     int m_orientation;
     float m_backgroundOpacity;
@@ -190,18 +189,18 @@ private:
     void newPage(QPrinter *printer, int &y, bool draw, bool newReportPage = false);
     void processPHeader(int &y, bool draw);
     void processPFooter(bool draw);
-    void processMFooter(QPrinter* printer, int &y, int dsNo, bool draw);
-    void processRSummary(QPrinter* printer, int &y, bool draw);
+    void processMFooter(QPrinter *printer, int &y, int dsNo, bool draw, int &pageReportNo);
+    void processRSummary(QPrinter *printer, int &y, bool draw, int &pageReportNo);
     //void (*callbackFunc)(int &recNo, QString &paramName, QVariant &paramValue);
-    void processReport(QPrinter *printer, bool draw, int pageReport);
+    void processReport(QPrinter *printer, bool draw, int &pageReportNo, bool isFirstPage);
     void processRTitle(int &y, bool draw);
-    void processMHeader(int &y, int dsNo, bool draw);
-    void processMasterData(QPrinter* printer, int &y, bool draw, int pageReport, int dsNo);
-    void processGroupHeader(QPrinter* printer, int &y, bool draw, int pageReport);
-    void setPageSettings(QPrinter* printer, int pageReport);
+    void processMHeader(int &y, int dsNo, bool draw, int &pageReportNo);
+    void processMasterData(QPrinter *printer, int &y, bool draw, int &pageReportNo, int dsNo);
+    void processGroupHeader(QPrinter *printer, int &y, bool draw, int &pageReportNo);
+    void setPageSettings(QPrinter *printer, int pageReportNo);
     void drawBackground(bool draw);
-    bool isFieldVisible(RptFieldObject* fieldObject);
-    QVariant processHighligthing(RptFieldObject* field, HiType type);
+    bool isFieldVisible(RptFieldObject *fieldObject);
+    QVariant processHighligthing(RptFieldObject *field, HiType type);
     bool allowPrintPage(bool draw, int curPage_);
     bool allowNewPage(bool draw, int curPage_);
     int fromPage;
@@ -212,12 +211,11 @@ private:
     QPen getPen(RptFieldObject *fieldObject);
     void drawFields(RptFieldObject *fieldObject, int bandTop, bool firstPass);
     void drawLines(RptFieldObject *fieldObject, int bandTop);
-    void openDataSource(int pageReport);
+    void openDataSource(int &pageReportNo);
     int getRecCount(int reportPage, int dsSetNo);
     void setRecCount(int reportPage, int dsSetNo, int recCount);
-    void setUserSqlConnection(int pageReport, const RptSqlConnection &sqlConnection);
-    void getUserSqlConnection(int pageReport, RptSqlConnection &sqlConnection);
-    void editRichText(QTextDocument *document);
+    void setUserSqlConnection(int &pageReportNo, const RptSqlConnection &sqlConnection);
+    void getUserSqlConnection(int &pageReportNo, RptSqlConnection &sqlConnection);
 
     DataSetInfoList m_dataSetInfoList;
 
@@ -264,6 +262,3 @@ private slots:
 #ifdef QTRPT_LIBRARY
     extern "C" QTRPTSHARED_EXPORT QtRPT* createQtRPT();
 #endif
-
-#endif // QTRPT_H
-

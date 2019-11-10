@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef RPTBANDOBJECT_H
-#define RPTBANDOBJECT_H
+#pragma once
 
 #include <RptFieldObject.h>
 
@@ -66,6 +65,3 @@ private:
 
 Q_DECLARE_METATYPE(RptBandObject)
 QDebug operator<<(QDebug dbg, const RptBandObject &obj);
-
-
-#endif // RPTBANDOBJECT_H

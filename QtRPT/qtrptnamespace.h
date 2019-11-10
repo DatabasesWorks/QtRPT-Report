@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef QTRPTNAMESPACE_H
-#define QTRPTNAMESPACE_H
+#pragma once
 
 #include <QObject>
 #include <QMetaType>
@@ -148,13 +147,3 @@ struct GraphData {
 };
 
 typedef QList<GraphData> GraphDataList;
-
-
-
-//Q_ENUMS(QtRptName::FieldType)
-//qRegisterMetaType<QtRptName::FieldType>( "FieldType" );
-//qRegisterMetaTypeStreamOperators()
-
-#endif // QTRPTNAMESPACE_H
-
-

@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef RPTSQL_H
-#define RPTSQL_H
+#pragma once
 
 #include <QObject>
 #include <QSqlQuery>
@@ -48,7 +47,7 @@ class RptSql : public QObject
 {
     Q_OBJECT
 public:
-    explicit RptSql(RptSqlConnection connection, QObject *parent = 0);
+    explicit RptSql(RptSqlConnection connection, QObject *parent = nullptr);
     bool openQuery(QString sql, QString dbCoding, QString charsetCoding);
     int getRecordCount();
     QString getFieldValue(QString fieldName, int recNo);
@@ -63,5 +62,3 @@ signals:
 public slots:
 
 };
-
-#endif // RPTSQL_H
