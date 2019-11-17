@@ -41,6 +41,7 @@ limitations under the License.
 #include "RptSql.h"
 #include "Barcode.h"
 
+
 /*!
  \namespace QtRptName
  \inmodule qtrptnamespace
@@ -299,6 +300,8 @@ void QtRPT::makeReportObjectStructure()
         pageObject->setProperty(this, docElem);
         pageList.append(pageObject);
     }
+
+    addObjectsToQJSEngine(nullptr);
 }
 
 /*!
@@ -1238,6 +1241,13 @@ QScriptValue funcRound(QScriptContext *context, QScriptEngine *engine)
     return qRound(value);
 }
 
+QScriptValue funcDebug(QScriptContext *context, QScriptEngine *engine)
+{
+    Q_UNUSED(engine);
+    qDebug() << context->argument(0).toString();
+    return "";
+}
+
 QStringList QtRPT::splitValue(QString value)
 {
     QString tmpStr;
@@ -1497,6 +1507,35 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
     }
 
     return tmpStr;
+}
+
+
+
+void QtRPT::addObjectsToQJSEngine(QScriptEngine *engine)
+{
+    QScriptEngine myEngine;
+    engine = &myEngine;
+
+    this->setObjectName("www");
+
+    QScriptValue scriptObject = engine->newQObject(this);
+    engine->globalObject().setProperty("QtRPT", scriptObject);
+
+    QScriptValue fun = engine->newFunction(funcDebug);
+    myEngine.globalObject().setProperty("debug", fun);
+
+    QString script = "/*print(QtRPT.objectName); QtRPT.objectName = 'hehe';*/ debug(QtRPT.pageList);";
+    QScriptValue val = engine->evaluate(script);
+    qDebug()<<val.isError();
+    qDebug()<<val.data().toString()<<val.toString();
+
+    QtRPT *docObject = qobject_cast<QtRPT*>( engine->globalObject().property("QtRPT").toQObject() );
+    if (docObject == nullptr)
+        return;
+    else
+    {
+        qDebug() << "222222:" << docObject->objectName();
+    }
 }
 
 QString QtRPT::getFormattedValue(QString value, QString formatString)

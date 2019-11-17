@@ -72,6 +72,7 @@ QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcFloor(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcCeil(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcRound(QScriptContext *context, QScriptEngine *engine);
+QScriptValue funcDebug(QScriptContext *context, QScriptEngine *engine);
 
 static QList<AggregateValues> listOfPair;
 static QList<int> listIdxOfGroup;
@@ -101,6 +102,8 @@ typedef QList<DataSetInfo> DataSetInfoList;
 
 //***************************************************
 
+typedef QList<RptPageObject*> PageList;
+
 #ifndef QTRPT_LIBRARY
     class QtRPT : public QObject
 #else
@@ -110,6 +113,7 @@ typedef QList<DataSetInfo> DataSetInfoList;
 
 {
     Q_OBJECT
+    Q_PROPERTY(PageList pageList MEMBER pageList)
 
     friend class RptFieldObject;
     friend class RptBandObject;
@@ -181,6 +185,7 @@ private:
     void drawBandRow(RptBandObject *band, int bandTop, bool allowDraw = true);
     void fillListOfValue(RptBandObject *bandObject);
     QString sectionField(RptBandObject *band, QString value, bool exp, bool firstPass = false, QString formatString = "");
+    void addObjectsToQJSEngine(QScriptEngine *engine);
     QStringList splitValue(QString value);
     QImage sectionFieldImage(QString value);
     QVariant processFunctions(QString value);
