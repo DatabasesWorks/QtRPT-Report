@@ -1539,10 +1539,11 @@ void QtRPT::addObjectsToQJSEngine(QScriptEngine *engine)
     QScriptValue fun = engine->newFunction(funcDebug);
     myEngine.globalObject().setProperty("debug", fun);
 
-    QString script = "/*print(QtRPT.objectName); QtRPT.objectName = 'hehe';*/ "
+    QString script = "/*print(QtRPT.objectName); QtRPT.objectName = 'hehe';"
                      "debug(QtRPT.pageList);"
                      "debug(QtRPT.pageList.length);"
-                     "debug(QtRPT.pageList[0].objectName);"
+                     "debug(QtRPT.pageList[0].objectName);*/"
+                     "QtRPT.pageList[1].setVisible(false);"
                      ;
     QScriptValue val = engine->evaluate(script);
     qDebug()<<val.isError();

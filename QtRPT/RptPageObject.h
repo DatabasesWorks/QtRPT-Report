@@ -40,6 +40,7 @@ class RptPageObject : public QObject
     Q_OBJECT
 
     friend class QtRPT;
+
 public:
     RptPageObject(QtRPT *qtrpt = nullptr);
     ~RptPageObject();
@@ -66,7 +67,7 @@ public:
     void initCrossTabProcessedRows();
     int crossTabParts();
     bool isVisible();
-    void setVisible(bool value);
+    Q_INVOKABLE void setVisible(bool value);
     quint16 totalPages();
     void setTotalPages(quint16 value);
     QList<RptFieldObject*> crossTabs();
