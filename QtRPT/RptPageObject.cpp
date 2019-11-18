@@ -106,8 +106,9 @@ limitations under the License.
     Constructs a RptPageObject object.
 */
 RptPageObject::RptPageObject(QtRPT *qtrpt)
+: QObject(qtrpt)
 {
-	this->m_qtrpt = qtrpt;
+    this->m_qtrpt = qtrpt;
     this->orientation = 0;
     this->ph = 1188;
     this->pw = 840;
@@ -125,6 +126,7 @@ RptPageObject::RptPageObject(QtRPT *qtrpt)
     this->watermarkOpacity = 1;
     this->m_visible = true;
     this->m_totalPages = 0;
+    this->setObjectName("hello");
 }
 
 void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)

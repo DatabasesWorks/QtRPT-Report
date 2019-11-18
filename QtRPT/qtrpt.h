@@ -103,6 +103,7 @@ typedef QList<DataSetInfo> DataSetInfoList;
 //***************************************************
 
 typedef QList<RptPageObject*> PageList;
+Q_DECLARE_METATYPE(PageList)
 
 #ifndef QTRPT_LIBRARY
     class QtRPT : public QObject

@@ -23,6 +23,7 @@ limitations under the License.
 
 #pragma once
 
+#include <QObject>
 #include <qtrptnamespace.h>
 #include <RptBandObject.h>
 #include <RptFieldObject.h>
@@ -34,8 +35,10 @@ class QtRPT;
 class RptBandObject;
 class RptFieldObject;
 
-class RptPageObject
+class RptPageObject : public QObject
 {
+    Q_OBJECT
+
     friend class QtRPT;
 public:
     RptPageObject(QtRPT *qtrpt = nullptr);
@@ -82,5 +85,5 @@ private:
 
 };
 
-Q_DECLARE_METATYPE(RptPageObject)
+//Q_DECLARE_METATYPE(RptPageObject)
 QDebug operator<<(QDebug dbg, const RptPageObject &obj);

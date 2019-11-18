@@ -1516,6 +1516,21 @@ void QtRPT::addObjectsToQJSEngine(QScriptEngine *engine)
     QScriptEngine myEngine;
     engine = &myEngine;
 
+    //qRegisterMetaType<PageList>("PageList");
+    qScriptRegisterSequenceMetaType<PageList >(engine);
+
+//    qScriptRegisterSequenceMetaType<TransactionList >(docChild->myEngine);
+
+//    //Add MetaInfo about object to the ScriptEngine
+//    QScriptValue constructor = docChild->myEngine->newFunction(TransactionConstructor);
+//    QScriptValue metaObject = docChild->myEngine->newQMetaObject(&Transaction::staticMetaObject, constructor);
+//    docChild->myEngine->globalObject().setProperty("Transaction", metaObject);
+
+//    qScriptRegisterMetaType(docChild->myEngine, dataNodeToScriptValue, dataNodeFromScriptValue);
+//    QScriptValue ctor = docChild->myEngine->newFunction(createDataNode);
+//    docChild->myEngine->globalObject().setProperty("DataNode", ctor);
+
+
     this->setObjectName("www");
 
     QScriptValue scriptObject = engine->newQObject(this);
@@ -1524,7 +1539,11 @@ void QtRPT::addObjectsToQJSEngine(QScriptEngine *engine)
     QScriptValue fun = engine->newFunction(funcDebug);
     myEngine.globalObject().setProperty("debug", fun);
 
-    QString script = "/*print(QtRPT.objectName); QtRPT.objectName = 'hehe';*/ debug(QtRPT.pageList);";
+    QString script = "/*print(QtRPT.objectName); QtRPT.objectName = 'hehe';*/ "
+                     "debug(QtRPT.pageList);"
+                     "debug(QtRPT.pageList.length);"
+                     "debug(QtRPT.pageList[0].objectName);"
+                     ;
     QScriptValue val = engine->evaluate(script);
     qDebug()<<val.isError();
     qDebug()<<val.data().toString()<<val.toString();
