@@ -293,12 +293,14 @@ void QtRPT::makeReportObjectStructure()
     for (int i = 0; i < m_xmlDoc.documentElement().childNodes().count(); i++) {
         QDomElement docElem = m_xmlDoc.documentElement().childNodes().at(i).toElement();
 
-        if (docElem.tagName() != "Report")
-            continue;
-
-        auto pageObject = new RptPageObject();
-        pageObject->setProperty(this, docElem);
-        pageList.append(pageObject);
+        if (docElem.tagName() == "Report") {
+            auto pageObject = new RptPageObject();
+            pageObject->setProperty(this, docElem);
+            pageList.append(pageObject);
+        } else if (docElem.tagName() == "Script") {
+            QDomNode node = m_xmlDoc.documentElement().childNodes().at(i);
+            qDebug() << "CDATA " << node.isCDATASection();
+        }
     }
 
     addObjectsToQJSEngine(nullptr);
