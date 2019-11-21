@@ -126,7 +126,6 @@ RptPageObject::RptPageObject(QtRPT *qtrpt)
     this->watermarkOpacity = 1;
     this->m_visible = true;
     this->m_totalPages = 0;
-    this->setObjectName("hello");
 }
 
 void RptPageObject::setProperty(QtRPT *qtrpt, QDomElement docElem)

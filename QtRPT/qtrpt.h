@@ -179,6 +179,8 @@ private:
     int totalPage;
     int m_orientation;
     float m_backgroundOpacity;
+    QString m_globalScript;
+    QScriptEngine m_globalEngine;
     QPrintPreviewWidget *pr;
     QList<QAction*> lst;
     QDomDocument m_xmlDoc;
@@ -186,7 +188,7 @@ private:
     void drawBandRow(RptBandObject *band, int bandTop, bool allowDraw = true);
     void fillListOfValue(RptBandObject *bandObject);
     QString sectionField(RptBandObject *band, QString value, bool exp, bool firstPass = false, QString formatString = "");
-    void addObjectsToQJSEngine(QScriptEngine *engine);
+    void processGlobalScript();
     QStringList splitValue(QString value);
     QImage sectionFieldImage(QString value);
     QVariant processFunctions(QString value);

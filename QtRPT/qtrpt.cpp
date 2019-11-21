@@ -291,19 +291,22 @@ void QtRPT::makeReportObjectStructure()
 {
     clearObject();
     for (int i = 0; i < m_xmlDoc.documentElement().childNodes().count(); i++) {
-        QDomElement docElem = m_xmlDoc.documentElement().childNodes().at(i).toElement();
+        QDomNode domNode = m_xmlDoc.documentElement().childNodes().at(i);
+        QDomElement docElem = domNode.toElement();
 
         if (docElem.tagName() == "Report") {
             auto pageObject = new RptPageObject();
             pageObject->setProperty(this, docElem);
             pageList.append(pageObject);
         } else if (docElem.tagName() == "Script") {
-            QDomNode node = m_xmlDoc.documentElement().childNodes().at(i);
-            qDebug() << "CDATA " << node.isCDATASection();
+            QDomNode cdataNode = domNode.childNodes().at(0);
+            if (cdataNode.isCDATASection()) {
+                m_globalScript = cdataNode.toCDATASection().data();
+            }
         }
     }
 
-    addObjectsToQJSEngine(nullptr);
+    processGlobalScript();
 }
 
 /*!
@@ -1513,13 +1516,9 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
 
 
 
-void QtRPT::addObjectsToQJSEngine(QScriptEngine *engine)
+void QtRPT::processGlobalScript()
 {
-    QScriptEngine myEngine;
-    engine = &myEngine;
-
-    //qRegisterMetaType<PageList>("PageList");
-    qScriptRegisterSequenceMetaType<PageList >(engine);
+    qScriptRegisterSequenceMetaType<PageList >(&m_globalEngine);
 
 //    qScriptRegisterSequenceMetaType<TransactionList >(docChild->myEngine);
 
@@ -1535,28 +1534,22 @@ void QtRPT::addObjectsToQJSEngine(QScriptEngine *engine)
 
     this->setObjectName("www");
 
-    QScriptValue scriptObject = engine->newQObject(this);
-    engine->globalObject().setProperty("QtRPT", scriptObject);
+    QScriptValue scriptObject = m_globalEngine.newQObject(this);
+    m_globalEngine.globalObject().setProperty("QtRPT", scriptObject);
 
-    QScriptValue fun = engine->newFunction(funcDebug);
-    myEngine.globalObject().setProperty("debug", fun);
+    QScriptValue fun = m_globalEngine.newFunction(funcDebug);
+    m_globalEngine.globalObject().setProperty("debug", fun);
 
-    QString script = "/*print(QtRPT.objectName); QtRPT.objectName = 'hehe';"
-                     "debug(QtRPT.pageList);"
-                     "debug(QtRPT.pageList.length);"
-                     "debug(QtRPT.pageList[0].objectName);*/"
-                     "QtRPT.pageList[1].setVisible(false);"
-                     ;
-    QScriptValue val = engine->evaluate(script);
+    QScriptValue val = m_globalEngine.evaluate(m_globalScript);
     qDebug()<<val.isError();
     qDebug()<<val.data().toString()<<val.toString();
 
-    QtRPT *docObject = qobject_cast<QtRPT*>( engine->globalObject().property("QtRPT").toQObject() );
+    QtRPT *docObject = qobject_cast<QtRPT*>( m_globalEngine.globalObject().property("QtRPT").toQObject() );
     if (docObject == nullptr)
         return;
     else
     {
-        qDebug() << "222222:" << docObject->objectName();
+
     }
 }
 
