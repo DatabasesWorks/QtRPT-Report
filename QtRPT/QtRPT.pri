@@ -18,14 +18,16 @@ SOURCES += $$PWD/qtrpt.cpp \
            $$PWD/RptFieldObject.cpp \
            $$PWD/RptBandObject.cpp \
            $$PWD/RptPageObject.cpp \
-           $$PWD/RptCrossTabObject.cpp
+           $$PWD/RptCrossTabObject.cpp \
+    $$PWD/RptScriptEngine.cpp
 HEADERS += $$PWD/qtrpt.h \
            $$PWD/qtrptnamespace.h \
            $$PWD/RptSql.h \
            $$PWD/RptFieldObject.h \
            $$PWD/RptBandObject.h \
            $$PWD/RptPageObject.h \
-           $$PWD/RptCrossTabObject.h
+           $$PWD/RptCrossTabObject.h \
+    $$PWD/RptScriptEngine.h
 
 RESOURCES += \
     $$PWD/../QtRPT/imagesRpt.qrc

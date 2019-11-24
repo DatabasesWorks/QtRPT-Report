@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>598</height>
+    <width>582</width>
+    <height>633</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -196,6 +196,13 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QRadioButton" name="rBtn20">
+           <property name="text">
+            <string>Global Script proccessing</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -255,7 +262,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>578</width>
+     <width>582</width>
      <height>21</height>
     </rect>
    </property>
@@ -279,9 +286,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="../QtRPT/imagesRpt.qrc"/>
-  <include location="../QtRPT/imagesRpt.qrc"/>
-  <include location="../QtRPT/imagesRpt.qrc"/>
   <include location="resurce.qrc"/>
+  <include location="../QtRPT/imagesRpt.qrc"/>
+  <include location="../QtRPT/imagesRpt.qrc"/>
  </resources>
  <connections/>
 </ui>

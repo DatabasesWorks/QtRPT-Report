@@ -25,15 +25,14 @@ limitations under the License.
 
 #include <QPainter>
 #include <QDomDocument>
-#include <QScriptEngine>
 #include <QPrintPreviewWidget>
 #include <QTextDocument>
 #include <qtrptnamespace.h>
 #include <RptFieldObject.h>
 #include <RptBandObject.h>
 #include <RptPageObject.h>
-#include <RptScriptEngine.h>
 #include <RptSql.h>
+#include "RptScriptEngine.h"
 
 #if QT_VERSION >= 0x50000
     #ifdef QXLSX_LIBRARY
@@ -49,13 +48,23 @@ limitations under the License.
 using namespace QtRptName;
 
 
+struct AggregateValues
+{
+    QString paramName;
+    QVariant paramValue;
+    int lnNo;
+    int pageReport;
+};
+
+
 class RptSql;
 class RptPageObject;
 class RptBandObject;
 class RptFieldObject;
 class RptCrossTabObject;
 
-
+static QList<AggregateValues> listOfPair;
+static QList<int> listIdxOfGroup;
 
 struct DataSetInfo {
     QString dsName;
@@ -170,6 +179,8 @@ private:
     QString sectionField(RptBandObject *band, QString value, bool exp, bool firstPass = false, QString formatString = "");
     void processGlobalScript();
     QStringList splitValue(QString value);
+    QString getVariableValue(QString scriptStr, bool exp = false);
+    QString prepareVariablesForScript(QString scriptStr);
     QImage sectionFieldImage(QString value);
     QVariant processFunctions(QString value);
     QString sectionValue(QString paramName);

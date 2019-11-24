@@ -41,8 +41,6 @@ limitations under the License.
 #include "RptSql.h"
 #include "Barcode.h"
 
-QList<AggregateValues> listOfPair;
-QList<int> listIdxOfGroup;
 
 /*!
  \namespace QtRptName
@@ -1048,54 +1046,47 @@ QVariant QtRPT::processHighligthing(RptFieldObject *field, HiType type)
         for (int i = 1; i < list.size(); i++) {
             if (list.at(i).isEmpty()) continue;
             QString exp = list.at(i);
+
+            RptScriptEngine myEngine;
+
             if (list.at(i).contains("bold") && type == FntBold) {
                 exp.remove("bold=");
                 QString formulaStr = exp.insert(0,cond);
-                formulaStr = sectionField(field->parentBand,formulaStr,true);
-                RptScriptEngine myEngine;
+                formulaStr = getVariableValue(formulaStr, true);  //sectionField(field->parentBand,formulaStr,true);
                 return myEngine.evaluate(formulaStr).toInteger();
             }
             if (list.at(i).contains("italic") && type == FntItalic) {
                 exp.remove("italic=");
                 QString formulaStr = exp.insert(0,cond);
-                formulaStr = sectionField(field->parentBand,formulaStr,true);
-                RptScriptEngine myEngine;
+                formulaStr = getVariableValue(formulaStr, true);  //sectionField(field->parentBand,formulaStr,true);
                 return myEngine.evaluate(formulaStr).toInteger();
             }
             if (list.at(i).contains("underline") && type == FntUnderline) {
                 exp.remove("underline=");
                 QString formulaStr = exp.insert(0,cond);
-                formulaStr = sectionField(field->parentBand,formulaStr,true);
-                RptScriptEngine myEngine;
+                formulaStr = getVariableValue(formulaStr, true);  //sectionField(field->parentBand,formulaStr,true);
                 return myEngine.evaluate(formulaStr).toInteger();
             }
             if (list.at(i).contains("strikeout") && type == FntStrikeout) {
                 exp.remove("strikeout=");
                 QString formulaStr = exp.insert(0,cond);
-                formulaStr = sectionField(field->parentBand,formulaStr,true);
-                RptScriptEngine myEngine;
+                formulaStr = getVariableValue(formulaStr, true);  //sectionField(field->parentBand,formulaStr,true);
                 return myEngine.evaluate(formulaStr).toInteger();
             }
             if (list.at(i).contains("fontColor") && type == FntColor) {
                 exp.remove("fontColor=");
                 QString formulaStr = exp.insert(1,"'");
                 formulaStr = exp.insert(0,cond);
-                formulaStr = sectionField(field->parentBand,formulaStr,true)+"':'"+colorToString(field->m_fontColor)+"'";
-                RptScriptEngine myEngine;
+                //formulaStr = sectionField(field->parentBand,formulaStr,true)+"':'"+colorToString(field->m_fontColor)+"'";
+                formulaStr = getVariableValue(formulaStr, true)+"':'"+colorToString(field->m_fontColor)+"'";
                 return myEngine.evaluate(formulaStr).toString();
             }
             if (list.at(i).contains("backgroundColor") && type == BgColor) {
                 exp.remove("backgroundColor=");
                 QString formulaStr = exp.insert(1,"'");
                 formulaStr = exp.insert(0,cond);
-                //qDebug() << field->name;
-                //qDebug() << colorToString(field->backgroundColor);
-                formulaStr = sectionField(field->parentBand,formulaStr,true)+"':'"+colorToString(field->m_backgroundColor)+"'";
-                //formulaStr = sectionField(field->parentBand,formulaStr,true)+"':'rgba(255,0,255,255)'";
-                QScriptEngine myEngine;
-                //qDebug() << formulaStr;
-                //qDebug() << myEngine.evaluate(formulaStr).toString();
-                //qDebug() << "---";
+                formulaStr = getVariableValue(formulaStr, true)+"':'"+colorToString(field->m_backgroundColor)+"'";
+                //formulaStr = sectionField(field->parentBand,formulaStr,true)+"':'"+colorToString(field->m_backgroundColor)+"'";
                 return myEngine.evaluate(formulaStr).toString();
             }
         }
@@ -1108,24 +1099,19 @@ bool QtRPT::isFieldVisible(RptFieldObject *fieldObject)
     bool visible;
     QString formulaStr = fieldObject->printing;
     if (fieldObject->printing.size() > 1) {
-        formulaStr = sectionField(fieldObject->parentBand, fieldObject->printing, true);
+        formulaStr = getVariableValue(fieldObject->printing, true);
+        //formulaStr = sectionField(fieldObject->parentBand, fieldObject->printing, true);
         RptScriptEngine myEngine;
-        //myEngine.globalObject().setProperty("quant1","3");
-        //qDebug() << myEngine.evaluate("quant1;").toString();
-        visible = myEngine.evaluate(formulaStr).toInteger();
-
-        //QScriptValue fun = myEngine.evaluate("(function(a, b) { return a == b; })");
-        //QScriptValue fun = myEngine.evaluate("if (1>2) true else false");
-        //QScriptValueList args;
-        /*args << "k" << "k";
-        QScriptValue threeAgain = fun.call(QScriptValue(), args);
-        qDebug() << threeAgain.toString();*/
-
+        visible = myEngine.evaluate(formulaStr).toBool();
     } else {
         visible = formulaStr.toInt();
     }
     return visible;
 }
+
+
+
+
 
 QStringList QtRPT::splitValue(QString value)
 {
@@ -1153,6 +1139,104 @@ QStringList QtRPT::splitValue(QString value)
     if (!tmpStr.isEmpty())
         res << tmpStr;
     return res;
+}
+
+//experimental
+QString QtRPT::getVariableValue(QString scriptStr, bool exp)
+{
+    // Split string on variables that will be quered
+    QString tmpValue = scriptStr;
+    QRegularExpression re("\\[.*?]", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpressionMatchIterator i = re.globalMatch(tmpValue);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+
+             QString tmp = sectionValue(variable);
+
+             if (exp) {   //Process highlighting and visibility
+                 bool ok;
+                 tmp.toDouble(&ok);
+                 if (!ok) tmp.toFloat(&ok);
+                 if (!ok) tmp.toInt(&ok);
+                 if (!ok) tmp = "'"+tmp+"'";  //Not a number
+             }
+
+             scriptStr = scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    return scriptStr;
+}
+
+QString QtRPT::prepareVariablesForScript(QString scriptStr)
+{
+    //return scriptStr;
+    scriptStr = scriptStr.replace("sum([", "Sum([", Qt::CaseInsensitive);
+
+    QRegularExpression re1("(Sum)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    //QRegularExpression re("(if\\s*)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpressionMatchIterator i = re1.globalMatch(scriptStr);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+             QString tmp = variable;
+             tmp = tmp.replace("[", "'").replace("]", "'");
+             scriptStr = scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    /*QRegularExpression re2("\\AVG(.*?)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re2.globalMatch(scriptStr);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+
+             QString tmp = variable.replace("[", "'").replace("]", "'");
+             scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    QRegularExpression re3("\\COUNT(.*?)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re3.globalMatch(scriptStr);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+
+             QString tmp = variable.replace("[", "'").replace("]", "'");
+             scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    QRegularExpression re4("\\MIN(.*?)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re4.globalMatch(scriptStr);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+
+             QString tmp = variable.replace("[", "'").replace("]", "'");
+             scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    QRegularExpression re5("\\MAX(.*?)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re5.globalMatch(scriptStr);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+
+             QString tmp = variable.replace("[", "'").replace("]", "'");
+             scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }*/
+
+    return scriptStr;
 }
 
 QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool firstPass, QString formatString)
@@ -1185,7 +1269,15 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
     value = tmpValue;
     // Do searching and tmp replacing - end
 
+    //qDebug() << "before"<<value;
+    //value = prepareVariablesForScript(value);
+    //qDebug() << value;
 
+    //qDebug() << "before"<<value;
+    //value = splitVariables(value);
+    //qDebug() << value;
+
+    // Split sentence on logical parts
     for (int i = 0; i < value.size(); ++i) {
         if (value.at(i) != '[' && value.at(i) != ']' &&
             value.at(i) != '<' && value.at(i) != '>' && !aggregate)
@@ -1227,23 +1319,44 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
     if (!tmpStr.isEmpty())
         res << tmpStr;
 
+    /*tmpStr.clear();
+    for (int i = 0; i < res.size(); ++i) {
+        QString tmp = res.at(i);
+
+        bool ok;
+        if (exp) {   //Process highlighting and visibility
+            tmp.toDouble(&ok);
+            if (!ok) tmp.toFloat(&ok);
+            if (!ok) tmp.toInt(&ok);
+            if (!ok) tmpStr += "'"+tmp+"'";  //Not a number
+            else tmpStr += tmp;
+        } else {  //Process usuall field
+            //Process during first pass to calculate aggregate values
+            if (firstPass) {
+                AggregateValues av;
+                av.paramName = res.at(i);
+                av.paramValue = tmp;
+                av.lnNo = m_recNo;
+                av.pageReport = m_pageReport;
+                bool founded = false;
+                for (auto &values : listOfPair) {
+                    if (values.pageReport == av.pageReport &&
+                        values.lnNo == av.lnNo &&
+                        values.paramName == av.paramName)
+                        founded = true;
+                }
+                if (!founded)
+                    listOfPair.append(av);
+            }
+            tmpStr += getFormattedValue(tmp, formatString); //tmp;
+        }
+    }
+    return value;*/
+
     tmpStr.clear();
     for (int i = 0; i < res.size(); ++i) {
         if (res.at(i).contains("[") && res.at(i).contains("]") && !res.at(i).contains("<")) {
-            QString tmp;
-
-            auto rptSql = pageList[m_pageReport]->rtpSql;
-            if (rptSql != nullptr) {
-                if (res.at(i).contains(rptSql->objectName())) {
-                    QString fieldName = res.at(i);
-                    fieldName.replace("[","");
-                    fieldName.replace("]","");
-                    fieldName.replace(rptSql->objectName()+".","");
-                    tmp = rptSql->getFieldValue(fieldName, m_recNo);
-                }
-            } else {
-                tmp = sectionValue(res.at(i));
-            }
+            QString tmp = sectionValue(res.at(i));
 
             bool ok;
             if (exp) {   //Process highlighting and visibility
@@ -1287,7 +1400,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                 res[i] = res[i].replace("<LineCount>",processFunctions("LineCount").toString());
 
             if (res[i].contains("<") && res[i].contains(">")) {
-                QString formulaStr=res[i];
+                QString formulaStr = res[i];
 
                 RptScriptEngine myEngine;
 
@@ -1309,26 +1422,17 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                         !tl.at(j-1).toUpper().contains("ToLower")
                     )
                     {
-                        // If we have Sql DataSource
-                        auto rptSql = pageList[m_pageReport]->rtpSql;
-                        if (rptSql != nullptr) {
-                            if (tl.at(j).contains(rptSql->objectName())) {
-                                QString fieldName = tl.at(j);
-                                fieldName.replace("[","");
-                                fieldName.replace("]","");
-                                fieldName.replace(rptSql->objectName()+".","");
-                                QString tmp = rptSql->getFieldValue(fieldName, m_recNo);
-                                qDebug() << "value from DB: "<<tmp;
-                                formulaStr.replace(tl.at(j), tmp);
-                                qDebug() << "formula with value: "<<formulaStr;
-                            }
-                        } else {
-                            formulaStr.replace(tl.at(j), sectionValue(tl.at(j)));
-                        }
+                        QString tmp = sectionValue(res.at(i));
+                        formulaStr.replace(tl.at(j), tmp);
                     }
                 }
 
                 myEngine.globalObject().setProperty("showInGroup", band->showInGroup);
+
+
+
+
+
 
                 formulaStr = formulaStr.replace("Sum(","Sum(0,", Qt::CaseInsensitive);
                 formulaStr = formulaStr.replace("Avg(","Sum(1,", Qt::CaseInsensitive);
@@ -1343,7 +1447,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                 // Do replacing back
                 formulaStr = formulaStr.replace("&lt-;", "<").replace("&gt+;", ">");
 
-
+qDebug() << formulaStr;
                 QScriptValue result  = myEngine.evaluate(formulaStr);
                 if (myEngine.hasUncaughtException()) {
                       int line = myEngine.uncaughtExceptionLineNumber();
@@ -1378,8 +1482,6 @@ void QtRPT::processGlobalScript()
 //    QScriptValue ctor = docChild->myEngine->newFunction(createDataNode);
 //    docChild->myEngine->globalObject().setProperty("DataNode", ctor);
 
-
-    this->setObjectName("www");
 
     QScriptValue scriptObject = m_globalEngine.newQObject(this);
     m_globalEngine.globalObject().setProperty("QtRPT", scriptObject);
@@ -1431,6 +1533,7 @@ QString QtRPT::getFormattedValue(QString value, QString formatString)
             }
         }
     }
+
     return value;
 }
 
@@ -1485,17 +1588,30 @@ QImage QtRPT::sectionFieldImage(QString value)
 
 QString QtRPT::sectionValue(QString paramName)
 {
-    QVariant paramValue;
-    paramName.replace("[","");
-    paramName.replace("]","");
-    //callbackFunc(recNo, paramName, paramValue);
-    //if (paramValue.isNull())
+    QString tmp;
 
-    //if (!listOfGroup.isEmpty()) //group processing
-    //    m_recNo = mg_recNo;
+    auto rptSql = pageList[m_pageReport]->rtpSql;
+    if (rptSql != nullptr) {
+        if (paramName.contains(rptSql->objectName())) {
+            QString fieldName = paramName;
+            fieldName.replace("[","");
+            fieldName.replace("]","");
+            fieldName.replace(rptSql->objectName()+".","");
+            return rptSql->getFieldValue(fieldName, m_recNo);
+        }
+    } else {
+        QVariant paramValue;
+        paramName.replace("[","");
+        paramName.replace("]","");
+        //callbackFunc(recNo, paramName, paramValue);
+        //if (paramValue.isNull())
 
-    emit setValue(m_recNo, paramName, paramValue, m_pageReport);        
-    return paramValue.toString();
+        //if (!listOfGroup.isEmpty()) //group processing
+        //    m_recNo = mg_recNo;
+
+        emit setValue(m_recNo, paramName, paramValue, m_pageReport);
+        return paramValue.toString();
+    }
 }
 
 QImage QtRPT::sectionValueImage(QString paramName)

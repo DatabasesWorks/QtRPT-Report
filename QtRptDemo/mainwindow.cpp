@@ -184,7 +184,7 @@ void MainWindow::showReport()
     }
     else if (ui->rBtn19->isChecked())
     {
-        QString fileName = dir.absolutePath()+"/examples_report/example20.xml";
+        QString fileName = dir.absolutePath()+"/examples_report/example19.xml";
         auto report = QtRPT::createSPtr(this);
 
         if (report->loadReport(fileName) == false)
@@ -194,6 +194,21 @@ void MainWindow::showReport()
                          this, SLOT(setValue(const int, const QString, QVariant&, const int)));
         QObject::connect(report.data(), SIGNAL(setDSInfo(DataSetInfo &)),
                          this, SLOT(setDSInfo(DataSetInfo &)));
+
+        report->printExec(true);
+    }
+    else if (ui->rBtn20->isChecked())
+    {
+        QString fileName = dir.absolutePath()+"/examples_report/example20.xml";
+        auto report = QtRPT::createSPtr(this);
+
+        if (report->loadReport(fileName) == false)
+            qDebug()<<"Report file not found";
+
+        QObject::connect(report.data(), SIGNAL(setValue(const int, const QString, QVariant&, const int)),
+                         this, SLOT(setValue(const int, const QString, QVariant&, const int)));
+//        QObject::connect(report.data(), SIGNAL(setDSInfo(DataSetInfo &)),
+//                         this, SLOT(setDSInfo(DataSetInfo &)));
 
         report->printExec(true);
     }
@@ -288,6 +303,14 @@ void MainWindow::setValue(const int recNo, const QString paramName, QVariant &pa
             paramValue = recNo;
         if (paramName == "ds2")
             paramValue = recNo;
+    }
+    if (ui->rBtn20->isChecked()) {
+        if (paramName == "var1")
+            paramValue = 111;
+        if (paramName == "var2")
+            paramValue = 222;
+        if (paramName == "var3")
+            paramValue = 333;
     }
 }
 
