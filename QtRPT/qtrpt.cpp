@@ -1211,20 +1211,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
     tmpStr.clear();
     for (int i = 0; i < res.size(); ++i) {
         if (res.at(i).contains("[") && res.at(i).contains("]") && !res.at(i).contains("<")) {
-            QString tmp;
-
-            auto rptSql = pageList[m_pageReport]->rtpSql;
-            if (rptSql != nullptr) {
-                if (res.at(i).contains(rptSql->objectName())) {
-                    QString fieldName = res.at(i);
-                    fieldName.replace("[","");
-                    fieldName.replace("]","");
-                    fieldName.replace(rptSql->objectName()+".","");
-                    tmp = rptSql->getFieldValue(fieldName, m_recNo);
-                }
-            } else {
-                tmp = sectionValue(res.at(i));
-            }
+            QString tmp = sectionValue(res.at(i));
 
             bool ok;
             if (exp) {   //Process highlighting and visibility
@@ -1290,22 +1277,8 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                         !tl.at(j-1).toUpper().contains("ToLower")
                     )
                     {
-                        // If we have Sql DataSource
-                        auto rptSql = pageList[m_pageReport]->rtpSql;
-                        if (rptSql != nullptr) {
-                            if (tl.at(j).contains(rptSql->objectName())) {
-                                QString fieldName = tl.at(j);
-                                fieldName.replace("[","");
-                                fieldName.replace("]","");
-                                fieldName.replace(rptSql->objectName()+".","");
-                                QString tmp = rptSql->getFieldValue(fieldName, m_recNo);
-                                qDebug() << "value from DB: "<<tmp;
-                                formulaStr.replace(tl.at(j), tmp);
-                                qDebug() << "formula with value: "<<formulaStr;
-                            }
-                        } else {
-                            formulaStr.replace(tl.at(j), sectionValue(tl.at(j)));
-                        }
+                        QString tmp = sectionValue(tl.at(j));
+                        formulaStr.replace(tl.at(j), tmp);
                     }
                 }
 
@@ -1464,17 +1437,24 @@ QImage QtRPT::sectionFieldImage(QString value)
 
 QString QtRPT::sectionValue(QString paramName)
 {
-    QVariant paramValue;
     paramName.replace("[","");
     paramName.replace("]","");
-    //callbackFunc(recNo, paramName, paramValue);
-    //if (paramValue.isNull())
 
-    //if (!listOfGroup.isEmpty()) //group processing
-    //    m_recNo = mg_recNo;
+    QString tmp;
 
-    emit setValue(m_recNo, paramName, paramValue, m_pageReport);        
-    return paramValue.toString();
+    auto rptSql = pageList[m_pageReport]->rtpSql;
+    if (rptSql != nullptr) {
+        if (paramName.contains(rptSql->objectName())) {
+            QString fieldName = paramName;
+            fieldName.replace(rptSql->objectName()+".","");
+            return rptSql->getFieldValue(fieldName, m_recNo);
+        }
+    } else {
+        QVariant paramValue;
+
+        emit setValue(m_recNo, paramName, paramValue, m_pageReport);
+        return paramValue.toString();
+    }
 }
 
 QImage QtRPT::sectionValueImage(QString paramName)
