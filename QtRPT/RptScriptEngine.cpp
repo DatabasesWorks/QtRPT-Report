@@ -34,6 +34,10 @@ RptScriptEngine::RptScriptEngine(QObject *parent)
     this->globalObject().setProperty("Round", fun);
 }
 
+QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fileName, int lineNumber)
+{
+    return QScriptEngine::evaluate(program);
+}
 //--------------------------------------------------------
 
 QScriptValue funcReplace(QScriptContext *context, QScriptEngine *engine)

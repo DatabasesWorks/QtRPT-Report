@@ -169,6 +169,7 @@ private:
     QString sectionField(RptBandObject *band, QString value, bool exp, bool firstPass = false, QString formatString = "");
     void processGlobalScript();
     QStringList splitValue(QString value);
+    QString getVariableValue(QString scriptStr, bool exp = false);
     QImage sectionFieldImage(QString value);
     QVariant processFunctions(QString value);
     QString sectionValue(QString paramName);
