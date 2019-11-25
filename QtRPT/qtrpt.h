@@ -25,7 +25,6 @@ limitations under the License.
 
 #include <QPainter>
 #include <QDomDocument>
-#include <QScriptEngine>
 #include <QPrintPreviewWidget>
 #include <QTextDocument>
 #include <qtrptnamespace.h>
