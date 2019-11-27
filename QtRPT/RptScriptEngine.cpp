@@ -36,7 +36,18 @@ RptScriptEngine::RptScriptEngine(QObject *parent)
 
 QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fileName, int lineNumber)
 {
-    return QScriptEngine::evaluate(program);
+    QScriptValue result = QScriptEngine::evaluate(program);
+
+    qDebug() << program;
+
+    if (this->hasUncaughtException())
+    {
+          int line = this->uncaughtExceptionLineNumber();
+          qDebug() << "formulaStr: " << program;
+          qDebug() << "uncaught exception at line" << line << ":" << result.toString();
+    }
+
+    return result;
 }
 //--------------------------------------------------------
 

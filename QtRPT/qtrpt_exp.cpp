@@ -1148,6 +1148,7 @@ QString QtRPT::getVariableValue(QString scriptStr, bool exp)
     QString tmpValue = scriptStr;
     QRegularExpression re("\\[.*?]", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatchIterator i = re.globalMatch(tmpValue);
+
     while (i.hasNext()) {
         QRegularExpressionMatch match = i.next();
         if (match.hasMatch()) {
@@ -1429,11 +1430,6 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
 
                 myEngine.globalObject().setProperty("showInGroup", band->showInGroup);
 
-
-
-
-
-
                 formulaStr = formulaStr.replace("Sum(","Sum(0,", Qt::CaseInsensitive);
                 formulaStr = formulaStr.replace("Avg(","Sum(1,", Qt::CaseInsensitive);
                 formulaStr = formulaStr.replace("Count(","Sum(2,", Qt::CaseInsensitive);
@@ -1447,14 +1443,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                 // Do replacing back
                 formulaStr = formulaStr.replace("&lt-;", "<").replace("&gt+;", ">");
 
-qDebug() << formulaStr;
                 QScriptValue result  = myEngine.evaluate(formulaStr);
-                if (myEngine.hasUncaughtException()) {
-                      int line = myEngine.uncaughtExceptionLineNumber();
-                      qDebug() << "formulaStr: " << formulaStr;
-                      qDebug() << "uncaught exception at line" << line << ":" << result.toString();
-                }
-
                 res[i] = getFormattedValue(result.toString(), formatString);
             }
 
@@ -1588,30 +1577,24 @@ QImage QtRPT::sectionFieldImage(QString value)
 
 QString QtRPT::sectionValue(QString paramName)
 {
-    QString tmp;
+    paramName.replace("[","");
+    paramName.replace("]","");
 
     auto rptSql = pageList[m_pageReport]->rtpSql;
     if (rptSql != nullptr) {
         if (paramName.contains(rptSql->objectName())) {
             QString fieldName = paramName;
-            fieldName.replace("[","");
-            fieldName.replace("]","");
             fieldName.replace(rptSql->objectName()+".","");
             return rptSql->getFieldValue(fieldName, m_recNo);
         }
     } else {
         QVariant paramValue;
-        paramName.replace("[","");
-        paramName.replace("]","");
-        //callbackFunc(recNo, paramName, paramValue);
-        //if (paramValue.isNull())
-
-        //if (!listOfGroup.isEmpty()) //group processing
-        //    m_recNo = mg_recNo;
 
         emit setValue(m_recNo, paramName, paramValue, m_pageReport);
         return paramValue.toString();
     }
+
+    return QString();
 }
 
 QImage QtRPT::sectionValueImage(QString paramName)

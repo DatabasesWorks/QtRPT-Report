@@ -1200,6 +1200,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
     // Do searching and tmp replacing - end
 
 
+    // Split sentence on logical parts
     for (int i = 0; i < value.size(); ++i) {
         if (value.at(i) != '[' && value.at(i) != ']' &&
             value.at(i) != '<' && value.at(i) != '>' && !aggregate)
@@ -1330,14 +1331,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool exp, bool f
                 // Do replacing back
                 formulaStr = formulaStr.replace("&lt-;", "<").replace("&gt+;", ">");
 
-
                 QScriptValue result  = myEngine.evaluate(formulaStr);
-                if (myEngine.hasUncaughtException()) {
-                      int line = myEngine.uncaughtExceptionLineNumber();
-                      qDebug() << "formulaStr: " << formulaStr;
-                      qDebug() << "uncaught exception at line" << line << ":" << result.toString();
-                }
-
                 res[i] = getFormattedValue(result.toString(), formatString);
             }
 
@@ -1416,6 +1410,7 @@ QString QtRPT::getFormattedValue(QString value, QString formatString)
             }
         }
     }
+
     return value;
 }
 
@@ -1473,8 +1468,6 @@ QString QtRPT::sectionValue(QString paramName)
     paramName.replace("[","");
     paramName.replace("]","");
 
-    QString tmp;
-
     auto rptSql = pageList[m_pageReport]->rtpSql;
     if (rptSql != nullptr) {
         if (paramName.contains(rptSql->objectName())) {
@@ -1488,6 +1481,8 @@ QString QtRPT::sectionValue(QString paramName)
         emit setValue(m_recNo, paramName, paramValue, m_pageReport);
         return paramValue.toString();
     }
+
+    return QString();
 }
 
 QImage QtRPT::sectionValueImage(QString paramName)
