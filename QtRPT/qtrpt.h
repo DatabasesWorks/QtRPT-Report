@@ -166,7 +166,7 @@ private:
     QDomNode getBand(BandType type, QDomElement docElem);
     void drawBandRow(RptBandObject *band, int bandTop, bool allowDraw = true);
     void fillListOfValue(RptBandObject *bandObject);
-    QString sectionField(RptBandObject *band, QString value, bool exp, bool firstPass = false, QString formatString = "");
+    QString sectionField(RptBandObject *band, QString value, bool firstPass = false, QString formatString = "");
     void processGlobalScript();
     QStringList splitValue(QString value);
     QString getVariableValue(QString scriptStr, bool exp = false);

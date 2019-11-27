@@ -36,6 +36,9 @@ RptScriptEngine::RptScriptEngine(QObject *parent)
 
 QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fileName, int lineNumber)
 {
+    Q_UNUSED(fileName);
+    Q_UNUSED(lineNumber);
+
     QScriptValue result = QScriptEngine::evaluate(program);
 
     qDebug() << program;

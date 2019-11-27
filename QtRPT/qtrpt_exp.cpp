@@ -1154,7 +1154,7 @@ QString QtRPT::getVariableValue(QString scriptStr, bool exp)
         if (match.hasMatch()) {
              QString variable = match.captured(0);
 
-             QString tmp = sectionValue(variable);
+             QString tmp = sectionValue(variable);  // Query the variable
 
              if (exp) {   //Process highlighting and visibility
                  bool ok;
