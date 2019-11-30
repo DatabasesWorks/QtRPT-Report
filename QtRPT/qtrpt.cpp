@@ -6,7 +6,7 @@ Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2018 Aleksey Osipov
+Copyright 2012-2020 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -1108,39 +1108,11 @@ bool QtRPT::isFieldVisible(RptFieldObject *fieldObject)
     return visible;
 }
 
-QStringList QtRPT::splitValue(QString value)
+QStringList QtRPT::splitStringOnVariable(QString strValue)
 {
-    QString tmpStr;
     QStringList res;
 
-    for (int i = 0; i < value.size(); ++i) {
-        if (value.at(i) != '[' && value.at(i) != ']')
-            tmpStr += value.at(i);
-        else {
-            if (value.at(i) == ']') {
-                tmpStr += value.at(i);
-                res << tmpStr;
-                tmpStr.clear();
-            }
-            if (value.at(i) == '[') {
-                if (!tmpStr.isEmpty())
-                    res << tmpStr;
-                tmpStr.clear();
-                tmpStr += value.at(i);
-            }
-        }
-    }
-
-    if (!tmpStr.isEmpty())
-        res << tmpStr;
-    return res;
-}
-
-//experimental
-QString QtRPT::getVariableValue(QString scriptStr, bool exp)
-{
-    // Split string on variables that will be quered
-    QString tmpValue = scriptStr;
+    QString tmpValue = strValue;
     QRegularExpression re("\\[.*?]", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatchIterator i = re.globalMatch(tmpValue);
 
@@ -1149,21 +1121,124 @@ QString QtRPT::getVariableValue(QString scriptStr, bool exp)
         if (match.hasMatch()) {
              QString variable = match.captured(0);
 
-             QString tmp = sectionValue(variable);  // Query the variable
-
-             if (exp) {   //Process highlighting and visibility
-                 bool ok;
-                 tmp.toDouble(&ok);
-                 if (!ok) tmp.toFloat(&ok);
-                 if (!ok) tmp.toInt(&ok);
-                 if (!ok) tmp = "'"+tmp+"'";  //Not a number
-             }
-
-             scriptStr = scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+             res << variable;
         }
     }
 
+    return res;
+}
+
+//experimental
+QString QtRPT::getVariableValue(QString scriptStr, bool exp)
+{
+    // Split string on variables that will be quered
+    QStringList varList = splitStringOnVariable(scriptStr);
+    for (const auto &variable : varList) {
+        QString tmp = sectionValue(variable);  // Query the variable
+
+        if (exp) {   //Process highlighting and visibility
+            bool ok;
+            tmp.toDouble(&ok);
+            if (!ok) tmp.toFloat(&ok);
+            if (!ok) tmp.toInt(&ok);
+            if (!ok) tmp = "'"+tmp+"'";  //Not a number
+        }
+
+        scriptStr = scriptStr.replace(variable, tmp, Qt::CaseInsensitive);
+    }
+
     return scriptStr;
+}
+
+QString QtRPT::stringPreprocessing(QString str)
+{
+    if (str.contains("<Date>"))
+        str = str.replace("<Date>", getInternalVariable("Date").toString());
+    if (str.contains("<Time>"))
+        str = str.replace("<Time>", QTime::currentTime().toString());
+    if (str.contains("<Page>"))
+        str = str.replace("<Page>", QString::number(currentPage));
+    if (str.contains("<TotalPages>"))
+        str = str.replace("<TotalPages>", QString::number(totalPage));
+    if (str.contains("<LineNo>"))
+        str = str.replace("<LineNo>", getInternalVariable("LineNo").toString());
+    if (str.contains("<LineCount>"))
+        str = str.replace("<LineCount>", getInternalVariable("LineCount").toString());
+
+
+    str = str.replace("sum([", "SUM([", Qt::CaseInsensitive);
+    str = str.replace("avg([", "AVG([", Qt::CaseInsensitive);
+    str = str.replace("count([", "COUNT([", Qt::CaseInsensitive);
+    str = str.replace("min([", "MIN([", Qt::CaseInsensitive);
+    str = str.replace("max([", "MAX([", Qt::CaseInsensitive);
+
+    QRegularExpression re1("(SUM)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpressionMatchIterator i = re1.globalMatch(str);
+    while (i.hasNext()) {
+        auto match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+             QString tmp = variable;
+             tmp = tmp.replace("[", "'").replace("]", "'");
+             str = str.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    QRegularExpression re2("(AVG)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re2.globalMatch(str);
+    while (i.hasNext()) {
+        auto match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+             QString tmp = variable;
+             tmp = tmp.replace("[", "'").replace("]", "'");
+             str = str.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    QRegularExpression re3("(COUNT)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re3.globalMatch(str);
+    while (i.hasNext()) {
+        auto match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+             QString tmp = variable;
+             tmp = tmp.replace("[", "'").replace("]", "'");
+             str = str.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    QRegularExpression re4("(MIN)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re4.globalMatch(str);
+    while (i.hasNext()) {
+        auto match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+             QString tmp = variable;
+             tmp = tmp.replace("[", "'").replace("]", "'");
+             str = str.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    QRegularExpression re5("(MAX)\\((.*?)\\)", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    i = re5.globalMatch(str);
+    while (i.hasNext()) {
+        auto match = i.next();
+        if (match.hasMatch()) {
+             QString variable = match.captured(0);
+             QString tmp = variable;
+             tmp = tmp.replace("[", "'").replace("]", "'");
+             str = str.replace(variable, tmp, Qt::CaseInsensitive);
+        }
+    }
+
+    str = str.replace("SUM(","SUM(0,", Qt::CaseInsensitive);
+    str = str.replace("AVG(","SUM(1,", Qt::CaseInsensitive);
+    str = str.replace("COUNT(","SUM(2,", Qt::CaseInsensitive);
+    str = str.replace("MAX(","SUM(3,", Qt::CaseInsensitive);
+    str = str.replace("MIN(","SUM(4,", Qt::CaseInsensitive);
+
+    return str;
 }
 
 QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, QString formatString)
@@ -1171,6 +1246,10 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
     QString tmpStr;
     QStringList res;
     bool aggregate = false;
+
+    //qDebug() << "before"<<value;
+    value = stringPreprocessing(value);
+    //qDebug() << value;
 
     // To proccess correctly the different functions/operators of Script language
     // we should make a tmp replacing of '< >' charcters.
@@ -1197,6 +1276,32 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
     // Do searching and tmp replacing - end
 
 
+    QStringList varList = splitStringOnVariable(value);
+    for (auto &variable : varList) {
+        QString tmp = sectionValue(variable);
+
+        //Process during first pass to calculate aggregate values
+        if (firstPass) {
+            AggregateValues av;
+            av.paramName = variable.replace("[", "").replace("]", "");
+            av.paramValue = tmp;
+            av.lnNo = m_recNo;
+            av.pageReport = m_pageReport;
+            bool founded = false;
+
+            for (auto &values : listOfPair) {
+                if (values.pageReport == av.pageReport &&
+                    values.lnNo == av.lnNo &&
+                    values.paramName == av.paramName)
+                    founded = true;
+            }
+            if (!founded)
+                listOfPair.append(av);
+        }
+
+        value.replace(variable, tmp);
+    }
+
     // Split sentence on logical parts
     for (int i = 0; i < value.size(); ++i) {
         if (value.at(i) != '[' && value.at(i) != ']' &&
@@ -1207,8 +1312,6 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
         else if (value.at(i) != '<' && value.at(i) != '>' && aggregate)
              tmpStr += value.at(i);
         else {
-            //if (exp && (value.at(i) == '<' || value.at(i) == '>'))
-            //    tmpStr += value.at(i);
             if (value.at(i) == ']' && !aggregate) {
                 tmpStr += value.at(i);
                 res << tmpStr;
@@ -1220,14 +1323,14 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
                 tmpStr.clear();
                 tmpStr += value.at(i);
             }
-            if (/*!exp && */value.at(i) == '<') {
+            if (value.at(i) == '<') {
                 aggregate = true;
                 if (!tmpStr.isEmpty())
                     res << tmpStr;
                 tmpStr.clear();
                 tmpStr += value.at(i);
             }
-            if (/*!exp && */value.at(i) == '>') {
+            if (value.at(i) == '>') {
                 aggregate = false;
                 tmpStr += value.at(i);
                 res << tmpStr;
@@ -1239,94 +1342,29 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
     if (!tmpStr.isEmpty())
         res << tmpStr;
 
+
     tmpStr.clear();
     for (int i = 0; i < res.size(); ++i) {
-        if (res.at(i).contains("[") && res.at(i).contains("]") && !res.at(i).contains("<")) {
-            QString tmp = sectionValue(res.at(i));
+        if (res[i].contains("<") && res[i].contains(">")) {
+            QString formulaStr = res[i];
 
-            //Process during first pass to calculate aggregate values
-            if (firstPass) {
-                AggregateValues av;
-                av.paramName = res.at(i);
-                av.paramValue = tmp;
-                av.lnNo = m_recNo;
-                av.pageReport = m_pageReport;
-                bool founded = false;
-                for (auto &values : listOfPair) {
-                    if (values.pageReport == av.pageReport &&
-                        values.lnNo == av.lnNo &&
-                        values.paramName == av.paramName)
-                        founded = true;
-                }
-                if (!founded)
-                    listOfPair.append(av);
-            }
-            tmpStr += getFormattedValue(tmp, formatString); //tmp;
-        } else {
-            if (res[i].contains("<Date>"))
-                res[i] = res[i].replace("<Date>",processFunctions("Date").toString());
-            if (res[i].contains("<Time>"))
-                res[i] = res[i].replace("<Time>",QTime::currentTime().toString());
-            if (res[i].contains("<Page>"))
-                res[i] = res[i].replace("<Page>",QString::number(currentPage));
-            if (res[i].contains("<TotalPages>"))
-                res[i] = res[i].replace("<TotalPages>",QString::number(totalPage));
-            if (res[i].contains("<LineNo>"))
-                res[i] = res[i].replace("<LineNo>",processFunctions("LineNo").toString());
-            if (res[i].contains("<LineCount>"))
-                res[i] = res[i].replace("<LineCount>",processFunctions("LineCount").toString());
+            RptScriptEngine myEngine;
+            myEngine.globalObject().setProperty("showInGroup", band->showInGroup);
 
-            if (res[i].contains("<") && res[i].contains(">")) {
-                QString formulaStr = res[i];
+            formulaStr = formulaStr.replace("<","");
+            formulaStr = formulaStr.replace(">","");
 
-                RptScriptEngine myEngine;
+            // Do replacing back
+            formulaStr = formulaStr.replace("&lt-;", "<").replace("&gt+;", ">");
 
-                QStringList tl = splitValue(formulaStr);
-                for (int j = 1; j < tl.size(); ++j) {
-                    if (tl.at(j).contains("[") &&
-                        tl.at(j).contains("]") &&
-                        !tl.at(j-1).toUpper().contains("SUM") &&
-                        !tl.at(j-1).toUpper().contains("AVG") &&
-                        !tl.at(j-1).toUpper().contains("COUNT") &&
-                        !tl.at(j-1).toUpper().contains("MAX") &&
-                        !tl.at(j-1).toUpper().contains("MIN") &&
-                        !tl.at(j-1).toUpper().contains("NumberToWords") &&
-                        !tl.at(j-1).toUpper().contains("Frac") &&
-                        !tl.at(j-1).toUpper().contains("Floor") &&
-                        !tl.at(j-1).toUpper().contains("Ceil") &&
-                        !tl.at(j-1).toUpper().contains("Round") &&
-                        !tl.at(j-1).toUpper().contains("ToUpper") &&
-                        !tl.at(j-1).toUpper().contains("ToLower")
-                    )
-                    {
-                        QString tmp = sectionValue(tl.at(j));
-                        formulaStr.replace(tl.at(j), tmp);
-                    }
-                }
-
-                myEngine.globalObject().setProperty("showInGroup", band->showInGroup);
-
-                formulaStr = formulaStr.replace("Sum(","Sum(0,", Qt::CaseInsensitive);
-                formulaStr = formulaStr.replace("Avg(","Sum(1,", Qt::CaseInsensitive);
-                formulaStr = formulaStr.replace("Count(","Sum(2,", Qt::CaseInsensitive);
-                formulaStr = formulaStr.replace("Max(","Sum(3,", Qt::CaseInsensitive);
-                formulaStr = formulaStr.replace("Min(","Sum(4,", Qt::CaseInsensitive);
-                formulaStr = formulaStr.replace("[","'[");
-                formulaStr = formulaStr.replace("]","]'");
-                formulaStr = formulaStr.replace("<","");
-                formulaStr = formulaStr.replace(">","");                
-
-                // Do replacing back
-                formulaStr = formulaStr.replace("&lt-;", "<").replace("&gt+;", ">");
-
-                QScriptValue result  = myEngine.evaluate(formulaStr);
-                res[i] = getFormattedValue(result.toString(), formatString);
-            }
-
-            tmpStr += res.at(i);
+            QScriptValue result  = myEngine.evaluate(formulaStr);
+            res[i] = getFormattedValue(result.toString(), formatString);
         }
+
+        tmpStr += res.at(i);
     }
 
+    tmpStr = getFormattedValue(tmpStr, formatString);
     return tmpStr;
 }
 
@@ -1334,6 +1372,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
 
 void QtRPT::processGlobalScript()
 {
+    return;
     qScriptRegisterSequenceMetaType<PageList >(&m_globalEngine);
 
 //    qScriptRegisterSequenceMetaType<TransactionList >(docChild->myEngine);
@@ -1355,8 +1394,8 @@ void QtRPT::processGlobalScript()
     m_globalEngine.globalObject().setProperty("debug", fun);
 
     QScriptValue val = m_globalEngine.evaluate(m_globalScript);
-    qDebug()<<val.isError();
-    qDebug()<<val.data().toString()<<val.toString();
+    //qDebug()<<val.isError();
+    //qDebug()<<val.data().toString()<<val.toString();
 
     QtRPT *docObject = qobject_cast<QtRPT*>( m_globalEngine.globalObject().property("QtRPT").toQObject() );
     if (docObject == nullptr)
@@ -1372,6 +1411,12 @@ QString QtRPT::getFormattedValue(QString value, QString formatString)
     if (!formatString.isEmpty()) {
         // Numeric format
         if (formatString.at(0) == 'N') {
+            bool ok;
+            value.toDouble(&ok);
+            if (!ok) value.toFloat(&ok);
+            if (!ok) value.toInt(&ok);
+            if (!ok) return value;
+
             int precision = formatString.mid(formatString.size()-1,1).toInt();
             QLocale locale;
 
@@ -1409,7 +1454,7 @@ void QtRPT::fillListOfValue(RptBandObject *bandObject)
             QString txt = sectionField(bandObject, field->value, true);
 }
 
-QVariant QtRPT::processFunctions(QString value)
+QVariant QtRPT::getInternalVariable(QString value)
 {
     if (value.contains("Date"))
         return QDate::currentDate().toString("dd.MM.yyyy");
@@ -1954,6 +1999,8 @@ void QtRPT::processReport(QPrinter *printer, bool draw, int &pageReportNo, bool 
 
         if (currentPage == 1)
             processRTitle(y, draw);
+
+        processPFooter(draw);//Added 30.11.2019
     }
 
     processGroupHeader(printer, y, draw, pageReportNo);

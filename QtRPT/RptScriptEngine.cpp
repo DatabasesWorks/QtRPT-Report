@@ -1,3 +1,26 @@
+/*
+Name: QtRpt
+Version: 2.0.2
+Web-site: http://www.qtrpt.tk
+Programmer: Aleksey Osipov
+E-mail: aliks-os@ukr.net
+Web-site: http://www.aliks-os.tk
+
+Copyright 2012-2020 Aleksey Osipov
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 #include "RptScriptEngine.h"
 #include <QDebug>
 #include <QtMath>
@@ -7,7 +30,7 @@ RptScriptEngine::RptScriptEngine(QObject *parent)
 : QScriptEngine(parent)
 {
     QScriptValue fun = this->newFunction(funcAggregate);
-    this->globalObject().setProperty("Sum", fun);
+    this->globalObject().setProperty("SUM", fun);
 
     fun = this->newFunction(funcReplace);
     this->globalObject().setProperty("Replace", fun);
@@ -41,7 +64,7 @@ QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fi
 
     QScriptValue result = QScriptEngine::evaluate(program);
 
-    qDebug() << program;
+    //qDebug() << program;
 
     if (this->hasUncaughtException())
     {
@@ -129,6 +152,8 @@ QScriptValue funcAggregate(QScriptContext *context, QScriptEngine *engine)
     QScriptValue self = context->thisObject();
     int funcMode = context->argument(0).toInteger();
     QString paramName = context->argument(1).toString();
+    paramName = paramName.replace("'", "");
+
     double total = 0;
     double min = 0;
     double max = 0;

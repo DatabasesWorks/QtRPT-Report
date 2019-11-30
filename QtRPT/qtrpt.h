@@ -6,7 +6,7 @@ Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk
 
-Copyright 2012-2018 Aleksey Osipov
+Copyright 2012-2020 Aleksey Osipov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -168,10 +168,11 @@ private:
     void fillListOfValue(RptBandObject *bandObject);
     QString sectionField(RptBandObject *band, QString value, bool firstPass = false, QString formatString = "");
     void processGlobalScript();
-    QStringList splitValue(QString value);
+    QStringList splitStringOnVariable(QString strValue);
     QString getVariableValue(QString scriptStr, bool exp = false);
+    QString stringPreprocessing(QString str);
     QImage sectionFieldImage(QString value);
-    QVariant processFunctions(QString value);
+    QVariant getInternalVariable(QString value);
     QString sectionValue(QString paramName);
     QImage sectionValueImage(QString paramName);
     void newPage(QPrinter *printer, int &y, bool draw, bool newReportPage = false);

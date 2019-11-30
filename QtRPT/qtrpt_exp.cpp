@@ -1508,7 +1508,7 @@ QString QtRPT::getFormattedValue(QString value, QString formatString)
                 value = locale.toString(value.toDouble(), 'f', precision);
 
                 for(int point = 0, i = (value.lastIndexOf('.') == -1 ? value.length() : value.lastIndexOf('.')); i > 0; --i, ++point) {
-                    if(point != 0 && point % 3 == 0)
+                    if (point != 0 && point % 3 == 0)
                         value.insert(i, ',');
                 }
             }
