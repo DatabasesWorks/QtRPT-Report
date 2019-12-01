@@ -187,6 +187,7 @@ QtRPT::QtRPT(QObject *parent)
 {
     qRegisterMetaType<DataSetInfo>("DataSetInfo");
 
+    m_globalEngine = new RptScriptEngine(this);
     m_xmlDoc = QDomDocument("Reports");
     m_backgroundImage = nullptr;
     m_orientation = 0;
@@ -307,8 +308,6 @@ void QtRPT::makeReportObjectStructure()
             }
         }
     }
-
-    processGlobalScript();
 }
 
 /*!
@@ -1049,7 +1048,7 @@ QVariant QtRPT::processHighligthing(RptFieldObject *field, HiType type)
             if (list.at(i).isEmpty()) continue;
             QString exp = list.at(i);
 
-            RptScriptEngine myEngine;
+            RptScriptEngine myEngine(this);
 
             if (list.at(i).contains("bold") && type == FntBold) {
                 exp.remove("bold=");
@@ -1100,7 +1099,7 @@ bool QtRPT::isFieldVisible(RptFieldObject *fieldObject)
     QString formulaStr = fieldObject->printing;
     if (fieldObject->printing.size() > 1) {
         formulaStr = getVariableValue(fieldObject->printing, true);
-        RptScriptEngine myEngine;
+        RptScriptEngine myEngine(this);
         visible = myEngine.evaluate(formulaStr).toBool();
     } else {
         visible = formulaStr.toInt();
@@ -1113,7 +1112,7 @@ QStringList QtRPT::splitStringOnVariable(QString strValue)
     QStringList res;
 
     QString tmpValue = strValue;
-    QRegularExpression re("\\[.*?]", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpression re("\\[\\D.*?]", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatchIterator i = re.globalMatch(tmpValue);
 
     while (i.hasNext()) {
@@ -1128,7 +1127,6 @@ QStringList QtRPT::splitStringOnVariable(QString strValue)
     return res;
 }
 
-//experimental
 QString QtRPT::getVariableValue(QString scriptStr, bool exp)
 {
     // Split string on variables that will be quered
@@ -1247,9 +1245,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
     QStringList res;
     bool aggregate = false;
 
-    //qDebug() << "before"<<value;
     value = stringPreprocessing(value);
-    //qDebug() << value;
 
     // To proccess correctly the different functions/operators of Script language
     // we should make a tmp replacing of '< >' charcters.
@@ -1348,7 +1344,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
         if (res[i].contains("<") && res[i].contains(">")) {
             QString formulaStr = res[i];
 
-            RptScriptEngine myEngine;
+            RptScriptEngine myEngine(this);
             myEngine.globalObject().setProperty("showInGroup", band->showInGroup);
 
             formulaStr = formulaStr.replace("<","");
@@ -1368,12 +1364,9 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
     return tmpStr;
 }
 
-
-
 void QtRPT::processGlobalScript()
 {
-    return;
-    qScriptRegisterSequenceMetaType<PageList >(&m_globalEngine);
+    qScriptRegisterSequenceMetaType<PageList>(m_globalEngine);
 
 //    qScriptRegisterSequenceMetaType<TransactionList >(docChild->myEngine);
 
@@ -1387,17 +1380,18 @@ void QtRPT::processGlobalScript()
 //    docChild->myEngine->globalObject().setProperty("DataNode", ctor);
 
 
-    QScriptValue scriptObject = m_globalEngine.newQObject(this);
-    m_globalEngine.globalObject().setProperty("QtRPT", scriptObject);
 
-    QScriptValue fun = m_globalEngine.newFunction(funcDebug);
-    m_globalEngine.globalObject().setProperty("debug", fun);
+    QString scriptStr = stringPreprocessing(m_globalScript);
 
-    QScriptValue val = m_globalEngine.evaluate(m_globalScript);
-    //qDebug()<<val.isError();
-    //qDebug()<<val.data().toString()<<val.toString();
+    QStringList varList = splitStringOnVariable(scriptStr);
+    for (auto &variable : varList) {
+        QString tmp = sectionValue(variable);
+        scriptStr.replace(variable, tmp);
+    }
 
-    QtRPT *docObject = qobject_cast<QtRPT*>( m_globalEngine.globalObject().property("QtRPT").toQObject() );
+    m_globalEngine->evaluate(scriptStr);
+
+    QtRPT *docObject = qobject_cast<QtRPT*>( m_globalEngine->globalObject().property("QtRPT").toQObject() );
     if (docObject == nullptr)
         return;
     else
@@ -1496,22 +1490,25 @@ QImage QtRPT::sectionFieldImage(QString value)
     return rptSql->getFieldImage(fieldName, m_recNo);
 }
 
-QString QtRPT::sectionValue(QString paramName)
+QString QtRPT::sectionValue(QString paramName, int recNo)
 {
     paramName.replace("[","");
     paramName.replace("]","");
+
+    if (recNo < 0)
+        recNo = m_recNo;
 
     auto rptSql = pageList[m_pageReport]->rtpSql;
     if (rptSql != nullptr) {
         if (paramName.contains(rptSql->objectName())) {
             QString fieldName = paramName;
             fieldName.replace(rptSql->objectName()+".","");
-            return rptSql->getFieldValue(fieldName, m_recNo);
+            return rptSql->getFieldValue(fieldName, recNo);
         }
     } else {
         QVariant paramValue;
 
-        emit setValue(m_recNo, paramName, paramValue, m_pageReport);
+        emit setValue(recNo, paramName, paramValue, m_pageReport);
         return paramValue.toString();
     }
 
@@ -1888,6 +1885,8 @@ void QtRPT::printPreview(QPrinter *printer)
 
     m_orientation = 0;
     painter->resetTransform();
+
+    processGlobalScript();
 
     //Second pass
     currentPage = 1;

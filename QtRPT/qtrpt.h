@@ -159,7 +159,7 @@ private:
     int m_orientation;
     float m_backgroundOpacity;
     QString m_globalScript;
-    RptScriptEngine m_globalEngine;
+    RptScriptEngine *m_globalEngine;
     QPrintPreviewWidget *pr;
     QList<QAction*> lst;
     QDomDocument m_xmlDoc;
@@ -173,7 +173,7 @@ private:
     QString stringPreprocessing(QString str);
     QImage sectionFieldImage(QString value);
     QVariant getInternalVariable(QString value);
-    QString sectionValue(QString paramName);
+    QString sectionValue(QString paramName, int recNo = -1);
     QImage sectionValueImage(QString paramName);
     void newPage(QPrinter *printer, int &y, bool draw, bool newReportPage = false);
     void processPHeader(int &y, bool draw);

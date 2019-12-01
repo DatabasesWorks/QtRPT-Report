@@ -25,6 +25,7 @@ limitations under the License.
 #include <QDebug>
 #include <QtMath>
 #include "CommonClasses.h"
+#include "qtrpt.h"
 
 RptScriptEngine::RptScriptEngine(QObject *parent)
 : QScriptEngine(parent)
@@ -55,6 +56,14 @@ RptScriptEngine::RptScriptEngine(QObject *parent)
 
     fun = this->newFunction(funcRound);
     this->globalObject().setProperty("Round", fun);
+
+    fun = this->newFunction(funcDebug);
+    this->globalObject().setProperty("debug", fun);
+
+    QtRPT *qtrpt = qobject_cast<QtRPT*>(parent);
+
+    QScriptValue scriptObject = this->newQObject(qtrpt);
+    this->globalObject().setProperty("QtRPT", scriptObject);
 }
 
 QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fileName, int lineNumber)
@@ -75,6 +84,7 @@ QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fi
 
     return result;
 }
+
 //--------------------------------------------------------
 
 QScriptValue funcReplace(QScriptContext *context, QScriptEngine *engine)
