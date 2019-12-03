@@ -28,6 +28,7 @@ limitations under the License.
 #include "RptBandObject.h"
 #include <qtrptnamespace.h>
 #include <QDomElement>
+#include <QObject>
 
 #if QT_VERSION >= 0x050800
     #include <QtCharts>
@@ -41,13 +42,15 @@ class RptCrossTabObject;
 
 
 
-class RptFieldObject
+class RptFieldObject : public QObject
 {
+    Q_OBJECT
+
     friend class QtRPT;
     friend class RptBandObject;
 
 public:
-    RptFieldObject();
+    RptFieldObject(QObject *parent = nullptr);
     ~RptFieldObject();
     QString name;
     QString value;
@@ -60,6 +63,8 @@ public:
     QColor fontColor;
     QColor backgroundColor;
 
+
+    void setObjectName(const QString &objName);
     void setDefaultFontColor(QColor value);
     void setDefaultBackgroundColor(QColor value);
 
@@ -119,9 +124,5 @@ private:
 
 };
 
-Q_DECLARE_METATYPE(RptFieldObject)
+//Q_DECLARE_METATYPE(RptFieldObject)
 Q_DECLARE_METATYPE(GraphDataList)
-
-QDebug operator<<(QDebug dbg, const RptFieldObject &obj);
-QDebug operator<<(QDebug dbg, const RptFieldObject *obj);
-

@@ -220,7 +220,7 @@ RptFieldObject *RptPageObject::findFieldObjectByName(QString name)
 {
     for (const auto &band : bandList)
         for (const auto &field : band->fieldList)
-            if (field->name == name)
+            if (field->objectName() == name)
                 return field;
 
     return nullptr;

@@ -739,7 +739,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
         if (fieldType == Barcode) {
             #ifndef NO_BARCODE
                 BarCode br;
-                br.setObjectName(fieldObject->name);
+                br.setObjectName(fieldObject->objectName());
                 QString txt = sectionField(fieldObject->parentBand, fieldObject->value, false, "");
                 br.setValue(txt);
                 BarCode::BarcodeTypes m_barcodeType = (BarCode::BarcodeTypes)fieldObject->barcodeType;

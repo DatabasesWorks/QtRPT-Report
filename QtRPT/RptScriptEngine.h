@@ -42,6 +42,7 @@ class RptScriptEngine : public QScriptEngine
 {
 public:
     RptScriptEngine(QObject *parent = nullptr);
+    void addObject(QObject *object);
     QScriptValue evaluate(const QString &program, const QString &fileName = QString(), int lineNumber = 1);
 };
 

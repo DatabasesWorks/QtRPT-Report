@@ -60,10 +60,18 @@ RptScriptEngine::RptScriptEngine(QObject *parent)
     fun = this->newFunction(funcDebug);
     this->globalObject().setProperty("debug", fun);
 
-    QtRPT *qtrpt = qobject_cast<QtRPT*>(parent);
+    addObject(parent);
+}
 
-    QScriptValue scriptObject = this->newQObject(qtrpt);
-    this->globalObject().setProperty("QtRPT", scriptObject);
+void RptScriptEngine::addObject(QObject *object)
+{
+    QScriptValue scriptObject = this->newQObject(object);
+
+    auto qtrpt = qobject_cast<QtRPT*>(object);
+    if (qtrpt)
+        this->globalObject().setProperty("QtRPT", scriptObject);
+    else
+        this->globalObject().setProperty(object->objectName(), scriptObject);
 }
 
 QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fileName, int lineNumber)

@@ -300,7 +300,8 @@ limitations under the License.
  \fn RptFieldObject::RptFieldObject()
     Constructs a RptFieldObject object.
 */
-RptFieldObject::RptFieldObject()
+RptFieldObject::RptFieldObject(QObject *parent)
+: QObject(parent)
 {
     qRegisterMetaType<GraphDataList>("GraphDataList");
 
@@ -364,12 +365,18 @@ void RptFieldObject::setDefaultBackgroundColor(QColor value)
     m_backgroundColor = value;
 }
 
+void RptFieldObject::setObjectName(const QString &objName)
+{
+    name = objName;
+    QObject::setObjectName(objName);
+}
+
 void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
 {
     m_qtrpt = qtrpt;
     highlighting = e.attribute("highlighting","");
     printing = e.attribute("printing","1");
-    name = e.attribute("name");
+    this->setObjectName(e.attribute("name"));
     value = e.attribute("value");
     rect.setX(e.attribute("left").toInt());
     rect.setY(e.attribute("top").toInt());
@@ -760,7 +767,7 @@ void RptFieldObject::updateHighlightingParam()
 RptFieldObject *RptFieldObject::clone()
 {
     auto field = new RptFieldObject();
-    field->name = name;
+    field->setObjectName(this->objectName());
     field->value = value;
     field->rect = rect;
     field->borderTop = borderTop;
@@ -902,13 +909,3 @@ QString RptFieldObject::getHTMLStyle()
     return style;
 }
 
-QDebug operator<<(QDebug dbg, const RptFieldObject &obj)
-{
-    dbg << obj.name;
-    return dbg;
-}
-
-QDebug operator<<(QDebug dbg, const RptFieldObject *obj)
-{
-    return dbg << (*obj).name;
-}

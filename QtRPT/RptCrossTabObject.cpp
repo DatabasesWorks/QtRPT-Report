@@ -181,7 +181,7 @@ void RptCrossTabObject::buildMatrix()
         for (int col = 0; col < m_colCount; col++) {
             auto h1 = new RptFieldObject();
             h1->parentCrossTab = this;
-            h1->name = QString("f%1%2").arg(col).arg(row);
+            h1->setObjectName(QString("f%1%2").arg(col).arg(row));
             h1->fieldType = Text;
             h1->rect.setTop(rect.top() + fieldheight * row);
             h1->rect.setHeight(fieldheight);
