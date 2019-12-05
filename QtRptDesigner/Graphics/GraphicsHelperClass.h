@@ -42,7 +42,7 @@ class GraphicsHelperClass : public QObject
     Q_PROPERTY(QColor BgColor READ getBackgroundColor WRITE setBackgroundColor)
     Q_PROPERTY(QString GrpName READ getGroupName WRITE setGroupName)
 public:
-    explicit GraphicsHelperClass(QObject *parent = 0);
+    explicit GraphicsHelperClass(QObject *parent = nullptr);
     void setObjectName(const QString &name);
     bool getDrawingState() {return m_drawingState;}
     void setDrawingState(bool value) {m_drawingState = value;}

@@ -44,7 +44,7 @@ class GraphicsScene : public QGraphicsScene
     Q_OBJECT
 public:
     enum Mode {NoMode, SelectObject, DrawLine, DrawContainer};
-    GraphicsScene(QObject* parent = 0);
+    GraphicsScene(QObject* parent = nullptr);
     void setMode(Mode mode);
     void addItem(QGraphicsItem * item);
     QUndoStack *undoStack() const { return m_undoStack; }

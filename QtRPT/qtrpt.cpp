@@ -1379,7 +1379,11 @@ void QtRPT::processGlobalScript()
 //    QScriptValue ctor = docChild->myEngine->newFunction(createDataNode);
 //    docChild->myEngine->globalObject().setProperty("DataNode", ctor);
 
-
+    for (const auto &page : pageList) {
+        for (const auto &band : page->bandList)
+            for (const auto &field : band->fieldList)
+                m_globalEngine->addObject(field);
+    }
 
     QString scriptStr = stringPreprocessing(m_globalScript);
 
@@ -1813,7 +1817,6 @@ void QtRPT::printPreview(QPrinter *printer)
     listOfPair.clear();
     listIdxOfGroup.clear();
     makeReportObjectStructure();
-
 
     m_dataSetInfoList.clear();
 
