@@ -24,6 +24,7 @@ limitations under the License.
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtGlobal>
 #if QT_VERSION >= 0x50000
     #include <QtWidgets>
 #else
@@ -47,7 +48,7 @@ namespace Ui {
     class MainWindow;
 }
 
-class EditorDelegate: public QItemDelegate
+class EditorDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
@@ -69,7 +70,7 @@ private slots:
     void editorClose_(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
 
 signals:
-    void editorClose(QItemDelegate *item);
+    void editorClose(QStyledItemDelegate *item);
     void btnClicked();
 };
 
@@ -81,7 +82,7 @@ class MainWindow : public QMainWindow
 public:
     friend class GraphicsScene;
 
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     static MainWindow* instance() {
         return mw;
@@ -146,6 +147,7 @@ private:
     void setCurrentFile(const QString &fileName);
     QDomElement getDataSourceElement(QDomNode n);
     void enableAdding();
+    bool checkName(const QString &name);
     QGraphicsItemList getSelectedItems();
     GraphicsHelperList getSelectedHelperItems();
 

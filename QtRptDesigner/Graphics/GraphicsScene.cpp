@@ -88,13 +88,13 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         newLine->setPos(startPoint);
         newLine->addPoint(origPoint);
         newLine->addPoint(origPoint);
-        //addItem(newLine);
-        //newLine->setParentItem(pItem);
-        //band->newFieldTreeItem(newLine);
+
         m_undoStack->push(new AddCommand(newLine, this, pItem));
-        newLine->setSelected(true);
+
         emit itemAdded(newLine);
         emit sceneModeChanged(newLine, Mode::SelectObject);
+
+        newLine->setSelected(true);
         setMode(Mode::SelectObject);
         m_trackingMoves = false;
     }
@@ -103,13 +103,13 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         graphicsBox->setFieldType(m_newFieldType);
         graphicsBox->setPos(origPoint);
         graphicsBox->setMenu(m_newFieldMenu);
-        //addItem(graphicsBox);
-        //graphicsBox->setParentItem(pItem);
-        //band->newFieldTreeItem(graphicsBox);
+
         m_undoStack->push(new AddCommand(graphicsBox, this, pItem));
-        graphicsBox->setSelected(true);
+
         emit itemAdded(graphicsBox);
         emit sceneModeChanged(graphicsBox, Mode::SelectObject);
+
+        graphicsBox->setSelected(true);
         setMode(Mode::SelectObject);
         m_trackingMoves = false;
     }

@@ -27,7 +27,7 @@ limitations under the License.
 #include "ui_mainwindow.h"
 
 EditorDelegate::EditorDelegate(QObject *parent)
-: QItemDelegate(parent)
+: QStyledItemDelegate (parent)
 {
     QObject::connect(this, SIGNAL(closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint)),
                      this, SLOT(editorClose_(QWidget *, QAbstractItemDelegate::EndEditHint)));
@@ -122,10 +122,11 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                 return editor;
                 break;
             }
-            default: return QItemDelegate::createEditor(parent, option, index);
+            default: return QStyledItemDelegate::createEditor(parent, option, index);
         }
     }
-    return 0;
+
+    return nullptr;
 }
 
 void EditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
@@ -157,7 +158,7 @@ void EditorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) co
                 ed->setBackGroundColor(value);
                 break;
             }
-            default: QItemDelegate::setEditorData(editor,index);
+            default: QStyledItemDelegate::setEditorData(editor,index);
         }
     } else return;
 }
@@ -186,7 +187,7 @@ void EditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
                 break;
             }
             case FontSize: {
-                QItemDelegate::setModelData(editor,model,index);
+                QStyledItemDelegate::setModelData(editor,model,index);
                 break;
             }
             case BorderColor:
@@ -198,7 +199,7 @@ void EditorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, co
                 model->setData(index, brush, Qt::ForegroundRole);
                 break;
             }
-            default: QItemDelegate::setModelData(editor,model,index);
+            default: QStyledItemDelegate::setModelData(editor,model,index);
         }
     } return;
 }
@@ -207,7 +208,7 @@ void EditorDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & op
 {
     if (index.column() == 1) {
         if (option.state & QStyle::State_Active) {
-            QItemDelegate::paint(painter,option,index);
+            QStyledItemDelegate::paint(painter,option,index);
         } else {
             int command = index.model()->data(index, Qt::UserRole).toInt();
             switch (command) {
@@ -224,19 +225,19 @@ void EditorDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & op
                     break;
                 }
                 default:
-                    QItemDelegate::paint(painter,option,index);
+                    QStyledItemDelegate::paint(painter,option,index);
             }
         }
     }
     else
-        QItemDelegate::paint(painter,option,index);
+        QStyledItemDelegate::paint(painter,option,index);
 }
 
 void EditorDelegate::commitAndCloseEditor()
 {
     auto editor = qobject_cast<QWidget*>(sender());
-    emit commitData(editor);
-    emit closeEditor(editor);
+    //emit commitData(editor);
+    //emit closeEditor(editor);
 }
 
 
@@ -283,7 +284,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->treeWidget->setFocusPolicy(Qt::NoFocus);
 
     auto d = new EditorDelegate(ui->treeParams);
-    QObject::connect(d, SIGNAL(editorClose(QItemDelegate *)), this,  SLOT(closeEditor()));
+    QObject::connect(d, SIGNAL(editorClose(QStyledItemDelegate *)), this,  SLOT(closeEditor()));
     QObject::connect(d, SIGNAL(btnClicked()), this, SLOT(chooseColor()));
     ui->treeParams->setItemDelegate(d);
 
@@ -1053,6 +1054,23 @@ void MainWindow::generateName(QGraphicsItem *mItem)
     }
 }
 
+bool MainWindow::checkName(const QString &name)
+{
+    for (int t = 0; t < ui->tabWidget->count(); t++) {
+        auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget( t ));
+        for (auto &item : repPage->scene->items()) {
+            auto helper = dynamic_cast<GraphicsHelperClass*>(item);
+            if (helper != nullptr) {
+                if (helper->objectName() == name) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 void MainWindow::clickOnTBtn()
 {
     if (sender()->objectName() == "subBand1")
@@ -1299,7 +1317,7 @@ void MainWindow::openFile()
     QApplication::restoreOverrideCursor();
 }
 
-//Select color from dialog and set param
+// Select color from dialog and set param
 void MainWindow::chooseColor()
 {
     auto item = selectedGItem();
@@ -1354,7 +1372,7 @@ void MainWindow::changeTextFont()
     ui->actSaveReport->setEnabled(true);
 }
 
-//Определяем, тип команды в зависимости от нажатой кнопки
+// Определяем, тип команды в зависимости от нажатой кнопки
 Command MainWindow::getCommand(QObject *widget)
 {
     if (widget == nullptr)
@@ -1475,7 +1493,7 @@ GraphicsHelperClass *MainWindow::gItemToHelper(QGraphicsItem *item)
     return helper;
 }
 
-//Container's selection
+// Container's selection
 void MainWindow::sceneItemSelectionChanged(QGraphicsItem *item)
 {
     if (dontSelect)
@@ -1787,7 +1805,7 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
     return false;
 }
 
-//Show param of the container
+// Show param of the container
 void MainWindow::showParamState()
 {
     auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->currentWidget());
@@ -2013,7 +2031,7 @@ void MainWindow::showParamState()
     ui->actLineTop->setEnabled(enbl1);
 }
 
-//Поиск ветки в дереве параметра
+// Поиск ветки в дереве параметра
 QTreeWidgetItem *MainWindow::findItemInTree(Command command)
 {
     QTreeWidgetItemIterator it(ui->treeParams);
@@ -3020,10 +3038,29 @@ void MainWindow::closeEditor()
     if (selectedGItem() == nullptr) return;
 
     QVariant v;
-    Command command = (Command)item->data(1,Qt::UserRole).toInt();
+    auto command = static_cast<Command>(item->data(1,Qt::UserRole).toInt());
     switch (command) {
+        case Name: {
+            if (checkName(item->text(1))) {
+                auto field = static_cast<GraphicsBox *>(selectedGItem());
+                auto delegate = static_cast<EditorDelegate *>(sender());
+                if (delegate != nullptr) {
+                    delegate->blockSignals(true);
+
+                    QString str = QString(tr("The name '%1' already present!")).arg(item->text(1));
+                    QMessageBox::warning(this, tr("Error"), str);
+
+                    item->setText(1, field->objectName());
+                    delegate->blockSignals(false);
+                }
+
+                return;
+            } else {
+                v = item->text(1);
+            }
+            break;
+        }
         case TextRotate:
-        case Name:
         case DSName:
         case Left:
         case Top:
