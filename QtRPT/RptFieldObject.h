@@ -47,6 +47,9 @@ class RptFieldObject : public QObject
     Q_OBJECT
     Q_PROPERTY(QString value MEMBER value)
     Q_PROPERTY(bool visible MEMBER m_visible)
+    Q_PROPERTY(int rotate MEMBER rotate)
+    Q_PROPERTY(QColor fontColor MEMBER fontColor)
+    Q_PROPERTY(QColor backgroundColor MEMBER backgroundColor)
 
     friend class QtRPT;
     friend class RptBandObject;
@@ -105,9 +108,9 @@ public:
     bool arrowStart;
     bool arrowEnd;
 
-    int recNo() {return m_recNo;}
+    Q_INVOKABLE int recNo() {return m_recNo;}
     int reportPage() {return m_reportPage;}
-    void setTop(int top);
+    void setHTMLTop(int top);
 
     QString getHTMLStyle();
     RptCrossTabObject *crossTab;
@@ -116,6 +119,11 @@ public:
 
     Q_INVOKABLE void setVisible(bool value);
     bool isVisible();
+
+//    Q_INVOKABLE void setWidth(bool value);
+//    Q_INVOKABLE void setHeight(bool value);
+//    Q_INVOKABLE void setTop(int value);
+//    Q_INVOKABLE void setLeft(int value);
 
 private:
     QColor m_fontColor;

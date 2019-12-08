@@ -835,7 +835,7 @@ bool RptFieldObject::isCrossTabChild()
 
     \sa rect
 */
-void RptFieldObject::setTop(int top)
+void RptFieldObject::setHTMLTop(int top)
 {
     m_top = top;
 }

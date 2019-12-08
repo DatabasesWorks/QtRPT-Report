@@ -533,7 +533,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     int height_ = fieldObject->rect.height() * koefRes_h;
     int top_    = (bandTop+fieldObject->rect.y()) * koefRes_h;
 
-    fieldObject->setTop(top_/koefRes_h);
+    fieldObject->setHTMLTop(top_/koefRes_h);
 
     if (fieldObject->autoHeight == 1)
         if (fieldObject->parentBand != nullptr)
