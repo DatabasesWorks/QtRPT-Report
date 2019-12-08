@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.2
+Version: 2.0.3
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -3047,7 +3047,7 @@ void MainWindow::closeEditor()
                 if (delegate != nullptr) {
                     delegate->blockSignals(true);
 
-                    QString str = QString(tr("The name '%1' already present!")).arg(item->text(1));
+                    QString str = QString(tr("The name '%1' already used!")).arg(item->text(1));
                     QMessageBox::warning(this, tr("Error"), str);
 
                     item->setText(1, field->objectName());

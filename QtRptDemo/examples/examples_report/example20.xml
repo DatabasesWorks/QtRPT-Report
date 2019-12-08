@@ -2,33 +2,40 @@
 <Reports email="aliks-os@ukr.net" lib="QtRPT" programmer="Aleksey Osipov">
   <Report border="0" borderColor="" borderStyle="" borderWidth="1" marginsBottom="40" marginsLeft="40" marginsRight="40" marginsTop="40" orientation="0" pageHeight="1188" pageNo="1" pageWidth="840" watermark="0" watermarkOpacity="1.379591288952178e-306" watermarkPixmap="">
     <ReportBand bandNo="1" height="200" name="RepTitleBand1" type="ReportTitle" width="760">
-      <TContainerField ZValue="11" aligmentH="hLeft" aligmentV="vCenter" autoHeight="0" backgroundColor="rgba(255,255,255,255)" borderBottom="rgba(0,0,0,255)" borderColor="rgba(0,0,0,255)" borderLeft="rgba(0,0,0,255)" borderRight="rgba(0,0,0,255)" borderStyle="solid" borderTop="rgba(0,0,0,255)" borderWidth="1px" fontBold="0" fontColor="rgba(0,0,0,255)" fontFamily="MS Shell Dlg 2" fontItalic="0" fontSize="8" fontStrikeout="0" fontUnderline="0" format="" groupName="" height="84" highlighting="" left="28" name="field1" printing="1" rotate="0" textWrap="0" top="26" type="label" value="s1=&lt;1+2&gt; s2=&lt;2+3&gt; &lt;sum([var1])&gt; var2=[var2] &lt;sum([var1] + [var3])&gt;" width="609"/>
+      <TContainerField ZValue="11" aligmentH="hLeft" aligmentV="vCenter" autoHeight="0" backgroundColor="rgba(255,255,255,255)" borderBottom="rgba(0,0,0,255)" borderColor="rgba(0,0,0,255)" borderLeft="rgba(0,0,0,255)" borderRight="rgba(0,0,0,255)" borderStyle="solid" borderTop="rgba(0,0,0,255)" borderWidth="1px" fontBold="0" fontColor="rgba(0,0,0,255)" fontFamily="MS Shell Dlg 2" fontItalic="0" fontSize="8" fontStrikeout="0" fontUnderline="0" format="" groupName="" height="24" highlighting="" left="28" name="field1" printing="1" rotate="0" textWrap="0" top="26" type="label" value="s1=&lt;1+2&gt; s2=&lt;2+3&gt; &lt;sum([var1])&gt; var2=[var2] &lt;sum([var1] + [var3])&gt;" width="609"/>
+	  <TContainerField ZValue="11" aligmentH="hLeft" aligmentV="vCenter" autoHeight="0" backgroundColor="rgba(255,255,255,255)" borderBottom="rgba(0,0,0,255)" borderColor="rgba(0,0,0,255)" borderLeft="rgba(0,0,0,255)" borderRight="rgba(0,0,0,255)" borderStyle="solid" borderTop="rgba(0,0,0,255)" borderWidth="1px" fontBold="0" fontColor="rgba(0,0,0,255)" fontFamily="MS Shell Dlg 2" fontItalic="0" fontSize="8" fontStrikeout="0" fontUnderline="0" format="" groupName="" height="24" highlighting="" left="28" name="field2" printing="1" rotate="0" textWrap="0" top="76" type="label" value="SECOND FIELD" width="609"/>
     </ReportBand>
   </Report>
   <Script>
-	<![CDATA[
+	<![CDATA[	
 		QtRPT.pageList[0]
-		debug(matchwo(5,10));
-		function matchwo(a, b)
-		{
-			if (a < b && a < 0)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
-		}
 		
 		print(QtRPT.objectName);
 		QtRPT.objectName = 'hehe';
 		debug(QtRPT.pageList);
 		debug(QtRPT.pageList.length);
 		debug(QtRPT.pageList[0].objectName);
-		QtRPT.pageList[0].setVisible(false);
+		//QtRPT.pageList[0].setVisible(false);
 		
 		debug('TEST:' + [var1]);
+		
+		function field1BeforeData()
+		{
+			print('BEFORE');
+			field1.value = 'HELLO';
+			
+			//field1.visible = false;
+		}
+		
+		function field1AfterData(value)
+		{
+			// This function mainly intended for modifing of result string.
+			// DONT use the following settings in AFTER section
+			//field1.visible = false;
+			
+			// If you DONT want to change value string, just comment 'return'
+			return value + " It is corrected string";
+		}
 	]]>
   </Script>
 </Reports>

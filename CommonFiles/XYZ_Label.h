@@ -1,6 +1,6 @@
 /*
 Name: XYZ
-Version: 2.0.2
+Version: 2.0.3
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
 Web-site: http://www.aliks-os.tk

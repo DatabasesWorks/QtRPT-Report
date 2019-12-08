@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.2
+Version: 2.0.3
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -287,7 +287,7 @@ RptPageObject *RptPageObject::clone()
 }
 
 /*!
- \fn RptPageObject *RptPageObject::isVisible()
+ \fn bool RptPageObject::isVisible()
     Return mark that this page is visible (printable)
 
     \sa setVisible
@@ -298,7 +298,7 @@ bool RptPageObject::isVisible()
 }
 
 /*!
- \fn RptPageObject *RptPageObject::setVisible()
+ \fn void RptPageObject::setVisible(bool value)
     Set mark that this page is visible (printable)
 
     \sa isVisible

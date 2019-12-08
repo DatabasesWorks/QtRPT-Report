@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.2
+Version: 2.0.3
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -59,6 +59,8 @@ public:
     bool watermark;
     float watermarkOpacity;
     QPixmap watermarkPixmap;
+    RptSql *rtpSql;
+    RptSqlConnection sqlConnection;
 
     void addBand(RptBandObject *band);
     RptBandObject *getBand(BandType type, int No);
@@ -66,17 +68,16 @@ public:
     RptFieldObject *findFieldObjectByName(QString name);
     void initCrossTabProcessedRows();
     int crossTabParts();
-    bool isVisible();
+
     Q_INVOKABLE void setVisible(bool value);
+    bool isVisible();
+
     quint16 totalPages();
     void setTotalPages(quint16 value);
     QList<RptFieldObject*> crossTabs();
     QList<RptBandObject*> bandList;
     int recordCount;
     RptPageObject *clone();
-
-    RptSql *rtpSql;
-    RptSqlConnection sqlConnection;
 
 private:
 	QtRPT *m_qtrpt;

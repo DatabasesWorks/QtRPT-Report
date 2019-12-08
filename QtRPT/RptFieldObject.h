@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.2
+Version: 2.0.3
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -45,6 +45,8 @@ class RptCrossTabObject;
 class RptFieldObject : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString value MEMBER value)
+    Q_PROPERTY(bool visible MEMBER m_visible)
 
     friend class QtRPT;
     friend class RptBandObject;
@@ -112,6 +114,9 @@ public:
     bool isCrossTabChild();
     RptFieldObject *clone();
 
+    Q_INVOKABLE void setVisible(bool value);
+    bool isVisible();
+
 private:
     QColor m_fontColor;
     QColor m_backgroundColor;
@@ -119,10 +124,11 @@ private:
     int m_reportPage;
     int m_top;
     QtRPT *m_qtrpt;
+    bool m_visible;
+
     void setProperty(QtRPT *qtrpt, QDomElement e);
     void updateHighlightingParam();
 
 };
 
-//Q_DECLARE_METATYPE(RptFieldObject)
 Q_DECLARE_METATYPE(GraphDataList)

@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.2
+Version: 2.0.3
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -326,6 +326,7 @@ RptFieldObject::RptFieldObject(QObject *parent)
     this->aligment = Qt::AlignVCenter | Qt::AlignLeft;
     this->parentBand = nullptr;
     this->parentCrossTab = nullptr;
+    this->m_visible = true;
 
     #if QT_VERSION >= 0x050800
         this->chart = nullptr;
@@ -909,3 +910,24 @@ QString RptFieldObject::getHTMLStyle()
     return style;
 }
 
+/*!
+ \fn bool RptFieldObject::isVisible()
+    Return mark that this page is visible (printable)
+
+    \sa setVisible
+*/
+bool RptFieldObject::isVisible()
+{
+    return m_visible;
+}
+
+/*!
+ \fn void RptFieldObject::setVisible(bool value)
+    Set mark that this page is visible (printable)
+
+    \sa isVisible
+*/
+void RptFieldObject::setVisible(bool value)
+{
+    m_visible = value;
+}

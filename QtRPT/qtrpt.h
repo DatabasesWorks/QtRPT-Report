@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.2
+Version: 2.0.3
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -166,7 +166,7 @@ private:
     QDomNode getBand(BandType type, QDomElement docElem);
     void drawBandRow(RptBandObject *band, int bandTop, bool allowDraw = true);
     void fillListOfValue(RptBandObject *bandObject);
-    QString sectionField(RptBandObject *band, QString value, bool firstPass = false, QString formatString = "");
+    QString sectionField(RptBandObject *band, QString value, bool isReachText, bool firstPass = false, QString formatString = "");
     void processGlobalScript();
     QStringList splitStringOnVariable(QString strValue);
     QString getVariableValue(QString scriptStr, bool exp = false);

@@ -1,5 +1,4 @@
-#ifndef CORNERGRABBER_H
-#define CORNERGRABBER_H
+#pragma once
 
 #include <QObject>
 #include <QGraphicsItem>
@@ -66,5 +65,3 @@ private:
 };
 
 using SPtrCorner = QSharedPointer<CornerGrabber>;
-
-#endif // CORNERGRABBER_H

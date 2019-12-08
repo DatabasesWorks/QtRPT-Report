@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.2
+Version: 2.0.3
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -542,6 +542,18 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     FieldType fieldType = fieldObject->fieldType;
     QPen pen = getPen(fieldObject);
 
+    // Process GlobalScript for current field --START--
+    if (draw) {
+        QScriptValue beforeData = m_globalEngine->globalObject().property(fieldObject->objectName() + "BeforeData");
+        if (beforeData.isValid())
+            beforeData.call(QScriptValue(), QScriptValueList());
+
+        if (!fieldObject->isVisible())
+            return;
+    }
+    // Process GlobalScript for current field --END--
+
+    // Drawing Border, Background, Not Text fields --START--
     if (draw) {
         if (!getDrawingFields().contains(fieldType)
             && fieldType != Barcode
@@ -740,7 +752,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             #ifndef NO_BARCODE
                 BarCode br;
                 br.setObjectName(fieldObject->objectName());
-                QString txt = sectionField(fieldObject->parentBand, fieldObject->value, false, "");
+                QString txt = sectionField(fieldObject->parentBand, fieldObject->value, false, false, "");
                 br.setValue(txt);
                 BarCode::BarcodeTypes m_barcodeType = (BarCode::BarcodeTypes)fieldObject->barcodeType;
                 br.setBarcodeType(m_barcodeType);
@@ -751,6 +763,8 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             #endif
         }
     }
+    // Drawing Border, Background, Not Text fields --END--
+
     if (fieldType == TextRich) {
         QString txt = fieldObject->value;
 
@@ -769,7 +783,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
                 if ((currentFragment.text().contains("[") && currentFragment.text().contains("]"))
                     || (currentFragment.text().contains("<") && currentFragment.text().contains(">")))
                 {
-                    QString tmpTxt = sectionField(fieldObject->parentBand, currentFragment.text(), false, "");
+                    QString tmpTxt = sectionField(fieldObject->parentBand, currentFragment.text(), true, false, "");
                     QString srchTxt = currentFragment.text();
                     QTextCursor c = document.find(srchTxt, 0);
                     //qDebug() << c.isNull() << srchTxt;
@@ -811,7 +825,18 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     }
     if (fieldType == Text) {   // NOT Proccess if field set as ImageField
         setFont(fieldObject);
-        QString txt = sectionField(fieldObject->parentBand, fieldObject->value, false, fieldObject->formatString);
+
+        QString txt = sectionField(fieldObject->parentBand, fieldObject->value, false, false, fieldObject->formatString);
+
+        if (draw) {
+            QScriptValue afterData = m_globalEngine->globalObject().property(fieldObject->objectName() + "AfterData");
+            if (afterData.isValid()) {
+                QScriptValue result = afterData.call(QScriptValue(), QScriptValueList() << txt);
+
+                if (!result.isUndefined())
+                    txt = result.toString();
+            }
+        }
 
         int flags = fieldObject->aligment | Qt::TextDontClip;
         if (fieldObject->textWrap == 1)
@@ -1239,7 +1264,7 @@ QString QtRPT::stringPreprocessing(QString str)
     return str;
 }
 
-QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, QString formatString)
+QString QtRPT::sectionField(RptBandObject *band, QString value, bool isReachText, bool firstPass, QString formatString)
 {
     QString tmpStr;
     QStringList res;
@@ -1278,8 +1303,9 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
 
         //Process during first pass to calculate aggregate values
         if (firstPass) {
+            QString v = variable;
             AggregateValues av;
-            av.paramName = variable.replace("[", "").replace("]", "");
+            av.paramName = v.replace("[", "").replace("]", "");
             av.paramValue = tmp;
             av.lnNo = m_recNo;
             av.pageReport = m_pageReport;
@@ -1341,7 +1367,7 @@ QString QtRPT::sectionField(RptBandObject *band, QString value, bool firstPass, 
 
     tmpStr.clear();
     for (int i = 0; i < res.size(); ++i) {
-        if (res[i].contains("<") && res[i].contains(">")) {
+        if (!isReachText && res[i].contains("<") && res[i].contains(">")) {
             QString formulaStr = res[i];
 
             RptScriptEngine myEngine(this);
@@ -1379,6 +1405,7 @@ void QtRPT::processGlobalScript()
 //    QScriptValue ctor = docChild->myEngine->newFunction(createDataNode);
 //    docChild->myEngine->globalObject().setProperty("DataNode", ctor);
 
+    // Put fieldObjects into ScriptEngine
     for (const auto &page : pageList) {
         for (const auto &band : page->bandList)
             for (const auto &field : band->fieldList)
@@ -1387,6 +1414,7 @@ void QtRPT::processGlobalScript()
 
     QString scriptStr = stringPreprocessing(m_globalScript);
 
+    // Get value of variables from user data
     QStringList varList = splitStringOnVariable(scriptStr);
     for (auto &variable : varList) {
         QString tmp = sectionValue(variable);
@@ -1449,7 +1477,7 @@ void QtRPT::fillListOfValue(RptBandObject *bandObject)
 {
     for (const auto &field : bandObject->fieldList)
         if (field->fieldType == Text && isFieldVisible(field))
-            QString txt = sectionField(bandObject, field->value, true);
+            QString txt = sectionField(bandObject, field->value, false, true);
 }
 
 QVariant QtRPT::getInternalVariable(QString value)
@@ -1830,8 +1858,6 @@ void QtRPT::printPreview(QPrinter *printer)
     currentPage = 1;
     for (int i = 0; i < pageList.size(); i++) {
         auto reportPage = pageList.at(i);
-        //if (i == 0)
-        //    reportPage->setVisible(false);
 
         quint16 totalOnReportPage = (i == 0) ? currentPage-1 : currentPage;
 
@@ -2141,43 +2167,46 @@ void QtRPT::drawBackground(bool draw)
 void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int &pageReportNo)
 {
     if (currentPage == 0)
-    //if (pageReportNo == 0)  //todo was replaced, need to check
         processPFooter(draw);
 
     for (int dsNo = 1; dsNo < 6; dsNo++) {
         m_recNo = 0;
 
-        if (pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo) == nullptr) {
+        auto bandDGH = pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo);
+        auto bandDGF = pageList.at(pageReportNo)->getBand(DataGroupFooter, dsNo);
+        auto bandMH  = pageList.at(pageReportNo)->getBand(MasterHeader, dsNo);
+        auto bandMD  = pageList.at(pageReportNo)->getBand(MasterData, dsNo);
+        auto bandMF  = pageList.at(pageReportNo)->getBand(MasterFooter, dsNo);
+        auto bandPF  = pageList.at(pageReportNo)->getBand(PageFooter, dsNo);
+
+        if (bandDGH == nullptr) {
             processMHeader(y, dsNo, draw, pageReportNo);
             processMasterData(printer, y, draw, pageReportNo, dsNo);
             processMFooter(printer, y, dsNo, draw, pageReportNo);
         } else {
-            if (pageList.at(pageReportNo)->getBand(MasterData, dsNo) != nullptr)
-                fillListOfValue(pageList.at(pageReportNo)->getBand(MasterData, dsNo));
+            if (bandMD != nullptr)
+                fillListOfValue(bandMD);
 
             if (!listOfPair.isEmpty()) {
                 if (getRecCount(pageReportNo, dsNo) >= pageReportNo+1) {
                     for (int i = 0; i < getRecCount(pageReportNo, dsNo); i++) {
                         m_recNo = i;
-                        if (pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo) != nullptr) {
-                            sectionField(pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo),
-                                         pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo)->groupingField, true);
-                        }
+                        if (bandDGH != nullptr)
+                            sectionField(bandDGH, bandDGH->groupingField, false, true);
                     }
                 }
 
                 listOfGroup.clear();
                 mg_recNo = 0;
 
-                auto bandObj = pageList.at(pageReportNo)->getBand(MasterHeader, dsNo);
-                if (bandObj != nullptr && bandObj->showInGroup == 0)
+                if (bandMH != nullptr && bandMH->showInGroup == 0)
                     processMHeader(y, dsNo, draw, pageReportNo);
 
                 int grpNo = 0;
                 for (int j = 0; j < listOfPair.size(); ++j) {
-                    if (pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo) != nullptr
+                    if (bandDGH != nullptr
                         && listOfPair.at(j).pageReport == pageReportNo
-                        && listOfPair.at(j).paramName == pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo)->groupingField) {
+                        && listOfPair.at(j).paramName == bandDGH->groupingField.replace("[", "").replace("]", "")) {
 
                         bool founded = false;
 
@@ -2186,7 +2215,7 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int &pageRe
 
                         listIdxOfGroup.clear();
                         for (const auto &pair : listOfPair) {
-                            if (pair.paramName == pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo)->groupingField
+                            if (pair.paramName == bandDGH->groupingField.replace("[", "").replace("]", "")
                                 && pair.pageReport == pageReportNo
                                 && pair.paramValue == listOfPair.at(j).paramValue
                                )
@@ -2202,67 +2231,63 @@ void QtRPT::processGroupHeader(QPrinter *printer, int &y, bool draw, int &pageRe
                             //-----------Added codes here. Thanks to puterk
                             int yPF = 0;
 
-                            if (pageList.at(pageReportNo)->getBand(PageFooter, dsNo) != nullptr)
-                                yPF = pageList.at(pageReportNo)->getBand(PageFooter, dsNo)->height;
+                            if (bandPF != nullptr)
+                                yPF = bandPF->height;
 
                             int yMF = 0;
-                            if (pageList.at(pageReportNo)->getBand(MasterFooter, dsNo) != nullptr)
-                                yMF = pageList.at(pageReportNo)->getBand(MasterFooter, dsNo)->height;
+                            if (bandMF != nullptr)
+                                yMF = bandMF->height;
                             //-----------ends here. Thanks to puterk
 
                             listOfGroup << listOfPair.at(j).paramValue.toString();
 
-                            if (pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo)->startNewPage == 1 && grpNo != 1) //Start new page for each Data group
+                            if (bandDGH->startNewPage == 1 && grpNo != 1) //Start new page for each Data group
                                 newPage(printer, y, draw);
 
                             m_recNo = listOfPair.at(j).lnNo;
 
                             //Start new numeration for group
-                            if (pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo)->startNewNumeration != 0)
+                            if (bandDGH->startNewNumeration != 0)
                                 mg_recNo = 0;
 
                             //-----------Added codes here. Thanks to puterk
-                            if (y + pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo)->height > ph-mb-mt-yPF-yMF)
+                            if (y + bandDGH->height > ph-mb-mt-yPF-yMF)
                                 newPage(printer, y, draw);
                             //-----------ends here. Thanks to puterk
 
                             if (allowPrintPage(draw,currentPage))  //Draw header of the group
-                                drawBandRow(pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo), y);
-                            y += pageList.at(pageReportNo)->getBand(DataGroupHeader, dsNo)->height;
+                                drawBandRow(bandDGH, y);
+                            y += bandDGH->height;
 
-                            bandObj = pageList.at(pageReportNo)->getBand(MasterHeader, dsNo);
-                            if (bandObj != nullptr && bandObj->showInGroup == 1)
+                            if (bandMH != nullptr && bandMH->showInGroup == 1)
                                 processMHeader(y, dsNo, draw, pageReportNo);
                             processMasterData(printer, y, draw, pageReportNo, dsNo);
 
-                            bandObj = pageList.at(pageReportNo)->getBand(MasterFooter, dsNo);
-                            if (bandObj != nullptr && bandObj->showInGroup == 1)
+                            if (bandMF != nullptr && bandMF->showInGroup == 1)
                                 processMFooter(printer, y, dsNo, draw, pageReportNo);
                             //---
                             m_recNo = listOfPair.at(j).lnNo;
 
                             //-----------Added codes here. Thanks to puterk
-                            if (pageList.at(pageReportNo)->getBand(DataGroupFooter, dsNo) != nullptr) {
-                                if (y + pageList.at(pageReportNo)->getBand(DataGroupFooter, dsNo)->height > ph-mb-mt-yPF-yMF)
+                            if (bandDGF != nullptr) {
+                                if (y + bandDGF->height > ph-mb-mt-yPF-yMF)
                                     newPage(printer, y, draw);
                             }
                             //-----------ends here. Thanks to puterk
 
-                            if (pageList.at(pageReportNo)->getBand(DataGroupFooter, dsNo) != nullptr) {
+                            if (bandDGF != nullptr) {
                                 if (allowPrintPage(draw,currentPage))  //Draw footer of the group
-                                    drawBandRow(pageList.at(pageReportNo)->getBand(DataGroupFooter, dsNo), y);
+                                    drawBandRow(bandDGF, y);
 
-                                y += pageList.at(pageReportNo)->getBand(DataGroupFooter, dsNo)->height;
+                                y += bandDGF->height;
                             }
                         }
                     }
                 }
-                if (pageList.at(pageReportNo)->getBand(MasterFooter, dsNo) != nullptr &&
-                    pageList.at(pageReportNo)->getBand(MasterFooter, dsNo)->showInGroup == 0)
+                if (bandMF != nullptr && bandMF->showInGroup == 0)
                     processMFooter(printer, y, dsNo, draw, pageReportNo);
             }
         }
-
     }
 }
 
@@ -2270,6 +2295,9 @@ void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int &pageRep
 {
     int recCount = getRecCount(pageReportNo, dsNo);
 
+    auto bandMD  = pageList.at(pageReportNo)->getBand(MasterData, dsNo);
+    auto bandMF  = pageList.at(pageReportNo)->getBand(MasterFooter, dsNo);
+    auto bandPF  = pageList.at(pageReportNo)->getBand(PageFooter, dsNo);
 
     if (recCount > 0) {
         if (pageList.at(pageReportNo)->getBand(MasterData, dsNo) != nullptr) {
@@ -2288,15 +2316,15 @@ void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int &pageRep
                 if (found) {
                     mg_recNo += 1;
                     int yPF = 0;
-                    if (pageList.at(pageReportNo)->getBand(PageFooter, dsNo) != nullptr)
-                        yPF = pageList.at(pageReportNo)->getBand(PageFooter, dsNo)->height;
+                    if (bandPF != nullptr)
+                        yPF = bandPF->height;
 
                     int yMF = 0;
-                    if (pageList.at(pageReportNo)->getBand(MasterFooter, dsNo) != nullptr)
-                        yMF = pageList.at(pageReportNo)->getBand(MasterFooter, dsNo)->height;
+                    if (bandMF != nullptr)
+                        yMF = bandMF->height;
 
-                    drawBandRow(pageList.at(pageReportNo)->getBand(MasterData, dsNo), y, false);
-                    if (y + pageList.at(pageReportNo)->getBand(MasterData, dsNo)->realHeight > ph-mb-mt-yPF-yMF) {
+                    drawBandRow(bandMD, y, false);
+                    if (y + bandMD->realHeight > ph-mb-mt-yPF-yMF) {
                         if (m_printMode != QtRPT::Html) {
                             newPage(printer, y, draw);
                             processMHeader(y, dsNo, draw, pageReportNo);
@@ -2304,11 +2332,11 @@ void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int &pageRep
                     }
 
                     if (allowPrintPage(draw,currentPage))
-                        drawBandRow(pageList.at(pageReportNo)->getBand(MasterData, dsNo), y, true);
+                        drawBandRow(bandMD, y, true);
                     else
-                        fillListOfValue(pageList.at(pageReportNo)->getBand(MasterData, dsNo));
+                        fillListOfValue(bandMD);
 
-                    y += pageList.at(pageReportNo)->getBand(MasterData, dsNo)->realHeight;
+                    y += bandMD->realHeight;
                 }
             }
         }
@@ -2317,80 +2345,92 @@ void QtRPT::processMasterData(QPrinter *printer, int &y, bool draw, int &pageRep
 
 void QtRPT::processMHeader(int &y, int dsNo, bool draw, int &pageReportNo)
 {
-    if (pageList.at(pageReportNo)->getBand(MasterHeader, dsNo) == nullptr) return;
+    auto bandMH  = pageList.at(pageReportNo)->getBand(MasterHeader, dsNo);
+
+    if (bandMH == nullptr) return;
 
     if (allowPrintPage(draw, currentPage))
-        drawBandRow(pageList.at(pageReportNo)->getBand(MasterHeader, dsNo), y);
+        drawBandRow(bandMH, y);
 
-    y += pageList.at(pageReportNo)->getBand(MasterHeader, dsNo)->height;
+    y += bandMH->height;
 
     //painter.drawLine(0,y*koefRes_h,r.width(),y*koefRes_h);
 }
 
 void QtRPT::processRTitle(int &y, bool draw)
 {
-    if (pageList.at(m_pageReport)->getBand(ReportTitle, 1) == nullptr) return;
+    auto bandRT = pageList.at(m_pageReport)->getBand(ReportTitle, 1);
+
+    if (bandRT == nullptr) return;
 
     if (allowPrintPage(draw, currentPage))
-        drawBandRow(pageList.at(m_pageReport)->getBand(ReportTitle, 1), y);
+        drawBandRow(bandRT, y);
 
-    y += pageList.at(m_pageReport)->getBand(ReportTitle, 1)->height;
+    y += bandRT->height;
 
     //painter.drawLine(0,y*koefRes_h,r.width(),y*koefRes_h);
 }
 
 void QtRPT::processPHeader(int &y, bool draw)
 {
-    if (pageList.at(m_pageReport)->getBand(PageHeader, 1) == nullptr) return;
+    auto bandPH = pageList.at(m_pageReport)->getBand(PageHeader, 1);
+
+    if (bandPH == nullptr) return;
 
     if (m_printMode == QtRPT::Html) return;
 
     if (allowPrintPage(draw, currentPage))
-        drawBandRow(pageList.at(m_pageReport)->getBand(PageHeader, 1), y);
+        drawBandRow(bandPH, y);
 
-    y += pageList.at(m_pageReport)->getBand(PageHeader, 1)->height;
+    y += bandPH->height;
 
     //painter.drawLine(0,y*koefRes_h,pw*koefRes_h,y*koefRes_h);
 }
 
 void QtRPT::processMFooter(QPrinter *printer, int &y, int dsNo, bool draw, int &pageReportNo)
 {
-    if (pageList.at(pageReportNo)->getBand(MasterFooter, dsNo) == nullptr) return;
+    auto bandMF  = pageList.at(pageReportNo)->getBand(MasterFooter, dsNo);
 
-    if (y > ph-mb-mt-pageList.at(pageReportNo)->getBand(MasterFooter, dsNo)->height)
+    if (bandMF == nullptr) return;
+
+    if (y > ph-mb-mt-bandMF->height)
         newPage(printer, y, draw);
 
     if (allowPrintPage(draw,currentPage))
-        drawBandRow(pageList.at(pageReportNo)->getBand(MasterFooter, dsNo), y);
+        drawBandRow(bandMF, y);
 
-    y += pageList.at(m_pageReport)->getBand(MasterFooter, dsNo)->height;
+    y += bandMF->height;
 }
 
 void QtRPT::processPFooter(bool draw)
 {
-    if (pageList.at(m_pageReport)->getBand(PageFooter, 1) == nullptr) return;
+    auto bandPF = pageList.at(m_pageReport)->getBand(PageFooter, 1);
+
+    if (bandPF == nullptr) return;
 
     if (m_printMode == QtRPT::Html) return;
 
-    int y1 = ph-mb-mt-pageList.at(m_pageReport)->getBand(PageFooter, 1)->height;
+    int y1 = ph-mb-mt-bandPF->height;
 
     if (allowPrintPage(draw, currentPage))
-        drawBandRow(pageList.at(m_pageReport)->getBand(PageFooter, 1), y1);
+        drawBandRow(bandPF, y1);
 
     //painter.drawLine(0,y1*koefRes_h,pw*koefRes_h,y1*koefRes_h);
 }
 
 void QtRPT::processRSummary(QPrinter *printer, int &y, bool draw, int &pageReportNo)
 {
-    if (pageList.at(pageReportNo)->getBand(ReportSummary, 1) == nullptr) return;
+    auto bandRS = pageList.at(pageReportNo)->getBand(ReportSummary, 1);
 
-    if (y + pageList.at(pageReportNo)->getBand(ReportSummary, 1)->height > ph-mb-mt)
+    if (bandRS == nullptr) return;
+
+    if (y + bandRS->height > ph-mb-mt)
         newPage(printer, y, draw);
 
     if (allowPrintPage(draw, currentPage))
-        drawBandRow(pageList.at(pageReportNo)->getBand(ReportSummary, 1), y);
+        drawBandRow(bandRS, y);
 
-    y += pageList.at(pageReportNo)->getBand(ReportSummary, 1)->height;
+    y += bandRS->height;
 
     //painter.drawLine(0,y*koefRes_h,pw*koefRes_h,y*koefRes_h);
 }
