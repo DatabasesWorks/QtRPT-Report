@@ -37,6 +37,7 @@ SqlDesigner::SqlDesigner(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent)
 {
     ui->setupUi(this);
     m_xmlDoc = xmlDoc;
+
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
 
@@ -46,7 +47,7 @@ SqlDesigner::SqlDesigner(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent)
     ui->tablesTree->viewport()->installEventFilter(this);
     ui->xmlFieldsTable->viewport()->installEventFilter(this);
 
-    QActionGroup *actGroup = new QActionGroup(this);
+    auto actGroup = new QActionGroup(this);
     actGroup->addAction(ui->actAddRelationship);
     actGroup->addAction(ui->actSelect);
     m_currentPageNo = -1;
@@ -96,7 +97,7 @@ void SqlDesigner::refreshTable(QSqlDatabase *db)
 {
     ui->tablesTree->clear();
     QIcon icon;
-    for (auto &tableName : db->tables(QSql::Tables)) {
+    for (const auto &tableName : db->tables(QSql::Tables)) {
         auto tableItem = new QTreeWidgetItem(ui->tablesTree);
         tableItem->setText(0,tableName);
         icon.addPixmap(QPixmap(":/new/prefix1/images/table.png"), QIcon::Normal, QIcon::On);

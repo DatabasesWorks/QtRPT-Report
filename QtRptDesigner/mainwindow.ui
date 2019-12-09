@@ -251,6 +251,7 @@
    <addaction name="actNewReportPage"/>
    <addaction name="actDeleteReportPage"/>
    <addaction name="actPageSettings"/>
+   <addaction name="actScriptEditing"/>
    <addaction name="actDataSource"/>
    <addaction name="separator"/>
    <addaction name="actGroup"/>
@@ -1231,6 +1232,21 @@
    </property>
    <property name="text">
     <string>Readme QtRptDesigner</string>
+   </property>
+  </action>
+  <action name="actScriptEditing">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/new/prefix1/images/script.png</normaloff>:/new/prefix1/images/script.png</iconset>
+   </property>
+   <property name="text">
+    <string>Script Editor</string>
+   </property>
+   <property name="toolTip">
+    <string>Script Editor</string>
    </property>
   </action>
  </widget>

@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     RepScrollArea.cpp \
     SettingDlg.cpp \
     SqlDesigner.cpp \
-    XmlViewModel.cpp
+    XmlViewModel.cpp \
+    ScriptEditor.cpp
 
 HEADERS  += mainwindow.h \
     PageSettingDlg.h \
@@ -70,6 +71,7 @@ HEADERS  += mainwindow.h \
     SqlDesigner.h \
     XmlViewModel.h \
     CustomInterface.h \
+    ScriptEditor.h
 
 FORMS    += mainwindow.ui \
     PageSettingDlg.ui \
@@ -78,7 +80,8 @@ FORMS    += mainwindow.ui \
     FldPropertyDlg.ui \
     RepScrollArea.ui \
     SettingDlg.ui \
-    SqlDesigner.ui
+    SqlDesigner.ui \
+    ScriptEditor.ui
 
 RESOURCES += \
     images.qrc

@@ -21,8 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef SQLDESIGNER_H
-#define SQLDESIGNER_H
+#pragma once
 
 #include <QWidget>
 #include <QDomDocument>
@@ -47,7 +46,7 @@ class SqlDesigner : public QWidget
     Q_OBJECT
 
 public:
-    explicit SqlDesigner(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent = 0);
+    explicit SqlDesigner(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent = nullptr);
     void showDSData(QDomElement e);
     void showDSData(int pageNo);
     DiagramDocument *addDiagramDocument(QDomElement e);
@@ -91,5 +90,3 @@ private slots:
 signals:
     void changed(bool value);
 };
-
-#endif // SQLDESIGNER_H

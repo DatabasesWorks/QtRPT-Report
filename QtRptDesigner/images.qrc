@@ -118,6 +118,7 @@
         <file>images/barChart.png</file>
         <file>images/barStackedChart.png</file>
         <file>images/lineChart.png</file>
+        <file>images/script.png</file>
     </qresource>
     <qresource prefix="/language">
         <file>i18n/QtRprtDesigner_sr_RS.qm</file>

@@ -476,6 +476,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->actPageSettings, SIGNAL(triggered()), this, SLOT(showPageSetting()));
     QObject::connect(ui->actPreview, SIGNAL(triggered()), this, SLOT(showPreview()));
     QObject::connect(ui->actDataSource, SIGNAL(triggered()), this, SLOT(showDataSource()));
+    QObject::connect(ui->actScriptEditing, SIGNAL(triggered()), this, SLOT(showScriptEditor()));
     QObject::connect(ui->actReadmeQtRPT, &QAction::triggered, [=] {
         QDesktopServices::openUrl(QUrl::fromLocalFile(QCoreApplication::applicationDirPath()+"/ReadmeQtRPT.pdf"));
     });
@@ -648,6 +649,10 @@ MainWindow::MainWindow(QWidget *parent)
     bandMenu->addSeparator();
 
     xmlDoc = QSharedPointer<QDomDocument>(new QDomDocument("Report"));
+
+    scriptEditor = new ScriptEditor(xmlDoc, this);
+    scriptEditor->setVisible(false);
+    ui->horizontalLayout->addWidget(scriptEditor);
 
     sqlDesigner = new SqlDesigner(xmlDoc, this);
     QDomElement dsElement;
@@ -1111,6 +1116,12 @@ void MainWindow::showDataSource()
     if (ui->actDataSource->isChecked() ) {
 
     }
+}
+
+void MainWindow::showScriptEditor()
+{
+    scriptEditor->setVisible(ui->actScriptEditing->isChecked());
+    scriptEditor->showScript();
 }
 
 QDomElement MainWindow::getDataSourceElement(QDomNode n)

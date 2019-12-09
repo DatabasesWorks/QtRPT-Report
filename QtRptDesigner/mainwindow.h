@@ -40,6 +40,7 @@ limitations under the License.
 #include "SettingDlg.h"
 #include <XYZ_DownloadManager.h>
 #include "SqlDesigner.h"
+#include "ScriptEditor.h"
 #include "GraphicsBox.h"
 #include <QGraphicsItem>
 #include <QPointer>
@@ -128,6 +129,7 @@ private:
     QAction *actDataGroupingFooter;
 
     SqlDesigner *sqlDesigner;
+    ScriptEditor *scriptEditor;
 
     enum { MaxRecentFiles = 5 };
     QAction *recentFileActs[MaxRecentFiles];
@@ -190,6 +192,7 @@ private slots:
     void checkUpdates();
     void showPreview();
     void showDataSource();
+    void showScriptEditor();
     void undo();
     void redo();
     void mousePos(QPointF pos);
