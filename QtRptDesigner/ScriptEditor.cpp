@@ -46,11 +46,12 @@ void ScriptEditor::showScript()
     }
 }
 
-QDomElement ScriptEditor::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
+QDomElement ScriptEditor::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc, QDomElement element)
 {
     QDomElement elem;
 //    if (ui->rbSql->isChecked()) {
-//        elem = xmlDoc->createElement("DataSource");
+        elem = xmlDoc->createElement("Script");
+        element.appendChild(elem);
 //        elem.setAttribute("name","DB1");
 //        elem.setAttribute("type","SQL");
 //        elem.setAttribute("dbType",ui->cmbType->currentText());
@@ -69,6 +70,14 @@ QDomElement ScriptEditor::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc)
 //    if (ui->rbXml->isChecked()) {
 
 //    }
+
+//        QDomElement script = document.createElement("script");
+//        script.setAttribute("type", "text/javascript");
+//        body.appendChild(script);
+
+        QString js = "if(x < 0){\n/*do something*/\n}";
+        QDomCDATASection data = xmlDoc->createCDATASection(js);
+        elem.appendChild(data);
     return elem;
 }
 

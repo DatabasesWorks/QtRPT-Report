@@ -8,34 +8,34 @@
   </Report>
   <Script>
 	<![CDATA[	
-		QtRPT.pageList[0]
-		
-		print(QtRPT.objectName);
-		QtRPT.objectName = 'hehe';
-		debug(QtRPT.pageList);
-		debug(QtRPT.pageList.length);
-		debug(QtRPT.pageList[0].objectName);
-		//QtRPT.pageList[0].setVisible(false);
-		
-		debug('TEST:' + [var1]);
-		
-		function field1BeforeData()
-		{
-			print('BEFORE');
-			field1.value = 'HELLO';
-			
-			//field1.visible = false;
-		}
-		
-		function field1AfterData(value)
-		{
-			// This function mainly intended for modifing of result string.
-			// DONT use the following settings in AFTER section
-			//field1.visible = false;
-			
-			// If you DONT want to change value string, just comment 'return'
-			return value + " It is corrected string";
-		}
+QtRPT.pageList[0]
+
+print(QtRPT.objectName);
+QtRPT.objectName = 'hehe';
+debug(QtRPT.pageList);
+debug(QtRPT.pageList.length);
+debug(QtRPT.pageList[0].objectName);
+//QtRPT.pageList[0].setVisible(false);
+
+debug('TEST:' + [var1]);
+
+function field1BeforeData()
+{
+	print('BEFORE');
+	field1.value = 'HELLO';
+	
+	//field1.visible = false;
+}
+
+function field1AfterData(value)
+{
+	// This function mainly intended for modifing of result string.
+	// DONT use the following settings in AFTER section
+	//field1.visible = false;
+	
+	// If you DONT want to change value string, just comment 'return'
+	return value + " It is corrected string";
+}
 	]]>
   </Script>
 </Reports>

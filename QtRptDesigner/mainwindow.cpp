@@ -1200,6 +1200,7 @@ void MainWindow::openFile()
 
     sqlDesigner->clearAll();
 
+    int repNo = 0;
     for (int t = 0; t < docElem.childNodes().count(); t++) {
         if (docElem.tagName() == "Reports" )  //Делаем проверку для совместимости со старыми версиями
             repElem = docElem.childNodes().at(t).toElement();
@@ -1207,9 +1208,9 @@ void MainWindow::openFile()
         if (repElem.tagName() != "Report")
             continue;
 
-        if (t != 0) newReportPage();
+        if (repNo != 0) newReportPage();
 
-        auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(t));
+        auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(repNo));
         repPage->clearReport();
         repPage->pageSetting.marginsLeft       = repElem.attribute("marginsLeft").toInt();
         repPage->pageSetting.marginsRight      = repElem.attribute("marginsRight").toInt();
@@ -1303,10 +1304,12 @@ void MainWindow::openFile()
         }
 
         QDomElement dsElement = getDataSourceElement( repElem.firstChild() );
-        sqlDesigner->loadDiagramDocument(t, dsElement);
+        sqlDesigner->loadDiagramDocument(repNo, dsElement);
 
         repPage->setUpdatesEnabled(true);
         //QCoreApplication::processEvents();
+
+        repNo++;
     }
 
     ui->treeWidget->clearSelection();
@@ -1659,6 +1662,10 @@ void MainWindow::saveReport()
         n = docElem.firstChild();
     }
 
+    //
+    scriptEditor->saveParamToXML(xmlDoc, docElem);
+    //
+
     for (quint16 rp = 0; rp < ui->tabWidget->count(); rp++) {
         auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(rp));
         QDomElement repElem = xmlDoc->createElement("Report");
@@ -1681,10 +1688,7 @@ void MainWindow::saveReport()
         QBuffer buffer(&byteArray);
         buffer.open(QIODevice::WriteOnly);
 
-        //if (m_imgFormat.isEmpty() || m_imgFormat.isNull())
-            repPage->pageSetting.watermarkPixmap.save(&buffer, "PNG");
-        //else
-        //    pageSetting.watermarkPixmap.save(&buffer, m_imgFormat.toLatin1().data());
+        repPage->pageSetting.watermarkPixmap.save(&buffer, "PNG");
 
         QString s = byteArray.toBase64();
 
@@ -1719,9 +1723,6 @@ void MainWindow::saveReport()
     if (file.open(QIODevice::WriteOnly)) {
         setCurrentFile(fileName);
 
-        //QTextStream stream(&file);
-        //xmlDoc->save(stream, 2, QDomNode::EncodingFromTextStream);
-
         QXmlStreamWriter w(&file);
         w.setAutoFormatting(true);
         w.setAutoFormattingIndent(2);
@@ -1743,7 +1744,7 @@ bool MainWindow::setXMLProperty(QDomElement *repElem, void *ptr, int type)
     QDomElement elem;
 
     if (type == 0) {
-        SqlDesigner *sqlDesigner = static_cast<SqlDesigner *>(ptr);
+        auto sqlDesigner = static_cast<SqlDesigner *>(ptr);
         elem = sqlDesigner->saveParamToXML(xmlDoc);
         if (!elem.isNull())
             repElem->appendChild(elem);
