@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Reports email="aliks-os@ukr.net" lib="QtRPT" programmer="Aleksey Osipov">
-  <Report border="0" borderColor="" borderStyle="" borderWidth="1" marginsBottom="40" marginsLeft="40" marginsRight="40" marginsTop="40" orientation="0" pageHeight="1188" pageNo="1" pageWidth="840" watermark="0" watermarkOpacity="1.379591288952178e-306" watermarkPixmap="">
-    <ReportBand bandNo="1" height="200" name="RepTitleBand1" type="ReportTitle" width="760">
-      <TContainerField ZValue="11" aligmentH="hLeft" aligmentV="vCenter" autoHeight="0" backgroundColor="rgba(255,255,255,255)" borderBottom="rgba(0,0,0,255)" borderColor="rgba(0,0,0,255)" borderLeft="rgba(0,0,0,255)" borderRight="rgba(0,0,0,255)" borderStyle="solid" borderTop="rgba(0,0,0,255)" borderWidth="1px" fontBold="0" fontColor="rgba(0,0,0,255)" fontFamily="MS Shell Dlg 2" fontItalic="0" fontSize="8" fontStrikeout="0" fontUnderline="0" format="" groupName="" height="24" highlighting="" left="28" name="field1" printing="1" rotate="0" textWrap="0" top="26" type="label" value="s1=&lt;1+2&gt; s2=&lt;2+3&gt; &lt;sum([var1])&gt; var2=[var2] &lt;sum([var1] + [var3])&gt;" width="609"/>
-	  <TContainerField ZValue="11" aligmentH="hLeft" aligmentV="vCenter" autoHeight="0" backgroundColor="rgba(255,255,255,255)" borderBottom="rgba(0,0,0,255)" borderColor="rgba(0,0,0,255)" borderLeft="rgba(0,0,0,255)" borderRight="rgba(0,0,0,255)" borderStyle="solid" borderTop="rgba(0,0,0,255)" borderWidth="1px" fontBold="0" fontColor="rgba(0,0,0,255)" fontFamily="MS Shell Dlg 2" fontItalic="0" fontSize="8" fontStrikeout="0" fontUnderline="0" format="" groupName="" height="24" highlighting="" left="28" name="field2" printing="1" rotate="0" textWrap="0" top="76" type="label" value="SECOND FIELD" width="609"/>
-    </ReportBand>
-  </Report>
-  <Script>
-	<![CDATA[	
-QtRPT.pageList[0]
+<Reports email="aliks-os@ukr.net" programmer="Aleksey Osipov" lib="QtRPT">
+  <Script><![CDATA[QtRPT.pageList[0]
 
 print(QtRPT.objectName);
 QtRPT.objectName = 'hehe';
@@ -21,21 +13,27 @@ debug('TEST:' + [var1]);
 
 function field1BeforeData()
 {
-	print('BEFORE');
-	field1.value = 'HELLO';
-	
-	//field1.visible = false;
+   print('BEFORE');
+   field1.value = 'HELLO';
+
+   //field1.visible = false;
 }
 
 function field1AfterData(value)
 {
-	// This function mainly intended for modifing of result string.
-	// DONT use the following settings in AFTER section
-	//field1.visible = false;
-	
-	// If you DONT want to change value string, just comment 'return'
-	return value + " It is corrected string";
+   // This function mainly intended for modifing of result string.
+   // DONT use the following settings in AFTER section
+   //field1.visible = false;
+
+   // If you DONT want to change value string, just comment 'return'
+   return value + " It is corrected string";
 }
-	]]>
-  </Script>
+	]]></Script>
+  <Report marginsTop="40" borderWidth="1" borderColor="" watermarkOpacity="1.379591288952178e-306" marginsLeft="40" border="0" marginsRight="40" marginsBottom="40" pageNo="1" borderStyle="" pageWidth="840" watermark="0" pageHeight="1188" orientation="0" watermarkPixmap="">
+    <ReportBand width="760" type="ReportTitle" name="RepTitleBand1" bandNo="1" height="200">
+      <TContainerField borderBottom="rgba(0,0,0,255)" format="" borderStyle="solid" autoHeight="0" fontUnderline="0" ZValue="11" aligmentH="hLeft" fontSize="8" fontFamily="MS Shell Dlg 2" printing="1" textWrap="0" highlighting="" fontStrikeout="0" type="label" rotate="0" aligmentV="vCenter" top="26" width="609" groupName="" fontBold="0" value="s1=&lt;1+2> s2=&lt;2+3> &lt;sum([var1])> var2=[var2] &lt;sum([var1] + [var3])>" fontItalic="0" borderLeft="rgba(0,0,0,255)" left="28" backgroundColor="rgba(255,255,255,255)" name="field1" borderColor="rgba(0,0,0,255)" borderWidth="1px" fontColor="rgba(0,0,0,255)" borderRight="rgba(0,0,0,255)" height="24" borderTop="rgba(0,0,0,255)"/>
+      <TContainerField borderBottom="rgba(0,0,0,255)" format="" borderStyle="solid" autoHeight="0" fontUnderline="0" ZValue="11" aligmentH="hLeft" fontSize="8" fontFamily="MS Shell Dlg 2" printing="1" textWrap="0" highlighting="" fontStrikeout="0" type="label" rotate="0" aligmentV="vCenter" top="78" width="609" groupName="" fontBold="0" value="SECOND FIELD" fontItalic="0" borderLeft="rgba(0,0,0,255)" left="28" backgroundColor="rgba(255,255,255,255)" name="field2" borderColor="rgba(0,0,0,255)" borderWidth="1px" fontColor="rgba(0,0,0,255)" borderRight="rgba(0,0,0,255)" height="24" borderTop="rgba(0,0,0,255)"/>
+    </ReportBand>
+  </Report>
 </Reports>
+

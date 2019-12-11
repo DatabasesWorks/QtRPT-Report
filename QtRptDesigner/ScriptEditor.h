@@ -43,5 +43,6 @@ public:
 private:
     Ui::ScriptEditor *ui;
     QSharedPointer<QDomDocument> m_xmlDoc;
+
 };
 

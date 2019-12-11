@@ -128,6 +128,7 @@ private:
     QAction *actDataGroupingHeader;
     QAction *actDataGroupingFooter;
 
+    QStackedWidget *stackedWidget;
     SqlDesigner *sqlDesigner;
     ScriptEditor *scriptEditor;
 
@@ -191,8 +192,7 @@ private slots:
     void openDBGroupProperty();
     void checkUpdates();
     void showPreview();
-    void showDataSource();
-    void showScriptEditor();
+    void showPane();
     void undo();
     void redo();
     void mousePos(QPointF pos);

@@ -475,8 +475,8 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->actCheckUpdates, SIGNAL(triggered()), this, SLOT(checkUpdates()));
     QObject::connect(ui->actPageSettings, SIGNAL(triggered()), this, SLOT(showPageSetting()));
     QObject::connect(ui->actPreview, SIGNAL(triggered()), this, SLOT(showPreview()));
-    QObject::connect(ui->actDataSource, SIGNAL(triggered()), this, SLOT(showDataSource()));
-    QObject::connect(ui->actScriptEditing, SIGNAL(triggered()), this, SLOT(showScriptEditor()));
+    QObject::connect(ui->actDataSource, SIGNAL(triggered()), this, SLOT(showPane()));
+    QObject::connect(ui->actScriptEditing, SIGNAL(triggered()), this, SLOT(showPane()));
     QObject::connect(ui->actReadmeQtRPT, &QAction::triggered, [=] {
         QDesktopServices::openUrl(QUrl::fromLocalFile(QCoreApplication::applicationDirPath()+"/ReadmeQtRPT.pdf"));
     });
@@ -652,15 +652,26 @@ MainWindow::MainWindow(QWidget *parent)
 
     scriptEditor = new ScriptEditor(xmlDoc, this);
     scriptEditor->setVisible(false);
-    ui->horizontalLayout->addWidget(scriptEditor);
+
 
     sqlDesigner = new SqlDesigner(xmlDoc, this);
     QDomElement dsElement;
     sqlDesigner->addDiagramDocument(dsElement);
+    sqlDesigner->setVisible(false);
 
     QObject::connect(sqlDesigner, SIGNAL(changed(bool)), ui->actSaveReport, SLOT(setEnabled(bool)));
-    ui->horizontalLayout->addWidget(sqlDesigner);
-    sqlDesigner->setVisible(false);
+
+
+    stackedWidget = new QStackedWidget(this);
+    stackedWidget->setObjectName(QStringLiteral("stackedWidget"));
+    stackedWidget->setFixedWidth(600);
+    stackedWidget->setVisible(false);
+    ui->horizontalLayout->addWidget(stackedWidget);
+
+
+    stackedWidget->addWidget(scriptEditor);
+    stackedWidget->addWidget(sqlDesigner);
+
 
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
     settings.setIniCodec("UTF-8");
@@ -1109,19 +1120,28 @@ void MainWindow::showSetting()
     repPage->showGrid(settings.value("ShowGrid",true).toBool());
 }
 
-void MainWindow::showDataSource()
+void MainWindow::showPane()
 {
-    sqlDesigner->setVisible( ui->actDataSource->isChecked() );
-    sqlDesigner->showDSData(ui->tabWidget->currentIndex());
-    if (ui->actDataSource->isChecked() ) {
+    if (sender() == ui->actDataSource && ui->actDataSource->isChecked()) {
+        ui->actScriptEditing->setChecked(false);
 
+        sqlDesigner->showDSData(ui->tabWidget->currentIndex());
     }
-}
 
-void MainWindow::showScriptEditor()
-{
+    if (sender() == ui->actScriptEditing && ui->actScriptEditing->isChecked()) {
+        ui->actDataSource->setChecked(false);
+
+        scriptEditor->showScript();
+    }
+
+    if (ui->actDataSource->isChecked() || ui->actScriptEditing->isChecked())
+        stackedWidget->setVisible(true);
+    else
+        stackedWidget->setVisible(false);
+
+    sqlDesigner->setVisible(ui->actDataSource->isChecked());
     scriptEditor->setVisible(ui->actScriptEditing->isChecked());
-    scriptEditor->showScript();
+
 }
 
 QDomElement MainWindow::getDataSourceElement(QDomNode n)
@@ -1662,9 +1682,7 @@ void MainWindow::saveReport()
         n = docElem.firstChild();
     }
 
-    //
     scriptEditor->saveParamToXML(xmlDoc, docElem);
-    //
 
     for (quint16 rp = 0; rp < ui->tabWidget->count(); rp++) {
         auto repPage = qobject_cast<RepScrollArea *>(ui->tabWidget->widget(rp));
@@ -1723,12 +1741,15 @@ void MainWindow::saveReport()
     if (file.open(QIODevice::WriteOnly)) {
         setCurrentFile(fileName);
 
-        QXmlStreamWriter w(&file);
-        w.setAutoFormatting(true);
-        w.setAutoFormattingIndent(2);
-        w.writeStartDocument();
-        xmlWrite(&w, xmlDoc->documentElement());
-        w.writeEndDocument();
+//        QXmlStreamWriter w(&file);
+//        w.setAutoFormatting(true);
+//        w.setAutoFormattingIndent(2);
+//        w.writeStartDocument();
+//        xmlWrite(&w, xmlDoc->documentElement());
+//        w.writeEndDocument();
+
+        QTextStream stream(&file);
+        xmlDoc->save(stream, 2, QDomNode::EncodingFromTextStream);
 
         file.close();
         ui->actSaveReport->setEnabled(false);

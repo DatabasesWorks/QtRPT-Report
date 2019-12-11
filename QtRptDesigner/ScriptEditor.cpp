@@ -23,6 +23,8 @@ limitations under the License.
 
 #include "ScriptEditor.h"
 #include "ui_ScriptEditor.h"
+#include "SQLHighlighter.h"
+#include <QDebug>
 
 ScriptEditor::ScriptEditor(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent) :
     QWidget(parent),
@@ -30,10 +32,29 @@ ScriptEditor::ScriptEditor(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent)
 {
     ui->setupUi(this);
     m_xmlDoc = xmlDoc;
+
+    QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
+    settings.setIniCodec("UTF-8");
+
+    new SQLHighlighter(ui->editor->document(), &settings);
+
+    QObject::connect(ui->editor, &QPlainTextEdit::textChanged, [=] {
+        auto act2 = this->parentWidget()->parentWidget()->parentWidget()->findChild<QAction *>("actSaveReport");
+        act2->setEnabled(true);
+    });
+    QObject::connect(ui->btnClose, &QPushButton::clicked, [=] {
+        auto act2 = this->parentWidget()->parentWidget()->parentWidget()->findChild<QAction *>("actScriptEditing");
+        act2->setChecked(false);
+        emit act2->triggered();
+    });
+
+    ui->editor->blockSignals(true);
 }
 
 void ScriptEditor::showScript()
 {
+    ui->editor->blockSignals(true);
+
     QDomElement documentElement = m_xmlDoc->documentElement();
     QDomNodeList elements = documentElement.elementsByTagName("Script");
 
@@ -44,40 +65,18 @@ void ScriptEditor::showScript()
             ui->editor->setPlainText(script);
         }
     }
+
+    ui->editor->blockSignals(false);
 }
 
 QDomElement ScriptEditor::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc, QDomElement element)
 {
-    QDomElement elem;
-//    if (ui->rbSql->isChecked()) {
-        elem = xmlDoc->createElement("Script");
-        element.appendChild(elem);
-//        elem.setAttribute("name","DB1");
-//        elem.setAttribute("type","SQL");
-//        elem.setAttribute("dbType",ui->cmbType->currentText());
-//        elem.setAttribute("dbName",ui->edtDBName->text());
-//        elem.setAttribute("dbHost",ui->edtHost->text());
-//        elem.setAttribute("dbUser",ui->edtUserName->text());
-//        elem.setAttribute("dbPassword",ui->edtPassword->text());
-//        elem.setAttribute("dbCoding",ui->edtConnectionCoding->text());
-//        elem.setAttribute("charsetCoding",ui->edtCharsetCoding->text());
-//        elem.setAttribute("dbConnectionName",ui->edtConName->text());
-//        elem.setAttribute("dbPort",ui->edtPort->text());
-//        QDomText t = xmlDoc->createTextNode(ui->sqlEditor->toPlainText());
-//        elem.appendChild(t);
-//        currentScene->save(xmlDoc, elem);
-//    }
-//    if (ui->rbXml->isChecked()) {
+    auto elem = xmlDoc->createElement("Script");
+    element.appendChild(elem);
 
-//    }
+    auto data = xmlDoc->createCDATASection(ui->editor->toPlainText());
+    elem.appendChild(data);
 
-//        QDomElement script = document.createElement("script");
-//        script.setAttribute("type", "text/javascript");
-//        body.appendChild(script);
-
-        QString js = "if(x < 0){\n/*do something*/\n}";
-        QDomCDATASection data = xmlDoc->createCDATASection(js);
-        elem.appendChild(data);
     return elem;
 }
 

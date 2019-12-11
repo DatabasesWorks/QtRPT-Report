@@ -53,6 +53,7 @@ SqlDesigner::SqlDesigner(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent)
     m_currentPageNo = -1;
 
     new SQLHighlighter(ui->sqlEditor->document(), &settings);
+
     QObject::connect(ui->rbCustom, SIGNAL(clicked()), this, SLOT(rbChecked()));
     QObject::connect(ui->rbSql, SIGNAL(clicked()), this, SLOT(rbChecked()));
     QObject::connect(ui->rbXml, SIGNAL(clicked()), this, SLOT(rbChecked()));
@@ -193,6 +194,7 @@ void SqlDesigner::rbChecked()
         ui->stackedWidget->setCurrentIndex(1);
     if (ui->rbXml->isChecked())
         ui->stackedWidget->setCurrentIndex(2);
+
     emit changed(true);
 }
 
@@ -330,17 +332,20 @@ DocumentSet SqlDesigner::newDocumentSet(QDomElement e)
     documentSet.document = scene;
     documentSet.element = e;
 
+    QUndoStack *undoStack = scene->undoStack();
+
     QRectF sceneRect = scene->sceneRect().united(QRectF(QPointF(0, 0), QPointF(100, 100)));
     scene->setSceneRect(sceneRect);
     QObject::connect(scene, SIGNAL(modeChanged(DiagramDocument::Mode)),
                      SLOT(updateMode(DiagramDocument::Mode)));
     QObject::connect(scene, SIGNAL(sqlChanged(QString)), this, SLOT(sqlChanged(QString)));
-    QUndoStack *undoStack = scene->undoStack();
     QObject::connect(undoStack, SIGNAL(canUndoChanged(bool)), ui->actUndo, SLOT(setEnabled(bool)));
     QObject::connect(undoStack, SIGNAL(canRedoChanged(bool)), ui->actRedo, SLOT(setEnabled(bool)));
+
     ui->actUndo->setEnabled(undoStack->canUndo());
     ui->actRedo->setEnabled(undoStack->canRedo());
     ui->graphicsView->setScene(scene);
+
     return documentSet;
 }
 

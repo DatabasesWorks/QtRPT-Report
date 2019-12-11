@@ -9,10 +9,11 @@
 FontHihgligthParam SQLHighlighter::getFontColor(int type)
 {
     FontHihgligthParam fh;
-    for (int i=0; i<lst.size(); i++) {
+    for (int i = 0; i < lst.size(); i++) {
         if (lst.at(i).type == type)
             return lst.at(i);
     }
+
     return fh;
 }
 
@@ -60,7 +61,8 @@ void SQLHighlighter::saveSettings(QSettings *settings)
 {
     settings->beginGroup("SQLEHighligheter");
     settings->beginWriteArray("Params");
-    for (int i=0; i<lst.size(); ++i) {
+
+    for (int i = 0; i < lst.size(); ++i) {
         settings->setArrayIndex(i);
         FontHihgligthParam fh = lst.at(i);
         settings->setValue("Bold", fh.bold);
@@ -77,7 +79,7 @@ void SQLHighlighter::saveSettings(QSettings *settings)
 SQLHighlighter::SQLHighlighter(class QTextDocument *parent, QSettings *settings) : QSyntaxHighlighter(parent)
 {
     //qRegisterMetaType<FontHihgligth>("FontHihgligth");
-    if (settings == 0) {
+    if (settings == nullptr) {
         fillArray();
     } else {
         //get Font params from INI file
@@ -85,7 +87,7 @@ SQLHighlighter::SQLHighlighter(class QTextDocument *parent, QSettings *settings)
         int listSize = settings->beginReadArray("Params");
         if (listSize > 0) {
             lst.clear();
-            for (int i=0; i<listSize; ++i) {
+            for (int i = 0; i < listSize; ++i) {
                 settings->setArrayIndex(i);
                 FontHihgligthParam fh;
                 fh.type = (FontHihgligth)settings->value("Type").toInt();
@@ -206,6 +208,7 @@ void SQLHighlighter::highlightBlock(const QString &text)
             commentLength = endIndex - startIndex
             + commentEndExpression.matchedLength();
         }
+
         setFormat(startIndex, commentLength, commentFormat);
         startIndex = text.indexOf(commentStartExpression, startIndex + commentLength);
     }
