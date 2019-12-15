@@ -46,6 +46,10 @@ class RptFieldObject : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString value MEMBER value)
+    Q_PROPERTY(int width READ getWidth WRITE setWidth)
+    Q_PROPERTY(int height READ getHeight WRITE setHeight)
+    Q_PROPERTY(int top READ getTop WRITE setTop)
+    Q_PROPERTY(int left READ getLeft WRITE setLeft)
     Q_PROPERTY(bool visible MEMBER m_visible)
     Q_PROPERTY(int rotate MEMBER rotate)
     Q_PROPERTY(QColor fontColor MEMBER fontColor)
@@ -120,10 +124,14 @@ public:
     Q_INVOKABLE void setVisible(bool value);
     bool isVisible();
 
-//    Q_INVOKABLE void setWidth(bool value);
-//    Q_INVOKABLE void setHeight(bool value);
-//    Q_INVOKABLE void setTop(int value);
-//    Q_INVOKABLE void setLeft(int value);
+    Q_INVOKABLE void setWidth(int value);
+    Q_INVOKABLE int getWidth();
+    Q_INVOKABLE void setHeight(int value);
+    Q_INVOKABLE int getHeight();
+    Q_INVOKABLE void setTop(int value);
+    Q_INVOKABLE int getTop();
+    Q_INVOKABLE void setLeft(int value);
+    Q_INVOKABLE int getLeft();
 
 private:
     QColor m_fontColor;

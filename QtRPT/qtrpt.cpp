@@ -527,6 +527,18 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
             fieldObject->parentCrossTab->total(fieldObject);
     }
 
+    // Process GlobalScript for current field --START--
+    if (draw) {
+        QScriptValue beforeData = m_globalEngine->globalObject().property(fieldObject->objectName() + "BeforeData");
+        if (beforeData.isValid())
+            beforeData.call(QScriptValue(), QScriptValueList());
+
+        if (!fieldObject->isVisible())
+            return;
+    }
+    // Process GlobalScript for current field --END--
+
+
     int left_   = fieldObject->rect.x() * koefRes_w;
     //int width_  = fieldObject->rect.width() * koefRes_w;
     int width_  = (fieldObject->rect.width()-1) * koefRes_w;
@@ -542,16 +554,7 @@ void QtRPT::drawFields(RptFieldObject *fieldObject, int bandTop, bool draw)
     FieldType fieldType = fieldObject->fieldType;
     QPen pen = getPen(fieldObject);
 
-    // Process GlobalScript for current field --START--
-    if (draw) {
-        QScriptValue beforeData = m_globalEngine->globalObject().property(fieldObject->objectName() + "BeforeData");
-        if (beforeData.isValid())
-            beforeData.call(QScriptValue(), QScriptValueList());
 
-        if (!fieldObject->isVisible())
-            return;
-    }
-    // Process GlobalScript for current field --END--
 
     // Drawing Border, Background, Not Text fields --START--
     if (draw) {

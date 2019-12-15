@@ -27,6 +27,8 @@ limitations under the License.
 #include "CommonClasses.h"
 #include "qtrpt.h"
 
+Q_DECLARE_METATYPE(QColor);
+
 RptScriptEngine::RptScriptEngine(QObject *parent)
 : QScriptEngine(parent)
 {
@@ -59,6 +61,9 @@ RptScriptEngine::RptScriptEngine(QObject *parent)
 
     fun = this->newFunction(funcDebug);
     this->globalObject().setProperty("debug", fun);
+
+    fun = this->newFunction(qcolorValue);
+    this->globalObject().setProperty("QColor", fun);
 
     addObject(parent);
 }
@@ -95,9 +100,18 @@ QScriptValue RptScriptEngine::evaluate(const QString &program, const QString &fi
 
 //--------------------------------------------------------
 
+QScriptValue qcolorValue(QScriptContext *context, QScriptEngine *engine)
+{
+    int r = context->argument(0).toInt32();
+    int g = context->argument(1).toInt32();
+    int b = context->argument(2).toInt32();
+    return engine->toScriptValue(QColor(r,g,b,255));
+}
+
 QScriptValue funcReplace(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     QString param = context->argument(0).toString();
     QString strBefore = context->argument(1).toString();
     QString strAfter = context->argument(2).toString();
@@ -107,6 +121,7 @@ QScriptValue funcReplace(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcToUpper(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     QString param = context->argument(0).toString();
     return param.toUpper();
 }
@@ -114,6 +129,7 @@ QScriptValue funcToUpper(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcToLower(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     QString param = context->argument(0).toString();
     return param.toLower();
 }
@@ -121,6 +137,7 @@ QScriptValue funcToLower(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     double value = context->argument(0).toString().toDouble();
     int b = qFloor(value);
     b = (value-b) * 100 + 0.5;
@@ -130,6 +147,7 @@ QScriptValue funcFrac(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcFloor(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     double value = context->argument(0).toString().toDouble();
     return qFloor(value);
 }
@@ -137,6 +155,7 @@ QScriptValue funcFloor(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcCeil(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     double value = context->argument(0).toString().toDouble();
     return qCeil(value);
 }
@@ -144,6 +163,7 @@ QScriptValue funcCeil(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcRound(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     double value = context->argument(0).toString().toDouble();
     return qRound(value);
 }
@@ -151,6 +171,7 @@ QScriptValue funcRound(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcDebug(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     qDebug() << context->argument(0).toString();
     return "";
 }
@@ -158,6 +179,7 @@ QScriptValue funcDebug(QScriptContext *context, QScriptEngine *engine)
 QScriptValue funcNumberToWords(QScriptContext *context, QScriptEngine *engine)
 {
     Q_UNUSED(engine);
+
     QString paramLanguage = context->argument(0).toString();
     double value = context->argument(1).toString().toDouble();
     return double2Money(value, paramLanguage);

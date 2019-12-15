@@ -38,6 +38,7 @@ public:
     explicit ScriptEditor(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent = nullptr);
     QDomElement saveParamToXML(QSharedPointer<QDomDocument> xmlDoc, QDomElement element);
     void showScript();
+    void clear();
     ~ScriptEditor();
 
 private:

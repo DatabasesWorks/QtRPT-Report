@@ -39,11 +39,11 @@ ScriptEditor::ScriptEditor(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent)
     new SQLHighlighter(ui->editor->document(), &settings);
 
     QObject::connect(ui->editor, &QPlainTextEdit::textChanged, [=] {
-        auto act2 = this->parentWidget()->parentWidget()->parentWidget()->findChild<QAction *>("actSaveReport");
+        auto act2 = this->parentWidget()->parentWidget()->parentWidget()->parentWidget()->findChild<QAction *>("actSaveReport");
         act2->setEnabled(true);
     });
     QObject::connect(ui->btnClose, &QPushButton::clicked, [=] {
-        auto act2 = this->parentWidget()->parentWidget()->parentWidget()->findChild<QAction *>("actScriptEditing");
+        auto act2 = this->parentWidget()->parentWidget()->parentWidget()->parentWidget()->findChild<QAction *>("actScriptEditing");
         act2->setChecked(false);
         emit act2->triggered();
     });
@@ -53,6 +53,8 @@ ScriptEditor::ScriptEditor(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent)
 
 void ScriptEditor::showScript()
 {
+    clear();
+
     ui->editor->blockSignals(true);
 
     QDomElement documentElement = m_xmlDoc->documentElement();
@@ -78,6 +80,13 @@ QDomElement ScriptEditor::saveParamToXML(QSharedPointer<QDomDocument> xmlDoc, QD
     elem.appendChild(data);
 
     return elem;
+}
+
+void ScriptEditor::clear()
+{
+    ui->editor->blockSignals(true);
+    ui->editor->clear();
+    ui->editor->blockSignals(false);
 }
 
 ScriptEditor::~ScriptEditor()

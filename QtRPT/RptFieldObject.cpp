@@ -381,7 +381,7 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
     value = e.attribute("value");
     rect.setX(e.attribute("left").toInt());
     rect.setY(e.attribute("top").toInt());
-    rect.setWidth((e.attribute("width").toInt()));
+    rect.setWidth(e.attribute("width").toInt());
     rect.setHeight(e.attribute("height").toInt());
     borderTop = colorFromString(e.attribute("borderTop"));
     borderBottom = colorFromString(e.attribute("borderBottom"));
@@ -493,8 +493,6 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
 
                     c = c.nextSibling();
                 }
-
-
             }
 
             if (e.attribute("chartType") == "SeriesTypeBar" ||
@@ -584,6 +582,46 @@ void RptFieldObject::setProperty(QtRPT *qtrpt, QDomElement e)
         crossTab->parentField = this;
         crossTab->loadParamFromXML(e);
     }
+}
+
+void RptFieldObject::setWidth(int value)
+{
+    rect.setWidth(value);
+}
+
+int RptFieldObject::getWidth()
+{
+    return rect.width();
+}
+
+void RptFieldObject::setHeight(int value)
+{
+    rect.setHeight(value);
+}
+
+int RptFieldObject::getHeight()
+{
+    return rect.height();
+}
+
+void RptFieldObject::setTop(int value)
+{
+    rect.setY(value);
+}
+
+int RptFieldObject::getTop()
+{
+    return rect.y();
+}
+
+void RptFieldObject::setLeft(int value)
+{
+    rect.setX(value);
+}
+
+int RptFieldObject::getLeft()
+{
+    return rect.x();
 }
 
 void RptFieldObject::setChartData(GraphDataList dataList)

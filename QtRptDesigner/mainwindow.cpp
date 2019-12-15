@@ -59,13 +59,11 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                 editor->setRange(0, 999999);
                 connect(editor, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
                 return editor;
-                break;
             }
             case FontName: {
                 auto editor = new QFontComboBox(parent);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
                 return editor;
-                break;
             }
             case TextRotate: {
                 auto editor = new QComboBox(parent);
@@ -75,7 +73,6 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                 editor->addItem(tr("270 Degres"), 3);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
                 return editor;
-                break;
             }
             case AligmentH: {
                 auto editor = new QComboBox(parent);
@@ -85,7 +82,6 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                 editor->addItem(tr("Justify"),Qt::AlignJustify);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
                 return editor;
-                break;
             }
             case AligmentV: {
                 auto editor = new QComboBox(parent);
@@ -94,7 +90,6 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                 editor->addItem(tr("Bottom"),Qt::AlignBottom);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
                 return editor;
-                break;
             }
             case BarcodeType: {
                 auto editor = new QComboBox(parent);
@@ -102,7 +97,6 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                     editor->addItem(pair.second, pair.first);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
                 return editor;
-                break;
             }
             case BarcodeFrameType: {
                 auto editor = new QComboBox(parent);
@@ -110,7 +104,6 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                     editor->addItem(pair.second, pair.first);
                 connect(editor, SIGNAL(activated(int)), this, SLOT(commitAndCloseEditor()));
                 return editor;
-                break;
             }
             case BorderColor:
             case FontColor:
@@ -120,7 +113,6 @@ QWidget* EditorDelegate::createEditor(QWidget *parent,
                 editor->setMargins(margins);
                 QObject::connect(editor->button, SIGNAL(clicked()), this, SIGNAL(btnClicked()));
                 return editor;
-                break;
             }
             default: return QStyledItemDelegate::createEditor(parent, option, index);
         }
@@ -372,9 +364,7 @@ MainWindow::MainWindow(QWidget *parent)
     rootItem->setText(0,tr("Report"));
     rootItem->setExpanded(true);
 
-    QList<int> lst;
-    lst << 15 << 300;
-    ui->splitter->setSizes(lst);
+
 
     cloneContList = new QList<QGraphicsItem*>();
     for (auto &widget : ui->toolBar->findChildren<QWidget*>())
@@ -664,13 +654,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     stackedWidget = new QStackedWidget(this);
     stackedWidget->setObjectName(QStringLiteral("stackedWidget"));
-    stackedWidget->setFixedWidth(600);
+    stackedWidget->setMinimumWidth(200);
+    stackedWidget->setMaximumWidth(800);
     stackedWidget->setVisible(false);
     ui->horizontalLayout->addWidget(stackedWidget);
 
 
     stackedWidget->addWidget(scriptEditor);
     stackedWidget->addWidget(sqlDesigner);
+
+    ui->splitter->addWidget(stackedWidget);
+
+    QList<int> lst;
+    lst << 15 << 400 << 15;
+    ui->splitter->setSizes(lst);
 
 
     QSettings settings(QCoreApplication::applicationDirPath()+"/setting.ini",QSettings::IniFormat);
@@ -1218,6 +1215,7 @@ void MainWindow::openFile()
     while (ui->tabWidget->count() > 1)
         ui->tabWidget->removeTab(ui->tabWidget->count()-1);
 
+    scriptEditor->clear();
     sqlDesigner->clearAll();
 
     int repNo = 0;
@@ -1325,6 +1323,8 @@ void MainWindow::openFile()
 
         QDomElement dsElement = getDataSourceElement( repElem.firstChild() );
         sqlDesigner->loadDiagramDocument(repNo, dsElement);
+
+        scriptEditor->showScript();
 
         repPage->setUpdatesEnabled(true);
         //QCoreApplication::processEvents();
@@ -2112,6 +2112,7 @@ void MainWindow::newReport()
         }
     }
 
+    scriptEditor->clear();
     sqlDesigner->clearAll();
     enableAdding();
     repPage->scene->m_undoStack->clear();

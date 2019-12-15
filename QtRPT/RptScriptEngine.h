@@ -48,6 +48,7 @@ public:
 
 //--------------------------------------------------------
 
+QScriptValue qcolorValue(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcReplace(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcToUpper(QScriptContext *context, QScriptEngine *engine);
 QScriptValue funcToLower(QScriptContext *context, QScriptEngine *engine);
