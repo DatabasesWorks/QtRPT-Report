@@ -1,6 +1,6 @@
 /*
 Name: XYZ
-Version: 2.0.3
+Version: 2.1.0
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net

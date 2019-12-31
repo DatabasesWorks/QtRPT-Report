@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.3
+Version: 2.1.0
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -52,7 +52,7 @@ class PageSettingDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit PageSettingDlg(QWidget *parent = 0);
+    explicit PageSettingDlg(QWidget *parent = nullptr);
     ~PageSettingDlg();
     void showThis(PageSetting pageSetting);
     PageSetting pageSetting;

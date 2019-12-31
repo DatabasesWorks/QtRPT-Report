@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.3
+Version: 2.1.0
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -38,7 +38,7 @@ class RepScrollArea : public QScrollArea
     Q_OBJECT
     
 public:
-    explicit RepScrollArea(QTreeWidgetItem* rootItem, QWidget *parent = 0);
+    explicit RepScrollArea(QTreeWidgetItem* rootItem, QWidget *parent = nullptr);
     QWidget* repWidget;
     ~RepScrollArea();
     double setPaperSize(qreal scale);

@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.3
+Version: 2.1.0
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -31,7 +31,7 @@ class XMLViewModel : public QStandardItemModel
 {
     Q_OBJECT
 public:
-    XMLViewModel(QDomDocument *xmlDoc, QObject *parent = 0);
+    XMLViewModel(QDomDocument *xmlDoc, QObject *parent = nullptr);
 
 private:
     void insertChilds(QDomNode node, QStandardItem *parent);

@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.3
+Version: 2.1.0
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -28,7 +28,7 @@ limitations under the License.
 #include "GraphicsBox.h"
 
 namespace Ui {
-class FldPropertyDlg;
+    class FldPropertyDlg;
 }
 
 class FldPropertyDlg : public QDialog
@@ -36,7 +36,7 @@ class FldPropertyDlg : public QDialog
     Q_OBJECT
     
 public:
-    explicit FldPropertyDlg(QWidget *parent = 0);
+    explicit FldPropertyDlg(QWidget *parent = nullptr);
     ~FldPropertyDlg();
     QString showThis(int index, GraphicsBox *widget = 0, QString value = 0);
     

@@ -1,6 +1,6 @@
 /*
 Name: QtRpt
-Version: 2.0.3
+Version: 2.1.0
 Web-site: http://www.qtrpt.tk
 Programmer: Aleksey Osipov
 E-mail: aliks-os@ukr.net
@@ -39,7 +39,7 @@ class EditFldDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit EditFldDlg(QWidget *parent = 0);
+    explicit EditFldDlg(QWidget *parent = nullptr);
     ~EditFldDlg();
     int showText(QGraphicsItem *gItem);
     int showTextRich(QGraphicsItem *gItem);
