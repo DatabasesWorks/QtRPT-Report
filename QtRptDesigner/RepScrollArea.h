@@ -45,7 +45,7 @@ public:
     ReportBand* m_addBand(BandType type, QMenu* bandMenu, int m_height=0, QString objName="", int bandNo=1);
     void newFieldTreeItem(QGraphicsItem* item);
     PageSetting pageSetting;
-    void correctBandGeom(ReportBand *rep = 0);
+    void correctBandGeom(ReportBand *rep = nullptr);
     bool allowField();
     void clearReport();
 
