@@ -25,6 +25,7 @@ limitations under the License.
 #include "ui_ScriptEditor.h"
 #include "SQLHighlighter.h"
 #include <QDebug>
+#include <QAction>
 
 ScriptEditor::ScriptEditor(QSharedPointer<QDomDocument> xmlDoc, QWidget *parent) :
     QWidget(parent),
